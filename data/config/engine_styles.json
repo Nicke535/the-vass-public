@@ -1,5 +1,5 @@
 {
-	"VassEngine":{
+	"VASS_ENGINE":{
 		"engineColor":[100,255,58,200],
 		"contrailParticleSizeMult":8,
 		"contrailParticleDuration":3,
