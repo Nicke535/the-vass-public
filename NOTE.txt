@@ -1,0 +1,15 @@
+REWORK SPRITES
+XXXX--	4/6 Ships
+XXXX	4/4 Weapons
+X	1/1 Projectile
+
+Sprite cleanup
+------	0/7 Ships
+----	0/4 Weapons
+-	0/1 Projectile
+
+Adjust OP of Curtana/Zhanmadao
+
+REMOVE GUNSHIP
+
+Balance adjustments to Guisarme: needs a bit more damage (maybe longer cooldown?)

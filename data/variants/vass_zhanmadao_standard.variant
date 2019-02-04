@@ -1,0 +1,65 @@
+{
+  "displayName": "Cutting-Edge",
+  "fluxCapacitors": 20,
+  "fluxVents": 30,
+  "goalVariant": true,
+  "hullId": "vass_zhanmadao",
+  "hullMods": [
+    "augmentedengines",
+    "targetingunit"
+  ],
+  "permaMods": [],
+  "quality": 0,
+  "variantId": "vass_zhanmadao_standard",
+  "weaponGroups": [
+    {
+      "autofire": false,
+      "mode": "LINKED",
+      "weapons": {
+        "WS0006": "vass_becdecorbin"
+      }
+    },
+    {
+      "autofire": false,
+      "mode": "ALTERNATING",
+      "weapons": {
+        "WS0015": "vass_fauchard_spinal",
+        "WS0016": "vass_fauchard_spinal",
+        "WS0017": "vass_fauchard_spinal",
+        "WS0018": "vass_fauchard_spinal"
+      }
+    },
+    {
+      "autofire": true,
+      "mode": "LINKED",
+      "weapons": {
+        "WS0003": "vass_yari",
+        "WS0004": "vass_yari",
+        "WS0005": "vass_fauchard"
+      }
+    },
+    {
+      "autofire": true,
+      "mode": "ALTERNATING",
+      "weapons": {
+        "WS0009": "vass_corseque",
+        "WS0010": "vass_corseque",
+        "WS0013": "vass_corseque",
+        "WS0014": "vass_corseque"
+      }
+    },
+    {
+      "autofire": true,
+      "mode": "ALTERNATING",
+      "weapons": {
+        "WS0001": "vass_framea",
+        "WS0002": "vass_framea",
+        "WS0007": "vass_framea",
+        "WS0008": "vass_framea",
+        "WS0011": "vass_framea",
+        "WS0012": "vass_framea"
+      }
+    }
+  ],
+  "wings": []
+}

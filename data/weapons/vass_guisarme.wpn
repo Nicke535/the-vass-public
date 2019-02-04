@@ -1,0 +1,31 @@
+{
+	"id":"vass_guisarme",  # this id must match what's in the spreadsheet
+	"specClass":"projectile",
+	"type":"BALLISTIC",
+	"size":"LARGE",
+	"displayArcRadius":600,
+	"turretSprite":"",
+	"hardpointSprite":"",
+	"turretGlowSprite":"graphics/vass/weapons/vass_guisarme_glow.png",
+	"hardpointGlowSprite":"graphics/vass/weapons/vass_guisarme_glow.png",
+	"visualRecoil":0.0,  # the gun sprites are only used if this is non-0
+	"renderHints":[],
+	"turretOffsets":[0, 0, 0, 0, 0, 0],
+	"turretAngleOffsets":[0, 1, -1],
+	"hardpointOffsets":[0, 0, 0, 0, 0, 0],
+	"hardpointAngleOffsets":[0, 1, -1],
+	"specialWeaponGlowWidth":15,
+	"specialWeaponGlowHeight":70,
+	"barrelMode":"LINKED", # or LINKED.  whether barrels fire at the same time or alternate.
+	"animationType":"GLOW_AND_FLASH",
+	"glowColor":[60,255,18,170],
+	"muzzleFlashSpec":{"length":34.0,   # only used if animationType = MUZZLE_FLASH
+					   "spread":22.0,
+					   "particleSizeMin":3.0,
+					   "particleSizeRange":18.0,
+					   "particleDuration":0.4,
+					   "particleCount":24,
+					   "particleColor":[60,255,18,180]},
+	"projectileSpecId":"vass_guisarme_shot",  # projectile that will be fired
+	"fireSoundTwo":"vass_guisarme_fire",
+}

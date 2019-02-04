@@ -1,0 +1,25 @@
+{
+  "displayName": "Cutting-Edge Fighter",
+  "fluxCapacitors": 0,
+  "fluxVents": 0,
+  "hullId": "vass_katzbalger",
+  "hullMods": [],
+  "variantId": "vass_katzbalger",
+  "weaponGroups": [
+    {
+      "autofire": false,
+      "mode": "LINKED",
+      "weapons": {
+        "WS0003": "vass_fauchard"
+      }
+    },
+    {
+      "autofire": true,
+      "mode": "ALTERNATING",
+      "weapons": {
+        "WS0001": "vass_framea_small",
+        "WS0002": "vass_framea_small"
+      }
+    }
+  ]
+}

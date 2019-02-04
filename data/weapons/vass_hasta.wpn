@@ -1,0 +1,31 @@
+{
+	"id":"vass_hasta",  # this id must match what's in the spreadsheet
+	"specClass":"projectile",
+	"type":"BALLISTIC",
+	"size":"SMALL",
+	"everyFrameEffect":"data.scripts.weapons.VassHastaFireScript",
+	"displayArcRadius":600,
+	"turretSprite":"graphics/vass/weapons/vass_hasta_new.png",
+	"turretGlowSprite":"graphics/vass/weapons/vass_hasta_new_glow.png",
+	"hardpointSprite":"graphics/vass/weapons/vass_hasta_new.png",
+	"hardpointGlowSprite":"graphics/vass/weapons/vass_hasta_new_glow.png",
+	"visualRecoil":0.0,  # the gun sprites are only used if this is non-0
+	"turretOffsets":[6, 4.5, 6, -4.5],
+	"turretAngleOffsets":[0, 0],
+	"hardpointOffsets":[6, 4.5, 6, -4.5],
+	"hardpointAngleOffsets":[0, 0],
+	"specialWeaponGlowWidth":12,
+	"specialWeaponGlowHeight":30,
+	"glowColor":[60,255,18,170],
+	"barrelMode":"ALTERNATING", # or LINKED.  whether barrels fire at the same time or alternate.
+	"animationType":"GLOW_AND_FLASH",
+	"muzzleFlashSpec":{"length":10.0,   # only used if animationType = MUZZLE_FLASH
+					   "spread":12.0,
+					   "particleSizeMin":3.0,
+					   "particleSizeRange":7.0,
+					   "particleDuration":0.2,
+					   "particleCount":15,
+					   "particleColor":[60,255,18,180]},
+	"projectileSpecId":"vass_hasta_shot",  # projectile that will be fired
+	"fireSoundTwo":"vass_hasta_fire",
+}

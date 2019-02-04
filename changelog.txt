@@ -1,0 +1,93 @@
+Version 0.2 : Time for a rework [Major update, breaks saves]
+General:
+	*All graphics reworked
+	*All weapon sounds are now properly mono-channeled
+	*The mod's scripts are now properly compiled, so load times should decrease slightly
+Additions:
+	*Added support for lights and distortions with GraphicsLib
+	*Added a small extra visual effect to the Trishula antimatter cannon: it should now feel slightly more "punchy"
+	*Added AOE marker for the Chrono Disturber
+	*Added animated, pulsating lights for all ships, which change color and intensity depending on ship actions
+	*Added a new wing: the Yataghan Gunship Wing
+Ship Changes: [Note that since equipped weapons now cost OP, some changes are less drastic than they appear]
+	*Hullmods:
+		**Periodic Plating now loses its effect while overloading
+		**Chronostabilized Reactor and Chronoaccel Thrusters OP cost down to 7/15/23 (from 10/20/30)
+	*Zhanmadao:
+		**Shield upkeep down to 0.25 (from 0.3)
+		**Shield efficiency down to 0.85 (from 0.8)
+		**Flux capacity up to 9000 (from 5000)
+		**Dissipation up to 650 (from 600)
+		**Slightly increased shipsystem AoE (up to 900 from 800)
+	*Curtana:
+		**Shield upkeep down to 0.25 (from 0.3)
+		**Shield efficiency down to 0.85 (from 0.8)
+		**Flux capacity up to 10000 (from 4500)
+		**Dissipation up to 550 (from 500)
+	*Schiavona:
+		**Shield upkeep down to 0.25 (from 0.3)
+		**Shield efficiency down to 0.85 (from 0.8)
+		**OP up to 95 (from 50)
+		**Loadout changed: now has 3 small Composite slots, 1 medium Synergy slot and 5 Framea launchers
+		**Ship system now has GraphicsLib distortions
+	*Makhaira:
+		**Has new shipsystem: the Isochronal Multilinker, which boosts the ship's sole equipped weapon (the system has different effects depending on which weapon is equipped)
+		**Shield upkeep down to 0.25 (from 0.3)
+		**Shield efficiency down to 0.85 (from 0.8)
+		**OP up to 42 (from 25)
+		**Loadout changed: now has 1 small Universal slot and 3 Framea Launchers
+	*Estoc:
+		**Shield arc up to 200 (from 190) [covers about the same area, due to sprite change]
+		**Shield upkeep down to 0 [to match vanilla standards]
+		**Shield efficiency down to 1 [to match vanilla standards]
+		**Flux capacity up to 500 (from 450)
+		**Now has 2 Miniature Framea Projectors (from 1)
+		**Refit up to 12 (from 10)
+	*Katzbalger:
+		**Refit down to 10 (from 15)
+		**Ship system now has GraphicsLib distortions
+Weapon Changes: [Note that "modular" weapons can only be equipped on Vass ships]
+	*Jaculum Launcher:
+		**Is now a modular weapon
+		**New OP cost: 8
+		**No longer has guidance or multiple stages
+		**Stats completely reworked:
+			***Damage: 1500 HE (+750 Fragmentation and EMP on direct hit)
+			***Cooldown: 45 seconds
+			***Range: 1000 SU
+			***Flux/shot: 400
+	*Fauchard Beam Cannon:
+		**Is now a modular weapon
+		**New OP cost: 12
+		**Flux/second down to 1750 (from 2250)
+		**Range up to 850 (from 750)
+		**Cooldown up to 1.2 (from 1) [Built-in Spinal version only]
+	*Hasta Autocannon:
+		**Is now a modular weapon
+		**New OP cost: 10
+		**Flux-per-shot down to 35 (from 45)
+	*Corseque Assault Projector
+		**Flux per shot up to 500 (from 100)
+		**Is now a Synergy weapon
+	*Spetum Bomb Bay
+		**Is now a Synergy weapon
+	*Framea Energy Projector
+		**Flux per shot up to 20 (from 5)
+		**Is now a Synergy weapon
+	*Miniature Framea Projector
+		**Flux per shot up to 20 (from 5)
+		**Is now a Synergy weapon
+	*Trishula Antimatter Cannon
+		**Flux/shot up to 3000 (from 1500)
+		**Damage up to 3000 (from 1400)
+		**EMP down to 0 (from 1400)
+		**Is now a Ballistic weapon
+	*Bec-de-Corbin Beam
+		**Is now an Energy weapon
+Removed:
+	*Removed the Ahlspiess Device
+Bug fixing:
+	*Fixed Experimental Reactor being incompatible with itself, instead of the Chronostabilized Reactor
+	*Framea Projector AI range now correctly matches its actual range
+	*Katzbalgers and Estocs are now properly tier 3 wings, instead of tier 0
+	*The AI is now more responsive when using ship systems

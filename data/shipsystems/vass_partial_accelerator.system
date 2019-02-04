@@ -1,0 +1,13 @@
+{
+	"id":"vass_partial_accelerator",
+	"type":"STAT_MOD",
+	"aiType":"WEAPON_BOOST",
+	
+	"statsScript":"data.scripts.shipsystems.VassPartialAcceleratorStats",
+	
+	"weaponGlowColor":[192,0,209,100],
+	"weaponTypes":[BALLISTIC],
+	
+	"useSound":"system_ammo_feeder",
+	"outOfUsesSound":"gun_out_of_ammo",
+}

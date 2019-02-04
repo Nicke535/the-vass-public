@@ -1,0 +1,43 @@
+{
+	"id":"vass_framea_missile",
+	"specClass":"missile",	
+	"missileType":"MISSILE",
+	"sprite":"",
+	"size":[4,4],	
+	"center":[2,2],
+	"collisionRadius":7,
+	"collisionClass":"MISSILE_NO_FF",
+	"explosionColor":[100,255,58,180],  # purely visual, will get a white additively blended core on top of this color
+	"explosionRadius":35, # purely visual
+	"flameoutTime":0.1, # total time from flameout to full fadeout
+	"noEngineGlowTime":0, # time spent without the engine glow being rendered
+	"fadeTime":0, # fadeout duration	
+	"engineSpec":{"turnAcc":1720,
+				  "turnRate":480,
+				  "acc":2500,
+				  "dec":800},
+	#"engineSpec":{"turnAcc":240,
+	#			  "turnRate":120,
+	#			  "acc":400,
+	#			  "dec":400},				  
+	"engineSlots":[{"id":"ES1",
+					"loc":[0, 0],
+				    #"style":"MISSILE_MIDLINE",
+				    "style":"CUSTOM",
+					"styleSpec":{
+						"mode":"QUAD_STRIP", # PARTICLES or QUAD_STRIP, determines which params are used
+						"engineColor":[100,255,58,180],
+						"contrailDuration":.3,
+						"contrailWidthMult":1.5,
+						"contrailWidthAddedFractionAtEnd":-1,  # can be negative. makes trail spread out/narrow at the end
+						"contrailMinSeg":6, # min segment length, in pixels
+						"contrailMaxSpeedMult":.0f,
+						"contrailAngularVelocityMult":0.5f,
+						"contrailSpawnDistMult":0, # how far away from engine it starts
+						"contrailColor":[60,255,18,60],
+						"type":"GLOW" # GLOW or SMOKE; additive or regular blend mode
+					},
+				    "width":4.0,
+				    "length":4.0,
+				    "angle":180.0}]
+}

@@ -1,0 +1,35 @@
+{
+  "displayName": "Cutting-Edge",
+  "fluxCapacitors": 5,
+  "fluxVents": 5,
+  "goalVariant": true,
+  "hullId": "vass_makhaira",
+  "hullMods": [
+    "auxiliarythrusters",
+    "augmentedengines",
+    "hardened_subsystems",
+    "targetingunit"
+  ],
+  "permaMods": [],
+  "quality": 0,
+  "variantId": "vass_makhaira_standard",
+  "weaponGroups": [
+    {
+      "autofire": true,
+      "mode": "LINKED",
+      "weapons": {
+        "WS0004": "vass_hasta"
+      }
+    },
+    {
+      "autofire": true,
+      "mode": "LINKED",
+      "weapons": {
+        "WS0001": "vass_framea",
+        "WS0002": "vass_framea",
+        "WS0003": "vass_framea"
+      }
+    }
+  ],
+  "wings": []
+}

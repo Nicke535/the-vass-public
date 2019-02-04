@@ -1,0 +1,12 @@
+{
+	"VassEngine":{
+		"engineColor":[100,255,58,200],
+		"contrailParticleSizeMult":8,
+		"contrailParticleDuration":3,
+		"contrailParticleFinalSizeMult":0.5,
+		"contrailMaxSpeedMult":0.8f,
+		"contrailAngularVelocityMult":0f,
+		"contrailColor":[60,255,18,40],
+		"type":"GLOW" # GLOW or SMOKE
+	},
+}

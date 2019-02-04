@@ -1,0 +1,24 @@
+{
+	"id":"vass_trishula",  # this id must match what's in the spreadsheet
+	"specClass":"projectile",
+	"type":"BALLISTIC",
+	"size":"LARGE",
+	"turretSprite":"",
+	"hardpointSprite":"",
+	"turretOffsets":[0, 0],
+	"turretAngleOffsets":[0],
+	"hardpointOffsets":[0, 0],
+	"hardpointAngleOffsets":[0],
+	"barrelMode":"ALTERNATING", # or LINKED.  whether barrels fire at the same time or alternate.
+	"animationType":"MUZZLE_FLASH",
+	"muzzleFlashSpec":{"length":42.0,
+					   "spread":8.0,
+					   "particleSizeMin":12.0,
+					   "particleSizeRange":23.0,
+					   "particleDuration":3.2,
+					   "particleCount":17,
+					   "particleColor":[60,255,18,180]},		
+	"autocharge":true,  # whether the weapon will continue charging and fire if the LMB is tapped instead of held
+	"projectileSpecId":"vass_trishula_shot",  # projectile that will be fired
+	"fireSoundTwo":"vass_trishula_fire",
+}

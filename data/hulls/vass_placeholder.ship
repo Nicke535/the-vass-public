@@ -1,0 +1,92 @@
+{
+  "bounds": [
+    -19,
+    10.5,
+    -16,
+    15.5,
+    1,
+    14.5,
+    22,
+    3.5,
+    22,
+    -3.5,
+    1,
+    -14.5,
+    -16,
+    -15.5,
+    -19,
+    -10.5
+  ],
+  "builtInMods": [
+    "vass_superwierd_hullmod"
+  ],
+  "builtInWings": [],
+  "center": [
+    16.5,
+    19
+  ],
+  "collisionRadius": 25.10478,
+  "engineSlots": [
+    {
+      "angle": 180,
+      "contrailSize": 4,
+      "length": 40,
+      "location": [
+        -11.5,
+        -4
+      ],
+      "style": "VassEngine",
+      "width": 4
+    },
+    {
+      "angle": -180,
+      "contrailSize": 4,
+      "length": 40,
+      "location": [
+        -11.5,
+        4
+      ],
+      "style": "VassEngine",
+      "width": 4
+    }
+  ],
+  "height": 41,
+  "hullId": "vass_placeholder",
+  "hullName": "PLACEHOLDER",
+  "hullSize": "FIGHTER",
+  "shieldCenter": [
+    0,
+    -0
+  ],
+  "shieldRadius": 22.461077,
+  "spriteName": "graphics/vass/ships/drones/vass_fighter.png",
+  "style": "VASS_HULL",
+  "viewOffset": 0,
+  "weaponSlots": [
+    {
+      "angle": 0,
+      "arc": 270,
+      "id": "WS0001",
+      "locations": [
+        13,
+        -0
+      ],
+      "mount": "TURRET",
+      "size": "MEDIUM",
+      "type": "UNIVERSAL"
+    },
+    {
+      "angle": 180,
+      "arc": 270,
+      "id": "WS0002",
+      "locations": [
+        -5.5,
+        -0
+      ],
+      "mount": "TURRET",
+      "size": "SMALL",
+      "type": "UNIVERSAL"
+    }
+  ],
+  "width": 33
+}

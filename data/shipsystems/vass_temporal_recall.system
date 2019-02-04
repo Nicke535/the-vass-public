@@ -1,0 +1,11 @@
+{
+	"id":"vass_temporal_recall",
+	"type":"STAT_MOD",
+	"aiType":"CUSTOM",
+	"aiScript":"data.shipsystems.ai.vass_temporal_recallAI",
+	
+	"statsScript":"data.scripts.shipsystems.VassTemporalRecall",
+	
+	"useSound":"vass_temporal_recall",
+	"outOfUsesSound":"gun_out_of_ammo",
+}

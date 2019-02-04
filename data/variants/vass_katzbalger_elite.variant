@@ -1,0 +1,29 @@
+{
+  "displayName": "Elite Fighter",
+  "fluxCapacitors": 0,
+  "fluxVents": 0,
+  "goalVariant": true,
+  "hullId": "vass_katzbalger_elite",
+  "hullMods": [],
+  "permaMods": [],
+  "quality": 0,
+  "variantId": "vass_katzbalger_elite",
+  "weaponGroups": [
+    {
+      "autofire": true,
+      "mode": "LINKED",
+      "weapons": {
+        "WS0003": "vass_fauchard_improved"
+      }
+    },
+    {
+      "autofire": true,
+      "mode": "LINKED",
+      "weapons": {
+        "WS0001": "vass_framea_small",
+        "WS0002": "vass_framea_small"
+      }
+    }
+  ],
+  "wings": []
+}

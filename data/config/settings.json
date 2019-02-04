@@ -1,0 +1,26 @@
+{
+	"plugins":{
+		"VassFakeBeamPlugin":"data.scripts.plugins.VassFakeBeamPlugin",
+		"VassSpriteRenderManager":"data.scripts.plugins.VassSpriteRenderManager",
+		"VassCloneFlarePlugin":"data.scripts.plugins.VassCloneFlarePlugin",
+		},
+                
+	"graphics":{			
+		"beams":{
+			"vass_fakeBeamFX":"graphics/vass/fx/fakeBeamFX.png",
+		},
+		"vass_fx":{
+			"chrono_disturber_ring":"graphics/vass/fx/chrono_disturber_ring.png",
+			"chrono_disturber_ringpiece":"graphics/vass/fx/chrono_disturber_ringpiece.png",
+			"yataghan_clone":"graphics/vass/ships/drones/vass_gunship_clone.png",
+			"jaculum_reversal_image":"graphics/vass/missiles/vass_jaculum_missile_new_glow.png",
+		},
+		"vass_icons":{
+			"chrono_disturber":"graphics/vass/icons/hullsys/chrono_disturber.png",
+			"isochronal_multilinker":"graphics/vass/icons/hullsys/isochronal_multilinker.png",
+		},
+		"vass_missile_afterimages":{
+			"jaculum":"graphics/vass/missiles/vass_jaculum_missile_new.png",
+		},
+	}
+}

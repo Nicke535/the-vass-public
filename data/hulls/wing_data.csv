@@ -1,0 +1,7 @@
+id,variant,tags,tier,rarity,fleet pts,op cost,formation,range,attackRunRange,num,role,role desc,refit,base value,,,,,,,,,,,,,number
+vass_katzbalger_wing,vass_katzbalger,"fighter2, fighter, high",3,,6,14,CLAW,2500,2500,3,FIGHTER,Cutting-Edge Fighter,10,12000,,,,,,,,,,,,,49
+vass_estoc_wing,vass_estoc,"bomber4, bomber, high",3,,8,15,CLAW,5000,5000,2,BOMBER,Cutting-Edge Bomber,12,14000,,,,,,,,,,,,,49
+vass_yataghan_wing,vass_yataghan,"fighter4, fighter, high",3,,9,17,CLAW,2000,2000,2,FIGHTER,Cutting-Edge Gunship,13,17000,,,,,,,,,,,,,49
+vass_katzbalger_elite_wing,vass_katzbalger_elite,"fighter4, fighter, high, no_drop, no_sell",5,,8,20,CLAW,2500,2500,3,FIGHTER,Elite Fighter,15,18000,,,,,,,,,,,,,49
+vass_placeholder_wing,vass_placeholder_variant,"fighter4, fighter, high",3,,5,10,CLAW,2500,2500,3,FIGHTER,Placeholder Fighter,15,12000,,,,,,,,,,,,,49
+vass_placeholder_wing_1,vass_placeholder_variant_1,"fighter4, fighter, high",3,,5,10,CLAW,2500,2500,3,FIGHTER,Placeholder 1 Fighter,15,12000,,,,,,,,,,,,,49

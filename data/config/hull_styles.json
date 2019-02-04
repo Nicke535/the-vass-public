@@ -1,0 +1,44 @@
+{
+	# The following hull style ids are reserved and can not be used:
+	# "sounds", "DEFAULT", "FIGHTER", "FRIGATE", "DESTROYER", "CRUISER", "CAPITAL_SHIP"
+	
+	
+	"VASS_HULL":{
+		"hyperspaceJitterColor":[60,255,18,200],
+		"baseCampaignExplosionColor":[100,165,255,255],
+		"baseCombatExplosionColor":[60,255,18,200],
+		"fighterRepairFlickerColor":[60,255,18,200],
+		"weaponDisabledExplosionColor":[60,255,18,200],
+		"shieldRingColor":[255,255,255,255],
+		"shieldInnerColor":[60,255,18,200],
+		"fluxVentCoreColor":[255,255,255,255],
+		"fluxVentFringeColor":[60,255,18,200],
+		"engineLoopSet":"engine_loop", 					# id of entry in sounds.json
+		"engineAccelerateSet":"engine_accelerate",		# id of entry in sounds.json
+		"empLoopSet":"emp_loop",						# id of entry in sounds.json
+		"fluxLoopSet":"flux_loop",						# id of entry in sounds.json
+		"ventFluxSet":"vent_flux",						# id of entry in sounds.json
+		"shieldBurnoutSet":"shield_burnout",			# id of entry in sounds.json
+		"shieldLowerSet":"shield_lower",				# id of entry in sounds.json
+		"shieldRaiseSet":"shield_raise",				# id of entry in sounds.json
+		"explosionShipSet":"explosion_ship",			# id of entry in sounds.json
+		"damageDecalSheet":"graphics/damage/damage_decal_sheet_base.png",
+		"damageDecalGlowSheet":"graphics/damage/damage_decal_sheet_glow.png",
+		
+		"colorShiftCovers":false,
+		"coversColorShiftAmount":0.9,  # 0 to 1
+		"coversMatchShipBrightness":true,
+		"slotCoverSmallTurret":"graphics/vass/weapons/empty.png",
+		"slotCoverSmallHardpoint":"graphics/vass/weapons/empty.png",
+		"slotCoverMediumTurret":"graphics/vass/weapons/empty.png",
+		"slotCoverMediumHardpoint":"graphics/vass/weapons/empty.png",
+		"slotCoverLargeTurret":"graphics/vass/weapons/empty.png",
+		"slotCoverLargeHardpoint":"graphics/vass/weapons/empty.png",
+		
+		"dHullOverlaySmall":"graphics/damage/ship_damage_over3.png",
+		"dHullOverlayLarge":"graphics/damage/ship_damage_over3.png",
+	},
+}
+
+
+

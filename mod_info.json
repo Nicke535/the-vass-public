@@ -1,0 +1,10 @@
+{
+  "id":"the_vass", # internal id
+	"name":"The Vass", # displayed to the player
+	"author":"Nicke535, using HELMUT's incredible sprites",	
+	"version":"0.2",
+	"description":"The Vass, a minifaction relying on time-warping technology.",
+	"gameVersion":"0.8.1a",
+	"modPlugin":"data.scripts.plugins.VassModPlugin",
+	"jars": ["jars/TheVass.jar"]
+}

@@ -1,0 +1,43 @@
+name,id,tier,base value,range,damage/second,damage/shot,emp,impact,turn rate,OPs,ammo,ammo/sec,reload size,type,energy/shot,energy/second,chargeup,chargedown,burst size,burst delay,min spread,max spread,spread/shot,spread decay/sec,beam speed,proj speed,launch speed,flight time,proj hitpoints,hints,number
+Hasta Autocannon,vass_hasta,3,3000,600,,25,,3,18,10000,,,,KINETIC,35,,0,0.15,1,0,0,15,3,9,,900,,,20,,
+Fauchard Beam Cannon,vass_fauchard,3,3500,850,1200,,,0,23,12000,,,,ENERGY,,1750,0,0.3,0.1,2,,,,,50000,,,,,,
+Jaculum Launcher,vass_jaculum_launcher,3,5000,1000,,1500,,40,13,8000,,,,HIGH_EXPLOSIVE,400,,0,33,1,0,0,0,0,0,,550,550,1.8,250,"STRIKE",
+
+Yari Splitlaser,vass_yari,3,7000,550,275,,,0,16,18000,,,,HIGH_EXPLOSIVE,,400,0.15,0.2,,,,,,,2400,,,,,,
+
+Improved Fauchard,vass_fauchard_improved,5,0,800,1500,,,0,23,0,3,0.8,3,ENERGY,,1750,0,0.3,0.1,0.18,,,,,50000,,,,,"SYSTEM, DO_NOT_CONSERVE",
+Spinal Fauchard Beam,vass_fauchard_spinal,5,0,800,1200,,,0,23,0,,,,ENERGY,,1750,0,0.3,0.1,1.2,,,,,50000,,,,,"SYSTEM,SHOW_IN_CODEX",
+Improved Spinal Fauchard,vass_fauchard_spinal_improved,5,0,750,1500,,,0,23,0,3,0.9,3,ENERGY,,1750,0,0.3,0.1,0.18,,,,,50000,,,,,"SYSTEM, DO_NOT_CONSERVE",
+
+Guisarme Blaster,vass_guisarme,5,0,650,,120,,20,0,0,,,,ENERGY,600,,0,1.4,1,0,0,10,3,9,,1400,,,100,"SYSTEM,SHOW_IN_CODEX",
+Trishula Antimatter Cannon,vass_trishula,5,0,1700,,3000,0,1000,0,0,,,,ENERGY,3000,,0,14,1,,5,5,0,0,,2000,,,,"SYSTEM,SHOW_IN_CODEX,STRIKE,USE_VS_FRIGATES",
+Bec-de-Corbin Beam,vass_becdecorbin,5,0,900,3000,,0,0,0,0,,,,ENERGY,,1500,0,1.4,0.2,5,,,,,50000,,,,,"SYSTEM,SHOW_IN_CODEX",
+Improved Bec-de-Corbin,vass_becdecorbin_improved,5,0,900,3000,,0,0,0,0,2,0.23,2,ENERGY,,1200,0,1.4,0.2,1,,,,,50000,,,,,"SYSTEM, DO_NOT_CONSERVE",
+
+Corseque Assault Projector,vass_corseque,5,0,1000,,750,750,50,0,0,,,,FRAGMENTATION,500,,0,12,3,0.2,0,0,0,,,750,750,2.25,300,"SYSTEM,SHOW_IN_CODEX,DO_NOT_AIM",
+Framea Energy Projector,vass_framea,5,0,600,,75,75,15,0,0,9,0.7,3,FRAGMENTATION,20,,0,0.3,1,,8,8,0,0,,400,400,4.5,150,"SYSTEM,SHOW_IN_CODEX,ANTI_FTR,DO_NOT_AIM,CONSERVE_2",
+Miniature Framea Projector,vass_framea_small,5,0,450,,40,,15,0,0,6,0.6,2,FRAGMENTATION,20,,0,0.2,1,,8,8,0,0,,300,50,4.5,150,"SYSTEM,SHOW_IN_CODEX,PD,ANTI_FTR,DO_NOT_AIM,CONSERVE_2",
+Framea Energy Projector (System),vass_framea_system,5,0,600,,40,,15,0,0,,,,FRAGMENTATION,20,,0,1,10,0.3,8,8,0,0,,300,300,4.5,150,"SYSTEM,ANTI_FTR,DO_NOT_AIM",
+Spetum Bomb Bay,vass_spetum_launcher,5,0,800,,750,750,50,0,0,3,,,FRAGMENTATION,0,,0,7,1,,0,0,0,0,,250,100,12,500,"SYSTEM,SHOW_IN_CODEX,STRIKE",
+Fauchard Beam Cannon,vass_fauchard_fighter,5,0,850,1200,,,0,23,12000,,,,ENERGY,,1750,0,0.3,0.1,2,,,,,50000,,,,,"SYSTEM",
+Micro-Fauchard,vass_fauchard_micro,5,0,350,300,,,0,90,0,10,2,10,ENERGY,,400,0,0,0.15,0.05,,,,,50000,,,,,"ANTI_FTR, SYSTEM",
+
+
+Clone Creation Device,vass_clone_flares,,,200,,10,0,,,,,,,ENERGY,0,,0,4,1,0,15,15,0,0,,150,25,3,500,"SYSTEM",
+
+
+Hasta Autocannon R,vass_hasta_r,3,2500,600,,25,,3,18,9999,,,,KINETIC,35,,0,0.15,1,0,0,15,3,9,,900,,,20,"SYSTEM",
+Hasta Autocannon G,vass_hasta_g,3,2500,600,,25,,3,18,9999,,,,KINETIC,35,,0,0.15,1,0,0,15,3,9,,900,,,20,"SYSTEM",
+Hasta Autocannon B,vass_hasta_b,3,2500,600,,25,,3,18,9999,,,,KINETIC,35,,0,0.15,1,0,0,15,3,9,,900,,,20,"SYSTEM",
+Hasta Autocannon RG,vass_hasta_rg,3,2500,600,,25,,3,18,9999,,,,KINETIC,35,,0,0.15,1,0,0,15,3,9,,900,,,20,"SYSTEM",
+Hasta Autocannon GB,vass_hasta_gb,3,2500,600,,25,,3,18,9999,,,,KINETIC,35,,0,0.15,1,0,0,15,3,9,,900,,,20,"SYSTEM",
+Hasta Autocannon BR,vass_hasta_br,3,2500,600,,25,,3,18,9999,,,,KINETIC,35,,0,0.15,1,0,0,15,3,9,,900,,,20,"SYSTEM",
+Hasta Autocannon RGB,vass_hasta_rgb,3,2500,600,,25,,3,18,9999,,,,KINETIC,35,,0,0.15,1,0,0,15,3,9,,900,,,20,"SYSTEM",
+Hasta Autocannon BLACK,vass_hasta_black,3,2500,600,,25,,3,18,9999,,,,KINETIC,35,,0,0.15,1,0,0,15,3,9,,900,,,20,"SYSTEM",
+
+Chrono Disturber Hidden Weapon,vass_chrono_disturber_hidden_weapon,,,,,,,,,,,,,,,,,,,,,,,,,,,,,"SYSTEM",
+Katzbalger Lights,vass_katzbalger_lights,,,,,,,,,,,,,,,,,,,,,,,,,,,,,"SYSTEM",
+Estoc Lights,vass_estoc_lights,,,,,,,,,,,,,,,,,,,,,,,,,,,,,"SYSTEM",
+Yataghan Lights,vass_yataghan_lights,,,,,,,,,,,,,,,,,,,,,,,,,,,,,"SYSTEM",
+Makhaira Lights,vass_makhaira_lights,,,,,,,,,,,,,,,,,,,,,,,,,,,,,"SYSTEM",
+Schiavona Lights,vass_schiavona_lights,,,,,,,,,,,,,,,,,,,,,,,,,,,,,"SYSTEM",

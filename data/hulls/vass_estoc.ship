@@ -1,0 +1,132 @@
+{
+  "bounds": [
+    -10,
+    7.5,
+    -16,
+    11.5,
+    -7,
+    15.5,
+    -15.5,
+    25.5,
+    -10.5,
+    27,
+    21,
+    0,
+    -9.5,
+    -26.5,
+    -16,
+    -26,
+    -7,
+    -15.5,
+    -15.5,
+    -10.5,
+    -10,
+    -7.5,
+    -14,
+    -0
+  ],
+  "builtInMods": [
+    "vass_periodic_plating",
+    "eccm",
+    "no_weapon_flux"
+  ],
+  "builtInWeapons": {
+    "WS0001": "vass_spetum_launcher",
+    "WS0003": "vass_estoc_lights",
+    "WS0004": "vass_framea_small",
+    "WS0005": "vass_framea_small"
+  },
+  "builtInWings": [],
+  "center": [
+    29.5,
+    23
+  ],
+  "collisionRadius": 35.5,
+  "engineSlots": [
+    {
+      "angle": 175,
+      "contrailSize": 4,
+      "length": 40,
+      "location": [
+        -10.5,
+        -7
+      ],
+      "style": "VassEngine",
+      "width": 4
+    },
+    {
+      "angle": -175,
+      "contrailSize": 4,
+      "length": 40,
+      "location": [
+        -10.5,
+        7
+      ],
+      "style": "VassEngine",
+      "width": 4
+    }
+  ],
+  "height": 50,
+  "hullId": "vass_estoc",
+  "hullName": "Estoc",
+  "hullSize": "FIGHTER",
+  "shieldCenter": [
+    -6,
+    -0
+  ],
+  "shieldRadius": 29.5,
+  "spriteName": "graphics/vass/ships/drones/vass_bomber_new.png",
+  "style": "VASS_HULL",
+  "viewOffset": 0,
+  "weaponSlots": [
+    {
+      "angle": 0,
+      "arc": 5,
+      "id": "WS0001",
+      "locations": [
+        0,
+        -0
+      ],
+      "mount": "HIDDEN",
+      "size": "LARGE",
+      "type": "BUILT_IN"
+    },
+    {
+      "angle": 0,
+      "arc": 0,
+      "id": "WS0003",
+      "locations": [
+        2,
+        -0
+      ],
+      "mount": "TURRET",
+      "size": "SMALL",
+      "type": "DECORATIVE"
+    },
+    {
+      "angle": -164,
+      "arc": 0,
+      "id": "WS0004",
+      "locations": [
+        -7,
+        -16
+      ],
+      "mount": "HIDDEN",
+      "size": "SMALL",
+      "type": "BUILT_IN"
+    },
+    {
+      "angle": 164,
+      "arc": 0,
+      "id": "WS0005",
+      "locations": [
+        -7,
+        16
+      ],
+      "mount": "HIDDEN",
+      "size": "SMALL",
+      "type": "BUILT_IN"
+    }
+  ],
+  "width": 59
+}

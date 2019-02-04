@@ -1,0 +1,86 @@
+id,type,text1,text2,text3,notes
+vass_makhaira,SHIP,"Developed as a support ship, the Makhaira is the only Vass ship with a universal mounting point. This gives it a large amount of flexibility, allowing it to take on shield-breaking, armor-piercing or long-range support roles with ease.
+
+This flexibility is further improved by its shipsystem, the Isochronal Multilinker. By accessing multiple simultaneous timelines the ship is able to drastically increase its firepower for a short while, with the actual effects varying depending on the weapon equipped.",,,
+
+
+vass_schiavona,SHIP,"The first ship ever developed by the Vass Shipyard, it has become a symbol for the the Vass corporations' mastery of time. Specifically designed as a hunting vessel, few ships has the raw speed required to outrun the Schiavona.
+
+While its superior mobility and speed is what made it famous, its weapon loadout is nothing to be scoffed at. While much less flexible than the average ship in the sector due to the Vass Shipyard's unwillingness to abide by weapon mounting standards, it is still equipped to deal with a variety of threats. Having weapons from both Multa, Recipro, Perturba and Accel, it incorporates a wide variety of design philosophies.
+
+The most defining feature of the ship is the Periodic Breaker, a powerful device capable of punching holes in space-time and effectively stopping time itself. This is accompanied by a red blast and a loud tearing sound, which can be heard even without any carrying medium such as air. The detailed information on HOW it achieves this is strictly regulated by its developer Accel.",,,
+
+
+vass_schiavona_elite,SHIP,"A heavily modified version of the Schiavona, used by Accel corporation Elites. It is superior in almost every way to the original.
+
+The first ship ever developed by the Vass Shipyard, it has become a symbol for the the Vass corporations' mastery of time. Specifically designed as a hunting vessel, few ships has the raw speed required to outrun the Schiavona.
+
+While its superior mobility and speed is what made it famous, its weapon loadout is nothing to be scoffed at. While much less flexible than the average ship in the sector due to the Vass Shipyard's unwillingness to abide by weapon mounting standards, it is still equipped to deal with a variety of threats. Having weapons from both Multa, Recipro, Perturba and Accel, it incorporates a wide variety of design philosophies.
+
+The most defining feature of the ship is the Periodic Breaker, a powerful device capable of punching holes in space-time and effectively stopping time itself. This is accompanied by a red blast and a loud tearing sound, which can be heard even without any carrying medium such as air. The detailed information on HOW it achieves this is strictly regulated by its developer Accel.",,,
+
+
+vass_curtana,SHIP,"An oddity among carriers, the Curtana was developed with a specific bomber loadout in mind. Equipped with several mid-range support weapons and a powerful defensive system, it can hold its own in direct combat with smaller ships.
+
+After the massive success of the Estoc-class bomber, many customers asked for a dedicated carrier to field them. The Torpor corporation (until then unaffiliated with the Vass Schipyard) offered to fully sponsor the development of this new vessel, on the condition that their newly developed Time Haven Device was integrated as its core ship system. This would make it the first, and as of yet only, ship featuring technologies from all five Vass corporations.
+
+While developed to field Estoc bombers, its landing bays can field any other fighter or bomber wing just as effectively. This would later allow it to field the Katzbalger fighters, albeit not as effectively as the Estocs it was initially designed to carry.",,,
+
+
+vass_zhanmadao,SHIP,"A dedicated line cruiser by the Vass Shipyard. While lacking much of the mobility or utility shown in other Vass ships, it makes up for it in raw firepower and its unique disruptive ship system.
+
+Unlike earlier Vass ships, the Zhanmadao was designed to operate in unison with other cruisers and capital ships to engage the enemy. Its weapon loadout can engage practically any threat, and its relative performance vastly increase as more enemy ships enters the area encompassed by its Chrono Disturber System. It is generally not as strong as other cruisers when alone, but in a fleet setting it can be an invaluable asset.",,,
+
+
+vass_katzbalger,SHIP,"The latest invention by the Vass Shipyard, the Katzbalger fighter fields a revolutionary time-stopping device small enough to be mounted in a fighter chassis. This however meant that there was no room for either shields or heavy armor. Katzbalger pilots are usually considered suicidal because of this.",,,
+
+
+vass_estoc,SHIP,"The only bomber developed by the Vass Shipyard, the Estoc-class bomber is equipped with a highly unusual payload capable of wrecking absolute havoc on exposed hull, weapons and engines. It is also equipped with the Temporal Recall system, allowing it to return near instantly to its carrier after a bombing run. Has above-average engagement range and speed.",,,
+
+
+
+vass_periodic_breaker,SHIP_SYSTEM,"A highly advanced piece of machinery developed by the Vass corporation Accel. The device allows a ship to accelerate its local time-flow to near infinity, effectively stopping time for everything outside the ship.",Utility,Stops time.,
+
+vass_periodic_breaker_improved,SHIP_SYSTEM,"An improved version of the Periodic Breaker, fine-tuned by the brightest minds in the Accel corporation.",Utility,Stops time.,
+
+vass_periodic_skimmer,SHIP_SYSTEM,"A smaller, more compact version of the Periodic Breaker. While its core functionality remains the same, the Skimmer has a significantly reduced duration when compared to its bigger model.",Utility,Stops time.,
+
+vass_temporal_recall,SHIP_SYSTEM,"One of two flagship products from the Vass corporation Recipro. A special device which can revert an entire area of space-time to an earlier state, effectively reversing time. Estoc-class bombers are usually equipped with ship-scale variations of these, but some elite pilots install personal versions instead of ejection seats.",Defensive,Reverts to an earlier point in time.,
+
+vass_time_haven,SHIP_SYSTEM,"Developed by the Vass corporation Torpor, the Time Haven is a large-scale version of their namesake packet, Torpor. Capable of slowing down the time-flow of an object (or in this case, a ship), the Time Haven is the closest thing you get to travelling into the future; once the system is activated, several seconds worth of time passes in the blink of an eye.
+
+A practical side effect of this is protection: as the local time-space is too slowed down to be normally affected by external effects, any area encompassed by the device will effectively turn indestructible.",Defensive,Turns indestructible by travelling to the future.,
+
+vass_partial_accelerator,SHIP_SYSTEM,"A combat-refitted version of Accel, the flagship product of the Vass corporation by the same name. This ship system accelerates part of the ships time-flow, vastly increasing the speed at which its Hasta Autocannon can recover ammunition and thus effectively increasing fire rate. The ships reactor is also affected by the procedure, and operates more efficiently while the system is active.",Offensive,Accelerates weapons and dissipation.,
+
+vass_chrono_disturber,SHIP_SYSTEM,"The Vass are very reluctant to utilize their hard-gained time manipulation packets on others. As such, a minor uproar started when Perturba released the Chrono Disturber. However, after field tests revealed a 63 percent increase in combat survivability, most opposition died down.
+
+Operating on a similar principle as the Corseque and Framea weapons, the Chrono Disturber disrupts the time-flow of a comparatively large area. Any ship in the area which has not adapted its engine, clock and reactor frequencies properly causes this disruption to multiply, effectively slowing down the ship in the process.",Support,Slows down the time for nearby enemies. Generates hard flux.,
+
+
+
+vass_framea,WEAPON,"A special energy projector developed by Perturba. Fractures the space-time near the impact site, causing horrifying damage to systems and personnel alike.",Point Defense,,
+
+vass_corseque,WEAPON,"An up-sized version of the Framea Projector, for use against much larger targets. While it has slightly worse tracking, its destructive power is not to be underestimated.",Assault,,
+
+vass_framea_small,WEAPON,"A smaller Framea Projector, for use on fighters and bombers.",Point Defense,,
+
+vass_hasta,WEAPON,"Developed by the Vass corporation Recipro, this specialized autocannon fires ammunition from a different point in time, effectively removing the need for both ammunition and reloading.",Assault,,
+
+vass_ahlspiess,WEAPON,"Invented as a foil to the Hasta Autocannon, the Ahlspiess can re-use already fired from the Hasta in order to fill its ammo stores. While some efficiency is lost in the process, the pure burst potential of the weapon more than makes up for it.",Strike,,
+
+vass_fauchard,WEAPON,"Intended more as a proof of concept than a real weapon, the Accel-developed Fauchard nevertheless sees widespread use among Vass ships. Working on a similar principle to Domain beam weapons, the uniqueness of the weapon comes from its ignition method: accelerating time to such an extent that individual molecules undergo spontaneous fission.",Assault,,
+
+vass_fauchard_spinal,WEAPON,"An integrated version of the Fauchard Beam Cannon specifically developed for the Zhanmadao, the added space improves the weapon's cooling and reload capabilities.",Assault,,
+
+vass_becdecorbin,WEAPON,"The logical extreme of the Fauchard Beam Cannon, the Bec-de-corbin accelerates not the ignition, but rather the target's time-flow to an extent that causes spontaneous fission reactions to occur.",Assault,,
+
+vass_yari,WEAPON,"Developed by the up-and-comer Multa corporation, the Yari Splitlaser operates by using the same laser from multiple timelines simultaneously. Work on miniaturization is underway, but the technology seems hard to downscale.",Assault,,
+
+vass_spetum_launcher,WEAPON,"Working on the same principle as the Corseque and Framea projectors, the Spetum is specifically designed to be deployed from the Estoc-class bomber. This downscaling has led to the capacitors only lasting for a single volley, but this is considered a small price for its destructive power.",Strike,,
+
+vass_jaculum_launcher,WEAPON,"*Deals an additional 750 Fragmentation and EMP damage on direct hits* A joint project between Perturba and Recipro, the Jaculum Torpedo is intended as an improved delivery system for the Corseque projection pulse. The standard warhead on the missile first breach the target's armor, after which the built-in disruption pulse destroys internal components.",Strike,,
+
+vass_trishula,WEAPON,"Recipro's answer to the Fauchard beam, the Trishula operates by gathering antimatter from mere moments after the birth of the universe and firing it at the enemy. The fact that the energy must then be sent back causes the weapon to have some minor flux issues.",Strike,,
+
+vass_guisarme,WEAPON,"One of currently three products developed by the recently founded Multa corporation. A normal energy cannon that has been modified to split its projectile into three separate timelines. Many concerns have been raised as to the necessity of such a feature, considering the energy demands, but they have all fallen on deaf ears.",Assault,,

@@ -1,0 +1,30 @@
+{
+  "displayName": "Standard",
+  "fluxCapacitors": 0,
+  "fluxVents": 0,
+  "goalVariant": true,
+  "hullId": "vass_javatest",
+  "hullMods": [],
+  "permaMods": [],
+  "quality": 0,
+  "variantId": "vass_javatest_standard",
+  "weaponGroups": [
+    {
+      "autofire": false,
+      "mode": "LINKED",
+      "weapons": {
+        "WS0004": "vass_trishula",
+        "WSCORV": "vass_modtest_standard"
+      }
+    },
+    {
+      "autofire": false,
+      "mode": "LINKED",
+      "weapons": {
+        "WS0009": "vass_framea",
+        "WS0010": "vass_framea"
+      }
+    }
+  ],
+  "wings": []
+}

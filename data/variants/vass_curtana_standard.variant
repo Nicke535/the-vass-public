@@ -1,0 +1,60 @@
+{
+  "displayName": "Cutting-Edge",
+  "fluxCapacitors": 15,
+  "fluxVents": 6,
+  "goalVariant": true,
+  "hullId": "vass_curtana",
+  "hullMods": [
+    "augmentedengines",
+    "targetingunit"
+  ],
+  "permaMods": [],
+  "quality": 0,
+  "variantId": "vass_curtana_standard",
+  "weaponGroups": [
+    {
+      "autofire": false,
+      "mode": "LINKED",
+      "weapons": {
+        "WS0004": "vass_trishula"
+      }
+    },
+    {
+      "autofire": false,
+      "mode": "LINKED",
+      "weapons": {
+        "WS0002": "vass_jaculum_launcher",
+        "WS0003": "vass_jaculum_launcher"
+      }
+    },
+    {
+      "autofire": true,
+      "mode": "LINKED",
+      "weapons": {
+        "WS0001": "vass_yari"
+      }
+    },
+    {
+      "autofire": true,
+      "mode": "ALTERNATING",
+      "weapons": {
+        "WS0005": "vass_corseque",
+        "WS0006": "vass_corseque"
+      }
+    },
+    {
+      "autofire": true,
+      "mode": "LINKED",
+      "weapons": {
+        "WS0007": "vass_framea",
+        "WS0008": "vass_framea",
+        "WS0009": "vass_framea",
+        "WS0010": "vass_framea"
+      }
+    }
+  ],
+  "wings": [
+    "vass_estoc_wing",
+    "vass_katzbalger_wing"
+  ]
+}
