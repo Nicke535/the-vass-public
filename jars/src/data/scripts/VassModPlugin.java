@@ -26,15 +26,8 @@ public class VassModPlugin extends BaseModPlugin {
             throw new ClassNotFoundException(message);
         }
 
-        //Check ShaderLib for lights
-
+        //Checks for ShaderLib
         hasShaderLib = Global.getSettings().getModManager().isModEnabled("shaderLib");
-
-        if (hasShaderLib) {
-            ShaderLib.init();
-            LightData.readLightDataCSV("data/lights/vass_light_data.csv");
-            TextureData.readTextureDataCSV("data/lights/vass_texture_data.csv");
-        }
     }
 
 

@@ -1,4 +1,4 @@
-package data.missions.SRD_test;
+package data.missions.vass_test;
 
 import com.fs.starfarer.api.Global;
 import com.fs.starfarer.api.fleet.FleetGoal;

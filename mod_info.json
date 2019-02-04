@@ -3,10 +3,8 @@
 	"name":"The Vass", # displayed to the player
 	"author":"Nicke535, using Gwyvern's masterful sprites",	
 	"version":"0.3",
-	"description":"Psst, hey kid. Got some time?
-
-WANT some time...?",
-	"gameVersion":"0.8.1a",
-	"modPlugin":"data.scripts.plugins.VassModPlugin",
+	"description":"Psst, hey kid. Want some time?",
+	"gameVersion":"0.9a",
+	"modPlugin":"data.scripts.VassModPlugin",
 	"jars": ["jars/TheVass.jar"]
 }

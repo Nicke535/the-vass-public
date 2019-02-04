@@ -1,0 +1,298 @@
+{
+  "bounds": [
+    -39.5,
+    2,
+    -52.5,
+    2.5,
+    -56,
+    11,
+    -49.5,
+    14.5,
+    -54,
+    21,
+    -45,
+    24.5,
+    -56,
+    32.5,
+    -35,
+    32.5,
+    -12,
+    25.5,
+    -0.5,
+    18,
+    1.5,
+    22,
+    42.5,
+    12,
+    42,
+    9.5,
+    55.5,
+    7.5,
+    55.5,
+    -7.5,
+    42,
+    -9.5,
+    42.5,
+    -12,
+    1.5,
+    -22,
+    -0.5,
+    -18,
+    -12,
+    -25.5,
+    -35,
+    -32.5,
+    -56,
+    -32.5,
+    -45,
+    -24.5,
+    -54,
+    -21,
+    -49.5,
+    -14.5,
+    -56,
+    -11,
+    -52.5,
+    -2.5,
+    -39.5,
+    -2
+  ],
+  "builtInWeapons": {
+    "WS0001": "vass_deco_makhaira_lights"
+  },
+  "builtInWings": [],
+  "center": [
+    35,
+    56.5
+  ],
+  "collisionRadius": 69.5,
+  "engineSlots": [
+    {
+      "angle": 180,
+      "contrailSize": 2,
+      "length": 56,
+      "location": [
+        -55.5,
+        -10
+      ],
+      "style": "LOW_TECH",
+      "width": 2
+    },
+    {
+      "angle": -180,
+      "contrailSize": 2,
+      "length": 56,
+      "location": [
+        -55.5,
+        10
+      ],
+      "style": "LOW_TECH",
+      "width": 2
+    },
+    {
+      "angle": 180,
+      "contrailSize": 2,
+      "length": 40,
+      "location": [
+        -53.5,
+        -20
+      ],
+      "style": "LOW_TECH",
+      "width": 2
+    },
+    {
+      "angle": -180,
+      "contrailSize": 2,
+      "length": 40,
+      "location": [
+        -53.5,
+        20
+      ],
+      "style": "LOW_TECH",
+      "width": 2
+    },
+    {
+      "angle": -177,
+      "contrailSize": 4,
+      "length": 17,
+      "location": [
+        -55.5,
+        -9
+      ],
+      "style": "HIGH_TECH",
+      "width": 4
+    },
+    {
+      "angle": 177,
+      "contrailSize": 4,
+      "length": 17,
+      "location": [
+        -55.5,
+        9
+      ],
+      "style": "HIGH_TECH",
+      "width": 4
+    },
+    {
+      "angle": 177,
+      "contrailSize": 4,
+      "length": 17,
+      "location": [
+        -55.5,
+        -11
+      ],
+      "style": "HIGH_TECH",
+      "width": 4
+    },
+    {
+      "angle": -177,
+      "contrailSize": 4,
+      "length": 17,
+      "location": [
+        -55.5,
+        11
+      ],
+      "style": "HIGH_TECH",
+      "width": 4
+    },
+    {
+      "angle": 177,
+      "contrailSize": 4,
+      "length": 14,
+      "location": [
+        -53.5,
+        -21
+      ],
+      "style": "HIGH_TECH",
+      "width": 4
+    },
+    {
+      "angle": -177,
+      "contrailSize": 4,
+      "length": 14,
+      "location": [
+        -53.5,
+        21
+      ],
+      "style": "HIGH_TECH",
+      "width": 4
+    },
+    {
+      "angle": -177,
+      "contrailSize": 4,
+      "length": 14,
+      "location": [
+        -53.5,
+        -19
+      ],
+      "style": "HIGH_TECH",
+      "width": 4
+    },
+    {
+      "angle": 177,
+      "contrailSize": 4,
+      "length": 14,
+      "location": [
+        -53.5,
+        19
+      ],
+      "style": "HIGH_TECH",
+      "width": 4
+    },
+    {
+      "angle": 180,
+      "contrailSize": 3,
+      "length": 28,
+      "location": [
+        -54.5,
+        -20
+      ],
+      "style": "HIGH_TECH",
+      "width": 3
+    },
+    {
+      "angle": -180,
+      "contrailSize": 3,
+      "length": 28,
+      "location": [
+        -54.5,
+        20
+      ],
+      "style": "HIGH_TECH",
+      "width": 3
+    },
+    {
+      "angle": 180,
+      "contrailSize": 3,
+      "length": 32,
+      "location": [
+        -56.5,
+        -10
+      ],
+      "style": "HIGH_TECH",
+      "width": 3
+    },
+    {
+      "angle": -180,
+      "contrailSize": 3,
+      "length": 32,
+      "location": [
+        -56.5,
+        10
+      ],
+      "style": "HIGH_TECH",
+      "width": 3
+    }
+  ],
+  "height": 113,
+  "hullId": "vass_makhaira",
+  "hullName": "Makhaira",
+  "hullSize": "FRIGATE",
+  "shieldCenter": [
+    -3.5,
+    -0
+  ],
+  "shieldRadius": 65,
+  "spriteName": "graphics/vass/ships/makhaira_v1.png",
+  "style": "HIGH_TECH",
+  "viewOffset": 0,
+  "weaponSlots": [
+    {
+      "angle": 0,
+      "arc": 0,
+      "id": "WS0001",
+      "locations": [
+        0,
+        -0
+      ],
+      "mount": "TURRET",
+      "size": "SMALL",
+      "type": "DECORATIVE"
+    },
+    {
+      "angle": 0,
+      "arc": 360,
+      "id": "WS0002",
+      "locations": [
+        8.5,
+        -0
+      ],
+      "mount": "TURRET",
+      "size": "SMALL",
+      "type": "ENERGY"
+    },
+    {
+      "angle": 0,
+      "arc": 5,
+      "id": "WS0003",
+      "locations": [
+        51.5,
+        -0
+      ],
+      "mount": "HARDPOINT",
+      "size": "SMALL",
+      "type": "HYBRID"
+    }
+  ],
+  "width": 70
+}
