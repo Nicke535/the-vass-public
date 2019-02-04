@@ -1,43 +1,5 @@
-name,id,unlocked,cost_frigate,cost_dest,cost_cruiser,cost_capital,script,desc,sprite
-Vass-Pattern Mounting Points,vass_pattern_mounts,FALSE,0,0,0,0,data.scripts.hullmods.VassPatternMounts,"The Vass shipyards do not follow standard Sector doctrine when it comes to ship- and weapons development. Their ships %s, however unlike other ships they %s.",graphics/vass/hullmods/vass_pattern_mounts.png
-Chronostabilized Reactor,vass_chronostabilized_reactor,TRUE,7,15,23,0,data.scripts.hullmods.VassChronostabilizedReactor,"Using some of the most powerful reactor technologies available to the Vass, this ship recieves special bonuses when using its ship system:
+name,id,tier,rarity,tech/manufacturer,tags,uiTags,base value,unlocked,hidden,hiddenEverywhere,cost_frigate,cost_dest,cost_cruiser,cost_capital,script,desc,short,sprite
+Periodic Plating,vass_periodic_plating,2,,,special,Special,9999,,TRUE,,0,0,0,0,data.scripts.hullmods.VassPeriodicPlating,"Vass ships utilize a special low-grade time disruption unit on all their ships to bolster combat performance. This effectively causes time to pass 20 percent faster for all Vass ships in combat.
 
-During Chrono Disturber, flux dissipation is increased by 30 percent
-During Time Haven, flux dissipates unaffected by the time slow
-During Periodic Breaker, flux can be dissipated at 50 percent of the normal rate
-During Isochronal Multilinker, flux dissipation is increased by 400 percent",graphics/vass/hullmods/vass_chronostabilized_reactor.png
-Chronoaccel Thrusters,vass_chronoaccelerated_thrusters,TRUE,7,15,23,0,data.scripts.hullmods.VassChronoacceleratedThrusters,"Using some of the most powerful thruster technologies available to the Vass, this ship recieves special bonuses when using its ship system:
-
-During Chrono Disturber, max speed, acceleration and turn rates are increased by 30 percent
-During Time Haven, it enables the ship to move normally
-During Periodic Breaker, max speed is increased by 150 percent
-Upon activating Isochronal Multilinker, a massive speed and mobility burst is achieved",graphics/vass/hullmods/vass_chronoaccelerated_thrusters.png
-Vass EX Reactor,vass_experimental_reactor,TRUE,10,20,30,0,data.scripts.hullmods.VassExperimentalReactor,"An experimental reactor which overcharges Vass systems, giving them immense power but making them prone to failure:
-
-During Chrono Disturber, Increase the maximum time slow to 60 percent, but causes it to slow the using ship for 25 percent
-During Time Haven, all flux is removed when the effect ends. However, all weapons have a chance to break when using the system, with the risk increasing with flux level
-During Periodic Breaker, the ship has practically infinite max flux, however it overloads if it has more than its normal maximum when the effect ends
-Isochronal Multilinker causes the ship to momentarily drop its shields, but gives twice as much charge",graphics/vass/hullmods/vass_experimental_reactor.png
-
-Periodic Plating,vass_periodic_plating,FALSE,0,0,0,0,data.scripts.hullmods.VassPeriodicPlating,"Vass ships utilize a special low-grade time disruption unit on all their ships. This effectively causes time to pass 20 percent faster for Vass ships in combat.
-
-The technology has its limitations, however. The time-accelerating properties of the Periodic Plating is incredibly sensitive, meaning that it cannot be used at the same time as the ship system, when the ship is venting flux or when the ship is overloading.",graphics/vass/hullmods/vass_periodic_plating.png
-Fauchard Timelock Mod,vass_fauchard_timelock_modification,FALSE,0,0,0,0,data.scripts.hullmods.VassFauchardTimelockModification,"Developed by Torpor, these special modifications and time-locking fields are installed on all Zhanmadao-class cruisers. They allow the ships Fauchard Beams to lock an enemy ship's flux in time, making it much harder to remove.
-
-The end result is that one fourth of the damage dealt by the ship's Fauchard Beams also adds hard flux, as long as the weapon hits the enemy's shield (this includes Spinal Fauchard Beams, and the amount cannot be increased by damage-increasing effects).",graphics/vass/hullmods/vass_fauchard_timelock_modification.png
-Advanced Entrance Module,vass_advanced_entrance_module,FALSE,0,0,0,0,data.scripts.hullmods.VassAdvancedEntranceModule,"A specific system very similar to the Periodic Breaker has been integrated into the travel drives of most Schiavona-class vessels. This powerful device is impractical in a combat scenario, but its value in getting a ship quickly in and out of combat areas should not be underestimated.",graphics/vass/hullmods/vass_advanced_entrance_module.png
-
-Accel-Pattern Periodic Plating,vass_periodic_plating_accel,FALSE,0,0,0,0,data.scripts.hullmods.VassPeriodicPlatingAccel,"Periodic plating which has been carefully modified by an Accel corporation Elite. Time passes faster for this ship the faster it is moving, to a maximum of 40 percent at full thrust.
-
-This bonus is lost while venting, overloading or using a ship system.",graphics/vass/hullmods/vass_periodic_plating_accel.png
-Superwierd Hullmod,vass_superwierd_hullmod,FALSE,0,0,0,0,data.scripts.hullmods.VassSuperwierdHullmod,"A wierd hullmod.",graphics/vass/hullmods/vass_periodic_plating_accel.png
-Superwierd Hullmod 2,vass_superwierd_hullmod_2,FALSE,0,0,0,0,data.scripts.hullmods.VassSuperwierdHullmod2,"A wierd hullmod, too.",graphics/vass/hullmods/vass_periodic_plating_accel.png
-Superwierd Tracker 1,vass_superwierd_tracker_1,FALSE,0,0,0,0,data.scripts.hullmods.VassSuperwierdTracker,"The tracker in the system, this goes on the corvette. Number 1.",graphics/vass/hullmods/vass_periodic_plating_accel.png
-Superwierd Tracker 2,vass_superwierd_tracker_2,FALSE,0,0,0,0,data.scripts.hullmods.VassSuperwierdTracker,"The tracker in the system, this goes on the corvette. Number 2.",graphics/vass/hullmods/vass_periodic_plating_accel.png
-Superwierd Tracker 3,vass_superwierd_tracker_3,FALSE,0,0,0,0,data.scripts.hullmods.VassSuperwierdTracker,"The tracker in the system, this goes on the corvette. Number 3.",graphics/vass/hullmods/vass_periodic_plating_accel.png
-Superwierd Tracker 4,vass_superwierd_tracker_4,FALSE,0,0,0,0,data.scripts.hullmods.VassSuperwierdTracker,"The tracker in the system, this goes on the corvette. Number 4.",graphics/vass/hullmods/vass_periodic_plating_accel.png
-Superwierd Tracker 5,vass_superwierd_tracker_5,FALSE,0,0,0,0,data.scripts.hullmods.VassSuperwierdTracker,"The tracker in the system, this goes on the corvette. Number 5.",graphics/vass/hullmods/vass_periodic_plating_accel.png
-Superwierd Tracker 6,vass_superwierd_tracker_6,FALSE,0,0,0,0,data.scripts.hullmods.VassSuperwierdTracker,"The tracker in the system, this goes on the corvette. Number 6.",graphics/vass/hullmods/vass_periodic_plating_accel.png
-Superwierd Tracker 7,vass_superwierd_tracker_7,FALSE,0,0,0,0,data.scripts.hullmods.VassSuperwierdTracker,"The tracker in the system, this goes on the corvette. Number 7.",graphics/vass/hullmods/vass_periodic_plating_accel.png
-Superwierd Tracker 8,vass_superwierd_tracker_8,FALSE,0,0,0,0,data.scripts.hullmods.VassSuperwierdTracker,"The tracker in the system, this goes on the corvette. Number 8.",graphics/vass/hullmods/vass_periodic_plating_accel.png
-Superwierd Tracker 9,vass_superwierd_tracker_9,FALSE,0,0,0,0,data.scripts.hullmods.VassSuperwierdTracker,"The tracker in the system, this goes on the corvette. Number 9.",graphics/vass/hullmods/vass_periodic_plating_accel.png
+The technology has its limitations, however. The time-accelerating properties of the Periodic Plating are incredibly sensitive, meaning that it cannot be used at the same time as the ship system, when the ship is venting flux or when the ship is overloading.",Time passes faster for this vessel.,graphics/vass/hullmods/vass_periodic_plating.png
+Advanced Entrance Module,vass_advanced_entrance_module,2,,,special,Special,9999,,TRUE,,0,0,0,0,data.scripts.hullmods.VassAdvancedEntranceModule,"A specific system very similar to the Periodic Breaker has been integrated into the travel drives of most Schiavona-class vessels. This powerful device is impractical in a combat scenario, but its value in getting a ship quickly in and out of combat areas should not be underestimated.",Enters combat extremely quickly.,graphics/vass/hullmods/vass_advanced_entrance_module.png
