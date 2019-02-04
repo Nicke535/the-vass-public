@@ -1,15 +1,13 @@
-REWORK SPRITES
-XXXX--	4/6 Ships
-XXXX	4/4 Weapons
-X	1/1 Projectile
+Rework again... this time by Gwyv, once I get the time.
 
-Sprite cleanup
-------	0/7 Ships
-----	0/4 Weapons
--	0/1 Projectile
+HALF-DONE
+Makhaira
 
-Adjust OP of Curtana/Zhanmadao
+NOT DONE
+Estoc
+Schiavona
 
-REMOVE GUNSHIP
-
-Balance adjustments to Guisarme: needs a bit more damage (maybe longer cooldown?)
+UNCERTAIN FUTURE
+Curtana
+Katzbalger
+Zhanmadao

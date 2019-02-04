@@ -1,9 +1,11 @@
 {
   "id":"the_vass", # internal id
 	"name":"The Vass", # displayed to the player
-	"author":"Nicke535, using HELMUT's incredible sprites",	
-	"version":"0.2",
-	"description":"The Vass, a minifaction relying on time-warping technology.",
+	"author":"Nicke535, using Gwyvern's masterful sprites",	
+	"version":"0.3",
+	"description":"Psst, hey kid. Got some time?
+
+WANT some time...?",
 	"gameVersion":"0.8.1a",
 	"modPlugin":"data.scripts.plugins.VassModPlugin",
 	"jars": ["jars/TheVass.jar"]

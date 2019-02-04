@@ -1,7 +1,0 @@
-{
-	"id":"vass_multichronal_distractor",
-	"type":"WEAPON",
-	"aiType":"FLARE_JAMMER",
-	"weaponDataId":"vass_clone_flares",
-	"outOfUsesSound":"gun_out_of_ammo",
-}
