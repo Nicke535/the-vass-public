@@ -1,15 +1,9 @@
 package data.scripts.weapons;
 
-import com.fs.starfarer.api.Global;
 import com.fs.starfarer.api.combat.*;
-import data.scripts.plugins.VassSpriteRenderManager;
-import data.scripts.shipsystems.VassChronoDisturber;
 import org.lazywizard.lazylib.MathUtils;
-import org.lazywizard.lazylib.combat.entities.SimpleEntity;
-import org.lwjgl.util.vector.Vector2f;
 
 import java.awt.*;
-import java.util.Random;
 
 public class VassShipLightsScript implements EveryFrameWeaponEffectPlugin {
 

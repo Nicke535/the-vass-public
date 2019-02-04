@@ -5,14 +5,10 @@ import java.awt.Color;
 import com.fs.starfarer.api.Global;
 import com.fs.starfarer.api.combat.MutableShipStatsAPI;
 import com.fs.starfarer.api.combat.ShipAPI;
-import com.fs.starfarer.api.combat.ShipVariantAPI;
 import com.fs.starfarer.api.impl.combat.BaseShipSystemScript;
-import com.fs.starfarer.api.combat.CombatEngineAPI;
-import data.scripts.plugins.VassSpriteRenderManager;
 import org.lazywizard.lazylib.MathUtils;
 import org.lazywizard.lazylib.VectorUtils;
 import org.lwjgl.util.vector.Vector2f;
-import com.fs.starfarer.api.util.IntervalUtil;
 
 public class VassChronoDisturber extends BaseShipSystemScript {
     public static final float TIME_MULT_CHANGE = 0.90f;

@@ -1,12 +1,12 @@
+//By Nicke535
+//Experience, The World!
 package data.scripts.shipsystems;
 
 import java.awt.Color;
 
-import data.scripts.plugins.VassModPlugin;
-import org.dark.shaders.distortion.DistortionAPI;
+import data.scripts.VassModPlugin;
 import org.dark.shaders.distortion.DistortionShader;
 import org.dark.shaders.distortion.RippleDistortion;
-import org.dark.shaders.distortion.WaveDistortion;
 import com.fs.starfarer.api.Global;
 import com.fs.starfarer.api.combat.*;
 import com.fs.starfarer.api.impl.combat.BaseShipSystemScript;
@@ -14,25 +14,28 @@ import org.lazywizard.lazylib.MathUtils;
 import org.lwjgl.util.vector.Vector2f;
 
 public class VassPeriodicBreaker extends BaseShipSystemScript {
+    //The time mult for the player and AI, respectively. Should be identical, for fairness sake, but if performance becomes
+    //an issue lowering AI time mult slightly may help
     public static final float TIME_MULT_PLAYER = 100.0f;
     public static final float TIME_MULT_AI = 100.0f;
 
+    //Affects beam damage and flux cost; we set these to 100%, since we don't want beams doing anything in frozen time
     public static final float BEAM_DAMAGE_PENALTY = 1.0f;
     public static final float BEAM_FLUX_PENALTY = 1.0f;
-	
-    public static final float FLUX_DISSIPATION_PENALTY = 1.0f;
-    public static final float FLUX_DISSIPATION_PENALTY_STABILIZED = 0.5f;
-    
-    public static final float SPEED_BONUS_ACCELERATED = 1.5f;
 
+    //How much is our flux dissipation reduced in frozen time?
+    public static final float FLUX_DISSIPATION_PENALTY = 1.0f;
+
+    //Jitter and lightning color for the system
     public static final Color JITTER_COLOR = new Color(255, 26, 26,55);
     public static final Color JITTER_UNDER_COLOR = new Color(255, 0, 0,155);
-	
+
+    //The size of the lightning and distortions from the system
     public static final float ELECTRIC_SIZE = 80.0f;
     public static final float ELECTRIC_SIZE_SCHIAVONA = 300.0f;
-	
-    public boolean HAS_FIRED_LIGHTNING = false;
 
+
+    public boolean HAS_FIRED_LIGHTNING = false;
 
     public void apply(MutableShipStatsAPI stats, String id, State state, float effectLevel) {
         ShipAPI ship = null;
@@ -63,11 +66,13 @@ public class VassPeriodicBreaker extends BaseShipSystemScript {
             jitterRangeBonus = jitterLevel * maxRangeBonus;
         }
         jitterLevel = (float) Math.sqrt(jitterLevel);
-        effectLevel *= effectLevel;
-        effectLevel *= effectLevel;
 
         ship.setJitter(this, JITTER_COLOR, jitterLevel, 3, 0, 0 + jitterRangeBonus);
         ship.setJitterUnder(this, JITTER_UNDER_COLOR, jitterLevel, 25, 0f, 7f + jitterRangeBonus);
+
+        //We want our effect level to scale near-exponentially
+        effectLevel *= effectLevel;
+        effectLevel *= effectLevel;
 
 		//Adjusts time mult
 		float shipTimeMult = 1f;
@@ -85,11 +90,7 @@ public class VassPeriodicBreaker extends BaseShipSystemScript {
         ship.getEngineController().fadeToOtherColor(this, JITTER_COLOR, new Color(0,0,0,0), 1.0f, 1.0f);
         ship.getEngineController().extendFlame(this, -0.25f, -0.25f, -0.25f);
 		
-		//Makes beams do 0 damage
-		stats.getBeamWeaponFluxCostMult().modifyMult(id, 1 - BEAM_FLUX_PENALTY * effectLevel);
-		stats.getBeamWeaponDamageMult().modifyMult(id, 1 - BEAM_DAMAGE_PENALTY * effectLevel);
-		
-		//Adjusts size of lightning (and distortions) to the correct value
+		//Adjusts the size of our lightning and distortions to their correct value
 		float actualElectricSize = ELECTRIC_SIZE;
 		float rippleDurationMod = 0.6f;
 		if (ship.getHullSpec().getHullId().contains("vass_schiavona")) {
@@ -162,22 +163,16 @@ public class VassPeriodicBreaker extends BaseShipSystemScript {
 		} else {
 			HAS_FIRED_LIGHTNING = false;
 		}
+
+        //Reduces beam damage
+        stats.getBeamWeaponFluxCostMult().modifyMult(id, 1 - BEAM_FLUX_PENALTY * effectLevel);
+        stats.getBeamWeaponDamageMult().modifyMult(id, 1 - BEAM_DAMAGE_PENALTY * effectLevel);
 		
-		//Boosting hullmod check
-		if (ship.getVariant().getHullMods().contains("vass_chronostabilized_reactor")) {
-			stats.getFluxDissipation().modifyMult(id, 1 - FLUX_DISSIPATION_PENALTY_STABILIZED * effectLevel);
-		} else {
-			stats.getFluxDissipation().modifyMult(id, 1 - FLUX_DISSIPATION_PENALTY * effectLevel);
-		}
-		if (ship.getVariant().getHullMods().contains("vass_chronoaccelerated_thrusters")) {
-			stats.getMaxSpeed().modifyMult(id, 1 + SPEED_BONUS_ACCELERATED * effectLevel);
-		}
-		if (ship.getVariant().getHullMods().contains("vass_experimental_reactor")) {
-			stats.getFluxCapacity().modifyMult(id, 1 + 9998 * effectLevel);
-		}
+		//USED TO check for booster hullmod; now, just reduce flux dissipation
+        stats.getFluxDissipation().modifyMult(id, 1 - FLUX_DISSIPATION_PENALTY * effectLevel);
     }
 
-
+    //Resets all our values to pre-activation state
     public void unapply(MutableShipStatsAPI stats, String id) {
         ShipAPI ship = null;
         boolean player = false;
@@ -190,12 +185,6 @@ public class VassPeriodicBreaker extends BaseShipSystemScript {
         }
 		
 		stats.getFluxDissipation().unmodify(id);
-		stats.getFluxCapacity().unmodify(id);
-		if (ship.getFluxTracker().getFluxLevel() >= 1f) {
-			ship.getFluxTracker().forceOverload(ship.getFluxTracker().getFluxLevel() * 3);
-			ship.getFluxTracker().setCurrFlux(stats.getFluxCapacity().getModifiedValue());
-		}
-		stats.getMaxSpeed().unmodify(id);
 		
         Global.getCombatEngine().getTimeMult().unmodify(id);
         stats.getTimeMult().unmodify(id);
@@ -206,6 +195,7 @@ public class VassPeriodicBreaker extends BaseShipSystemScript {
 		HAS_FIRED_LIGHTNING = false;
     }
 
+    //Shows a tooltip in the HUD
     public StatusData getStatusData(int index, State state, float effectLevel) {
         if (index == 0 && state == State.IN) {
             return new StatusData("rupturing time-space...", false);
@@ -214,12 +204,6 @@ public class VassPeriodicBreaker extends BaseShipSystemScript {
 		} else if (index == 0 && state == State.OUT) {
             return new StatusData("readjusting protocols...", false);
 		}
-//		if (index == 1) {
-//			return new StatusData("beam weapons are useless now", false);
-//		}
-//		if (index == 2) {
-//			return new StatusData("increased acceleration", false);
-//		}
         return null;
     }
 }

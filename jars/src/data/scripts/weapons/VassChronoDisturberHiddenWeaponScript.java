@@ -2,8 +2,8 @@ package data.scripts.weapons;
 
 import com.fs.starfarer.api.Global;
 import com.fs.starfarer.api.combat.*;
-import data.scripts.plugins.VassSpriteRenderManager;
 import data.scripts.shipsystems.VassChronoDisturber;
+import data.scripts.util.MagicRender;
 import org.lazywizard.lazylib.MathUtils;
 import org.lazywizard.lazylib.combat.entities.SimpleEntity;
 import org.lwjgl.util.vector.Vector2f;
@@ -27,14 +27,13 @@ public class VassChronoDisturberHiddenWeaponScript implements EveryFrameWeaponEf
         ShipSystemAPI system = ship.getSystem();
 
         if (system.getEffectLevel() > 0f) {
-
             //Sets the color for the sprite this frame: we need to do this to adjust sprite opacity all the time
             Color spriteColor1 = new Color((int)(VassChronoDisturber.JITTER_COLOR.getRed() * system.getEffectLevel() * 0.15f), (int)(VassChronoDisturber.JITTER_COLOR.getGreen() * system.getEffectLevel() * 0.15f),
                     (int)(VassChronoDisturber.JITTER_COLOR.getBlue() * system.getEffectLevel() * 0.15f));
 
             //Runs several times to create a "circle" from the triangles
             for (int i = 0; i < numberOfTriangles; i++) {
-                VassSpriteRenderManager.singleFrameRender(Global.getSettings().getSprite("vass_fx", "chrono_disturber_ringpiece"), ship.getLocation(),
+                MagicRender.singleframe(Global.getSettings().getSprite("vass_fx", "chrono_disturber_ringpiece"), ship.getLocation(),
                         new Vector2f(VassChronoDisturber.ACTIVE_RANGE * 2f + ship.getCollisionRadius(), VassChronoDisturber.ACTIVE_RANGE * 2f + ship.getCollisionRadius()), rotation, spriteColor1, true);
                 rotation += (360 / numberOfTriangles);
             }

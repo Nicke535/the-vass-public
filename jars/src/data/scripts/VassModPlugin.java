@@ -1,4 +1,4 @@
-package data.scripts.plugins;
+package data.scripts;
 
 import com.fs.starfarer.api.BaseModPlugin;
 import com.fs.starfarer.api.Global;
@@ -12,14 +12,14 @@ public class VassModPlugin extends BaseModPlugin {
 
     public static boolean hasShaderLib = false;
 
-    //Courtesy of Tartiflette: small piece of code which informs the user that LazyLib is necessary should something go wrong
+    //Detects any non-loaded required mods, and throws
     @Override
     public void onApplicationLoad() throws ClassNotFoundException {
         try {
             Global.getSettings().getScriptClassLoader().loadClass("org.lazywizard.lazylib.ModUtils");
         } catch (ClassNotFoundException ex) {
             String message = System.lineSeparator()
-                    + System.lineSeparator() + "LazyLib is required to run at least one of the mods you have installed."
+                    + System.lineSeparator() + "LazyLib is required to run at least one of the mods you have installed ()."
                     + System.lineSeparator() + System.lineSeparator()
                     + "You can download LazyLib at http://fractalsoftworks.com/forum/index.php?topic=5444"
                     + System.lineSeparator();
