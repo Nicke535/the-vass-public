@@ -1,12 +1,26 @@
 {
-	"VASS_ENGINE":{
+	"VASS_ENGINE_NEAR":{
 		"engineColor":[100,255,58,200],
-		"contrailParticleSizeMult":8,
-		"contrailParticleDuration":3,
-		"contrailParticleFinalSizeMult":0.5,
-		"contrailMaxSpeedMult":0.8f,
-		"contrailAngularVelocityMult":0f,
+		"engineCampaignColor":[100,255,58,200],
+		"contrailParticleSizeMult":5,
+		"contrailParticleDuration":2,
+		"contrailParticleFinalSizeMult":0.2,
+		"contrailMaxSpeedMult":0.3f,
+		"contrailAngularVelocityMult":0.2f,
 		"contrailColor":[60,255,18,40],
+		"contrailCampaignColor":[60,255,18,40],
+		"type":"GLOW" # GLOW or SMOKE
+	},
+	"VASS_ENGINE_FAR":{
+		"engineColor":[255,100,20,255],
+		"engineCampaignColor":[255,100,20,255],
+		"contrailParticleSizeMult":5,
+		"contrailParticleDuration":2,
+		"contrailParticleFinalSizeMult":0.2,
+		"contrailMaxSpeedMult":0.3f,
+		"contrailAngularVelocityMult":0.2f,
+		"contrailColor":[0,0,0,0],
+		"contrailCampaignColor":[0,0,0,0],
 		"type":"GLOW" # GLOW or SMOKE
 	},
 }
