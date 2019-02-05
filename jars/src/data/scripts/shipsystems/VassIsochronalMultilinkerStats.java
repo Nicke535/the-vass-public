@@ -1,23 +1,33 @@
+//By Nicke535
+//Causes projectile weapons to fire duplicates of their shots at random, and adds strange multi-timeline effects on top to give visual flair
 package data.scripts.shipsystems;
 
 import com.fs.starfarer.api.Global;
-import com.fs.starfarer.api.combat.MutableShipStatsAPI;
-import com.fs.starfarer.api.combat.ShipAPI;
-import com.fs.starfarer.api.combat.WeaponAPI;
+import com.fs.starfarer.api.combat.*;
 import com.fs.starfarer.api.impl.combat.BaseShipSystemScript;
+import data.scripts.utils.VassUtils;
 import org.lazywizard.lazylib.MathUtils;
+import org.lazywizard.lazylib.combat.CombatUtils;
+import org.lwjgl.util.vector.Vector2f;
 
 import java.awt.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class VassIsochronalMultilinkerStats extends BaseShipSystemScript {
 
-	public static final float DISSIPATION_BONUS_STABILIZED = 4f;
-	
-	public static final float MOBILITY_BONUS_ACCELERATED = 4f;
-	public static final float SPEED_BONUS_ACCELERATED = 100f;
+	//Basic jitter stats
+    public static final float JITTER_OPACITY = 0.07f;
+    public static final float JITTER_UNDER_OPACITY = 0.3f;
 
-    public static final int JITTER_OPACITY = 10;
-    public static final int JITTER_UNDER_OPACITY = 60;
+    //How far away from the original will any given projectile be spawned?
+	private static final float PROJECTILE_OFFSET_DISTANCE = 8f;
+
+	//How inaccurate are the new projectiles?
+	private static final float PROJECTILE_OFFSET_ANGLE = 3f;
+
+    //Stores projectile's we're not allowed to touch again
+	private List<DamagingProjectileAPI> registeredProjectiles = new ArrayList<>();
 	
 	public void apply(MutableShipStatsAPI stats, String id, State state, float effectLevel) {
         ShipAPI ship = null;
@@ -28,10 +38,10 @@ public class VassIsochronalMultilinkerStats extends BaseShipSystemScript {
             return;
         }
 		
-		//Jitter-Based code
+		//Adds some random-color jitter
 	    float jitterLevel = effectLevel;
         float jitterRangeBonus = 0;
-        float maxRangeBonus = 5f;
+        float maxRangeBonus = 10f;
         if (state == State.IN) {
             jitterLevel = effectLevel / (1f / ship.getSystem().getChargeUpDur());
             if (jitterLevel > 1) {
@@ -46,37 +56,47 @@ public class VassIsochronalMultilinkerStats extends BaseShipSystemScript {
         }
         jitterLevel = (float) Math.sqrt(jitterLevel);
 
-        Color jitterColor = new Color(230 + MathUtils.getRandomNumberInRange(0, 25), 230 + MathUtils.getRandomNumberInRange(0, 25), 230 + MathUtils.getRandomNumberInRange(0, 25), JITTER_OPACITY);
-		Color jitterUnderColor = new Color(230 + MathUtils.getRandomNumberInRange(0, 25), 230 + MathUtils.getRandomNumberInRange(0, 25), 230 + MathUtils.getRandomNumberInRange(0, 25), JITTER_UNDER_OPACITY);
-
-        ship.setJitter(this, jitterColor, jitterLevel, 3, 0, 0 + jitterRangeBonus);
-        ship.setJitterUnder(this, jitterUnderColor, jitterLevel, 25, 0f, 7f + jitterRangeBonus);
-		
-		//Check for Chronostabilized Reactor, and apply appropriate bonuses
-		if (ship.getVariant().getHullMods().contains("vass_chronostabilized_reactor")) {
-			stats.getFluxDissipation().modifyMult(id, 1f + DISSIPATION_BONUS_STABILIZED * effectLevel);
+        //Adds multiple jitters, each with a different color
+		for (int i = 0; i < 5; i++) {
+			Color jitterColor = VassUtils.getFamilyColor(VassUtils.VASS_FAMILY.MULTA, JITTER_OPACITY);
+			ship.setJitter(id + i, jitterColor, jitterLevel, 3, 5f, 7f + jitterRangeBonus);
 		}
-		
-		//Check for Chronoaccelerated Thrusters, and apply appropriate bonuses
-		if (ship.getVariant().getHullMods().contains("vass_chronoaccelerated_thrusters")) {
-			stats.getAcceleration().modifyMult(id, 1f + MOBILITY_BONUS_ACCELERATED * effectLevel);
-			stats.getDeceleration().modifyMult(id, 1f + MOBILITY_BONUS_ACCELERATED * effectLevel);
-			stats.getMaxTurnRate().modifyMult(id, 1f + MOBILITY_BONUS_ACCELERATED * effectLevel);
-			stats.getTurnAcceleration().modifyMult(id, 1f + MOBILITY_BONUS_ACCELERATED * effectLevel);
-			stats.getMaxSpeed().modifyFlat(id, SPEED_BONUS_ACCELERATED * effectLevel);
+		for (int i = 0; i < 25; i++) {
+			Color jitterUnderColor = VassUtils.getFamilyColor(VassUtils.VASS_FAMILY.MULTA, JITTER_UNDER_OPACITY);
+			ship.setJitterUnder(id + i, jitterUnderColor, jitterLevel, 25, 1f, 7f + jitterRangeBonus);
 		}
 
-		//Only charge once per code-run
-		if (!(Global.getCombatEngine().getCustomData().get("VassIsochronalChargesRunOnce" + ship.getId()) instanceof Boolean) || (boolean)Global.getCombatEngine().getCustomData().get("VassIsochronalChargesRunOnce" + ship.getId())) {
-			Global.getCombatEngine().getCustomData().put("VassIsochronalChargesRunOnce" + ship.getId(), false);
+        //Runs the main effect: splitting weapon shots to pieces
+		for (DamagingProjectileAPI proj : CombatUtils.getProjectilesWithinRange(ship.getLocation(), ship.getCollisionRadius())) {
+			//Don't trigger on projectile's that aren't our own
+			if (proj.getSource() != ship) {
+				continue;
+			}
 
-			//If we have the Experimental Reactor, we add 200% charge, otherwise we charge to 100%
-			if (ship.getVariant().getHullMods().contains("vass_experimental_reactor")) {
-				Global.getCombatEngine().getCustomData().put("VassIsochronalCharges" + ship.getId(), 200f);
-				//Also disables shields if we have the Experimental Reactor
-				ship.getShield().setActiveArc(0f);
-			} else {
-				Global.getCombatEngine().getCustomData().put("VassIsochronalCharges" + ship.getId(), 100f);
+			//Only trigger on NEW projectiles
+			if (proj.getElapsed() > 0.1f) {
+				continue;
+			}
+
+			//Don't trigger on projectile's we've spawned or already split from
+			if (registeredProjectiles.contains(proj)) {
+				continue;
+			}
+
+			//Otherwise, we spawn a projectile (if we can!) and register both the new and old one
+			if (proj.getWeapon() != null && proj.getWeapon().getSpec().getWeaponId() != null) {
+				DamagingProjectileAPI newProj = (DamagingProjectileAPI)Global.getCombatEngine().spawnProjectile(ship, proj.getWeapon(),
+						proj.getWeapon().getSpec().getWeaponId(),MathUtils.getPoint(new Vector2f(proj.getLocation()), PROJECTILE_OFFSET_DISTANCE, MathUtils.getRandomNumberInRange(0f, 360f)),
+						proj.getFacing() + MathUtils.getRandomNumberInRange(-PROJECTILE_OFFSET_ANGLE, PROJECTILE_OFFSET_ANGLE), ship.getVelocity());
+
+				//Assigns the same target to the AI if possible (we can only do this for vanilla guided missiles, but hey)
+				if (proj instanceof MissileAPI) {
+					if (((MissileAPI)proj).getMissileAI() != null) {
+						if (((MissileAPI)proj).getMissileAI() instanceof GuidedMissileAI) {
+							((GuidedMissileAI) ((MissileAPI) newProj).getMissileAI()).setTarget(((GuidedMissileAI) ((MissileAPI) proj).getMissileAI()).getTarget());
+						}
+					}
+				}
 			}
 		}
 	}
@@ -89,21 +109,11 @@ public class VassIsochronalMultilinkerStats extends BaseShipSystemScript {
         } else {
             return;
         }
-
-		stats.getFluxDissipation().unmodify(id);
-		stats.getAcceleration().unmodify(id);
-		stats.getDeceleration().unmodify(id);
-		stats.getMaxTurnRate().unmodify(id);
-		stats.getTurnAcceleration().unmodify(id);
-		stats.getMaxSpeed().unmodify(id);
-
-		//Reset our RunOnce variable
-		Global.getCombatEngine().getCustomData().put("VassIsochronalChargesRunOnce" + ship.getId(), true);
 	}
 	
 	public StatusData getStatusData(int index, State state, float effectLevel) {
 		if (index == 0) {
-			return new StatusData("accessing timelines...", false);
+			return new StatusData("Timeline instability established", false);
 		}
 		return null;
 	}
