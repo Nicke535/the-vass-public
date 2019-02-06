@@ -12,7 +12,7 @@ public class VassUtils {
     private static final float[] COLORS_PERTURBA = { 0.8f, 1f, 0f};
     //Multa has its own color system, as it's randomized each frame
     private static final float[] COLORS_MULTA_MAX = { 1f, 1f, 1f};
-    private static final float[] COLORS_MULTA_MIN = { 0.7f, 0.7f, 0f};
+    private static final float[] COLORS_MULTA_MIN = { 0.4f, 0.4f, 0.4f};
 
     public static enum VASS_FAMILY {
         ACCEL,

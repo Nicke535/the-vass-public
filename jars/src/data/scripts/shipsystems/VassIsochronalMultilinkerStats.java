@@ -26,6 +26,12 @@ public class VassIsochronalMultilinkerStats extends BaseShipSystemScript {
 	//How inaccurate are the new projectiles?
 	private static final float PROJECTILE_OFFSET_ANGLE = 3f;
 
+	//How big of a chance is there for each potential extra shot to be spawned?
+    private static final float PROJECTILE_SPAWN_CHANCE = 0.7f;
+
+    //How many extra projectiles can be spawned, at most?
+    private static final int PROJECTILE_MAX_SPAWNS = 2;
+
     //Stores projectile's we're not allowed to touch again
 	private List<DamagingProjectileAPI> registeredProjectiles = new ArrayList<>();
 	
@@ -67,7 +73,7 @@ public class VassIsochronalMultilinkerStats extends BaseShipSystemScript {
 		}
 
         //Runs the main effect: splitting weapon shots to pieces
-		for (DamagingProjectileAPI proj : CombatUtils.getProjectilesWithinRange(ship.getLocation(), ship.getCollisionRadius())) {
+		for (DamagingProjectileAPI proj : CombatUtils.getProjectilesWithinRange(ship.getLocation(), ship.getCollisionRadius()*2f)) {
 			//Don't trigger on projectile's that aren't our own
 			if (proj.getSource() != ship) {
 				continue;
@@ -83,20 +89,31 @@ public class VassIsochronalMultilinkerStats extends BaseShipSystemScript {
 				continue;
 			}
 
-			//Otherwise, we spawn a projectile (if we can!) and register both the new and old one
+			//Otherwise, we prepare to spawn projectiles and register both the new and old one so nothing triggers twice on the same projectile
 			if (proj.getWeapon() != null && proj.getWeapon().getSpec().getWeaponId() != null) {
-				DamagingProjectileAPI newProj = (DamagingProjectileAPI)Global.getCombatEngine().spawnProjectile(ship, proj.getWeapon(),
-						proj.getWeapon().getSpec().getWeaponId(),MathUtils.getPoint(new Vector2f(proj.getLocation()), PROJECTILE_OFFSET_DISTANCE, MathUtils.getRandomNumberInRange(0f, 360f)),
-						proj.getFacing() + MathUtils.getRandomNumberInRange(-PROJECTILE_OFFSET_ANGLE, PROJECTILE_OFFSET_ANGLE), ship.getVelocity());
+                registeredProjectiles.add(proj);
 
-				//Assigns the same target to the AI if possible (we can only do this for vanilla guided missiles, but hey)
-				if (proj instanceof MissileAPI) {
-					if (((MissileAPI)proj).getMissileAI() != null) {
-						if (((MissileAPI)proj).getMissileAI() instanceof GuidedMissileAI) {
-							((GuidedMissileAI) ((MissileAPI) newProj).getMissileAI()).setTarget(((GuidedMissileAI) ((MissileAPI) proj).getMissileAI()).getTarget());
-						}
-					}
-				}
+			    //Run and check once for each potential extra projectile spawn
+                for (int i = 0; i < PROJECTILE_MAX_SPAWNS; i++) {
+                    if (Math.random() < PROJECTILE_SPAWN_CHANCE*effectLevel) {
+                        //Spawns the projectile, with some offsets for angle and position
+                        DamagingProjectileAPI newProj = (DamagingProjectileAPI)Global.getCombatEngine().spawnProjectile(ship, proj.getWeapon(),
+                                proj.getWeapon().getSpec().getWeaponId(),MathUtils.getPoint(new Vector2f(proj.getLocation()), PROJECTILE_OFFSET_DISTANCE, MathUtils.getRandomNumberInRange(0f, 360f)),
+                                proj.getFacing() + MathUtils.getRandomNumberInRange(-PROJECTILE_OFFSET_ANGLE, PROJECTILE_OFFSET_ANGLE), ship.getVelocity());
+
+                        //Assigns the same target to the AI if possible (we can only do this for vanilla guided missiles, but hey)
+                        if (proj instanceof MissileAPI) {
+                            if (((MissileAPI)proj).getMissileAI() != null) {
+                                if (((MissileAPI)proj).getMissileAI() instanceof GuidedMissileAI) {
+                                    ((GuidedMissileAI) ((MissileAPI) newProj).getMissileAI()).setTarget(((GuidedMissileAI) ((MissileAPI) proj).getMissileAI()).getTarget());
+                                }
+                            }
+                        }
+
+                        //Registers the projectiles so we don't trigger twice on them
+                        registeredProjectiles.add(newProj);
+                    }
+                }
 			}
 		}
 	}
