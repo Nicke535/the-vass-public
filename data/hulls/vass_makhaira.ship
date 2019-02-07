@@ -65,7 +65,7 @@
     35,
     56.5
   ],
-  "collisionRadius": 74.5,
+  "collisionRadius": 80.0,
   "engineSlots": [
     {
       "angle": 180,
@@ -252,7 +252,7 @@
     -3.5,
     -0
   ],
-  "shieldRadius": 70,
+  "shieldRadius": 75,
   "spriteName": "graphics/vass/ships/makhaira_v1.png",
   "style": "VASS_HULL",
   "viewOffset": 0,
@@ -279,7 +279,7 @@
       ],
       "mount": "TURRET",
       "size": "SMALL",
-      "type": "UNIVERSAL"
+      "type": "HYBRID"
     },
     {
       "angle": 0,

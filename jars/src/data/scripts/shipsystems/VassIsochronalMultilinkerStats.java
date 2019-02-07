@@ -1,5 +1,5 @@
 //By Nicke535
-//Adds random amounts of firerate bonus over time
+//Adds random amounts of firerate bonus and shield resist
 package data.scripts.shipsystems;
 
 import com.fs.starfarer.api.Global;
@@ -28,11 +28,15 @@ public class VassIsochronalMultilinkerStats extends BaseShipSystemScript {
     private static final float MIN_ROF_MULT = 0.35f;
 
     //How fast the firerate mults change for the ship
-    private static final float MAX_ROF_CHANGE_PER_SECOND = 3f;
+    private static final float MAX_ROF_CHANGE_PER_SECOND = 50f;
 
     //The shortest/longest time between "target" RoF changes
-    private static final float MAX_ROF_TARGET_CHANGE_DELAY = 0.55f;
-    private static final float MIN_ROF_TARGET_CHANGE_DELAY = 0.25f;
+    private static final float MAX_ROF_TARGET_CHANGE_DELAY = 0.25f;
+    private static final float MIN_ROF_TARGET_CHANGE_DELAY = 0.12f;
+
+    //The lowest/highest shield damage mod obtainable
+    private static final float MAX_SHIELD_RESIST_MULT = 3f;
+    private static final float MIN_SHIELD_RESIST_MULT = 0.33f;
 
 
     //Internal variables
@@ -87,6 +91,10 @@ public class VassIsochronalMultilinkerStats extends BaseShipSystemScript {
             currentTargetEnergyRoF = MathUtils.getRandomNumberInRange(MIN_ROF_MULT, MAX_ROF_MULT);
         }
 
+        //Changes shield color each frame
+        ship.getShield().setInnerColor(VassUtils.getFamilyColor(VassUtils.VASS_FAMILY.MULTA, 0.8f));
+        ship.getShield().setRingColor(VassUtils.getFamilyColor(VassUtils.VASS_FAMILY.MULTA, 0.8f));
+
         //Swap our actual RoF mult over closer to our target RoF
         if (currentBallisticRoF < currentTargetBallisticRoF) {
             currentBallisticRoF += MAX_ROF_CHANGE_PER_SECOND * amount;
@@ -107,6 +115,7 @@ public class VassIsochronalMultilinkerStats extends BaseShipSystemScript {
         stats.getBallisticRoFMult().modifyMult(id, currentBallisticRoF);
         stats.getEnergyRoFMult().modifyMult(id, currentEnergyRoF);
         stats.getBeamWeaponDamageMult().modifyMult(id, (float)Math.sqrt(currentEnergyRoF));
+        stats.getShieldDamageTakenMult().modifyMult(id, 1f / MathUtils.getRandomNumberInRange(MIN_SHIELD_RESIST_MULT, MAX_SHIELD_RESIST_MULT));
 	}
 	
 	public void unapply(MutableShipStatsAPI stats, String id) {
@@ -118,9 +127,15 @@ public class VassIsochronalMultilinkerStats extends BaseShipSystemScript {
             return;
         }
 
+        //Resets stats
         stats.getBallisticRoFMult().unmodify(id);
         stats.getEnergyRoFMult().unmodify(id);
         stats.getBeamWeaponDamageMult().unmodify(id);
+        stats.getShieldDamageTakenMult().unmodify(id);
+
+        //Resets shield color
+        ship.getShield().setRingColor(ship.getHullSpec().getShieldSpec().getRingColor());
+        ship.getShield().setInnerColor(ship.getHullSpec().getShieldSpec().getInnerColor());
 	}
 	
 	public StatusData getStatusData(int index, State state, float effectLevel) {
