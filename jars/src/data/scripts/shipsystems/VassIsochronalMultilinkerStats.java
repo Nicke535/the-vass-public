@@ -73,6 +73,8 @@ public class VassIsochronalMultilinkerStats extends BaseShipSystemScript {
 		}
 
         //Runs the main effect: splitting weapon shots to pieces
+        List<DamagingProjectileAPI> projList = CombatUtils.getProjectilesWithinRange(ship.getLocation(), ship.getCollisionRadius()*2f);
+		projList.addAll(CombatUtils.getMissilesWithinRange(ship.getLocation(), ship.getCollisionRadius()*2f));
 		for (DamagingProjectileAPI proj : CombatUtils.getProjectilesWithinRange(ship.getLocation(), ship.getCollisionRadius()*2f)) {
 			//Don't trigger on projectile's that aren't our own
 			if (proj.getSource() != ship) {
@@ -98,7 +100,8 @@ public class VassIsochronalMultilinkerStats extends BaseShipSystemScript {
                     if (Math.random() < PROJECTILE_SPAWN_CHANCE*effectLevel) {
                         //Spawns the projectile, with some offsets for angle and position
                         DamagingProjectileAPI newProj = (DamagingProjectileAPI)Global.getCombatEngine().spawnProjectile(ship, proj.getWeapon(),
-                                proj.getWeapon().getSpec().getWeaponId(),MathUtils.getPoint(new Vector2f(proj.getLocation()), PROJECTILE_OFFSET_DISTANCE, MathUtils.getRandomNumberInRange(0f, 360f)),
+                                proj.getWeapon().getSpec().getWeaponId(), proj.getProjectileSpecId(),MathUtils.getPoint(new Vector2f(proj.getLocation()),
+                                PROJECTILE_OFFSET_DISTANCE, MathUtils.getRandomNumberInRange(0f, 360f)),
                                 proj.getFacing() + MathUtils.getRandomNumberInRange(-PROJECTILE_OFFSET_ANGLE, PROJECTILE_OFFSET_ANGLE), ship.getVelocity());
 
                         //Assigns the same target to the AI if possible (we can only do this for vanilla guided missiles, but hey)
