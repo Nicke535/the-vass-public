@@ -1,10 +1,11 @@
 //By Nicke535
-//Causes projectile weapons to fire duplicates of their shots at random, and adds strange multi-timeline effects on top to give visual flair
+//Adds random amounts of firerate bonus over time
 package data.scripts.shipsystems;
 
 import com.fs.starfarer.api.Global;
 import com.fs.starfarer.api.combat.*;
 import com.fs.starfarer.api.impl.combat.BaseShipSystemScript;
+import com.fs.starfarer.api.util.IntervalUtil;
 import data.scripts.utils.VassUtils;
 import org.lazywizard.lazylib.MathUtils;
 import org.lazywizard.lazylib.combat.CombatUtils;
@@ -20,21 +21,27 @@ public class VassIsochronalMultilinkerStats extends BaseShipSystemScript {
     public static final float JITTER_OPACITY = 0.07f;
     public static final float JITTER_UNDER_OPACITY = 0.3f;
 
-    //How far away from the original will any given projectile be spawned?
-	private static final float PROJECTILE_OFFSET_DISTANCE = 8f;
+    //The highest firerate mult the system can give (converts to beam DPS on beams at 50% efficiency)
+    private static final float MAX_ROF_MULT = 4f;
 
-	//How inaccurate are the new projectiles?
-	private static final float PROJECTILE_OFFSET_ANGLE = 3f;
+    //The lowest firerate mult the system can give (converts to beam DPS on beams at 50% efficiency)
+    private static final float MIN_ROF_MULT = 0.35f;
 
-	//How big of a chance is there for each potential extra shot to be spawned?
-    private static final float PROJECTILE_SPAWN_CHANCE = 0.7f;
+    //How fast the firerate mults change for the ship
+    private static final float MAX_ROF_CHANGE_PER_SECOND = 3f;
 
-    //How many extra projectiles can be spawned, at most?
-    private static final int PROJECTILE_MAX_SPAWNS = 2;
+    //The shortest/longest time between "target" RoF changes
+    private static final float MAX_ROF_TARGET_CHANGE_DELAY = 0.55f;
+    private static final float MIN_ROF_TARGET_CHANGE_DELAY = 0.25f;
 
-    //Stores projectile's we're not allowed to touch again
-	private List<DamagingProjectileAPI> registeredProjectiles = new ArrayList<>();
-	
+
+    //Internal variables
+    float currentBallisticRoF = 1f;
+    float currentTargetBallisticRoF = 1f;
+    float currentEnergyRoF = 1f;
+    float currentTargetEnergyRoF = 1f;
+    IntervalUtil tracker = new IntervalUtil(MIN_ROF_TARGET_CHANGE_DELAY, MAX_ROF_TARGET_CHANGE_DELAY);
+
 	public void apply(MutableShipStatsAPI stats, String id, State state, float effectLevel) {
         ShipAPI ship = null;
         if (stats.getEntity() instanceof ShipAPI) {
@@ -72,53 +79,34 @@ public class VassIsochronalMultilinkerStats extends BaseShipSystemScript {
 			ship.setJitterUnder(id + i, jitterUnderColor, jitterLevel, 25, 1f, 7f + jitterRangeBonus);
 		}
 
-        //Runs the main effect: splitting weapon shots to pieces
-        List<DamagingProjectileAPI> projList = CombatUtils.getProjectilesWithinRange(ship.getLocation(), ship.getCollisionRadius()*2f);
-		projList.addAll(CombatUtils.getMissilesWithinRange(ship.getLocation(), ship.getCollisionRadius()*2f));
-		for (DamagingProjectileAPI proj : CombatUtils.getProjectilesWithinRange(ship.getLocation(), ship.getCollisionRadius()*2f)) {
-			//Don't trigger on projectile's that aren't our own
-			if (proj.getSource() != ship) {
-				continue;
-			}
+        //Count up our tracker, and change our "target" RoF bonus if it has passed
+        float amount = Global.getCombatEngine().getElapsedInLastFrame() * stats.getTimeMult().getModifiedValue();
+        tracker.advance(amount);
+        if (tracker.intervalElapsed()) {
+            currentTargetBallisticRoF = MathUtils.getRandomNumberInRange(MIN_ROF_MULT, MAX_ROF_MULT);
+            currentTargetEnergyRoF = MathUtils.getRandomNumberInRange(MIN_ROF_MULT, MAX_ROF_MULT);
+        }
 
-			//Only trigger on NEW projectiles
-			if (proj.getElapsed() > 0.1f) {
-				continue;
-			}
+        //Swap our actual RoF mult over closer to our target RoF
+        if (currentBallisticRoF < currentTargetBallisticRoF) {
+            currentBallisticRoF += MAX_ROF_CHANGE_PER_SECOND * amount;
+        } else {
+            currentBallisticRoF -= MAX_ROF_CHANGE_PER_SECOND * amount;
+        }
+        if (currentEnergyRoF < currentTargetEnergyRoF) {
+            currentEnergyRoF += MAX_ROF_CHANGE_PER_SECOND * amount;
+        } else {
+            currentEnergyRoF -= MAX_ROF_CHANGE_PER_SECOND * amount;
+        }
 
-			//Don't trigger on projectile's we've spawned or already split from
-			if (registeredProjectiles.contains(proj)) {
-				continue;
-			}
+        //Ensure it's in the right interval
+        currentBallisticRoF = Math.min(MAX_ROF_MULT, Math.max(MIN_ROF_MULT, currentBallisticRoF));
+        currentEnergyRoF = Math.min(MAX_ROF_MULT, Math.max(MIN_ROF_MULT, currentEnergyRoF));
 
-			//Otherwise, we prepare to spawn projectiles and register both the new and old one so nothing triggers twice on the same projectile
-			if (proj.getWeapon() != null && proj.getWeapon().getSpec().getWeaponId() != null) {
-                registeredProjectiles.add(proj);
-
-			    //Run and check once for each potential extra projectile spawn
-                for (int i = 0; i < PROJECTILE_MAX_SPAWNS; i++) {
-                    if (Math.random() < PROJECTILE_SPAWN_CHANCE*effectLevel) {
-                        //Spawns the projectile, with some offsets for angle and position
-                        DamagingProjectileAPI newProj = (DamagingProjectileAPI)Global.getCombatEngine().spawnProjectile(ship, proj.getWeapon(),
-                                proj.getWeapon().getSpec().getWeaponId(), proj.getProjectileSpecId(),MathUtils.getPoint(new Vector2f(proj.getLocation()),
-                                PROJECTILE_OFFSET_DISTANCE, MathUtils.getRandomNumberInRange(0f, 360f)),
-                                proj.getFacing() + MathUtils.getRandomNumberInRange(-PROJECTILE_OFFSET_ANGLE, PROJECTILE_OFFSET_ANGLE), ship.getVelocity());
-
-                        //Assigns the same target to the AI if possible (we can only do this for vanilla guided missiles, but hey)
-                        if (proj instanceof MissileAPI) {
-                            if (((MissileAPI)proj).getMissileAI() != null) {
-                                if (((MissileAPI)proj).getMissileAI() instanceof GuidedMissileAI) {
-                                    ((GuidedMissileAI) ((MissileAPI) newProj).getMissileAI()).setTarget(((GuidedMissileAI) ((MissileAPI) proj).getMissileAI()).getTarget());
-                                }
-                            }
-                        }
-
-                        //Registers the projectiles so we don't trigger twice on them
-                        registeredProjectiles.add(newProj);
-                    }
-                }
-			}
-		}
+        //Finally, apply our new stat boosts
+        stats.getBallisticRoFMult().modifyMult(id, currentBallisticRoF);
+        stats.getEnergyRoFMult().modifyMult(id, currentEnergyRoF);
+        stats.getBeamWeaponDamageMult().modifyMult(id, (float)Math.sqrt(currentEnergyRoF));
 	}
 	
 	public void unapply(MutableShipStatsAPI stats, String id) {
@@ -129,6 +117,10 @@ public class VassIsochronalMultilinkerStats extends BaseShipSystemScript {
         } else {
             return;
         }
+
+        stats.getBallisticRoFMult().unmodify(id);
+        stats.getEnergyRoFMult().unmodify(id);
+        stats.getBeamWeaponDamageMult().unmodify(id);
 	}
 	
 	public StatusData getStatusData(int index, State state, float effectLevel) {
