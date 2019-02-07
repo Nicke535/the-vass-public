@@ -279,7 +279,7 @@
       ],
       "mount": "TURRET",
       "size": "SMALL",
-      "type": "ENERGY"
+      "type": "HYBRID"
     },
     {
       "angle": 0,
@@ -291,7 +291,7 @@
       ],
       "mount": "HARDPOINT",
       "size": "SMALL",
-      "type": "HYBRID"
+      "type": "UNIVERSAL"
     }
   ],
   "width": 70
