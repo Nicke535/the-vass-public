@@ -60,6 +60,9 @@
   "builtInWeapons": {
     "WS0001": "vass_deco_makhaira_lights"
   },
+  "builtInMods": [
+    "vass_periodic_plating"
+  ],
   "builtInWings": [],
   "center": [
     35,

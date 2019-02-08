@@ -1,0 +1,387 @@
+{
+  "bounds": [
+    -71.5,
+    7,
+    -93.5,
+    9,
+    -60,
+    13,
+    -54.5,
+    21,
+    -61.5,
+    23,
+    -36,
+    27,
+    -41,
+    32.5,
+    -35.5,
+    39,
+    -43,
+    40,
+    -27,
+    43,
+    6,
+    34.5,
+    44,
+    30,
+    48.5,
+    16,
+    93,
+    14,
+    88,
+    9,
+    88,
+    -9,
+    93,
+    -14,
+    48.5,
+    -16,
+    44,
+    -30,
+    6,
+    -34.5,
+    -27,
+    -43,
+    -43,
+    -40,
+    -35.5,
+    -39,
+    -41,
+    -32.5,
+    -36,
+    -27,
+    -61.5,
+    -23,
+    -54.5,
+    -21,
+    -60,
+    -13,
+    -93.5,
+    -9,
+    -71.5,
+    -7
+  ],
+  "builtInMods": [
+    "vass_periodic_plating"
+  ],
+  "builtInWeapons": {
+    "WS0001": "vass_deco_schiavona_lights",
+    "WS0005": "pdlaser",
+    "WS0006": "pdlaser"
+  },
+  "builtInWings": [],
+  "center": [
+    44,
+    94
+  ],
+  "collisionRadius": 115.5,
+  "engineSlots": [
+    {
+      "angle": 180,
+      "contrailSize": 3,
+      "length": 60,
+      "location": [
+        -41,
+        -32.5
+      ],
+      "style": "HIGH_TECH",
+      "width": 3
+    },
+    {
+      "angle": -180,
+      "contrailSize": 6,
+      "length": 25,
+      "location": [
+        -42,
+        32.5
+      ],
+      "style": "LOW_TECH",
+      "width": 6
+    },
+    {
+      "angle": -180,
+      "contrailSize": 3,
+      "length": 60,
+      "location": [
+        -59,
+        16.5
+      ],
+      "style": "HIGH_TECH",
+      "width": 3
+    },
+    {
+      "angle": 180,
+      "contrailSize": 3,
+      "length": 60,
+      "location": [
+        -59,
+        -16.5
+      ],
+      "style": "HIGH_TECH",
+      "width": 3
+    },
+    {
+      "angle": 180,
+      "contrailSize": 6,
+      "length": 25,
+      "location": [
+        -42,
+        -32.5
+      ],
+      "style": "LOW_TECH",
+      "width": 6
+    },
+    {
+      "angle": -180,
+      "contrailSize": 3,
+      "length": 60,
+      "location": [
+        -41,
+        32.5
+      ],
+      "style": "HIGH_TECH",
+      "width": 3
+    },
+    {
+      "angle": 180,
+      "contrailSize": 6,
+      "length": 25,
+      "location": [
+        -60,
+        -16.5
+      ],
+      "style": "LOW_TECH",
+      "width": 6
+    },
+    {
+      "angle": -180,
+      "contrailSize": 6,
+      "length": 25,
+      "location": [
+        -60,
+        16.5
+      ],
+      "style": "LOW_TECH",
+      "width": 6
+    },
+    {
+      "angle": 177,
+      "contrailSize": 3,
+      "length": 10,
+      "location": [
+        -59,
+        -18
+      ],
+      "style": "LOW_TECH",
+      "width": 3
+    },
+    {
+      "angle": -177,
+      "contrailSize": 3,
+      "length": 10,
+      "location": [
+        -59,
+        18
+      ],
+      "style": "LOW_TECH",
+      "width": 3
+    },
+    {
+      "angle": -177,
+      "contrailSize": 3,
+      "length": 10,
+      "location": [
+        -59,
+        -15
+      ],
+      "style": "LOW_TECH",
+      "width": 3
+    },
+    {
+      "angle": 177,
+      "contrailSize": 3,
+      "length": 10,
+      "location": [
+        -59,
+        15
+      ],
+      "style": "LOW_TECH",
+      "width": 3
+    },
+    {
+      "angle": -177,
+      "contrailSize": 3,
+      "length": 10,
+      "location": [
+        -41,
+        -31
+      ],
+      "style": "LOW_TECH",
+      "width": 3
+    },
+    {
+      "angle": 177,
+      "contrailSize": 3,
+      "length": 10,
+      "location": [
+        -41,
+        31
+      ],
+      "style": "LOW_TECH",
+      "width": 3
+    },
+    {
+      "angle": 177,
+      "contrailSize": 3,
+      "length": 10,
+      "location": [
+        -41,
+        -34
+      ],
+      "style": "LOW_TECH",
+      "width": 3
+    },
+    {
+      "angle": -177,
+      "contrailSize": 3,
+      "length": 10,
+      "location": [
+        -41,
+        34
+      ],
+      "style": "LOW_TECH",
+      "width": 3
+    },
+    {
+      "angle": -180,
+      "contrailSize": 4,
+      "length": 70,
+      "location": [
+        -65,
+        -0
+      ],
+      "style": "HIGH_TECH",
+      "width": 4
+    },
+    {
+      "angle": 180,
+      "contrailSize": 8,
+      "length": 30,
+      "location": [
+        -66,
+        -0
+      ],
+      "style": "LOW_TECH",
+      "width": 8
+    },
+    {
+      "angle": -177,
+      "contrailSize": 3,
+      "length": 12,
+      "location": [
+        -65,
+        2
+      ],
+      "style": "LOW_TECH",
+      "width": 3
+    },
+    {
+      "angle": 177,
+      "contrailSize": 3,
+      "length": 12,
+      "location": [
+        -65,
+        -2
+      ],
+      "style": "LOW_TECH",
+      "width": 3
+    }
+  ],
+  "height": 188,
+  "hullId": "vass_schiavona",
+  "hullName": "Schiavona",
+  "hullSize": "DESTROYER",
+  "shieldCenter": [
+    7,
+    -0
+  ],
+  "shieldRadius": 107.5,
+  "spriteName": "graphics/vass/ships/schiavona_v1.png",
+  "style": "MIDLINE",
+  "viewOffset": 0,
+  "weaponSlots": [
+    {
+      "angle": 0,
+      "arc": 0,
+      "id": "WS0001",
+      "locations": [
+        0,
+        -0
+      ],
+      "mount": "TURRET",
+      "size": "SMALL",
+      "type": "DECORATIVE"
+    },
+    {
+      "angle": 0,
+      "arc": 360,
+      "id": "WS0002",
+      "locations": [
+        -8,
+        -0
+      ],
+      "mount": "TURRET",
+      "size": "MEDIUM",
+      "type": "UNIVERSAL"
+    },
+    {
+      "angle": 180,
+      "arc": 290,
+      "id": "WS0003",
+      "locations": [
+        -47,
+        -0
+      ],
+      "mount": "TURRET",
+      "size": "SMALL",
+      "type": "HYBRID"
+    },
+    {
+      "angle": 0,
+      "arc": 5,
+      "id": "WS0004",
+      "locations": [
+        82,
+        -0
+      ],
+      "mount": "HARDPOINT",
+      "size": "MEDIUM",
+      "type": "HYBRID"
+    },
+    {
+      "angle": 0,
+      "arc": 0,
+      "id": "WS0005",
+      "locations": [
+        48,
+        -21
+      ],
+      "mount": "HARDPOINT",
+      "size": "SMALL",
+      "type": "BUILT_IN"
+    },
+    {
+      "angle": -0,
+      "arc": 0,
+      "id": "WS0006",
+      "locations": [
+        48,
+        21
+      ],
+      "mount": "HARDPOINT",
+      "size": "SMALL",
+      "type": "BUILT_IN"
+    }
+  ],
+  "width": 88
+}
