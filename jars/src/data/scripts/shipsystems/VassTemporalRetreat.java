@@ -2,13 +2,11 @@ package data.scripts.shipsystems;
 
 import com.fs.starfarer.api.Global;
 import com.fs.starfarer.api.combat.*;
-import com.fs.starfarer.api.graphics.SpriteAPI;
 import com.fs.starfarer.api.impl.combat.BaseShipSystemScript;
 import data.scripts.util.MagicRender;
 import data.scripts.utils.VassUtils;
 import org.lwjgl.util.vector.Vector2f;
 
-import java.awt.*;
 import java.util.*;
 
 public class VassTemporalRetreat extends BaseShipSystemScript {
@@ -18,7 +16,7 @@ public class VassTemporalRetreat extends BaseShipSystemScript {
 
     //Internal variables
     private boolean hasTriggered = false;
-    private Queue<TimePointData> timePointQueue = new PriorityQueue<>();
+    private Queue<TimePointData> timePointQueue = new LinkedList<>();
     private float timer = 0f;
 
     public void apply(MutableShipStatsAPI stats, String id, State state, float effectLevel) {
