@@ -2,7 +2,7 @@
 	"id":"vass_temporal_recall",
 	"type":"STAT_MOD",
 	"aiType":"CUSTOM",
-	"aiScript":"data.shipsystems.ai.vass_temporal_recallAI",
+	"aiScript":"data.scripts.ai.VassTemporalRecallAI",
 	
 	"statsScript":"data.scripts.shipsystems.VassTemporalRecall",
 	

@@ -1,0 +1,12 @@
+{
+	"id":"vass_temporal_retreat",
+	"type":"STAT_MOD",
+	"aiType":"CUSTOM",
+	"aiScript":"data.scripts.ai.VassTemporalRetreatAI",
+	
+	"statsScript":"data.scripts.shipsystems.VassTemporalRetreat",
+	"runScriptWhileIdle":true,  # this means unapply() never gets called
+	
+	"useSound":"system_ammo_feeder",
+	"outOfUsesSound":"gun_out_of_ammo",
+}

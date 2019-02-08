@@ -1,6 +1,6 @@
 ///You can check if a ship is a fighter with ship.isFighter(). If you want to do something to a whole wing, you'd need to use ship.getWingMembers() and apply it to each of them
 //Credit goes to Psiyon for his firecontrol AI script.
-package data.shipsystems.ai;
+package data.scripts.ai;
 
 import com.fs.starfarer.api.Global;
 import com.fs.starfarer.api.combat.*;
@@ -13,7 +13,7 @@ import org.lazywizard.lazylib.MathUtils;
 import org.lwjgl.util.vector.Vector2f;
 import com.fs.starfarer.api.util.IntervalUtil;
 
-public class vass_temporal_recallAI implements ShipSystemAIScript {
+public class VassTemporalRecallAI implements ShipSystemAIScript {
 
     private ShipSystemAPI system;
     private ShipAPI ship;

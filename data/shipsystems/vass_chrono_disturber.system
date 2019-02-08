@@ -2,7 +2,7 @@
 	"id":"vass_chrono_disturber",
 	"type":"STAT_MOD",
 	"aiType":"CUSTOM",
-	"aiScript":"data.shipsystems.ai.vass_chrono_disturberAI",
+	"aiScript":"data.scripts.ai.VassChronoDisturberAI",
 	
 	"statsScript":"data.scripts.shipsystems.VassChronoDisturber",
 	
