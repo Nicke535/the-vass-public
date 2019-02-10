@@ -3,9 +3,6 @@ package data.scripts;
 import com.fs.starfarer.api.BaseModPlugin;
 import com.fs.starfarer.api.Global;
 import com.fs.starfarer.api.campaign.SectorAPI;
-import org.dark.shaders.light.LightData;
-import org.dark.shaders.util.ShaderLib;
-import org.dark.shaders.util.TextureData;
 
 
 public class VassModPlugin extends BaseModPlugin {

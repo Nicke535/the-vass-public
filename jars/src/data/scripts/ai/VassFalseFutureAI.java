@@ -44,7 +44,7 @@ public class VassFalseFutureAI implements ShipSystemAIScript {
             //Avoids any particularly deadly missiles
             if (missileDangerDir != null) {
                 for (MissileAPI missileToTest : CombatUtils.getMissilesWithinRange(ship.getLocation(), ship.getCollisionRadius())) {
-                    //The threshhold for "particularly dangerous" is 1500, equivalent to a hammer torpedo, or greater than the ship's remaining hull
+                    //The threshhold for "particularly dangerous" is 1500, equivalent to a hammer torpedo, or greater than the ship's remaining hitPoints
                     if (missileToTest.getDamageAmount() > Math.min(1500f, ship.getMaxHitpoints() * ship.getHullLevel())) {
                         deactivateSystem();
                     }
@@ -63,7 +63,7 @@ public class VassFalseFutureAI implements ShipSystemAIScript {
         } else if (slowTracker.intervalElapsed()) {
             //Only use in "combat"
             if (CombatUtils.getShipsWithinRange(ship.getLocation(), 2000f).size() > 0) {
-                //Some more data, to not waste it all the time: only use in a "safe" situation (below 10% flux) or when in acute danger (below 30% hull level)
+                //Some more data, to not waste it all the time: only use in a "safe" situation (below 10% flux) or when in acute danger (below 30% hitPoints level)
                 if (ship.getFluxTracker().getFluxLevel() < 0.1f || ship.getHullLevel() < 0.3f) {
                     activateSystem();
                     hullAtActivation = ship.getHullLevel();

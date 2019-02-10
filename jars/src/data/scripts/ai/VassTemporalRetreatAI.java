@@ -5,22 +5,23 @@ import com.fs.starfarer.api.Global;
 import com.fs.starfarer.api.combat.*;
 import com.fs.starfarer.api.util.IntervalUtil;
 import data.scripts.shipsystems.VassTemporalRetreat;
-import org.lazywizard.lazylib.MathUtils;
 import org.lazywizard.lazylib.combat.CombatUtils;
 import org.lwjgl.util.vector.Vector2f;
 
-import java.sql.Time;
 import java.util.List;
 
 public class VassTemporalRetreatAI implements ShipSystemAIScript {
     //Handles the "weight" of each stat, IE how much each stat weighs when considering a jump-location
-    private static final float HULL_WEIGHT = 3f;
-    private static final float ARMOR_WEIGHT = 1.5f;
-    private static final float HARDFLUX_WEIGHT = 1f;
-    private static final float SOFTFLUX_WEIGHT = 0.2f;
+    //Note that "lowhull" weights apply once hull reached 50% of max
+    private static final float HITPOINT_WEIGHT = 3f;
+    private static final float HITPOINT_WEIGHT_LOWHULL = 6f;
+    private static final float ARMOR_WEIGHT = 1.2f;
+    private static final float ARMOR_WEIGHT_LOWHULL = 2f;
+    private static final float HARDFLUX_WEIGHT = 0.4f;
+    private static final float SOFTFLUX_WEIGHT = 0.15f;
 
     //How high weight we need, in total, to jump back in time
-    private static final float WEIGHT_THRESHHOLD = 0.7f;
+    private static final float WEIGHT_THRESHHOLD = 1200f;
 
     //Internal varibles
     private ShipSystemAPI system;
@@ -62,14 +63,18 @@ public class VassTemporalRetreatAI implements ShipSystemAIScript {
             for (DamagingProjectileAPI proj : projList) {
                 damageAtDest += proj.getDamageAmount();
             }
-            if (damageAtDest > timePointData.hull*2f) { return; } //Use 2x hull as approximation, since armor and shields are a thing but take too much power to calculate
+            if (damageAtDest > timePointData.hitPoints *2f) { return; } //Use 2x hitPoints as approximation, since armor and shields are a thing but take too much power to calculate
 
-            //Finally, check if we actually were better last frame (IE did we have significantly higher hull, armor or flux)
-            //For this we use an arbitrary "weight"; it increases the more hull/armor we had at the destination, and decreases the more flux we had
+            //Finally, check if we actually were better last frame (IE did we have significantly higher hitPoints, armor or flux)
+            //For this we use an arbitrary "weight"; it increases the more hitPoints/armor we had at the destination, and decreases the more flux we had
             float jumpWeight = 0f;
-            jumpWeight += (timePointData.hull - ship.getHullLevel()) * HULL_WEIGHT;
-            jumpWeight += (timePointData.hardFlux - ship.getFluxTracker().getHardFlux()) * HARDFLUX_WEIGHT;
-            jumpWeight += (timePointData.softFlux - (ship.getFluxTracker().getCurrFlux() - ship.getFluxTracker().getHardFlux())) * SOFTFLUX_WEIGHT;
+            float hitPointWeight = HITPOINT_WEIGHT;
+            if (ship.getHullLevel() < 0.5f) {
+                hitPointWeight = HITPOINT_WEIGHT_LOWHULL;
+            }
+            jumpWeight += (timePointData.hitPoints - ship.getHitpoints()) * hitPointWeight;
+            jumpWeight += (ship.getFluxTracker().getHardFlux() - timePointData.hardFlux) * HARDFLUX_WEIGHT;
+            jumpWeight += ((ship.getFluxTracker().getCurrFlux() - ship.getFluxTracker().getHardFlux()) - timePointData.softFlux) * SOFTFLUX_WEIGHT;
 
             //Armor is trickier, but uses the same overall method
             float armorCalcWeight = 0f;
@@ -81,7 +86,11 @@ public class VassTemporalRetreatAI implements ShipSystemAIScript {
                 }
             }
             armorCalcWeight /= (float)numberOfCells;
-            jumpWeight += armorCalcWeight * ARMOR_WEIGHT;
+            float armorWeight = ARMOR_WEIGHT;
+            if (ship.getHullLevel() < 0.5f) {
+                armorWeight = ARMOR_WEIGHT_LOWHULL;
+            }
+            jumpWeight += armorCalcWeight * armorWeight;
 
             //Finally, if our weight is good enough, jump
             if (jumpWeight > WEIGHT_THRESHHOLD) {
