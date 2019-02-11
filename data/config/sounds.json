@@ -15,72 +15,15 @@
 	"vass_temporal_recall":[
 		{"file":"sounds/vass/systems/temporal_recall.ogg","pitch":1.0,"volume":0.15},
 	],
-
-	"vass_isochronal_split_hasta":[
-		{"file":"sounds/vass/weapons/ahlspiess_fire.ogg","pitch":0.7,"volume":0.12},
-	],
-	"vass_isochronal_split_fauchard":[
-		{"file":"sounds/vass/weapons/fauchard_split_fire.ogg","pitch":0.85,"volume":0.4},
-	],
-
-	"vass_jaculum_reload":[
-		{"file":"sounds/vass/weapons/jaculum_reload.ogg","pitch":0.8,"volume":0.8},
-	],
-
-	"vass_hasta_fire":[
-		{"file":"sounds/vass/weapons/guisarme_fire.ogg","pitch":1.26,"volume":0.08},
-		{"file":"sounds/vass/weapons/guisarme_fire.ogg","pitch":1.23,"volume":0.08},
-		{"file":"sounds/vass/weapons/guisarme_fire.ogg","pitch":1.2,"volume":0.08},
-		{"file":"sounds/vass/weapons/guisarme_fire.ogg","pitch":1.17,"volume":0.08},
-		{"file":"sounds/vass/weapons/guisarme_fire.ogg","pitch":1.14,"volume":0.08},
-	],
-
-	"vass_ahlspiess_fire":[
-		{"file":"sounds/vass/weapons/ahlspiess_fire.ogg","pitch":1.24,"volume":0.09},
-		{"file":"sounds/vass/weapons/ahlspiess_fire.ogg","pitch":1.26,"volume":0.09},
-		{"file":"sounds/vass/weapons/ahlspiess_fire.ogg","pitch":1.28,"volume":0.09},
-		{"file":"sounds/vass/weapons/ahlspiess_fire.ogg","pitch":1.3,"volume":0.09},
-		{"file":"sounds/vass/weapons/ahlspiess_fire.ogg","pitch":1.32,"volume":0.09},
-		{"file":"sounds/vass/weapons/ahlspiess_fire.ogg","pitch":1.34,"volume":0.09},
-		{"file":"sounds/vass/weapons/ahlspiess_fire.ogg","pitch":1.36,"volume":0.09},
-	],
-
-	"vass_guisarme_fire":[
-		{"file":"sounds/vass/weapons/guisarme_fire.ogg","pitch":0.91,"volume":0.20},
-		{"file":"sounds/vass/weapons/guisarme_fire.ogg","pitch":0.9,"volume":0.20},
-		{"file":"sounds/vass/weapons/guisarme_fire.ogg","pitch":0.89,"volume":0.20},
-	],
-
-	"vass_becdecorbin_fire":[
-		{"file":"sounds/vass/weapons/becdecorbin_fire_heavy.ogg","pitch":0.98,"volume":0.40},
-		{"file":"sounds/vass/weapons/becdecorbin_fire_heavy.ogg","pitch":1,"volume":0.40},
-		{"file":"sounds/vass/weapons/becdecorbin_fire_heavy.ogg","pitch":1.02,"volume":0.40},
-	],
-
-	"vass_fauchard_fire":[
-		{"file":"sounds/vass/weapons/fauchard_fire.ogg","pitch":0.98,"volume":0.25},
-		{"file":"sounds/vass/weapons/fauchard_fire.ogg","pitch":0.99,"volume":0.25},
-		{"file":"sounds/vass/weapons/fauchard_fire.ogg","pitch":1.0,"volume":0.25},
-		{"file":"sounds/vass/weapons/fauchard_fire.ogg","pitch":1.01,"volume":0.25},
-		{"file":"sounds/vass/weapons/fauchard_fire.ogg","pitch":1.02,"volume":0.25},
-	],
-
-	"vass_fauchard_micro_fire":[
-		{"file":"sounds/vass/weapons/fauchard_fire.ogg","pitch":1.37,"volume":0.12},
-		{"file":"sounds/vass/weapons/fauchard_fire.ogg","pitch":1.38,"volume":0.12},
-		{"file":"sounds/vass/weapons/fauchard_fire.ogg","pitch":1.39,"volume":0.12},
-		{"file":"sounds/vass/weapons/fauchard_fire.ogg","pitch":1.4,"volume":0.12},
-		{"file":"sounds/vass/weapons/fauchard_fire.ogg","pitch":1.41,"volume":0.12},
-		{"file":"sounds/vass/weapons/fauchard_fire.ogg","pitch":1.42,"volume":0.12},
-		{"file":"sounds/vass/weapons/fauchard_fire.ogg","pitch":1.43,"volume":0.12},
-	],
-
+	
 	"vass_trishula_fire":[
-		{"file":"sounds/vass/weapons/trishula_fire.ogg","pitch":0.98,"volume":0.36},
-		{"file":"sounds/vass/weapons/trishula_fire.ogg","pitch":1.0,"volume":0.36},
-		{"file":"sounds/vass/weapons/trishula_fire.ogg","pitch":1.02,"volume":0.36},
+		{"file":"sounds/vass/weapons/corseque_fire.ogg","pitch":1.36,"volume":0.15},
+		{"file":"sounds/vass/weapons/corseque_fire.ogg","pitch":1.38,"volume":0.15},
+		{"file":"sounds/vass/weapons/corseque_fire.ogg","pitch":1.4,"volume":0.15},
+		{"file":"sounds/vass/weapons/corseque_fire.ogg","pitch":1.42,"volume":0.15},
+		{"file":"sounds/vass/weapons/corseque_fire.ogg","pitch":1.44,"volume":0.15},
 	],
-
+	
 	"vass_corseque_fire":[
 		{"file":"sounds/vass/weapons/corseque_fire.ogg","pitch":0.88,"volume":0.23},
 		{"file":"sounds/vass/weapons/corseque_fire.ogg","pitch":0.9,"volume":0.23},

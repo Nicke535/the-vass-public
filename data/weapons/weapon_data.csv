@@ -2,6 +2,7 @@ name,id,tier,rarity,base value,range,damage/second,damage/shot,emp,impact,turn r
 ,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
 ,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
 #built_in,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
+Trishula Emitter,vass_trishula_emitter,5,,0,800,,250,125,1,0,0,,,,FRAGMENTATION,170,,0,3.5,4,0.15,0,0,0,0,,750,750,1.3,50,"SYSTEM, SHOW_IN_CODEX",,,,,Assault,Fast,None,,,,,,,,
 ,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
 #deco,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
 Makhaira Lights,vass_deco_makhaira_lights,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,SYSTEM,,,,,,,,,,,,,,,
