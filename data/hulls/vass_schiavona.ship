@@ -306,7 +306,7 @@
     -0
   ],
   "shieldRadius": 107.5,
-  "spriteName": "graphics/vass/ships/schiavona_v1.png",
+  "spriteName": "graphics/vass/ships/schiavona.png",
   "style": "VASS_HULL",
   "viewOffset": 0,
   "weaponSlots": [

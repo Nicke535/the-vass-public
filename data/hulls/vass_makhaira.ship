@@ -256,7 +256,7 @@
     -0
   ],
   "shieldRadius": 75,
-  "spriteName": "graphics/vass/ships/makhaira_v1.png",
+  "spriteName": "graphics/vass/ships/makhaira.png",
   "style": "VASS_HULL",
   "viewOffset": 0,
   "weaponSlots": [
