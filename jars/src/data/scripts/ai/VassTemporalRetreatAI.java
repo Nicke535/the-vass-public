@@ -1,4 +1,5 @@
-//Man, is this not a good way to handle it. An overhaul is in order, but hey.
+//By Nicke535
+//AI for the Temporal Retreat system; attempts to figure out when it's beneficial to reverse time a couple of seconds
 package data.scripts.ai;
 
 import com.fs.starfarer.api.Global;
@@ -63,7 +64,7 @@ public class VassTemporalRetreatAI implements ShipSystemAIScript {
             for (DamagingProjectileAPI proj : projList) {
                 damageAtDest += proj.getDamageAmount();
             }
-            if (damageAtDest > timePointData.hitPoints *2f) { return; } //Use 2x hitPoints as approximation, since armor and shields are a thing but take too much power to calculate
+            if (damageAtDest > timePointData.hitPoints) { return; }
 
             //Finally, check if we actually were better last frame (IE did we have significantly higher hitPoints, armor or flux)
             //For this we use an arbitrary "weight"; it increases the more hitPoints/armor we had at the destination, and decreases the more flux we had
@@ -72,7 +73,7 @@ public class VassTemporalRetreatAI implements ShipSystemAIScript {
             if (ship.getHullLevel() < 0.5f) {
                 hitPointWeight = HITPOINT_WEIGHT_LOWHULL;
             }
-            jumpWeight += (timePointData.hitPoints - ship.getHitpoints()) * hitPointWeight;
+            jumpWeight += (timePointData.hitPoints - ship.getHitpoints() - damageAtDest) * hitPointWeight; //We remember the damage we would take at the destination, even if we won't die from it
             jumpWeight += (ship.getFluxTracker().getHardFlux() - timePointData.hardFlux) * HARDFLUX_WEIGHT;
             jumpWeight += ((ship.getFluxTracker().getCurrFlux() - ship.getFluxTracker().getHardFlux()) - timePointData.softFlux) * SOFTFLUX_WEIGHT;
 

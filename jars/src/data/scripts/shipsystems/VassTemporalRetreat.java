@@ -20,7 +20,6 @@ public class VassTemporalRetreat extends BaseShipSystemScript {
     private static final int MAX_STEPS_BACKWARDS = 50;
 
     //Internal variables
-    private boolean hasTriggered = false;
     private Queue<TimePointData> timePointQueue = new LinkedList<>();
     private float timer = 0f;
     boolean runOnce = false;
@@ -53,7 +52,7 @@ public class VassTemporalRetreat extends BaseShipSystemScript {
                 if (timePointQueue.size() > MAX_STEPS_BACKWARDS) {
                     //When de-queueing a time point, we spawn a short clone of our ship at that location
                     TimePointData oldestTimePoint = timePointQueue.poll();
-                    SpriteAPI spriteToUse = Global.getSettings().getSprite("graphics/vass/ships/makhaira_v1.png");
+                    SpriteAPI spriteToUse = Global.getSettings().getSprite("graphics/vass/ships/makhaira.png");
                     //"Chasing" render
                     MagicRender.battlespace(spriteToUse, oldestTimePoint.position, oldestTimePoint.velocity,
                             new Vector2f(ship.getSpriteAPI().getWidth(), ship.getSpriteAPI().getHeight()), Misc.ZERO,
@@ -101,7 +100,7 @@ public class VassTemporalRetreat extends BaseShipSystemScript {
                 float lifeTimeReducerTracker = (float)MAX_STEPS_BACKWARDS + 5f;
                 while (!timePointQueue.isEmpty()) {
                     TimePointData afterimageData = timePointQueue.poll();
-                    SpriteAPI spriteToUse = Global.getSettings().getSprite("graphics/vass/ships/makhaira_v1.png");
+                    SpriteAPI spriteToUse = Global.getSettings().getSprite("graphics/vass/ships/makhaira.png");
                     MagicRender.battlespace(spriteToUse, afterimageData.position, Misc.ZERO,
                             new Vector2f(ship.getSpriteAPI().getWidth(), ship.getSpriteAPI().getHeight()),Misc.ZERO,
                             afterimageData.angle-90f, 0f, VassUtils.getFamilyColor(VassUtils.VASS_FAMILY.RECIPRO, 0.2f),

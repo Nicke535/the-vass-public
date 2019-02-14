@@ -4,9 +4,9 @@
 			"chrono_disturber_ringpiece":"graphics/vass/fx/chrono_disturber_ringpiece.png",
 			"jaculum_reversal_image":"graphics/vass/fx/jaculum_reversal_image.png",
 		},
-		"vass_icons":{
-			"chrono_disturber":"graphics/vass/icons/hullsys/chrono_disturber.png",
-			"isochronal_multilinker":"graphics/vass/icons/hullsys/isochronal_multilinker.png",
+		"misc":{
+			"vass_chrono_disturber":"graphics/vass/icons/hullsys/chrono_disturber.png",
+			"vass_isochronal_multilinker":"graphics/vass/icons/hullsys/isochronal_multilinker.png",
 		},
 	}
 }
