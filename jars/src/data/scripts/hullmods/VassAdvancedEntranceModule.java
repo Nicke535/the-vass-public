@@ -1,6 +1,8 @@
 package data.scripts.hullmods;
 
 import java.awt.Color;
+import java.util.Map;
+import java.util.WeakHashMap;
 
 import com.fs.starfarer.api.Global;
 import com.fs.starfarer.api.combat.BaseHullMod;
@@ -23,7 +25,8 @@ public class VassAdvancedEntranceModule extends BaseHullMod {
 
     public static final float ELECTRIC_SIZE = 300.0f;
 
-    public boolean hasFiredLightning = false;
+    //We use a map since the hullmod instance is shared
+    public Map<ShipAPI, Boolean> hasFiredLightning = new WeakHashMap<>();
 
     //Activates a pseudo-hacked periodic breaker while the ship is using its travel drive
     @Override
@@ -73,8 +76,8 @@ public class VassAdvancedEntranceModule extends BaseHullMod {
             }
 
             //Fires lightning once upon activation
-            if (effectLevel >= 0.8f && !hasFiredLightning) {
-                hasFiredLightning = true;
+            if (effectLevel >= 0.8f && (hasFiredLightning.get(ship) == null || !hasFiredLightning.get(ship))) {
+                hasFiredLightning.put(ship, true);
 				/*Lightning based code...*/
                 float tempCounter = 0;
                 while (tempCounter <= (6.0f / 80f) * ELECTRIC_SIZE) {
@@ -108,7 +111,7 @@ public class VassAdvancedEntranceModule extends BaseHullMod {
             ship.getMutableStats().getTimeMult().unmodify("VassAdvancedEntranceModuleDebugID");
             Global.getCombatEngine().getTimeMult().unmodify("VassAdvancedEntranceModuleDebugID");
 
-            hasFiredLightning = false;
+            hasFiredLightning.put(ship, false);
         }
     }
 
