@@ -160,13 +160,26 @@ public class VassTemporalRetreat extends BaseShipSystemScript {
 
         private TimePointData (final ShipAPI ship) {
             hitPoints = ship.getHitpoints();
-            armor = ship.getArmorGrid().getGrid();
+            armor = deepCopy(ship.getArmorGrid().getGrid());
             softFlux = (ship.getFluxTracker().getCurrFlux() - ship.getFluxTracker().getHardFlux());
             hardFlux = ship.getFluxTracker().getHardFlux();
             position = new Vector2f(ship.getLocation());
             angle = ship.getFacing();
             velocity = new Vector2f(ship.getVelocity());
             angularVelocity = ship.getAngularVelocity();
+        }
+
+        //By Rorick from StackOverflow; supposedly deep-copies a 2D array
+        public static float[][] deepCopy(float[][] original) {
+            if (original == null) {
+                return null;
+            }
+
+            final float[][] result = new float[original.length][];
+            for (int i = 0; i < original.length; i++) {
+                result[i] = Arrays.copyOf(original[i], original[i].length);
+            }
+            return result;
         }
     }
 }
