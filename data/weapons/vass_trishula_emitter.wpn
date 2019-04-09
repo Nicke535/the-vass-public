@@ -3,6 +3,7 @@
 	"specClass":"projectile",
 	"type":"MISSILE",
 	"size":"SMALL",
+	"everyFrameEffect":"data.scripts.weapons.VassTrishulaScript",	
 	"turretSprite":"graphics/vass/weapons/schiavona_builtin_turret.png",
 	"turretGlowSprite":"graphics/vass/weapons/schiavona_builtin_turret_glow.png",
 	"hardpointSprite":"graphics/vass/weapons/schiavona_builtin_hardpoint.png",

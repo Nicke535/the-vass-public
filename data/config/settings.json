@@ -3,6 +3,7 @@
 		"vass_fx":{
 			"chrono_disturber_ringpiece":"graphics/vass/fx/chrono_disturber_ringpiece.png",
 			"jaculum_reversal_image":"graphics/vass/fx/jaculum_reversal_image.png",
+			"projectile_trail_zappy":"graphics/vass/fx/zappy_trail.png",
 		},
 		"misc":{
 			"vass_chrono_disturber":"graphics/vass/icons/hullsys/chrono_disturber.png",

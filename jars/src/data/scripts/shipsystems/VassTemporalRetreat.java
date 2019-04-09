@@ -5,8 +5,11 @@ import com.fs.starfarer.api.combat.*;
 import com.fs.starfarer.api.graphics.SpriteAPI;
 import com.fs.starfarer.api.impl.combat.BaseShipSystemScript;
 import com.fs.starfarer.api.util.Misc;
+import data.scripts.VassModPlugin;
 import data.scripts.util.MagicRender;
 import data.scripts.utils.VassUtils;
+import org.dark.shaders.distortion.DistortionShader;
+import org.dark.shaders.distortion.RippleDistortion;
 import org.lwjgl.util.vector.Vector2f;
 
 import java.util.*;
@@ -101,10 +104,11 @@ public class VassTemporalRetreat extends BaseShipSystemScript {
                 while (!timePointQueue.isEmpty()) {
                     TimePointData afterimageData = timePointQueue.poll();
                     SpriteAPI spriteToUse = Global.getSettings().getSprite("graphics/vass/ships/makhaira.png");
+                    float lifetimeThisImage = 0.5f * (lifeTimeReducerTracker/(float)MAX_STEPS_BACKWARDS);
                     MagicRender.battlespace(spriteToUse, afterimageData.position, Misc.ZERO,
                             new Vector2f(ship.getSpriteAPI().getWidth(), ship.getSpriteAPI().getHeight()),Misc.ZERO,
                             afterimageData.angle-90f, 0f, VassUtils.getFamilyColor(VassUtils.VASS_FAMILY.RECIPRO, 0.2f),
-                            true,0f, 0f, 0.5f * (lifeTimeReducerTracker/(float)MAX_STEPS_BACKWARDS));
+                            true,0f, 0f, lifetimeThisImage);
                     lifeTimeReducerTracker--;
                 }
 
@@ -169,7 +173,7 @@ public class VassTemporalRetreat extends BaseShipSystemScript {
             angularVelocity = ship.getAngularVelocity();
         }
 
-        //By Rorick from StackOverflow; supposedly deep-copies a 2D array
+        //By Rorick from StackOverflow; deep-copies a 2D array
         public static float[][] deepCopy(float[][] original) {
             if (original == null) {
                 return null;
