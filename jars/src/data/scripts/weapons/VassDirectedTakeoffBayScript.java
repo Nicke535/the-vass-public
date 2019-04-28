@@ -1,9 +1,7 @@
-//By Nicke535, causes newly-launched fighters to follow a straight path out from the fighter bay instead of just going "up"
-//  ...at least, that's the plan
+//By Nicke535, causes newly-launched fighters to follow a straight path out from a hidden weapon instead of just going "up"
 package data.scripts.weapons;
 
 import com.fs.starfarer.api.combat.*;
-import data.scripts.utils.VassUtils;
 import org.lazywizard.lazylib.FastTrig;
 import org.lazywizard.lazylib.MathUtils;
 import org.lazywizard.lazylib.combat.CombatUtils;
@@ -24,6 +22,10 @@ public class VassDirectedTakeoffBayScript implements EveryFrameWeaponEffectPlugi
 
     //Store how long we've been tracking each fighter.
     private Map<ShipAPI, Float> timers = new HashMap<>();
+
+    //How big the "bay area" is, as a circle's radius
+    //  Fighters will appear to randomly come from within this circle
+    private static final float SPAWN_RADIUS = 10f;
 
     //We occasionally clean our timer map
     private static final float CLEAN_WAIT = 10f;
@@ -66,7 +68,7 @@ public class VassDirectedTakeoffBayScript implements EveryFrameWeaponEffectPlugi
             //Only *our* fighters are affected
             if (fighter.getWing() != null && fighter.getWing().getSourceShip() == ship) {
                 //The first time we touch the fighter, we also teleport it to our launch bay
-                Vector2f targetSpawnPoint = MathUtils.getRandomPointInCircle(weapon.getLocation(), 10f);
+                Vector2f targetSpawnPoint = MathUtils.getRandomPointInCircle(weapon.getLocation(), SPAWN_RADIUS);
                 fighter.getLocation().x = targetSpawnPoint.x;
                 fighter.getLocation().y = targetSpawnPoint.y;
                 timers.put(fighter, 0f);
@@ -80,10 +82,10 @@ public class VassDirectedTakeoffBayScript implements EveryFrameWeaponEffectPlugi
             timers.put(fighter, timers.get(fighter)+trueAmount);
 
             if (timers.get(fighter) < MOVE_DURATION) {
-                fighter.setFacing(ship.getFacing());
-                fighter.getVelocity().x = fighter.getMaxSpeed() * (float)FastTrig.cos(Math.toRadians(ship.getFacing()))
+                fighter.setFacing(weapon.getCurrAngle());
+                fighter.getVelocity().x = fighter.getMaxSpeed() * (float)FastTrig.cos(Math.toRadians(weapon.getCurrAngle()))
                         * (1f + MAX_SPEED_BOOST * ((float)Math.pow(1f - (timers.get(fighter) / MOVE_DURATION), 2f)));
-                fighter.getVelocity().y = fighter.getMaxSpeed() * (float)FastTrig.sin(Math.toRadians(ship.getFacing()))
+                fighter.getVelocity().y = fighter.getMaxSpeed() * (float)FastTrig.sin(Math.toRadians(weapon.getCurrAngle()))
                         * (1f + MAX_SPEED_BOOST * ((float)Math.pow(1f - (timers.get(fighter) / MOVE_DURATION), 2f)));
             }
         }

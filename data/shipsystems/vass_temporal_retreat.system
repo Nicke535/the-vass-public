@@ -7,6 +7,6 @@
 	"statsScript":"data.scripts.shipsystems.VassTemporalRetreat",
 	"runScriptWhileIdle":true,  # this means unapply() never gets called
 	
-	"useSound":"system_ammo_feeder",
+	"useSound":"vass_temporal_retreat",
 	"outOfUsesSound":"gun_out_of_ammo",
 }

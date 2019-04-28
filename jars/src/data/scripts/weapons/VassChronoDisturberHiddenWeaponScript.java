@@ -13,7 +13,7 @@ import java.awt.*;
 public class VassChronoDisturberHiddenWeaponScript implements EveryFrameWeaponEffectPlugin {
 
     private float rotation = 0f;
-    private float rotationIncrease = 2f;
+    private static final float TURNRATE = 400f;
     private int numberOfTriangles = 9;
 
     private float lightningChance = 0.97f;
@@ -42,7 +42,7 @@ public class VassChronoDisturberHiddenWeaponScript implements EveryFrameWeaponEf
             if (engine.isPaused()) {
                 return;
             }
-            rotation += rotationIncrease;
+            rotation += TURNRATE*amount;
             rotation = MathUtils.clampAngle(rotation);
 
             if (Math.random() > (Math.pow((1 - lightningChance), amount))) {

@@ -1,5 +1,4 @@
-//By Nicke535, causes newly-launched fighters to follow a straight path out from the fighter bay instead of just going "up"
-//  ...at least, that's the plan
+//By Nicke535, causes fighters to attempt a "runway landing" rather than the more traditional VTOL-style landing
 package data.scripts.weapons;
 
 import com.fs.starfarer.api.combat.CombatEngineAPI;
@@ -7,7 +6,6 @@ import com.fs.starfarer.api.combat.EveryFrameWeaponEffectPlugin;
 import com.fs.starfarer.api.combat.ShipAPI;
 import com.fs.starfarer.api.combat.WeaponAPI;
 import com.fs.starfarer.api.util.Misc;
-import org.lazywizard.lazylib.FastTrig;
 import org.lazywizard.lazylib.MathUtils;
 import org.lazywizard.lazylib.VectorUtils;
 import org.lazywizard.lazylib.combat.CombatUtils;
@@ -30,6 +28,7 @@ public class VassDirectedLandingBayScript implements EveryFrameWeaponEffectPlugi
     private static final float TURNRATE_BOOST = 1.5f;
 
     //How far away does the landing "start"? IE at 0 seconds, where should the fighters try to move?
+    //  This is then moved closer and closer to the weapon over the duration
     private static final float START_OFFSET_LENGTH = 450f;
 
     //Long long do we expect a landing to take?
@@ -90,11 +89,6 @@ public class VassDirectedLandingBayScript implements EveryFrameWeaponEffectPlugi
 
             //Try to move the fighter to a point away from the ship, with the point closing in over time
             Vector2f targetPoint = MathUtils.getPoint(weapon.getLocation(), START_OFFSET_LENGTH * (1f - (timers.get(fighter) / MOVE_DURATION)), weapon.getCurrAngle());
-            if (fighter.isFinishedLanding()) {
-                engine.addHitParticle(targetPoint, Misc.ZERO, 5f, 1f, 0.2f, Color.BLUE);
-            } else {
-                engine.addHitParticle(targetPoint, Misc.ZERO, 5f, 1f, 0.2f, Color.RED);
-            }
             moveFighter(trueAmount, fighter, targetPoint, ship.getFacing());
         }
     }

@@ -15,6 +15,9 @@
 	"vass_temporal_recall":[
 		{"file":"sounds/vass/systems/temporal_recall.ogg","pitch":1.0,"volume":0.15},
 	],
+	"vass_temporal_retreat":[
+		{"file":"sounds/vass/systems/time_reverse3.ogg","pitch":1.1,"volume":0.2},
+	],
 	
 	"vass_trishula_fire":[
 		{"file":"sounds/vass/weapons/corseque_fire.ogg","pitch":1.36,"volume":0.15},
