@@ -74,7 +74,8 @@
   ],
   "builtInWeapons": {
     "WS0001": "vass_deco_curtana_lights",
-    "WS0007": "vass_curtanabay_forward"
+    "WS0007": "vass_curtanabay_forward",
+    "WS0008": "vass_curtanabay_back"
   },
   "builtInWings": [],
   "center": [
@@ -471,6 +472,18 @@
       "id": "WS0007",
       "locations": [
         77,
+        -0
+      ],
+      "mount": "TURRET",
+      "size": "SMALL",
+      "type": "DECORATIVE"
+    },
+    {
+      "angle": 180,
+      "arc": 0,
+      "id": "WS0008",
+      "locations": [
+        -73,
         -0
       ],
       "mount": "TURRET",

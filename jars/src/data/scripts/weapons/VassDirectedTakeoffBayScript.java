@@ -20,7 +20,7 @@ public class VassDirectedTakeoffBayScript implements EveryFrameWeaponEffectPlugi
     private static final float MAX_SPEED_BOOST = 2.5f;
 
     //Long long should we keep moving our fighters (in seconds)?
-    private static final float MOVE_DURATION = 0.4f;
+    private static final float MOVE_DURATION = 0.5f;
 
     //Store how long we've been tracking each fighter.
     private Map<ShipAPI, Float> timers = new HashMap<>();
@@ -75,7 +75,9 @@ public class VassDirectedTakeoffBayScript implements EveryFrameWeaponEffectPlugi
 
         //Go through all fighters and handle their actual movement-manipulation
         for (ShipAPI fighter : timers.keySet()) {
-            timers.put(fighter, timers.get(fighter)+amount);
+            //Compensates for time-mult
+            float trueAmount = amount * fighter.getMutableStats().getTimeMult().getModifiedValue() / ship.getMutableStats().getTimeMult().getModifiedValue();
+            timers.put(fighter, timers.get(fighter)+trueAmount);
 
             if (timers.get(fighter) < MOVE_DURATION) {
                 fighter.setFacing(ship.getFacing());
