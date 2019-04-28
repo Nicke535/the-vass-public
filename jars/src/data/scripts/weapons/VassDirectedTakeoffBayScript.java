@@ -17,6 +17,9 @@ public class VassDirectedTakeoffBayScript implements EveryFrameWeaponEffectPlugi
     //  This bonus then fades quadratically over the duration
     private static final float MAX_SPEED_BOOST = 2.5f;
 
+    //Additional limit on max speed boost: if we would accelerate a ship more than to this, only accelerate to this
+    private static final float MAX_FLAT_SPEED = 500f;
+
     //Long long should we keep moving our fighters (in seconds)?
     private static final float MOVE_DURATION = 0.5f;
 
@@ -82,11 +85,17 @@ public class VassDirectedTakeoffBayScript implements EveryFrameWeaponEffectPlugi
             timers.put(fighter, timers.get(fighter)+trueAmount);
 
             if (timers.get(fighter) < MOVE_DURATION) {
+                //Calculates speed boost
+                float speedBoost = (1f + MAX_SPEED_BOOST * ((float)Math.pow(1f - (timers.get(fighter) / MOVE_DURATION), 2f)));
+                if (fighter.getMaxSpeed() * speedBoost > MAX_FLAT_SPEED) {
+                    speedBoost = MAX_FLAT_SPEED / fighter.getMaxSpeed();
+                }
+
                 fighter.setFacing(weapon.getCurrAngle());
                 fighter.getVelocity().x = fighter.getMaxSpeed() * (float)FastTrig.cos(Math.toRadians(weapon.getCurrAngle()))
-                        * (1f + MAX_SPEED_BOOST * ((float)Math.pow(1f - (timers.get(fighter) / MOVE_DURATION), 2f)));
+                        * speedBoost;
                 fighter.getVelocity().y = fighter.getMaxSpeed() * (float)FastTrig.sin(Math.toRadians(weapon.getCurrAngle()))
-                        * (1f + MAX_SPEED_BOOST * ((float)Math.pow(1f - (timers.get(fighter) / MOVE_DURATION), 2f)));
+                        * speedBoost;
             }
         }
     }

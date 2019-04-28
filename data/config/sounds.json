@@ -43,10 +43,10 @@
 		{"file":"sounds/vass/weapons/corseque_fire.ogg","pitch":1.23,"volume":0.10},
 	],
 
-	"vass_spetum_fire":[
-		{"file":"sounds/vass/weapons/spetum_fire.ogg","pitch":0.88,"volume":0.23},
-		{"file":"sounds/vass/weapons/spetum_fire.ogg","pitch":0.9,"volume":0.23},
-		{"file":"sounds/vass/weapons/spetum_fire.ogg","pitch":0.92,"volume":0.23},
+	"vass_excalibur_fire":[
+		{"file":"sounds/vass/weapons/excalibur_fire.ogg","pitch":0.88,"volume":0.23},
+		{"file":"sounds/vass/weapons/excalibur_fire.ogg","pitch":0.9,"volume":0.23},
+		{"file":"sounds/vass/weapons/excalibur_fire.ogg","pitch":0.92,"volume":0.23},
 	],
 
 }

@@ -1,2 +1,2 @@
 id,variant,tags,tier,rarity,fleet pts,op cost,formation,range,attackRunRange,attackPositionOffset,num,role,role desc,refit,base value,,,,,,,,,,,,,number
-
+vass_estoc_wing,vass_estoc_variant,"bomber5, bomber, vass_tech, vass_general_blueprint",3,0.3,7,21,V,6000,3000,500,2,BOMBER,Bomber,18,20500,,,,,,,,,,,,,13

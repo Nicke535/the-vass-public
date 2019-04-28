@@ -35,7 +35,7 @@ public class VassTemporalRecallAI implements ShipSystemAIScript {
         if (tracker.intervalElapsed()) {
             //If our spetum launcher is out of ammo, activate the system
             for (WeaponAPI weapon : ship.getAllWeapons()) {
-                if (weapon.getAmmo() == 0 && weapon.getId().contains("vass_spetum_launcher") && ship.getWing().getSourceShip() != null) {
+                if (weapon.getAmmo() == 0 && weapon.getId().contains("vass_excalibur_launcher") && ship.getWing().getSourceShip() != null) {
                     activateSystem();
                 }
             }

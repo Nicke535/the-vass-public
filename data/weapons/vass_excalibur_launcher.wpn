@@ -1,10 +1,11 @@
 {
-	"id":"vass_spetum_launcher",
+	"id":"vass_excalibur_launcher",
 	"specClass":"projectile",
 	"type":"SYNERGY",
 	"size":"LARGE",
 	"turretSprite":"",
 	"hardpointSprite":"",
+	"everyFrameEffect":"data.scripts.weapons.VassExcaliburScript",	
 	"hardpointOffsets":[0, 0, 0, 0, 0, 0],
 	"turretOffsets":[0, 0, 0, 0, 0, 0],
 	"hardpointAngleOffsets":[-5, 0, 5],
@@ -24,8 +25,8 @@
 				 "blowbackLength":6.0,
 				 "blowbackSpread":12.0,
 				 "particleColor":[60,255,18,60]},	
-	"projectileSpecId":"vass_spetum_bomb",
-	"fireSoundTwo":"vass_corseque_fire",
+	"projectileSpecId":"vass_excalibur_bomb",
+	"fireSoundTwo":"vass_excalibur_fire",
 }
 
 
