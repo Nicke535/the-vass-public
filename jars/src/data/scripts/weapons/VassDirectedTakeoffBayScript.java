@@ -5,7 +5,9 @@ package data.scripts.weapons;
 import com.fs.starfarer.api.combat.*;
 import data.scripts.utils.VassUtils;
 import org.lazywizard.lazylib.FastTrig;
+import org.lazywizard.lazylib.MathUtils;
 import org.lazywizard.lazylib.combat.CombatUtils;
+import org.lwjgl.util.vector.Vector2f;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -13,9 +15,12 @@ import java.util.List;
 import java.util.Map;
 
 public class VassDirectedTakeoffBayScript implements EveryFrameWeaponEffectPlugin {
+    //The maximum "speed boost" the fighter gets when taking off; 1f means a 100% speed boost initially
+    //  This bonus then fades quadratically over the duration
+    private static final float MAX_SPEED_BOOST = 2.5f;
 
     //Long long should we keep moving our fighters (in seconds)?
-    private static final float MOVE_DURATION = 1f;
+    private static final float MOVE_DURATION = 0.4f;
 
     //Store how long we've been tracking each fighter.
     private Map<ShipAPI, Float> timers = new HashMap<>();
@@ -49,7 +54,7 @@ public class VassDirectedTakeoffBayScript implements EveryFrameWeaponEffectPlugi
         //Gets all our nearby fighters, and if we haven't grabbed them before, grab them as they're most likely taking off for the first time
         for (ShipAPI fighter : CombatUtils.getShipsWithinRange(ship.getLocation(), ship.getCollisionRadius()*1.5f)) {
             //Check for ignored/removed fighters to avoid infinity loops of re-adding
-            if (engine.isEntityInPlay(fighter) && !fighter.isHulk() && !fighter.isLanding() && !fighter.isFinishedLanding()) {
+            if (!engine.isEntityInPlay(fighter) || fighter.isHulk() || fighter.isLanding() || fighter.isFinishedLanding()) {
                 continue;
             }
 
@@ -60,6 +65,10 @@ public class VassDirectedTakeoffBayScript implements EveryFrameWeaponEffectPlugi
 
             //Only *our* fighters are affected
             if (fighter.getWing() != null && fighter.getWing().getSourceShip() == ship) {
+                //The first time we touch the fighter, we also teleport it to our launch bay
+                Vector2f targetSpawnPoint = MathUtils.getRandomPointInCircle(weapon.getLocation(), 10f);
+                fighter.getLocation().x = targetSpawnPoint.x;
+                fighter.getLocation().y = targetSpawnPoint.y;
                 timers.put(fighter, 0f);
             }
         }
@@ -70,8 +79,10 @@ public class VassDirectedTakeoffBayScript implements EveryFrameWeaponEffectPlugi
 
             if (timers.get(fighter) < MOVE_DURATION) {
                 fighter.setFacing(ship.getFacing());
-                fighter.getVelocity().x = fighter.getMaxSpeed() * (float)FastTrig.cos(Math.toRadians(ship.getFacing()));
-                fighter.getVelocity().y = fighter.getMaxSpeed() * (float)FastTrig.sin(Math.toRadians(ship.getFacing()));
+                fighter.getVelocity().x = fighter.getMaxSpeed() * (float)FastTrig.cos(Math.toRadians(ship.getFacing()))
+                        * (1f + MAX_SPEED_BOOST * ((float)Math.pow(1f - (timers.get(fighter) / MOVE_DURATION), 2f)));
+                fighter.getVelocity().y = fighter.getMaxSpeed() * (float)FastTrig.sin(Math.toRadians(ship.getFacing()))
+                        * (1f + MAX_SPEED_BOOST * ((float)Math.pow(1f - (timers.get(fighter) / MOVE_DURATION), 2f)));
             }
         }
     }
