@@ -100,25 +100,25 @@
     },
     {
       "angle": -180,
-      "contrailSize": 3,
-      "length": 60,
+      "contrailSize": 4,
+      "length": 70,
       "location": [
         -59,
         16.5
       ],
       "style": "VASS_ENGINE_FAR",
-      "width": 3
+      "width": 4
     },
     {
       "angle": 180,
-      "contrailSize": 3,
-      "length": 60,
+      "contrailSize": 4,
+      "length": 70,
       "location": [
         -59,
         -16.5
       ],
       "style": "VASS_ENGINE_FAR",
-      "width": 3
+      "width": 4
     },
     {
       "angle": 180,
@@ -144,25 +144,25 @@
     },
     {
       "angle": 180,
-      "contrailSize": 6,
-      "length": 25,
+      "contrailSize": 7,
+      "length": 30,
       "location": [
         -60,
         -16.5
       ],
       "style": "VASS_ENGINE_NEAR",
-      "width": 6
+      "width": 7
     },
     {
       "angle": -180,
-      "contrailSize": 6,
-      "length": 25,
+      "contrailSize": 7,
+      "length": 30,
       "location": [
         -60,
         16.5
       ],
       "style": "VASS_ENGINE_NEAR",
-      "width": 6
+      "width": 7
     },
     {
       "angle": 177,
@@ -248,50 +248,6 @@
       "location": [
         -41,
         34
-      ],
-      "style": "VASS_ENGINE_NEAR",
-      "width": 3
-    },
-    {
-      "angle": -180,
-      "contrailSize": 4,
-      "length": 70,
-      "location": [
-        -65,
-        -0
-      ],
-      "style": "VASS_ENGINE_FAR",
-      "width": 4
-    },
-    {
-      "angle": 180,
-      "contrailSize": 8,
-      "length": 30,
-      "location": [
-        -66,
-        -0
-      ],
-      "style": "VASS_ENGINE_NEAR",
-      "width": 8
-    },
-    {
-      "angle": -177,
-      "contrailSize": 3,
-      "length": 12,
-      "location": [
-        -65,
-        2
-      ],
-      "style": "VASS_ENGINE_NEAR",
-      "width": 3
-    },
-    {
-      "angle": 177,
-      "contrailSize": 3,
-      "length": 12,
-      "location": [
-        -65,
-        -2
       ],
       "style": "VASS_ENGINE_NEAR",
       "width": 3
