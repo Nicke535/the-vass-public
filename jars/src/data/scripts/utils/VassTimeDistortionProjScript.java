@@ -1,4 +1,4 @@
-
+//By Nicke535, causes a projectile to detonate into a time-distortion effect when fading, hitting a target or otherwise disappear
 package data.scripts.utils;
 
 import com.fs.starfarer.api.Global;

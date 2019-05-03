@@ -1,6 +1,12 @@
 package data.scripts.utils;
 
+import com.fs.starfarer.api.combat.CombatEntityAPI;
+import com.fs.starfarer.api.combat.ShipAPI;
+import org.lazywizard.lazylib.CollisionUtils;
 import org.lazywizard.lazylib.MathUtils;
+import org.lazywizard.lazylib.VectorUtils;
+import org.lazywizard.lazylib.combat.CombatUtils;
+import org.lwjgl.util.vector.Vector2f;
 
 import java.awt.*;
 
@@ -41,5 +47,44 @@ public class VassUtils {
 
         //In case of something going... wrong, Accel is the default since it's easy to see against normal Vass colors
         return new Color(COLORS_ACCEL[0], COLORS_ACCEL[1], COLORS_ACCEL[2], opacity);
+    }
+
+
+    //Gets whether a target is "shielded" by another ship (IE under its shield) from the perspective of a source location
+    public static boolean isTargetUnderOtherShipShield (CombatEntityAPI target, Vector2f sourceLoc) {
+        boolean targetShielded = false;
+        Vector2f targetLoc = new Vector2f(target.getLocation());
+        for (ShipAPI shielder : CombatUtils.getShipsWithinRange(sourceLoc, target.getCollisionRadius())) {
+            //If the shielder *is* the target, ignore it
+            if ((target instanceof ShipAPI) && (shielder == target)) {
+                continue;
+            }
+
+            //Ignore if the shielder doesn't have a shield, or it's too far away from our current target to matter
+            if (shielder.getShield() == null || MathUtils.getDistance(shielder.getShield().getLocation(), targetLoc) > shielder.getShield().getRadius()) {
+                continue;
+            }
+
+            //Only run check if the shields are on and facing the source
+            if (shielder.getShield().isOn() && shielder.getShield().isWithinArc(sourceLoc)) {
+                //If the shielder has all these attributes, we run proper math. First, get some nice points we can work with.
+                Vector2f checkPointShield = MathUtils.getPointOnCircumference(shielder.getShield().getLocation(), shielder.getShield().getRadius(),
+                        VectorUtils.getAngle(shielder.getShield().getLocation(), sourceLoc));
+                Vector2f checkVector = VectorUtils.getDirectionalVector(sourceLoc, targetLoc);
+                checkVector.scale(target.getCollisionRadius());
+                checkVector = Vector2f.add(checkVector, targetLoc, new Vector2f(0f, 0f));
+                Vector2f checkPointHull = CollisionUtils.getCollisionPoint(sourceLoc, checkVector, target);
+
+                //If we didn't get a collision, we can't possibly hit their shield
+                if (checkPointHull == null) { continue; }
+
+                //Is the shield closer to us than the target's *actual* hull (no targeting circles here, too imprecise)? If so, don't count this target as a valid target
+                if (MathUtils.getDistance(checkPointShield, sourceLoc) <= MathUtils.getDistance(checkPointHull, sourceLoc)) {
+                    targetShielded = true;
+                    break;
+                }
+            }
+        }
+        return targetShielded;
     }
 }

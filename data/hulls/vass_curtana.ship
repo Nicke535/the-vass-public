@@ -1,73 +1,73 @@
 {
   "bounds": [
-    -129,
-    5,
-    -144,
-    11.5,
-    -100.5,
-    19,
-    -114.5,
+    -125,
+    4,
+    -146.5,
+    13,
+    -101,
+    19.5,
+    -119,
     27.5,
-    -95.5,
-    29,
-    -100.5,
+    -98,
+    28.5,
+    -105,
     38,
-    -81,
+    -85.5,
     42,
-    -83.5,
-    55.5,
+    -84,
+    55,
     -24.5,
     50.5,
-    -34,
-    57,
-    -28.5,
-    62,
-    21.5,
-    45.5,
-    77.5,
-    41,
-    77.5,
-    34.5,
-    130,
-    26.5,
-    139.5,
+    -37.5,
+    58,
+    -27,
+    60.5,
     17,
-    117.5,
-    3.5,
-    117.5,
-    -3.5,
-    139.5,
-    -17,
-    130,
+    45.5,
+    73,
+    41,
+    73,
+    34.5,
+    125.5,
+    26.5,
+    138,
+    16.5,
+    114.5,
+    5,
+    114.5,
+    -5,
+    138,
+    -16.5,
+    125.5,
     -26.5,
-    77.5,
+    73,
     -34.5,
-    77.5,
+    73,
     -41,
-    21.5,
+    17,
     -45.5,
-    -28.5,
-    -62,
-    -34,
-    -57,
+    -27,
+    -60.5,
+    -37.5,
+    -58,
     -24.5,
     -50.5,
-    -83.5,
-    -55.5,
-    -81,
+    -84,
+    -55,
+    -85.5,
     -42,
-    -100.5,
+    -105,
     -38,
-    -95.5,
-    -29,
-    -114.5,
+    -98,
+    -28.5,
+    -119,
     -27.5,
-    -100.5,
-    -19,
-    -144,
-    -11.5,
-    -129,
-    -5
+    -101,
+    -19.5,
+    -146.5,
+    -13,
+    -125,
+    -4
   ],
   "builtInMods": [
     "vass_periodic_plating"
@@ -79,17 +79,17 @@
   },
   "builtInWings": [],
   "center": [
-    129,
-    172
+    63,
+    150
   ],
-  "collisionRadius": 162.5,
+  "collisionRadius": 168,
   "engineSlots": [
     {
       "angle": 177,
       "contrailSize": 3,
       "length": 10,
       "location": [
-        -84,
+        -87,
         -48
       ],
       "style": "VASS_ENGINE_NEAR",
@@ -100,7 +100,7 @@
       "contrailSize": 3,
       "length": 10,
       "location": [
-        -84,
+        -87,
         48
       ],
       "style": "VASS_ENGINE_NEAR",
@@ -111,7 +111,7 @@
       "contrailSize": 3,
       "length": 10,
       "location": [
-        -84,
+        -87,
         -45
       ],
       "style": "VASS_ENGINE_NEAR",
@@ -122,7 +122,7 @@
       "contrailSize": 3,
       "length": 10,
       "location": [
-        -84,
+        -87,
         45
       ],
       "style": "VASS_ENGINE_NEAR",
@@ -133,7 +133,7 @@
       "contrailSize": 3,
       "length": 10,
       "location": [
-        -97,
+        -100,
         -33
       ],
       "style": "VASS_ENGINE_NEAR",
@@ -144,7 +144,7 @@
       "contrailSize": 3,
       "length": 10,
       "location": [
-        -97,
+        -100,
         33
       ],
       "style": "VASS_ENGINE_NEAR",
@@ -155,7 +155,7 @@
       "contrailSize": 3,
       "length": 10,
       "location": [
-        -97,
+        -100,
         -30
       ],
       "style": "VASS_ENGINE_NEAR",
@@ -166,7 +166,7 @@
       "contrailSize": 3,
       "length": 10,
       "location": [
-        -97,
+        -100,
         30
       ],
       "style": "VASS_ENGINE_NEAR",
@@ -177,7 +177,7 @@
       "contrailSize": 3,
       "length": 10,
       "location": [
-        -103,
+        -106,
         -21
       ],
       "style": "VASS_ENGINE_NEAR",
@@ -188,7 +188,7 @@
       "contrailSize": 3,
       "length": 10,
       "location": [
-        -103,
+        -106,
         21
       ],
       "style": "VASS_ENGINE_NEAR",
@@ -199,7 +199,7 @@
       "contrailSize": 3,
       "length": 10,
       "location": [
-        -103,
+        -106,
         -24
       ],
       "style": "VASS_ENGINE_NEAR",
@@ -210,7 +210,7 @@
       "contrailSize": 3,
       "length": 10,
       "location": [
-        -103,
+        -106,
         24
       ],
       "style": "VASS_ENGINE_NEAR",
@@ -221,7 +221,7 @@
       "contrailSize": 3,
       "length": 65,
       "location": [
-        -84,
+        -87,
         -46.5
       ],
       "style": "VASS_ENGINE_FAR",
@@ -232,7 +232,7 @@
       "contrailSize": 3,
       "length": 65,
       "location": [
-        -84,
+        -87,
         46.5
       ],
       "style": "VASS_ENGINE_FAR",
@@ -243,7 +243,7 @@
       "contrailSize": 4,
       "length": 80,
       "location": [
-        -97,
+        -100,
         31.5
       ],
       "style": "VASS_ENGINE_FAR",
@@ -254,7 +254,7 @@
       "contrailSize": 4,
       "length": 80,
       "location": [
-        -97,
+        -100,
         -31.5
       ],
       "style": "VASS_ENGINE_FAR",
@@ -265,7 +265,7 @@
       "contrailSize": 4,
       "length": 80,
       "location": [
-        -103,
+        -106,
         22.5
       ],
       "style": "VASS_ENGINE_FAR",
@@ -276,7 +276,7 @@
       "contrailSize": 4,
       "length": 80,
       "location": [
-        -103,
+        -106,
         -22.5
       ],
       "style": "VASS_ENGINE_FAR",
@@ -287,7 +287,7 @@
       "contrailSize": 6,
       "length": 30,
       "location": [
-        -85,
+        -88,
         -46.5
       ],
       "style": "VASS_ENGINE_NEAR",
@@ -298,7 +298,7 @@
       "contrailSize": 6,
       "length": 30,
       "location": [
-        -85,
+        -88,
         46.5
       ],
       "style": "VASS_ENGINE_NEAR",
@@ -309,7 +309,7 @@
       "contrailSize": 7,
       "length": 35,
       "location": [
-        -104,
+        -107,
         -22.5
       ],
       "style": "VASS_ENGINE_NEAR",
@@ -320,7 +320,7 @@
       "contrailSize": 7,
       "length": 35,
       "location": [
-        -104,
+        -107,
         22.5
       ],
       "style": "VASS_ENGINE_NEAR",
@@ -331,7 +331,7 @@
       "contrailSize": 7,
       "length": 35,
       "location": [
-        -98,
+        -101,
         -31.5
       ],
       "style": "VASS_ENGINE_NEAR",
@@ -342,14 +342,14 @@
       "contrailSize": 7,
       "length": 35,
       "location": [
-        -98,
+        -101,
         31.5
       ],
       "style": "VASS_ENGINE_NEAR",
       "width": 7
     }
   ],
-  "height": 339,
+  "height": 295,
   "hullId": "vass_curtana",
   "hullName": "Curtana",
   "hullSize": "CRUISER",
@@ -357,7 +357,7 @@
     0,
     -0
   ],
-  "shieldRadius": 161.5,
+  "shieldRadius": 165,
   "spriteName": "graphics/vass/ships/curtana.png",
   "style": "VASS_HULL",
   "viewOffset": 0,
@@ -379,8 +379,8 @@
       "arc": 360,
       "id": "WS0002",
       "locations": [
-        -1.5,
-        -0
+        -4.5,
+        0
       ],
       "mount": "TURRET",
       "size": "MEDIUM",
@@ -391,7 +391,7 @@
       "arc": 139,
       "id": "WS0003",
       "locations": [
-        -16,
+        -19,
         -36
       ],
       "mount": "TURRET",
@@ -403,7 +403,7 @@
       "arc": 139,
       "id": "WS0004",
       "locations": [
-        -16,
+        -19,
         36
       ],
       "mount": "TURRET",
@@ -415,7 +415,7 @@
       "arc": 194,
       "id": "WS0005",
       "locations": [
-        62,
+        59,
         -24
       ],
       "mount": "TURRET",
@@ -427,7 +427,7 @@
       "arc": 194,
       "id": "WS0006",
       "locations": [
-        62,
+        59,
         24
       ],
       "mount": "TURRET",
@@ -439,12 +439,12 @@
       "arc": 360,
       "id": "LB 1",
       "locations": [
-        74,
-        4,
-        73,
-        2,
-        -65.5,
-        1.5
+        96,
+        -62,
+        95,
+        -64,
+        -43.5,
+        -64.5
       ],
       "mount": "HIDDEN",
       "size": "LARGE",
@@ -455,12 +455,12 @@
       "arc": 360,
       "id": "LB 3",
       "locations": [
-        74,
-        -4,
-        73,
-        -2,
-        -65.5,
-        -2.5
+        96,
+        -70,
+        95,
+        -68,
+        -43.5,
+        -68.5
       ],
       "mount": "HIDDEN",
       "size": "LARGE",
@@ -471,8 +471,8 @@
       "arc": 0,
       "id": "WS0007",
       "locations": [
-        77,
-        -0
+        74,
+        0
       ],
       "mount": "TURRET",
       "size": "SMALL",
@@ -483,13 +483,13 @@
       "arc": 0,
       "id": "WS0008",
       "locations": [
-        -73,
-        -0
+        -76,
+        0
       ],
       "mount": "TURRET",
       "size": "SMALL",
       "type": "DECORATIVE"
     }
   ],
-  "width": 258
+  "width": 126
 }

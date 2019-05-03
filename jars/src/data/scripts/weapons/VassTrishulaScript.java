@@ -2,6 +2,7 @@ package data.scripts.weapons;
 
 import com.fs.starfarer.api.combat.*;
 import data.scripts.utils.VassTimeDistortionProjScript;
+import data.scripts.utils.VassTimeSplitProjScript;
 import org.lazywizard.lazylib.MathUtils;
 import org.lazywizard.lazylib.combat.CombatUtils;
 

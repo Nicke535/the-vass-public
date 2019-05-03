@@ -22,8 +22,8 @@ public class VassPeriodicPlating extends BaseHullMod {
 	//Changes the ships time mult at every "advanceInCombat", in order to make sure the global time mult is correct in relation to the player ship
 	@Override
 	public void advanceInCombat(ShipAPI ship, float amount) {
-		//Not active during shipsystem, overload, or when dead
-		if (!ship.getSystem().isActive() && !ship.getFluxTracker().isOverloadedOrVenting() && !ship.isHulk()) {
+		//Not active during shipsystem, overload, landing, or when dead
+		if (!ship.getSystem().isActive() && !ship.getFluxTracker().isOverloadedOrVenting() && !ship.isHulk() && !ship.isLanding()) {
 			if (ship == Global.getCombatEngine().getPlayerShip()) {
 				ship.getMutableStats().getTimeMult().modifyMult("VassPeriodicPlatingDebugID", TIME_MULT);
 				Global.getCombatEngine().getTimeMult().modifyMult("VassPeriodicPlatingDebugID", 1f / TIME_MULT);
