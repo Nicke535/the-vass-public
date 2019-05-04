@@ -5,12 +5,14 @@ import com.fs.starfarer.api.Global;
 import com.fs.starfarer.api.combat.*;
 import com.fs.starfarer.api.graphics.SpriteAPI;
 import com.fs.starfarer.api.input.InputEventAPI;
+import com.fs.starfarer.api.util.IntervalUtil;
 import com.fs.starfarer.api.util.Misc;
 import data.scripts.VassModPlugin;
 import data.scripts.plugins.MagicTrailPlugin;
 import org.dark.shaders.distortion.DistortionShader;
 import org.dark.shaders.distortion.WaveDistortion;
 import org.lazywizard.lazylib.CollisionUtils;
+import org.lazywizard.lazylib.FastTrig;
 import org.lazywizard.lazylib.MathUtils;
 import org.lazywizard.lazylib.VectorUtils;
 import org.lazywizard.lazylib.combat.CombatUtils;
@@ -24,6 +26,8 @@ import static org.lwjgl.opengl.GL11.GL_ONE;
 import static org.lwjgl.opengl.GL11.GL_SRC_ALPHA;
 
 public class VassTimeSplitProjScript extends BaseEveryFrameCombatPlugin {
+	//How much the projectile's damage is reduced for each grace, at most
+	private static final float DAMAGE_LOSS_PER_GRACE = 0.05f;
 
 	//The projectile we are tracking
 	private DamagingProjectileAPI proj;
@@ -31,16 +35,27 @@ public class VassTimeSplitProjScript extends BaseEveryFrameCombatPlugin {
 	//Maximum range for grace effect: set when instantiating the script
 	private float graceDistanceMax;
 
+	//Damage multiplier for the grace effect: set when instantiating the script
+	private float globalDamageMult;
+
+	//Our current "damage adjustment" for the main projectile; this goes down as projectile damage
+	//is decreased by timeline gracing
+	private float damageAdjustment = 1f;
+
 	//The distance each valid target had to us last frame is stored here
 	private Map<CombatEntityAPI, Float> lastFrameDistances = new HashMap<>();
 
 	//All targets we've already "graced" are stored so we don't hit things twice
 	private List<CombatEntityAPI> alreadyHitTargets = new ArrayList<>();
 
+	//Stores a timer so we don't spawn too many visual effects on the projectile
+	private IntervalUtil timer = new IntervalUtil(0.03f, 0.1f);
+
 	//Initializer
-	public VassTimeSplitProjScript(DamagingProjectileAPI proj, float graceDistanceMax) {
+	public VassTimeSplitProjScript(DamagingProjectileAPI proj, float graceDistanceMax, float globalDamageMult) {
 		this.proj = proj;
 		this.graceDistanceMax = graceDistanceMax;
+		this.globalDamageMult = globalDamageMult;
 	}
 
 	@Override
@@ -60,6 +75,34 @@ public class VassTimeSplitProjScript extends BaseEveryFrameCombatPlugin {
 			Global.getCombatEngine().removePlugin(this);
 			return;
 		}
+
+		//If we don't remove the script, we spawn visual effects on the projectile
+		else {
+			timer.advance(amount);
+
+			if (timer.intervalElapsed()) {
+				//Calculates some vector math to get the correct velocities
+				float mainVelLength = Vector2f.dot(proj.getVelocity(), MathUtils.getPoint(Misc.ZERO, 1f, proj.getFacing()));
+				float offsetVelLength = Vector2f.dot(proj.getVelocity(), MathUtils.getPoint(Misc.ZERO, 1f, proj.getFacing()+90f));
+				Vector2f offsetVel = MathUtils.getPoint(Misc.ZERO, offsetVelLength, proj.getFacing()+90f);
+
+				//Generates a fancy trail effect, similar to the on-hit effect
+				SpriteAPI spriteToUse = Global.getSettings().getSprite("vass_fx","projectile_trail_zappy");
+				float id = MagicTrailPlugin.getUniqueID();
+				float startSpeed = MathUtils.getRandomNumberInRange(0.95f, 0.85f) * mainVelLength;
+				float startSize = MathUtils.getRandomNumberInRange(45f,55f) * damageAdjustment;
+				Vector2f originPoint = MathUtils.getRandomPointInCircle(proj.getLocation(), 6f * damageAdjustment);
+				Color color = VassUtils.getFamilyColor(VassUtils.VASS_FAMILY.MULTA, 1f);
+				for (int i = 0; i < 8; i++) {
+					Vector2f spawnPoint = MathUtils.getPoint(originPoint, (i/8f - 0.5f) * 65f * damageAdjustment, proj.getFacing());
+					MagicTrailPlugin.AddTrailMemberAdvanced(null, id, spriteToUse, spawnPoint, startSpeed * (((float)i * 0.3f / 8f) + 0.7f), 0f,
+							proj.getFacing(), 0f, 0f, startSize * (((float)i * 0.4f / 8f) + 0.6f), startSize*0.3f * (((float)i * 0.4f / 8f) + 0.6f),
+							color, color, 0.85f, 0f, 0.25f, 0.3f, GL_SRC_ALPHA, GL_ONE,
+							500f, 0f, offsetVel, null);
+				}
+			}
+		}
+
 
 		//Handle all targets already in our tracker
 		List<CombatEntityAPI> toRemove = new ArrayList<>();
@@ -128,6 +171,7 @@ public class VassTimeSplitProjScript extends BaseEveryFrameCombatPlugin {
 		}
 	}
 
+
 	//Gets the range to a target: this is done differently for non-fighter ships than other targets
 	private float getRangeToTarget (CombatEntityAPI target) {
 		Vector2f projLoc = new Vector2f(proj.getLocation());
@@ -147,6 +191,7 @@ public class VassTimeSplitProjScript extends BaseEveryFrameCombatPlugin {
 			return (Math.max(0f, MathUtils.getDistance(target.getLocation(), projLoc)-target.getCollisionRadius()));
 		}
 	}
+
 
 	//Deals damage to a target and spawns a visual effect
 	private void damageTarget (CombatEntityAPI target, float distanceForDamage) {
@@ -179,22 +224,26 @@ public class VassTimeSplitProjScript extends BaseEveryFrameCombatPlugin {
 		//Now that we have a collision point, we deal damage there (with quadratically less damage based on range)...
 		float damageMult = 1f - (distanceForDamage/graceDistanceMax);
 		damageMult *= damageMult;
-		Global.getCombatEngine().applyDamage(target, collisionPoint, proj.getDamageAmount() * damageMult,
-				proj.getDamageType(), proj.getEmpAmount() * damageMult, false, false, proj.getSource());
+		Global.getCombatEngine().applyDamage(target, collisionPoint, proj.getDamageAmount() * damageMult * globalDamageMult,
+				proj.getDamageType(), proj.getEmpAmount() * damageMult * globalDamageMult, false, false,
+				proj.getSource(), true);
 
 		//...and spawn some VFX; in this case, a trail, because i like trails
 		SpriteAPI spriteToUse = Global.getSettings().getSprite("vass_fx","projectile_trail_zappy");
 		float id = MagicTrailPlugin.getUniqueID();
 		float startSpeed = MathUtils.getRandomNumberInRange(0.7f, 0.5f) * proj.getVelocity().length();
 		float angle = proj.getFacing() + MathUtils.getRandomNumberInRange(-1f - 9f * (distanceForDamage/graceDistanceMax), 1f + 9f * (distanceForDamage/graceDistanceMax));
-		float startSize = 55f * (float)Math.sqrt(damageMult);
+		float startSize = 45f * (float)Math.sqrt(damageMult) * damageAdjustment;
 		Color color = VassUtils.getFamilyColor(VassUtils.VASS_FAMILY.MULTA, 1f);
 		for (int i = 0; i < 8; i++) {
-			Vector2f spawnPoint = MathUtils.getPoint(collisionPoint, (i/8f - 0.5f) * 65f * damageMult, proj.getFacing());
+			Vector2f spawnPoint = MathUtils.getPoint(collisionPoint, (i/8f - 0.5f) * 65f * damageMult * damageAdjustment, proj.getFacing());
 			MagicTrailPlugin.AddTrailMemberAdvanced(null, id, spriteToUse, spawnPoint, startSpeed * (((float)i * 0.8f / 8f) + 0.2f), 0f,
-					angle, 0f, 0f, startSize, startSize * 0.3f,
+					angle, 0f, 0f, startSize * (((float)i * 0.4f / 8f) + 0.6f), startSize * 0.3f * (((float)i * 0.4f / 8f) + 0.6f),
 					color, color, 0.85f, 0f, 0.35f, 0.4f, GL_SRC_ALPHA, GL_ONE,
 					500f, 0f, new Vector2f(0f, 0f), null);
 		}
+
+		//Oh, and also reduce the damage of the main projectile once we've graced
+		proj.setDamageAmount(proj.getDamageAmount() * (1f - (DAMAGE_LOSS_PER_GRACE*damageMult)));
 	}
 }

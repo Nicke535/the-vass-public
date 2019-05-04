@@ -47,7 +47,6 @@ public class VassPeriodicBreaker extends BaseShipSystemScript {
         } else {
             return;
         }
-
 		
 		//Jitter-based code
         float jitterLevel = effectLevel;
@@ -65,10 +64,10 @@ public class VassPeriodicBreaker extends BaseShipSystemScript {
         } else if (state == State.OUT) {
             jitterRangeBonus = jitterLevel * maxRangeBonus;
         }
-        jitterLevel = (float) Math.sqrt(jitterLevel);
+        jitterLevel *= jitterLevel;
 
-        ship.setJitter(this, JITTER_COLOR, jitterLevel, 3, 0, 0 + jitterRangeBonus);
-        ship.setJitterUnder(this, JITTER_UNDER_COLOR, jitterLevel, 25, 0f, 7f + jitterRangeBonus);
+        ship.setJitter(this, JITTER_COLOR, jitterLevel, (int)Math.ceil(4 * jitterLevel), 0, 0 + jitterRangeBonus);
+        ship.setJitterUnder(this, JITTER_UNDER_COLOR, jitterLevel, (int)Math.ceil(26 * jitterLevel), 0f, 7f + jitterRangeBonus);
 
         //We want our effect level to scale near-exponentially
         effectLevel *= effectLevel;

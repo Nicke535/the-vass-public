@@ -14,6 +14,7 @@ import com.fs.starfarer.api.combat.ShipAPI.HullSize;
 import com.fs.starfarer.api.combat.*;
 import com.fs.starfarer.api.impl.combat.BaseShipSystemScript;
 import org.lazywizard.lazylib.MathUtils;
+import org.lazywizard.lazylib.combat.CombatUtils;
 import org.lwjgl.util.vector.Vector2f;
 
 public class VassAdvancedEntranceModule extends BaseHullMod {
@@ -28,10 +29,21 @@ public class VassAdvancedEntranceModule extends BaseHullMod {
     //We use a map since the hullmod instance is shared
     public Map<ShipAPI, Boolean> hasFiredLightning = new WeakHashMap<>();
 
-    //Activates a pseudo-hacked periodic breaker while the ship is using its travel drive
+    //Activates a pseudo-hacked periodic breaker while the ship is using its travel drive (and isn't too close to allies to collide)
     @Override
     public void advanceInCombat(ShipAPI ship, float amount) {
-        if (ship.getTravelDrive().isActive() && !ship.getSystem().isActive() && !ship.isHulk()) {
+        //Determines if there's a nearby ally we might bump into
+        boolean safetyDistanceBreached = false;
+        for (ShipAPI possibleCollision : CombatUtils.getShipsWithinRange(ship.getLocation(), ship.getCollisionRadius())) {
+            if (!possibleCollision.getCollisionClass().equals(CollisionClass.NONE) &&
+                    !possibleCollision.getCollisionClass().equals(CollisionClass.FIGHTER) &&
+                    possibleCollision.getOwner() == ship.getOwner()) {
+                safetyDistanceBreached = true;
+                break;
+            }
+        }
+
+        if (ship.getTravelDrive().isActive() && !ship.getSystem().isActive() && !ship.isHulk() && !safetyDistanceBreached) {
             //Sets the effectLevel and state variables
             float effectLevel = ship.getTravelDrive().getEffectLevel();
             ShipSystemAPI.SystemState state = ship.getTravelDrive().getState();
@@ -107,7 +119,7 @@ public class VassAdvancedEntranceModule extends BaseHullMod {
                         1.0f
                 );
             }
-        } else { //If we aren't using the travel drive, reset the values of everything
+        } else if (!ship.getTravelDrive().isActive()) { //If we aren't using the travel drive, reset the values of everything
             ship.getMutableStats().getTimeMult().unmodify("VassAdvancedEntranceModuleDebugID");
             Global.getCombatEngine().getTimeMult().unmodify("VassAdvancedEntranceModuleDebugID");
 
