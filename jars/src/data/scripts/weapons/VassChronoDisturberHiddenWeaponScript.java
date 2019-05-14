@@ -34,7 +34,7 @@ public class VassChronoDisturberHiddenWeaponScript implements EveryFrameWeaponEf
             //Runs several times to create a "circle" from the triangles
             for (int i = 0; i < numberOfTriangles; i++) {
                 MagicRender.singleframe(Global.getSettings().getSprite("vass_fx", "chrono_disturber_ringpiece"), ship.getLocation(),
-                        new Vector2f(VassChronoDisturber.ACTIVE_RANGE * 2f + ship.getCollisionRadius(), VassChronoDisturber.ACTIVE_RANGE * 2f + ship.getCollisionRadius()), rotation, spriteColor1, true);
+                        new Vector2f(VassChronoDisturber.ACTIVE_RANGE * 2f + ship.getCollisionRadius(), VassChronoDisturber.ACTIVE_RANGE * 2f + ship.getCollisionRadius()), rotation, spriteColor1, true, CombatEngineLayers.BELOW_SHIPS_LAYER);
                 rotation += (360 / numberOfTriangles);
             }
 

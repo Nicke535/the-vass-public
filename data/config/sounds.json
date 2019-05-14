@@ -19,6 +19,7 @@
 		{"file":"sounds/vass/systems/time_reverse3.ogg","pitch":1.1,"volume":0.2},
 	],
 	
+	
 	"vass_trishula_fire":[
 		{"file":"sounds/vass/weapons/corseque_fire.ogg","pitch":1.36,"volume":0.15},
 		{"file":"sounds/vass/weapons/corseque_fire.ogg","pitch":1.38,"volume":0.15},
@@ -47,6 +48,15 @@
 		{"file":"sounds/vass/weapons/excalibur_fire.ogg","pitch":0.88,"volume":0.23},
 		{"file":"sounds/vass/weapons/excalibur_fire.ogg","pitch":0.9,"volume":0.23},
 		{"file":"sounds/vass/weapons/excalibur_fire.ogg","pitch":0.92,"volume":0.23},
+	],
+	
+
+	"vass_fragarach_fire":[
+		{"file":"sounds/vass/weapons/fragarach_fire_mono.ogg","pitch":0.96,"volume":0.23},
+		{"file":"sounds/vass/weapons/fragarach_fire_mono.ogg","pitch":0.98,"volume":0.23},
+		{"file":"sounds/vass/weapons/fragarach_fire_mono.ogg","pitch":1.0,"volume":0.23},
+		{"file":"sounds/vass/weapons/fragarach_fire_mono.ogg","pitch":1.02,"volume":0.23},
+		{"file":"sounds/vass/weapons/fragarach_fire_mono.ogg","pitch":1.04,"volume":0.23},
 	],
 
 }
