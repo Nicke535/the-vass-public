@@ -13,7 +13,7 @@
 		{"file":"sounds/vass/systems/newTimestopSoundFromKueller.ogg","pitch":1.0,"volume":0.1},
 	],
 	"vass_temporal_recall":[
-		{"file":"sounds/vass/systems/temporal_recall.ogg","pitch":1.0,"volume":0.15},
+		{"file":"sounds/vass/systems/temporal_recall.ogg","pitch":1.0,"volume":0.35},
 	],
 	"vass_temporal_retreat":[
 		{"file":"sounds/vass/systems/time_reverse3.ogg","pitch":1.1,"volume":0.2},
@@ -45,18 +45,18 @@
 	],
 
 	"vass_excalibur_fire":[
-		{"file":"sounds/vass/weapons/excalibur_fire.ogg","pitch":0.88,"volume":0.23},
-		{"file":"sounds/vass/weapons/excalibur_fire.ogg","pitch":0.9,"volume":0.23},
-		{"file":"sounds/vass/weapons/excalibur_fire.ogg","pitch":0.92,"volume":0.23},
+		{"file":"sounds/vass/weapons/excalibur_fire.ogg","pitch":0.88,"volume":0.45},
+		{"file":"sounds/vass/weapons/excalibur_fire.ogg","pitch":0.9,"volume":0.45},
+		{"file":"sounds/vass/weapons/excalibur_fire.ogg","pitch":0.92,"volume":0.45},
 	],
 	
 
 	"vass_fragarach_fire":[
-		{"file":"sounds/vass/weapons/fragarach_fire_mono.ogg","pitch":0.96,"volume":0.23},
-		{"file":"sounds/vass/weapons/fragarach_fire_mono.ogg","pitch":0.98,"volume":0.23},
-		{"file":"sounds/vass/weapons/fragarach_fire_mono.ogg","pitch":1.0,"volume":0.23},
-		{"file":"sounds/vass/weapons/fragarach_fire_mono.ogg","pitch":1.02,"volume":0.23},
-		{"file":"sounds/vass/weapons/fragarach_fire_mono.ogg","pitch":1.04,"volume":0.23},
+		{"file":"sounds/vass/weapons/fragarach_fire_mono.ogg","pitch":0.96,"volume":0.35},
+		{"file":"sounds/vass/weapons/fragarach_fire_mono.ogg","pitch":0.98,"volume":0.35},
+		{"file":"sounds/vass/weapons/fragarach_fire_mono.ogg","pitch":1.0,"volume":0.35},
+		{"file":"sounds/vass/weapons/fragarach_fire_mono.ogg","pitch":1.02,"volume":0.35},
+		{"file":"sounds/vass/weapons/fragarach_fire_mono.ogg","pitch":1.04,"volume":0.35},
 	],
 
 }
