@@ -14,12 +14,14 @@ import java.util.List;
 public class VassTemporalRetreatAI implements ShipSystemAIScript {
     //Handles the "weight" of each stat, IE how much each stat weighs when considering a jump-location
     //Note that "lowhull" weights apply once hull reached 50% of max
-    private static final float HITPOINT_WEIGHT = 3f;
-    private static final float HITPOINT_WEIGHT_LOWHULL = 6f;
+    private static final float HITPOINT_WEIGHT = 4f;
+    private static final float HITPOINT_WEIGHT_LOWHULL = 7f;
     private static final float ARMOR_WEIGHT = 1.2f;
     private static final float ARMOR_WEIGHT_LOWHULL = 2f;
-    private static final float HARDFLUX_WEIGHT = 0.4f;
+    private static final float HARDFLUX_WEIGHT = 0.45f;
+    private static final float HARDFLUX_WEIGHT_LOWHULL = 0.85f;
     private static final float SOFTFLUX_WEIGHT = 0.15f;
+    private static final float SOFTFLUX_WEIGHT_LOWHULL = 0.1f;
 
     //How high weight we need, in total, to jump back in time
     private static final float WEIGHT_THRESHHOLD = 1200f;
@@ -74,8 +76,10 @@ public class VassTemporalRetreatAI implements ShipSystemAIScript {
                 hitPointWeight = HITPOINT_WEIGHT_LOWHULL;
             }
             jumpWeight += (timePointData.hitPoints - ship.getHitpoints() - damageAtDest) * hitPointWeight; //We remember the damage we would take at the destination, even if we won't die from it
-            jumpWeight += (ship.getFluxTracker().getHardFlux() - timePointData.hardFlux) * HARDFLUX_WEIGHT;
-            jumpWeight += ((ship.getFluxTracker().getCurrFlux() - ship.getFluxTracker().getHardFlux()) - timePointData.softFlux) * SOFTFLUX_WEIGHT;
+            jumpWeight += (ship.getFluxTracker().getHardFlux() - timePointData.hardFlux)
+                    * (ship.getHullLevel() < 0.5f ? HARDFLUX_WEIGHT : HARDFLUX_WEIGHT_LOWHULL);
+            jumpWeight += ((ship.getFluxTracker().getCurrFlux() - ship.getFluxTracker().getHardFlux()) - timePointData.softFlux)
+                    * (ship.getHullLevel() < 0.5f ? SOFTFLUX_WEIGHT : SOFTFLUX_WEIGHT_LOWHULL);
 
             //Armor is trickier, but uses the same overall method
             float armorCalcWeight = 0f;
