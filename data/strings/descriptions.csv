@@ -1,0 +1,18 @@
+id,type,text1,text2,text3,notes
+,,,,,
+# Ships,,,,,
+,,,,,
+vass_schiavona,SHIP,"As much a bragging right as a warship, the infamous Schiavona is the most mobile ship employed by the Vass families. Its fearsome Periodic Breaker system allows it to punch far above what its meager weapon loudout would imply.
+
+Commonly used for hunter-killer duty, the ship is extremely fast and is capable of catching almost all known vessels both in- and out of a combat scenario unprepared. Accel in particular are known to use entire small fleets consisting of nothing but Schiavonas to hunt down those who cross them, earning it the nickname 'Lain's Bloodhound' in certain circles.",,,
+,,,,,
+# Weapons,,,,,
+,,,,,
+,,,,,
+vass_dyrnwun,WEAPON,"WIP WIP WIP.",General,,
+,,,,,
+,,,,,
+# Ship Systems,,,,,
+,,,,,
+,,,,,
+vass_periodic_breaker,SHIP_SYSTEM,"WIP WIP WIP.",Utility,Stops time.

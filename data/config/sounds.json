@@ -58,7 +58,23 @@
 		{"file":"sounds/vass/weapons/fragarach_fire_mono.ogg","pitch":1.02,"volume":0.35},
 		{"file":"sounds/vass/weapons/fragarach_fire_mono.ogg","pitch":1.04,"volume":0.35},
 	],
+	
 
+	"vass_dyrnwyn_fire":[
+		{"file":"sounds/vass/weapons/dyrnwyn_fire_1.ogg","pitch":1.15,"volume":0.35},
+		{"file":"sounds/vass/weapons/dyrnwyn_fire_1.ogg","pitch":1.20,"volume":0.35},
+		{"file":"sounds/vass/weapons/dyrnwyn_fire_2.ogg","pitch":1.15,"volume":0.35},
+		{"file":"sounds/vass/weapons/dyrnwyn_fire_2.ogg","pitch":1.20,"volume":0.35},
+		{"file":"sounds/vass/weapons/dyrnwyn_fire_3.ogg","pitch":1.15,"volume":0.35},
+		{"file":"sounds/vass/weapons/dyrnwyn_fire_3.ogg","pitch":1.20,"volume":0.35},
+		{"file":"sounds/vass/weapons/dyrnwyn_fire_4.ogg","pitch":1.15,"volume":0.35},
+		{"file":"sounds/vass/weapons/dyrnwyn_fire_4.ogg","pitch":1.20,"volume":0.35},
+		{"file":"sounds/vass/weapons/dyrnwyn_fire_5.ogg","pitch":1.15,"volume":0.35},
+		{"file":"sounds/vass/weapons/dyrnwyn_fire_5.ogg","pitch":1.20,"volume":0.35},
+		{"file":"sounds/vass/weapons/dyrnwyn_fire_6.ogg","pitch":1.15,"volume":0.35},
+		{"file":"sounds/vass/weapons/dyrnwyn_fire_6.ogg","pitch":1.20,"volume":0.35},
+	],
+	
 }
 
 }
