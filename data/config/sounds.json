@@ -34,7 +34,7 @@
 		{"file":"sounds/vass/weapons/corseque_fire.ogg","pitch":0.92,"volume":0.23},
 	],
 
-	"vass_framea_fire":[
+	"vass_tizona_fire":[
 		{"file":"sounds/vass/weapons/corseque_fire.ogg","pitch":1.17,"volume":0.10},
 		{"file":"sounds/vass/weapons/corseque_fire.ogg","pitch":1.18,"volume":0.10},
 		{"file":"sounds/vass/weapons/corseque_fire.ogg","pitch":1.19,"volume":0.10},
