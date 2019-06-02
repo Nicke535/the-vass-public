@@ -4,15 +4,19 @@ id,type,text1,text2,text3,notes
 ,,,,,
 vass_schiavona,SHIP,"As much a bragging right as a warship, the infamous Schiavona is the most mobile ship employed by the Vass families. Its fearsome Periodic Breaker system allows it to punch far above what its meager weapon loudout would imply.
 
-Commonly used for hunter-killer duty, the ship is extremely fast and is capable of catching almost all known vessels both in- and out of a combat scenario unprepared. Accel in particular are known to use entire small fleets consisting of nothing but Schiavonas to hunt down those who cross them, earning it the nickname 'Lain's Bloodhound' in certain circles.",,,
+Commonly used for hunter-killer duty, the ship is extremely fast and is capable of catching almost all known vessels both in- and out of a combat scenario unprepared. Accel in particular are known to use entire small fleets consisting of nothing but Schiavonas to hunt down those who cross them, earning it the nickname 'Lain's Bloodhound' in certain circles.
+
+Of particular note is its Periodic Breaker system, often considered the most defining feature of the ship. The device accelerates the ship's timeflow to near-infinite levels, creating the illusion of time standing still for everything outside its sphere of influence. A side-effect of this is an extremely loud, almost tearing sound, which expands far outside the area directly affected by the system. In fact, for reasons still not entirely documented, this sound seems to travel without carrying mediums: it can be heard onboard other vessels despite being several kilometers away with nothing but the emptiness of space inbetween.",,,
 ,,,,,
 # Weapons,,,,,
 ,,,,,
 ,,,,,
-vass_dyrnwun,WEAPON,"WIP WIP WIP.",General,,
+vass_dyrnwyn,WEAPON,"A simplistic but powerful weapon developed as a joint project between Accel and Perturba, the Dyrnwyn is effectively a highly customized Pulse Laser in a sleek housing. A miniature time accelerator is housed in the weapon which, while too power-heavy to activate normally, has been designed to run on the residual energy of nearby chrono-instabilities.
+
+The Dyrnwyn is notable for lacking Torpor components, which is otherwise a staple in Vass engineering in order to protect from nearby timeline manipulation and distortion. Housing a device powered by such distortions meant this was not an option, so the weapon is instead built as rugged and durable as possible to avoid permanent damage. Despite this, however, the weapon is infamous among maintainance engineers for constantly recieving interior damage in ways nearly impossible to predict and needing constant supervision lest the device malfunctions in combat.",General,,
 ,,,,,
 ,,,,,
 # Ship Systems,,,,,
 ,,,,,
 ,,,,,
-vass_periodic_breaker,SHIP_SYSTEM,"WIP WIP WIP.",Utility,Stops time.
+vass_periodic_breaker,SHIP_SYSTEM,"A devestatingly powerful system, this system accelerates the ship's timeflow to such an extent that time may as well be at a standstill for anything outside the device's sphere of influence.",Utility,Stops time.
