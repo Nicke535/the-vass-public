@@ -36,6 +36,11 @@ public class VassTemporalRetreat extends BaseShipSystemScript {
             return;
         }
 
+        //If we are a wreck, we don't run any shipsystem stuff
+        if (ship.isHulk() || ship.isPiece()) {
+            return;
+        }
+
         //We don't really care about anything as long as the game is paused
         if (Global.getCombatEngine().isPaused()) {
             return;
