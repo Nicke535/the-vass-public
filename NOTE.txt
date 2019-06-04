@@ -1,13 +1,11 @@
 Rework again... this time by Gwyv, once I get the time.
 
-HALF-DONE
+--Practically done:
 Makhaira
 Schiavona
-
-NOT DONE
+Curtana
 Estoc
 
-UNCERTAIN FUTURE
-Curtana
+--UNCERTAIN FUTURE
 Katzbalger
 Zhanmadao

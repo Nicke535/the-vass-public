@@ -282,7 +282,7 @@
       ],
       "mount": "TURRET",
       "size": "SMALL",
-      "type": "HYBRID"
+      "type": "UNIVERSAL"
     },
     {
       "angle": 0,
