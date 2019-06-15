@@ -2,13 +2,16 @@ package data.scripts.utils;
 
 import com.fs.starfarer.api.combat.CombatEntityAPI;
 import com.fs.starfarer.api.combat.ShipAPI;
+import com.fs.starfarer.api.util.Misc;
 import org.lazywizard.lazylib.CollisionUtils;
+import org.lazywizard.lazylib.FastTrig;
 import org.lazywizard.lazylib.MathUtils;
 import org.lazywizard.lazylib.VectorUtils;
 import org.lazywizard.lazylib.combat.CombatUtils;
 import org.lwjgl.util.vector.Vector2f;
 
 import java.awt.*;
+import java.util.ArrayList;
 
 public class VassUtils {
     //The families's energy colors (basic is used )
@@ -86,5 +89,26 @@ public class VassUtils {
             }
         }
         return targetShielded;
+    }
+
+
+    //Gets an array of points on a "parabola-esque" arc from startPos to endPos
+    public static ArrayList<Vector2f> getFancyArcPoints (Vector2f startPos, Vector2f endPos, float arcHeight, int pointsDesired) {
+        ArrayList<Vector2f> returnList = new ArrayList<>();
+
+        //Calculates the "constant" values to use for the rest of the function
+        float angleForArc = VectorUtils.getAngle(startPos, endPos) + 90f;
+        Vector2f directionVector = VectorUtils.getDirectionalVector(startPos, endPos);
+        float totalDistance = MathUtils.getDistance(startPos, endPos);
+
+        //Calculates the position of each individual point and adds it to the return list
+        for (float i = 0; i < pointsDesired; i++) {
+            Vector2f pointWithNoOffset = VectorUtils.resize(new Vector2f(directionVector), totalDistance * (i/(pointsDesired-1)));
+            Vector2f pointWithOffset = MathUtils.getPoint(pointWithNoOffset, arcHeight * (float)(FastTrig.sin(Math.PI * (i/(pointsDesired-1)))), angleForArc);
+            returnList.add(pointWithOffset);
+        }
+
+        //Finally, returns our list
+        return returnList;
     }
 }
