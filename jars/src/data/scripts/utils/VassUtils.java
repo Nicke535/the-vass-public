@@ -103,8 +103,8 @@ public class VassUtils {
 
         //Calculates the position of each individual point and adds it to the return list
         for (float i = 0; i < pointsDesired; i++) {
-            Vector2f pointWithNoOffset = Vector2f.add(startPos, VectorUtils.resize(new Vector2f(directionVector), totalDistance * (i/(pointsDesired-1))), Misc.ZERO);
-            Vector2f pointWithOffset = MathUtils.getPoint(pointWithNoOffset, arcHeight * (float)(FastTrig.sin(Math.PI * (i/(pointsDesired-1)))), angleForArc);
+            Vector2f pointWithNoOffset = Vector2f.add(startPos, VectorUtils.resize(new Vector2f(directionVector), totalDistance * (i/(float)(pointsDesired-1))), new Vector2f(0f, 0f));
+            Vector2f pointWithOffset = MathUtils.getPoint(pointWithNoOffset, arcHeight * (float)(FastTrig.sin(Math.PI * (i/(float)(pointsDesired-1)))), angleForArc);
             returnList.add(pointWithOffset);
         }
 
