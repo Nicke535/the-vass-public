@@ -4,10 +4,14 @@ package data.scripts.shipsystems;
 
 import com.fs.starfarer.api.Global;
 import com.fs.starfarer.api.combat.*;
+import com.fs.starfarer.api.graphics.SpriteAPI;
 import com.fs.starfarer.api.impl.combat.BaseShipSystemScript;
+import com.fs.starfarer.api.loading.ProjectileSpawnType;
 import com.fs.starfarer.api.util.Misc;
+import data.scripts.util.MagicRender;
 import data.scripts.utils.VassUtils;
 import org.lazywizard.lazylib.MathUtils;
+import org.lazywizard.lazylib.VectorUtils;
 import org.lazywizard.lazylib.combat.CombatUtils;
 import org.lwjgl.util.vector.Vector2f;
 
@@ -17,13 +21,13 @@ import java.util.List;
 
 public class VassChronoJump extends BaseShipSystemScript {
     //Percieved time mult when charging the system
-    public static final float TIME_MULT_PERCIEVED = 0.25f;
+    public static final float TIME_MULT_PERCIEVED = 0.2f;
 
     //Max AoE of the system (not including the ship's collision radius)
-    public static final float MAX_RANGE = 300f;
+    public static final float MAX_RANGE = 500f;
 
     //How far into the future will each projectile be launched?
-    public static final float TIME_SKIP_AMOUNT = 0.5f;
+    public static final float TIME_SKIP_AMOUNT = 1f;
 
     //The maximum duration the system can be kept active before it is automatically triggered
     public static final float MAX_ACTIVE_DURATION = 0.5f;
@@ -34,49 +38,80 @@ public class VassChronoJump extends BaseShipSystemScript {
     public void apply(MutableShipStatsAPI stats, String id, State state, float effectLevel) {
         ShipAPI ship = null;
         boolean player = false;
-        if (stats.getEntity() instanceof ShipAPI) {
+        CombatEngineAPI engine = Global.getCombatEngine();
+        if (stats.getEntity() instanceof ShipAPI && engine != null) {
             ship = (ShipAPI) stats.getEntity();
-            player = ship == Global.getCombatEngine().getPlayerShip();
+            player = ship == engine.getPlayerShip();
             id = id + "_" + ship.getId();
         } else {
             return;
+        }
+
+        //Lose our one-frame invulnerability
+        if (ship.getCollisionClass() == CollisionClass.NONE && triggeredOnce) {
+            ship.setCollisionClass(CollisionClass.SHIP);
         }
 
         //While active, but not yet triggering, we have a percieved reduced timeflow and see where each projectile will end up
         //after our trigger (only the player experience this)
         if (!state.equals(State.OUT) && effectLevel > 0f) {
             triggeredOnce = false;
-            currentActiveDuration += Global.getCombatEngine().getElapsedInLastFrame() * ship.getMutableStats().getTimeMult().getModifiedValue();
+            currentActiveDuration += engine.getElapsedInLastFrame() * ship.getMutableStats().getTimeMult().getModifiedValue();
 
             if (player) {
-                Global.getCombatEngine().getTimeMult().modifyMult(id, 1f - (1f - TIME_MULT_PERCIEVED) * effectLevel);
+                engine.getTimeMult().modifyMult(id, 1f - (1f - TIME_MULT_PERCIEVED) * effectLevel);
                 List<DamagingProjectileAPI> allProjs = CombatUtils.getProjectilesWithinRange(ship.getLocation(),ship.getCollisionRadius()+MAX_RANGE);
                 allProjs.addAll(CombatUtils.getMissilesWithinRange(ship.getLocation(),ship.getCollisionRadius()+MAX_RANGE));
                 for (DamagingProjectileAPI proj : allProjs) {
                     spawnFutureIndicator(proj);
                 }
             } else {
-                Global.getCombatEngine().getTimeMult().unmodify(id);
+                engine.getTimeMult().unmodify(id);
             }
         }
 
-        //If the system is now being triggered, move all projectiles to their new location (and spawn fancy particles, too)
+        //If the system is now being triggered, make you temporarily untargetable, move all projectiles to their new location, and spawn fancy particles
         else if (!triggeredOnce) {
-            Global.getCombatEngine().getTimeMult().unmodify(id);
+            //First of all, turn you immortal one frame, unmodify the time mult, and register that we've triggered
+            ship.setCollisionClass(CollisionClass.NONE);
+            engine.getTimeMult().unmodify(id);
+            triggeredOnce = true;
+
             List<DamagingProjectileAPI> allProjs = CombatUtils.getProjectilesWithinRange(ship.getLocation(),ship.getCollisionRadius()+MAX_RANGE);
             allProjs.addAll(CombatUtils.getMissilesWithinRange(ship.getLocation(),ship.getCollisionRadius()+MAX_RANGE));
             for (DamagingProjectileAPI proj : allProjs) {
                 //Teleport to the future
                 Vector2f startPos = new Vector2f(proj.getLocation());
-                proj.getLocation().x += proj.getVelocity().x * TIME_SKIP_AMOUNT;
-                proj.getLocation().y += proj.getVelocity().y * TIME_SKIP_AMOUNT;
+                Vector2f destPos = new Vector2f(startPos.x + proj.getVelocity().x * TIME_SKIP_AMOUNT, startPos.y + proj.getVelocity().y * TIME_SKIP_AMOUNT);
+                //BaB has to be moved in a special way, to avoid stretching issues. Notably, they should just dissapear if they have no source
+                if (proj.getSpawnType() == ProjectileSpawnType.BALLISTIC_AS_BEAM) {
+                    if (proj.getWeapon() == null || proj.getSource() == null) {
+                        engine.removeEntity(proj);
+                    } else {
+                        String spawnID = proj.getWeapon().getSpec().getWeaponId();
+                        float spawnRangeReduction = MathUtils.getDistance(proj.getSource().getLocation(), proj.getLocation());
+
+                        //Spawn, while reducing origin ship's range temporarily
+                        proj.getSource().getMutableStats().getEnergyWeaponRangeBonus().modifyFlat("VASS_SUPERTEMP_E_BONUS", -spawnRangeReduction);
+                        proj.getSource().getMutableStats().getBallisticWeaponRangeBonus().modifyFlat("VASS_SUPERTEMP_B_BONUS", -spawnRangeReduction);
+                        engine.spawnProjectile(proj.getSource(), proj.getWeapon(), spawnID, destPos,
+                                proj.getFacing(), proj.getSource().getVelocity());
+                        proj.getSource().getMutableStats().getEnergyWeaponRangeBonus().unmodify("VASS_SUPERTEMP_E_BONUS");
+                        proj.getSource().getMutableStats().getBallisticWeaponRangeBonus().unmodify("VASS_SUPERTEMP_B_BONUS");
+
+                        //Finally, remove the original projectile altogether
+                        engine.removeEntity(proj);
+                    }
+                } else {
+                    proj.getLocation().x = destPos.x;
+                    proj.getLocation().y = destPos.y;
+                }
                 if (proj instanceof MissileAPI) {((MissileAPI) proj).setFlightTime(((MissileAPI) proj).getFlightTime() + TIME_SKIP_AMOUNT);}
 
                 //Spawn a fancy particle trail from current position to future position
-                List<Vector2f> pointsToSpawnAt = VassUtils.getFancyArcPoints(startPos,
-                        proj.getLocation(),
-                        MathUtils.getDistance(startPos, proj.getLocation()) * MathUtils.getRandomNumberInRange(-0.08f, 0.08f),
-                        (int)(MathUtils.getDistance(startPos, proj.getLocation()) * 0.06f));
+                List<Vector2f> pointsToSpawnAt = VassUtils.getFancyArcPoints(startPos, destPos,
+                        MathUtils.getDistance(startPos, destPos) * MathUtils.getRandomNumberInRange(-0.08f, 0.08f),
+                        (int)(MathUtils.getDistance(startPos, destPos) * 0.12));
                 Color colorToUse = new Color(255, 210, 180, Math.min((int)(proj.getDamageAmount()*4f), 255));
                 if (proj.getDamageType() == DamageType.ENERGY) {
                     colorToUse = new Color(170, 150, 255, Math.min((int)(proj.getDamageAmount()*7f), 255));
@@ -87,15 +122,15 @@ public class VassChronoJump extends BaseShipSystemScript {
                 }
 
                 for (Vector2f point : pointsToSpawnAt) {
-                    Global.getCombatEngine().addSmoothParticle(point, new Vector2f(0f, 0f), (float)Math.sqrt(proj.getDamageAmount()*2f),
-                            1f, 0.35f, colorToUse);
+                    engine.addSmoothParticle(point, new Vector2f(0f, 0f), MathUtils.getRandomNumberInRange(0.7f, 1.2f) * (float)Math.sqrt(proj.getDamageAmount()*2f),
+                            1f, MathUtils.getRandomNumberInRange(0.2f, 0.4f), colorToUse);
                 }
             }
         }
 
         //If neither case happens, we still want rid of the percieved time mult
         else {
-            Global.getCombatEngine().getTimeMult().unmodify(id);
+            engine.getTimeMult().unmodify(id);
         }
 
         //If we've passed our maximum active duration, de-activate the system at the end of frame
@@ -139,6 +174,20 @@ public class VassChronoJump extends BaseShipSystemScript {
     //Uility function for spawning a visual indicator indicating a projectile's future. Varies slightly based
     //on damage type and amount
     private void spawnFutureIndicator (DamagingProjectileAPI proj) {
-
+        SpriteAPI spriteToRender = Global.getSettings().getSprite("vass_fx", "projectile_jump_indicator");
+        Vector2f renderLoc = new Vector2f(proj.getLocation().x + proj.getVelocity().x * TIME_SKIP_AMOUNT, proj.getLocation().y + proj.getVelocity().y * TIME_SKIP_AMOUNT);
+        float renderWidth = (float)Math.sqrt(proj.getDamageAmount());
+        float renderLength = proj.getVelocity().length() * 0.3f;
+        Color colorToUse = new Color(255, 210, 180, Math.min((int)(proj.getDamageAmount()*0.5f), 255));
+        if (proj.getDamageType() == DamageType.ENERGY) {
+            colorToUse = new Color(170, 150, 255, Math.min((int)(proj.getDamageAmount()*0.8f), 255));
+        } else if (proj.getDamageType() == DamageType.HIGH_EXPLOSIVE) {
+            colorToUse = new Color(255, 140, 120, Math.min((int)(proj.getDamageAmount()*1.2f), 255));
+        } else if (proj.getDamageType() == DamageType.KINETIC) {
+            colorToUse = new Color(230, 240, 255, Math.min((int)(proj.getDamageAmount()*0.7f), 255));
+        }
+        MagicRender.singleframe(spriteToRender, renderLoc, new Vector2f(renderWidth, renderLength),
+                VectorUtils.getAngle(Misc.ZERO, proj.getVelocity())-90f, colorToUse,
+                true, CombatEngineLayers.ABOVE_SHIPS_LAYER);
     }
 }

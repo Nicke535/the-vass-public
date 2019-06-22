@@ -23,7 +23,7 @@ public class VassUtils {
     private static final float[] COLORS_MULTA_MAX = { 1f, 1f, 1f};
     private static final float[] COLORS_MULTA_MIN = { 0.4f, 0.4f, 0.4f};
 
-    public static enum VASS_FAMILY {
+    public enum VASS_FAMILY {
         ACCEL,
         RECIPRO,
         TORPOR,

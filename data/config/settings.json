@@ -1,6 +1,7 @@
 {
 	"graphics":{
 		"vass_fx":{
+			"projectile_jump_indicator":"graphics/vass/fx/projectile_jump_indicator.png",
 			"chrono_disturber_ringpiece":"graphics/vass/fx/chrono_disturber_ringpiece.png",
 			"jaculum_reversal_image":"graphics/vass/fx/jaculum_reversal_image.png",
 			"projectile_trail_zappy":"graphics/vass/fx/zappy_trail.png",

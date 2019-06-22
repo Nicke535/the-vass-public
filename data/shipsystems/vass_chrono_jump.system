@@ -5,6 +5,7 @@
 	
 	"statsScript":"data.scripts.shipsystems.VassChronoJump",
 	"runScriptWhileIdle":false,  # this means unapply() never gets called
+	"runScriptWhilePaused":true, # only for the player's ship
 	
 	"useSound":"vass_temporal_retreat",
 	"outOfUsesSound":"gun_out_of_ammo",
