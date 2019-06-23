@@ -83,7 +83,7 @@ public class VassShipLightsScript implements EveryFrameWeaponEffectPlugin {
             }
 
             //Multa shipsystem
-            else if (ship.getSystem().getId().contains("vass_isochronal_multilinker")) {
+            else if (ship.getSystem().getId().contains("vass_isochronal_multilinker") || ship.getSystem().getId().contains("vass_chrono_jump")) {
                 colorToUse = VassUtils.getFamilyColor(VassUtils.VASS_FAMILY.MULTA, currentBrightness);
             }
         }

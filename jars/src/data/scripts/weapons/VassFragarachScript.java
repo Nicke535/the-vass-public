@@ -11,16 +11,16 @@ import java.util.List;
 
 public class VassFragarachScript implements EveryFrameWeaponEffectPlugin {
     //How far does the Fragarach apply timeline-gracing?
-    private final static float GRACE_DISTANCE = 135f;
+    public final static float GRACE_DISTANCE = 135f;
 
     //What's the multiplier for damage dealt via timeline-gracing?
-    private final static float GRACE_DAMAGE_MULT = 0.7f;
+    public final static float GRACE_DAMAGE_MULT = 0.7f;
 
     //Keeps track of already-affected projectiles
-    private List<DamagingProjectileAPI> alreadyTriggeredProjectiles = new ArrayList<>();
+    public List<DamagingProjectileAPI> alreadyTriggeredProjectiles = new ArrayList<>();
 
     //Used for clearing out projectiles we no longer need to care about
-    private List<DamagingProjectileAPI> toRemove = new ArrayList<>();
+    public List<DamagingProjectileAPI> toRemove = new ArrayList<>();
 
     @Override
     public void advance(float amount, CombatEngineAPI engine, WeaponAPI weapon) {

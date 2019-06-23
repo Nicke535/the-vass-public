@@ -9,14 +9,16 @@ import com.fs.starfarer.api.impl.combat.BaseShipSystemScript;
 import com.fs.starfarer.api.loading.ProjectileSpawnType;
 import com.fs.starfarer.api.util.Misc;
 import data.scripts.util.MagicRender;
+import data.scripts.utils.VassTimeSplitProjScript;
 import data.scripts.utils.VassUtils;
+import data.scripts.weapons.VassFragarachScript;
+import org.dark.shaders.post.PostProcessShader;
 import org.lazywizard.lazylib.MathUtils;
 import org.lazywizard.lazylib.VectorUtils;
 import org.lazywizard.lazylib.combat.CombatUtils;
 import org.lwjgl.util.vector.Vector2f;
 
 import java.awt.*;
-import java.util.ArrayList;
 import java.util.List;
 
 public class VassChronoJump extends BaseShipSystemScript {
@@ -32,6 +34,9 @@ public class VassChronoJump extends BaseShipSystemScript {
     //The maximum duration the system can be kept active before it is automatically triggered
     public static final float MAX_ACTIVE_DURATION = 0.5f;
 
+    //The minimum duration the system must be kept active before re-activating it
+    public static final float MIN_ACTIVE_DURATION = 0.1f;
+
     private boolean triggeredOnce = false;
     private float currentActiveDuration = 0f;
 
@@ -45,6 +50,11 @@ public class VassChronoJump extends BaseShipSystemScript {
             id = id + "_" + ship.getId();
         } else {
             return;
+        }
+
+        //Ensure our active duration stops once we're deactivating again
+        if (state.equals(State.OUT) || state.equals(State.IDLE) || state.equals(State.COOLDOWN)) {
+            currentActiveDuration = 0f;
         }
 
         //Lose our one-frame invulnerability
@@ -65,7 +75,13 @@ public class VassChronoJump extends BaseShipSystemScript {
                 for (DamagingProjectileAPI proj : allProjs) {
                     spawnFutureIndicator(proj);
                 }
+
+                //Post-processing! Can't let II have all the good toys...
+                PostProcessShader.setSaturation(false, 1f - (0.4f * effectLevel));
+                PostProcessShader.setHueShift(false, MathUtils.getRandomNumberInRange(-15f, 15f) * effectLevel);
+                PostProcessShader.setNoise(false, 0.15f * effectLevel);
             } else {
+                PostProcessShader.resetDefaults();
                 engine.getTimeMult().unmodify(id);
             }
         }
@@ -125,18 +141,24 @@ public class VassChronoJump extends BaseShipSystemScript {
                     engine.addSmoothParticle(point, new Vector2f(0f, 0f), MathUtils.getRandomNumberInRange(0.7f, 1.2f) * (float)Math.sqrt(proj.getDamageAmount()*2f),
                             1f, MathUtils.getRandomNumberInRange(0.2f, 0.4f), colorToUse);
                 }
+
+                //Finally, apply special effects for modded weapons that need it
+                applySpecialEffectOnProj(proj);
+
+                //...and remove our post-processing
+                PostProcessShader.resetDefaults();
             }
         }
 
-        //If neither case happens, we still want rid of the percieved time mult
+        //If neither case happens, we still want rid of the percieved time mult and post-processing
         else {
+            PostProcessShader.resetDefaults();
             engine.getTimeMult().unmodify(id);
         }
 
         //If we've passed our maximum active duration, de-activate the system at the end of frame
         if (currentActiveDuration > MAX_ACTIVE_DURATION) {
             ship.useSystem();
-            currentActiveDuration = 0f;
         }
     }
 
@@ -153,13 +175,20 @@ public class VassChronoJump extends BaseShipSystemScript {
         }
 
         Global.getCombatEngine().getTimeMult().unmodify(id);
+        PostProcessShader.resetDefaults();
     }
 
     public StatusData getStatusData(int index, State state, float effectLevel) {
         if (index == 0) {
             if (!state.equals(State.OUT)) {
-                if (currentActiveDuration < MAX_ACTIVE_DURATION *0.75f) {
-                    return new StatusData("Priming system...", false);
+                if (currentActiveDuration < MIN_ACTIVE_DURATION * 0.25f) {
+                    return new StatusData("Priming system.", true);
+                } else if (currentActiveDuration < MIN_ACTIVE_DURATION * 0.5f) {
+                    return new StatusData("Priming system..", true);
+                } else if (currentActiveDuration < MIN_ACTIVE_DURATION * 0.75f) {
+                    return new StatusData("Priming system...", true);
+                } else if (currentActiveDuration < MAX_ACTIVE_DURATION *0.75f) {
+                    return new StatusData("Priming system...DONE", false);
                 } else {
                     return new StatusData("ENERGY LEVELS CRITICAL", true);
                 }
@@ -170,6 +199,16 @@ public class VassChronoJump extends BaseShipSystemScript {
         return null;
     }
 
+
+    //If the system isn't ready arming yet, don't allow it to be used
+    @Override
+    public boolean isUsable(ShipSystemAPI system, ShipAPI ship) {
+        if (currentActiveDuration < MIN_ACTIVE_DURATION && system.isActive()) {
+            return false;
+        }
+
+        return super.isUsable(system, ship);
+    }
 
     //Uility function for spawning a visual indicator indicating a projectile's future. Varies slightly based
     //on damage type and amount
@@ -189,5 +228,16 @@ public class VassChronoJump extends BaseShipSystemScript {
         MagicRender.singleframe(spriteToRender, renderLoc, new Vector2f(renderWidth, renderLength),
                 VectorUtils.getAngle(Misc.ZERO, proj.getVelocity())-90f, colorToUse,
                 true, CombatEngineLayers.ABOVE_SHIPS_LAYER);
+    }
+
+
+    //Applies special effects for specific modded scripted weapons to ensure compatibility mostly staying
+    private void applySpecialEffectOnProj(DamagingProjectileAPI proj) {
+        if (proj == null || proj.getProjectileSpecId() == null) {
+            return;
+        }
+        if (proj.getProjectileSpecId().equals("vass_fragarach_shot")) {
+            Global.getCombatEngine().addPlugin(new VassTimeSplitProjScript(proj, VassFragarachScript.GRACE_DISTANCE, VassFragarachScript.GRACE_DAMAGE_MULT));
+        }
     }
 }
