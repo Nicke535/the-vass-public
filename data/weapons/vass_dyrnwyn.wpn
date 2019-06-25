@@ -9,9 +9,9 @@
 	"hardpointSprite":"graphics/vass/weapons/dyrnwyn_hardpoint_base.png",
 	"hardpointGlowSprite":"graphics/vass/weapons/dyrnwyn_hardpoint_glow.png",
 	"glowColor":[200,255,30,255],
-	"turretOffsets":[3, 0],
+	"turretOffsets":[9, 0],
 	"turretAngleOffsets":[0],
-	"hardpointOffsets":[5, 0],
+	"hardpointOffsets":[11, 0],
 	"hardpointAngleOffsets":[0],
 	"barrelMode":"ALTERNATING", # or LINKED.  whether barrels fire at the same time or alternate.
 	#"animationType":"GLOW",

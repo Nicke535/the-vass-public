@@ -23,6 +23,12 @@ public class VassDirectedTakeoffBayScript implements EveryFrameWeaponEffectPlugi
     //Long long should we keep moving our fighters (in seconds)?
     private static final float MOVE_DURATION = 0.5f;
 
+    //Long long should we boost our moving our fighters' deceleration to help if they're being deployed the wrong direction (in seconds)?
+    private static final float HELPER_DURATION = 0.65f;
+
+    //Multiplier for fighter deceleration during helper time
+    private static final float HELPER_DECEL_MULT = 3f;
+
     //Store how long we've been tracking each fighter.
     private Map<ShipAPI, Float> timers = new HashMap<>();
 
@@ -96,6 +102,10 @@ public class VassDirectedTakeoffBayScript implements EveryFrameWeaponEffectPlugi
                         * speedBoost;
                 fighter.getVelocity().y = fighter.getMaxSpeed() * (float)FastTrig.sin(Math.toRadians(weapon.getCurrAngle()))
                         * speedBoost;
+            } else if (timers.get(fighter) < HELPER_DECEL_MULT) {
+                fighter.getMutableStats().getDeceleration().modifyMult("VASS_DIRECTED_TAKEOFF_BAY_DECEL_BONUS", HELPER_DECEL_MULT);
+            } else {
+                fighter.getMutableStats().getDeceleration().unmodify("VASS_DIRECTED_TAKEOFF_BAY_DECEL_BONUS");
             }
         }
     }

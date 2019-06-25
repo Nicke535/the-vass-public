@@ -10,9 +10,9 @@
 	"hardpointSprite":"graphics/vass/weapons/fragarach_hardpoint.png",
 	"hardpointGlowSprite":"graphics/vass/weapons/fragarach_hardpoint_glow.png",
 	"glowColor":[80,255,38,255],
-	"turretOffsets":[18, 0],
+	"turretOffsets":[11, 0],
 	"turretAngleOffsets":[0],
-	"hardpointOffsets":[22, 0],
+	"hardpointOffsets":[15, 0],
 	"hardpointAngleOffsets":[0],	
 	"barrelMode":"ALTERNATING", # or LINKED.  whether barrels fire at the same time or alternate.
 	"animationType":"GLOW_AND_FLASH",  # NONE, GLOW, MUZZLE_FLASH, SMOKE

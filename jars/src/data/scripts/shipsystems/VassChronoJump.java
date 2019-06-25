@@ -77,9 +77,9 @@ public class VassChronoJump extends BaseShipSystemScript {
                 }
 
                 //Post-processing! Can't let II have all the good toys...
-                PostProcessShader.setSaturation(false, 1f - (0.4f * effectLevel));
-                PostProcessShader.setHueShift(false, MathUtils.getRandomNumberInRange(-15f, 15f) * effectLevel);
-                PostProcessShader.setNoise(false, 0.15f * effectLevel);
+                PostProcessShader.useExponentialDarkness(false, true);
+                PostProcessShader.useExponentialDesaturation(false, true);
+                PostProcessShader.setContrast(false, 1f + (0.16f*effectLevel));
             } else {
                 PostProcessShader.resetDefaults();
                 engine.getTimeMult().unmodify(id);
@@ -110,12 +110,13 @@ public class VassChronoJump extends BaseShipSystemScript {
                         //Spawn, while reducing origin ship's range temporarily
                         proj.getSource().getMutableStats().getEnergyWeaponRangeBonus().modifyFlat("VASS_SUPERTEMP_E_BONUS", -spawnRangeReduction);
                         proj.getSource().getMutableStats().getBallisticWeaponRangeBonus().modifyFlat("VASS_SUPERTEMP_B_BONUS", -spawnRangeReduction);
-                        engine.spawnProjectile(proj.getSource(), proj.getWeapon(), spawnID, destPos,
+                        DamagingProjectileAPI newProj = (DamagingProjectileAPI) engine.spawnProjectile(proj.getSource(), proj.getWeapon(), spawnID, destPos,
                                 proj.getFacing(), proj.getSource().getVelocity());
                         proj.getSource().getMutableStats().getEnergyWeaponRangeBonus().unmodify("VASS_SUPERTEMP_E_BONUS");
                         proj.getSource().getMutableStats().getBallisticWeaponRangeBonus().unmodify("VASS_SUPERTEMP_B_BONUS");
 
-                        //Finally, remove the original projectile altogether
+                        //Finally, remove the original projectile altogether (and apply special effects on the new projectile)
+                        applySpecialEffectOnProj(newProj);
                         engine.removeEntity(proj);
                     }
                 } else {
