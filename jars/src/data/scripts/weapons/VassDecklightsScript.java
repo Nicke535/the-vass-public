@@ -13,7 +13,6 @@ public class VassDecklightsScript implements EveryFrameWeaponEffectPlugin {
     //The basic color of the lights, when no family's color is used
     private static final float[] COLORS_BASIC = { 0.31f, 1f, 0.15f};
 
-    private float timer = 0f;
     private float currentBrightness = 0f;
 
     @Override
@@ -22,7 +21,6 @@ public class VassDecklightsScript implements EveryFrameWeaponEffectPlugin {
         if (ship == null) {
             return;
         }
-        ShipSystemAPI system = ship.getSystem();
 
         if (ship.isPiece()) {                                       //First: are we a piece? If so, instantly lose all opacity
             currentBrightness = 0f;

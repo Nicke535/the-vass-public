@@ -104,8 +104,10 @@ public class VassDirectedTakeoffBayScript implements EveryFrameWeaponEffectPlugi
                         * speedBoost;
             } else if (timers.get(fighter) < HELPER_DECEL_MULT) {
                 fighter.getMutableStats().getDeceleration().modifyMult("VASS_DIRECTED_TAKEOFF_BAY_DECEL_BONUS", HELPER_DECEL_MULT);
+                fighter.getMutableStats().getAcceleration().modifyMult("VASS_DIRECTED_TAKEOFF_BAY_DECEL_BONUS", HELPER_DECEL_MULT);
             } else {
                 fighter.getMutableStats().getDeceleration().unmodify("VASS_DIRECTED_TAKEOFF_BAY_DECEL_BONUS");
+                fighter.getMutableStats().getAcceleration().unmodify("VASS_DIRECTED_TAKEOFF_BAY_DECEL_BONUS");
             }
         }
     }

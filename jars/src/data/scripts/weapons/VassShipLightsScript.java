@@ -27,8 +27,9 @@ public class VassShipLightsScript implements EveryFrameWeaponEffectPlugin {
             return;
         }
         ShipSystemAPI system = ship.getSystem();
-
-        if (ship.isPiece()) {                                       //First: are we a piece? If so, instantly lose all opacity
+        if (engine == null) {                                       //Refit screen! always use max brightness
+            currentBrightness = 1f;
+        } else if (ship.isPiece()) {                                //First: are we a piece? If so, instantly lose all opacity
             currentBrightness = 0f;
         } else if (ship.isHulk()) {                                 //Second: are we a hulk? In that case, slowly fade out our color
             currentBrightness -= amount * (1f / HULK_FADE_TIME);

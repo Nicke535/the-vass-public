@@ -35,7 +35,7 @@ public class VassExcaliburScript implements EveryFrameWeaponEffectPlugin {
                 alreadyTriggeredProjectiles.add(proj);
 
                 //Add a new plugin that keeps track of the projectile
-                engine.addPlugin(new VassTimeDistortionProjScript(proj, MathUtils.getRandomNumberInRange(0.5f, 1.8f)));
+                engine.addPlugin(new VassTimeDistortionProjScript(proj, MathUtils.getRandomNumberInRange(0.5f, 1.8f), "vass_excalibur_detonation"));
             }
         }
 

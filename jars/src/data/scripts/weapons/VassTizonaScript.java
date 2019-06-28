@@ -36,7 +36,7 @@ public class VassTizonaScript implements EveryFrameWeaponEffectPlugin {
                 alreadyTriggeredProjectiles.add(proj);
 
                 //Add a new plugin that keeps track of the projectile
-                engine.addPlugin(new VassTimeDistortionProjScript(proj, MathUtils.getRandomNumberInRange(0.6f, 1.65f)));
+                engine.addPlugin(new VassTimeDistortionProjScript(proj, MathUtils.getRandomNumberInRange(0.6f, 1.65f), "vass_tizona_detonation"));
 
                 //Re-orient the projectile slightly for a more spread-out look
                 proj.getLocation().set(MathUtils.getRandomPointInCircle(proj.getLocation(), 5f));

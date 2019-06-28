@@ -36,7 +36,7 @@ public class VassTrishulaScript implements EveryFrameWeaponEffectPlugin {
                 alreadyTriggeredProjectiles.add(proj);
 
                 //Add a new plugin that keeps track of the projectile
-                engine.addPlugin(new VassTimeDistortionProjScript(proj, MathUtils.getRandomNumberInRange(0.6f, 1.6f)));
+                engine.addPlugin(new VassTimeDistortionProjScript(proj, MathUtils.getRandomNumberInRange(0.6f, 1.6f), null));
             }
         }
 
