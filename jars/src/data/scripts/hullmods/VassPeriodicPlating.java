@@ -30,7 +30,7 @@ public class VassPeriodicPlating extends BaseHullMod {
     public static final float AFTERIMAGE_THRESHHOLD = 0.1f;
 
     //How much crew percentage is lost from SO, per minute spent in combat. Not actually *applied* in this script, but the data is stored here for use later
-	public static final float CREW_LOST_FRACTION_PER_MINUTE = 0.7f;
+	public static final float CREW_LOST_FRACTION_PER_MINUTE = 0.07f;
 
 	//The time spent in combat by the ship, for calculating SO crew losses. Added here, cleared and used in a campaign script
 	public static Map<String, Float> timeInCombatMap = new HashMap<String, Float>();
