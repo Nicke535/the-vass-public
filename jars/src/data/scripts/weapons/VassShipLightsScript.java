@@ -1,6 +1,7 @@
 package data.scripts.weapons;
 
 import com.fs.starfarer.api.combat.*;
+import com.fs.starfarer.api.util.Misc;
 import data.scripts.utils.VassUtils;
 import org.lazywizard.lazylib.MathUtils;
 
@@ -60,32 +61,33 @@ public class VassShipLightsScript implements EveryFrameWeaponEffectPlugin {
         //Then, actually set the proper opacity that we determined earlier
         weapon.getSprite().setAlphaMult(currentBrightness);
 
-        //Now, set the color to the one we want, and include opacity
+        //Now, set the color to the one we want, and include opacity (also, take safety overrides into account)
         Color colorToUse = new Color(COLORS_BASIC[0], COLORS_BASIC[1], COLORS_BASIC[2], currentBrightness);
+        if (ship.getVariant().hasHullMod("safetyoverrides")) { colorToUse = Misc.interpolateColor(colorToUse, new Color(255, 100, 255, 255), 0.4f); }
         if (system.isActive()) {
             //Accel shipsystem
             if (ship.getSystem().getId().contains("vass_periodic_breaker") || ship.getSystem().getId().contains("vass_periodic_skimmer")) {
-                colorToUse = VassUtils.getFamilyColor(VassUtils.VASS_FAMILY.ACCEL, currentBrightness);
+                colorToUse = VassUtils.getFamilyColor(VassUtils.VASS_FAMILY.ACCEL, currentBrightness, ship.getVariant().hasHullMod("safetyoverrides"));
             }
 
             //Torpor shipsystem
             else if (ship.getSystem().getId().contains("vass_time_haven")) {
-                colorToUse = VassUtils.getFamilyColor(VassUtils.VASS_FAMILY.TORPOR, currentBrightness);
+                colorToUse = VassUtils.getFamilyColor(VassUtils.VASS_FAMILY.TORPOR, currentBrightness, ship.getVariant().hasHullMod("safetyoverrides"));
             }
 
             //Recipro shipsystem
             else if (ship.getSystem().getId().contains("vass_false_future") || ship.getSystem().getId().contains("vass_temporal_recall")) {
-                colorToUse = VassUtils.getFamilyColor(VassUtils.VASS_FAMILY.RECIPRO, currentBrightness);
+                colorToUse = VassUtils.getFamilyColor(VassUtils.VASS_FAMILY.RECIPRO, currentBrightness, ship.getVariant().hasHullMod("safetyoverrides"));
             }
 
             //Perturba shipsystem
             else if (ship.getSystem().getId().contains("vass_chrono_disturber")) {
-                colorToUse = VassUtils.getFamilyColor(VassUtils.VASS_FAMILY.PERTURBA, currentBrightness);
+                colorToUse = VassUtils.getFamilyColor(VassUtils.VASS_FAMILY.PERTURBA, currentBrightness, ship.getVariant().hasHullMod("safetyoverrides"));
             }
 
             //Multa shipsystem
             else if (ship.getSystem().getId().contains("vass_isochronal_multilinker") || ship.getSystem().getId().contains("vass_chrono_jump")) {
-                colorToUse = VassUtils.getFamilyColor(VassUtils.VASS_FAMILY.MULTA, currentBrightness);
+                colorToUse = VassUtils.getFamilyColor(VassUtils.VASS_FAMILY.MULTA, currentBrightness, ship.getVariant().hasHullMod("safetyoverrides"));
             }
         }
 
