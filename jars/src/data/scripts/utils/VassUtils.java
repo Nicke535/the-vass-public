@@ -33,36 +33,23 @@ public class VassUtils {
 
     //Function for getting a faction's color, with a certain opacity
     public static Color getFamilyColor (VASS_FAMILY family, float opacity) {
-        return getFamilyColor(family, opacity, false);
-    }
-    public static Color getFamilyColor (VASS_FAMILY family, float opacity, boolean withSafetyOverrides) {
-        Color color = null;
-
-        if (family == VASS_FAMILY.ACCEL) {
-            color = new Color(COLORS_ACCEL[0], COLORS_ACCEL[1], COLORS_ACCEL[2], opacity);
-        } else if (family == VASS_FAMILY.RECIPRO) {
-            color = new Color(COLORS_RECIPRO[0], COLORS_RECIPRO[1], COLORS_RECIPRO[2], opacity);
-        } else if (family == VASS_FAMILY.TORPOR) {
-            color = new Color(COLORS_TORPOR[0], COLORS_TORPOR[1], COLORS_TORPOR[2], opacity);
-        } else if (family == VASS_FAMILY.PERTURBA) {
-            color = new Color(COLORS_PERTURBA[0], COLORS_PERTURBA[1], COLORS_PERTURBA[2], opacity);
-        } else if (family == VASS_FAMILY.MULTA) {
-            color = new Color(MathUtils.getRandomNumberInRange(COLORS_MULTA_MIN[0], COLORS_MULTA_MAX[0]),
-                    MathUtils.getRandomNumberInRange(COLORS_MULTA_MIN[1], COLORS_MULTA_MAX[1]),
-                    MathUtils.getRandomNumberInRange(COLORS_MULTA_MIN[2], COLORS_MULTA_MAX[2]), opacity);
+        switch (family) {
+            case ACCEL:
+                return new Color(COLORS_ACCEL[0], COLORS_ACCEL[1], COLORS_ACCEL[2], opacity);
+            case RECIPRO:
+                return new Color(COLORS_RECIPRO[0], COLORS_RECIPRO[1], COLORS_RECIPRO[2], opacity);
+            case TORPOR:
+                return new Color(COLORS_TORPOR[0], COLORS_TORPOR[1], COLORS_TORPOR[2], opacity);
+            case PERTURBA:
+                return new Color(COLORS_PERTURBA[0], COLORS_PERTURBA[1], COLORS_PERTURBA[2], opacity);
+            case MULTA:
+                return new Color(MathUtils.getRandomNumberInRange(COLORS_MULTA_MIN[0], COLORS_MULTA_MAX[0]),
+                        MathUtils.getRandomNumberInRange(COLORS_MULTA_MIN[1], COLORS_MULTA_MAX[1]),
+                        MathUtils.getRandomNumberInRange(COLORS_MULTA_MIN[2], COLORS_MULTA_MAX[2]), opacity);
         }
 
         //In case of something going... wrong, we return a horrendous pink since it's easy to see against normal Vass colors
-        if (color == null) {
-            return new Color(1f, 0f, 1f, opacity);
-        }
-
-        //If we wanted safety overrides, we blend the color with the SO color scheme, otherwise we juts return the color outright
-        if (withSafetyOverrides) {
-            return (Misc.interpolateColor(color ,new Color(255,100,255, 255), 0.4f));
-        } else {
-            return color;
-        }
+        return new Color(1f, 0.4f, 1f, opacity);
     }
 
 
