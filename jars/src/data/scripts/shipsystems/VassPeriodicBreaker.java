@@ -10,6 +10,7 @@ import org.dark.shaders.distortion.RippleDistortion;
 import com.fs.starfarer.api.Global;
 import com.fs.starfarer.api.combat.*;
 import com.fs.starfarer.api.impl.combat.BaseShipSystemScript;
+import org.dark.shaders.post.PostProcessShader;
 import org.lazywizard.lazylib.MathUtils;
 import org.lwjgl.util.vector.Vector2f;
 
@@ -88,6 +89,36 @@ public class VassPeriodicBreaker extends BaseShipSystemScript {
 		//Changes engine color
         ship.getEngineController().fadeToOtherColor(this, JITTER_COLOR, new Color(0,0,0,0), 1.0f, 1.0f);
         ship.getEngineController().extendFlame(this, -0.25f, -0.25f, -0.25f);
+
+        //NEW: adds fancy post-process effects
+        if (effectLevel > 0f) {
+            PostProcessShader.setHueShift(false, 360f * (float)Math.sqrt(Math.sqrt(effectLevel)));
+            PostProcessShader.setRedHSL(false,
+                    0f,
+                    1f + 0.3f*effectLevel,
+                    1f);
+            PostProcessShader.setYellowHSL(false,
+                    -0.12f * effectLevel,
+                    1f - 0.2f*effectLevel,
+                    1f);
+            PostProcessShader.setGreenHSL(false,
+                    0.12f * effectLevel,
+                    1f - 0.2f*effectLevel,
+                    1f);
+            PostProcessShader.setTealHSL(false,
+                    0f,
+                    1f + 0.3f*effectLevel,
+                    1f);
+            PostProcessShader.setBlueHSL(false,
+                    -0.12f * effectLevel,
+                    1f - 0.2f*effectLevel,
+                    1f);
+            PostProcessShader.setMagentaHSL(false,
+                    0.12f * effectLevel,
+                    1f - 0.2f*effectLevel,
+                    1f);
+            PostProcessShader.setNoise(false, 0.25f * effectLevel);
+        }
 		
 		//Adjusts the size of our lightning and distortions to their correct value
 		float actualElectricSize = ELECTRIC_SIZE;
@@ -190,6 +221,9 @@ public class VassPeriodicBreaker extends BaseShipSystemScript {
 
 		stats.getBeamWeaponFluxCostMult().unmodify(id);
 		stats.getBeamWeaponDamageMult().unmodify(id);
+
+        //NEW: adds fancy post-process effects
+        PostProcessShader.setHueShift(false, 0f);
     
 		HAS_FIRED_LIGHTNING = false;
     }
