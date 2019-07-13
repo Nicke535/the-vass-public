@@ -117,7 +117,13 @@ public class VassPeriodicBreaker extends BaseShipSystemScript {
                     0.12f * effectLevel,
                     1f - 0.2f*effectLevel,
                     1f);
-            PostProcessShader.setNoise(false, 0.25f * effectLevel);
+            float firstNoiseLevel = 0f;
+            if ((float)Math.sqrt(Math.sqrt(effectLevel)) < 0.1f) {
+                firstNoiseLevel = (float)Math.sqrt(Math.sqrt(effectLevel)) * 0.7f;
+            } else {
+                firstNoiseLevel = 0.7f * (1.1f - (float)Math.sqrt(Math.sqrt(effectLevel)));
+            }
+            PostProcessShader.setNoise(false, firstNoiseLevel + 0.15f * effectLevel);
         }
 		
 		//Adjusts the size of our lightning and distortions to their correct value
