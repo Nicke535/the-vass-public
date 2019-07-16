@@ -39,6 +39,7 @@ public class VassChronoJump extends BaseShipSystemScript {
 
     private boolean triggeredOnce = false;
     private float currentActiveDuration = 0f;
+    private boolean hasResetPostProcess = true;
 
     public void apply(MutableShipStatsAPI stats, String id, State state, float effectLevel) {
         ShipAPI ship = null;
@@ -77,11 +78,15 @@ public class VassChronoJump extends BaseShipSystemScript {
                 }
 
                 //Post-processing! Can't let II have all the good toys...
+                hasResetPostProcess = false;
                 PostProcessShader.useExponentialDarkness(false, true);
                 PostProcessShader.useExponentialDesaturation(false, true);
                 PostProcessShader.setContrast(false, 1f + (0.16f*effectLevel));
             } else {
-                PostProcessShader.resetDefaults();
+                if (!hasResetPostProcess) {
+                    PostProcessShader.resetDefaults();
+                    hasResetPostProcess = true;
+                }
                 engine.getTimeMult().unmodify(id);
             }
         }
@@ -147,13 +152,19 @@ public class VassChronoJump extends BaseShipSystemScript {
                 applySpecialEffectOnProj(proj);
 
                 //...and remove our post-processing
-                PostProcessShader.resetDefaults();
+                if (!hasResetPostProcess) {
+                    PostProcessShader.resetDefaults();
+                    hasResetPostProcess = true;
+                }
             }
         }
 
         //If neither case happens, we still want rid of the percieved time mult and post-processing
         else {
-            PostProcessShader.resetDefaults();
+            if (!hasResetPostProcess) {
+                PostProcessShader.resetDefaults();
+                hasResetPostProcess = true;
+            }
             engine.getTimeMult().unmodify(id);
         }
 
@@ -176,7 +187,10 @@ public class VassChronoJump extends BaseShipSystemScript {
         }
 
         Global.getCombatEngine().getTimeMult().unmodify(id);
-        PostProcessShader.resetDefaults();
+        if (!hasResetPostProcess) {
+            PostProcessShader.resetDefaults();
+            hasResetPostProcess = true;
+        }
     }
 
     public StatusData getStatusData(int index, State state, float effectLevel) {

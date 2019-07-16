@@ -37,6 +37,7 @@ public class VassPeriodicBreaker extends BaseShipSystemScript {
 
 
     public boolean HAS_FIRED_LIGHTNING = false;
+    private boolean hasResetPostProcess = true;
 
     public void apply(MutableShipStatsAPI stats, String id, State state, float effectLevel) {
         ShipAPI ship = null;
@@ -90,8 +91,9 @@ public class VassPeriodicBreaker extends BaseShipSystemScript {
         ship.getEngineController().fadeToOtherColor(this, JITTER_COLOR, new Color(0,0,0,0), 1.0f, 1.0f);
         ship.getEngineController().extendFlame(this, -0.25f, -0.25f, -0.25f);
 
-        //NEW: adds fancy post-process effects
-        if (effectLevel > 0f) {
+        //NEW: adds fancy post-process effects (if we are the player)
+        if (effectLevel > 0f && player) {
+            hasResetPostProcess = false;
             PostProcessShader.setHueShift(false, 360f * (float)Math.sqrt(Math.sqrt(effectLevel)));
             PostProcessShader.setRedHSL(false,
                     0f,
@@ -124,6 +126,9 @@ public class VassPeriodicBreaker extends BaseShipSystemScript {
                 firstNoiseLevel = 0.7f * (1.1f - (float)Math.sqrt(Math.sqrt(effectLevel)));
             }
             PostProcessShader.setNoise(false, firstNoiseLevel + 0.15f * effectLevel);
+        } else if (!hasResetPostProcess) {
+            PostProcessShader.resetDefaults();
+            hasResetPostProcess = true;
         }
 		
 		//Adjusts the size of our lightning and distortions to their correct value
@@ -228,8 +233,11 @@ public class VassPeriodicBreaker extends BaseShipSystemScript {
 		stats.getBeamWeaponFluxCostMult().unmodify(id);
 		stats.getBeamWeaponDamageMult().unmodify(id);
 
-        //NEW: adds fancy post-process effects
-        PostProcessShader.setHueShift(false, 0f);
+        //NEW: removes the fancy post-process effects
+        if (!hasResetPostProcess) {
+            PostProcessShader.resetDefaults();
+            hasResetPostProcess = true;
+        }
     
 		HAS_FIRED_LIGHTNING = false;
     }
