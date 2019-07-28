@@ -85,9 +85,9 @@ public class VassChronoJumpAI implements ShipSystemAIScript {
 
     //advance() code if we're armed
     private void advanceArmed(float amount, Vector2f missileDangerDir, Vector2f collisionDangerDir, ShipAPI target) {
-        //If we are unarmed, we check incoming "avoided" damage for the last three intervals.
-        armTracker.advance(amount);
-        if (armTracker.intervalElapsed()) {
+        //If we are armed, we check incoming "avoided" damage for the last three intervals.
+        tracker.advance(amount);
+        if (tracker.intervalElapsed()) {
             float currentFrameScore = getDamageScore();
 
             // If our current interval is the worst of our last three intervals, trigger: we're most likely going to get even worse results the next interval check
