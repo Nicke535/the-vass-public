@@ -1,0 +1,30 @@
+{
+	"id":"vass_cyllel_farchog",  # this id must match what's in the spreadsheet
+	"specClass":"projectile",
+	"type":"ENERGY",
+	"size":"MEDIUM",
+	"everyFrameEffect":"data.scripts.weapons.VassCyllelFarchogScript",	
+	"turretSprite":"graphics/vass/weapons/fragarach_turret.png",
+	"turretGlowSprite":"graphics/vass/weapons/fragarach_turret_glow.png",
+	"hardpointSprite":"graphics/vass/weapons/fragarach_hardpoint.png",
+	"hardpointGlowSprite":"graphics/vass/weapons/fragarach_hardpoint_glow.png",
+	"glowColor":[200,255,30,255],
+	"turretOffsets":[12, 9, 12, -9, 8, 11, 8, -11, 3, 12, 3, -12],
+	"turretAngleOffsets":[15, -15, 22, -22, 30, -30],
+	"hardpointOffsets":[16, 9, 16, -9, 12, 11, 12, -11, 7, 12, 7, -12],
+	"hardpointAngleOffsets":[15, -15, 22, -22, 30, -30],
+	"barrelMode":"ALTERNATING", # or LINKED.  whether barrels fire at the same time or alternate.
+	#"animationType":"GLOW",
+	"animationType":"GLOW_AND_FLASH",
+	"muzzleFlashSpec":{"length":17.0,   # only used if animationType = MUZZLE_FLASH
+					   "spread":7.0,
+					   "particleSizeMin":8.0,
+					   "particleSizeRange":11.0,
+					   "particleDuration":0.12,
+					   "particleCount":9,
+					   "particleColor":[200,255,30,180]},	
+	"autocharge":true,  # whether the weapon will continue charging and fire if the LMB is tapped instead of held
+	"requiresFullCharge":false,  # for pulse weapons - whether the weapon will fire at a lower strength partial charge
+	"projectileSpecId":"vass_dyrnwyn_shot",  # projectile that will be fired
+	"fireSoundTwo":"vass_dyrnwyn_fire",
+}
