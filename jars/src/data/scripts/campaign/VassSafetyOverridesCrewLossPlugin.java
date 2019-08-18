@@ -7,6 +7,7 @@ import com.fs.starfarer.api.campaign.FactionAPI;
 import com.fs.starfarer.api.campaign.LocationAPI;
 import com.fs.starfarer.api.campaign.SectorAPI;
 import com.fs.starfarer.api.campaign.SectorEntityToken;
+import com.fs.starfarer.api.campaign.comm.IntelInfoPlugin;
 import com.fs.starfarer.api.campaign.econ.MarketAPI;
 import com.fs.starfarer.api.campaign.econ.MarketConditionAPI;
 import com.fs.starfarer.api.fleet.FleetMemberAPI;
@@ -23,7 +24,7 @@ import java.util.Map;
 
 public class VassSafetyOverridesCrewLossPlugin implements EveryFrameScript {
 
-    IntervalUtil interval = new IntervalUtil(1f, 2f);
+    IntervalUtil interval = new IntervalUtil(0.5f, 1.2f);
 
     @Override
     public void advance( float amount ) {
@@ -91,8 +92,8 @@ public class VassSafetyOverridesCrewLossPlugin implements EveryFrameScript {
                 if (crewLossForFlavorText != 1) {
                     flavorText += "s";
                 }
-                flavorText += " being rendered unfit for ship-bound deployment in the last battle.";
-                sector.getCampaignUI().addMessage(flavorText);
+                flavorText += " being rendered unfit for ship-bound deployment during the last battle.";
+                sector.getCampaignUI().addMessage(flavorText, Misc.getTextColor(), "Lack of safety protocols", "unfit for ship-bound deployment", Misc.getNegativeHighlightColor(), Misc.getHighlightColor());
             }
         }
     }
