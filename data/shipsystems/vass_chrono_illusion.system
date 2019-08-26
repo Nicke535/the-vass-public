@@ -1,0 +1,10 @@
+{
+	"id":"vass_chrono_illusion",
+	"type":"WEAPON",
+	"aiType":"FLARE_JAMMER",
+	
+	"statsScript":"data.scripts.shipsystems.VassChronoIllusion",
+	
+	"weaponDataId":"vass_illusion_flarelauncher",
+	"outOfUsesSound":"gun_out_of_ammo",
+}

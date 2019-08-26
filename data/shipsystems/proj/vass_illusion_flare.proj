@@ -1,0 +1,42 @@
+{
+	"id":"vass_illusion_flare",
+	"specClass":"missile",	
+	"missileType":"FLARE_JAMMER",
+	"sprite":"",
+	"size":[4,4],	
+	"center":[2,2],
+	"collisionRadius":3,
+	"collisionClass":"FIGHTER",
+	"explosionColor":[255,125,25,0],  # purely visual, will get a white additively blended core on top of this color
+	"explosionRadius":60, # purely visual
+	"flameoutTime":1, # total time from flameout to full fadeout
+	"noEngineGlowTime":0.5, # time spent without the engine glow being rendered
+	"fadeTime":0.5, # fadeout duration
+	"behaviorSpec":{"behavior":"CUSTOM",
+					"effectRange":400,
+					"effectChance":0.3,
+				   },	
+	"engineSpec":{"turnAcc":600,
+				  "turnRate":400,
+				  "acc":750,
+				  "dec":0},
+	"engineSlots":[
+					{"id":"ES1",
+					"loc":[0, 0],
+				    "style":"CUSTOM",
+					"styleSpec":{
+						"engineColor":[255,125,25,0],
+						"contrailParticleSizeMult":8,
+						"contrailParticleDuration":2,
+						"contrailParticleFinalSizeMult":0.5,
+						"contrailMaxSpeedMult":0.1f,
+						"contrailAngularVelocityMult":0f,
+						"contrailColor":[55,55,55,0],
+						
+						"type":"SMOKE" # GLOW or SMOKE
+					},
+				    "width":1.0,
+				    "length":1.0,
+				    "angle":180.0},
+				   ]
+}

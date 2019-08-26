@@ -1,0 +1,21 @@
+{
+  "displayName": "Fighter",
+  "fluxCapacitors": 0,
+  "fluxVents": 0,
+  "goalVariant": true,
+  "hullId": "vass_katzbalger",
+  "hullMods": [],
+  "permaMods": [],
+  "quality": 0,
+  "variantId": "vass_katzbalger_variant",
+  "weaponGroups": [
+    {
+      "autofire": false,
+      "mode": "LINKED",
+      "weapons": {
+        "WS0002": "vass_dyrnwyn"
+      }
+    }
+  ],
+  "wings": []
+}

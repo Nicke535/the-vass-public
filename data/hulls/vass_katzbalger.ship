@@ -1,0 +1,138 @@
+{
+  "bounds": [
+    -21.5,
+    12,
+    -12,
+    19.5,
+    9,
+    23,
+    22,
+    19,
+    6,
+    15.5,
+    11.5,
+    -0,
+    6,
+    -15.5,
+    22,
+    -19,
+    9,
+    -23,
+    -12,
+    -19.5,
+    -21.5,
+    -12
+  ],
+  "builtInMods": [
+    "vass_periodic_plating",
+    "no_weapon_flux",
+    "advancedshieldemitter"
+  ],
+  "builtInWeapons": {
+    "WS0001": "vass_deco_katzbalger_lights",
+    "WS0002": "vass_dyrnwyn"
+  },
+  "builtInWings": [],
+  "center": [
+    25,
+    24.5
+  ],
+  "collisionRadius": 40,
+  "engineSlots": [
+    {
+      "angle": 180,
+      "contrailSize": 3,
+      "length": 35,
+      "location": [
+        -20.5,
+        7
+      ],
+      "style": "VASS_ENGINE_FAR",
+      "width": 3
+    },
+    {
+      "angle": -180,
+      "contrailSize": 3,
+      "length": 35,
+      "location": [
+        -20.5,
+        -7
+      ],
+      "style": "VASS_ENGINE_FAR",
+      "width": 3
+    },
+    {
+      "angle": -180,
+      "contrailSize": 6,
+      "length": 20,
+      "location": [
+        -19.5,
+        -7
+      ],
+      "style": "VASS_ENGINE_NEAR",
+      "width": 6
+    },
+    {
+      "angle": 180,
+      "contrailSize": 6,
+      "length": 20,
+      "location": [
+        -19.5,
+        7
+      ],
+      "style": "VASS_ENGINE_NEAR",
+      "width": 6
+    }
+  ],
+  "height": 49,
+  "hullId": "vass_katzbalger",
+  "hullName": "Katzbalger",
+  "hullSize": "FIGHTER",
+  "shieldCenter": [
+    3.5,
+    -0
+  ],
+  "shieldRadius": 35,
+  "spriteName": "graphics/vass/ships/katzbalger.png",
+  "style": "VASS_HULL",
+  "viewOffset": 0,
+  "weaponSlots": [
+    {
+      "angle": 0,
+      "arc": 0,
+      "id": "WS0001",
+      "locations": [
+        0,
+        -0
+      ],
+      "mount": "TURRET",
+      "size": "SMALL",
+      "type": "DECORATIVE"
+    },
+    {
+      "angle": 0,
+      "arc": 360,
+      "id": "WS0002",
+      "locations": [
+        2.5,
+        -0
+      ],
+      "mount": "TURRET",
+      "size": "SMALL",
+      "type": "BUILT_IN"
+    },
+    {
+      "angle": 0,
+      "arc": 360,
+      "id": "WS0003",
+      "locations": [
+        0.5,
+        -0
+      ],
+      "mount": "HIDDEN",
+      "size": "SMALL",
+      "type": "SYSTEM"
+    }
+  ],
+  "width": 50
+}
