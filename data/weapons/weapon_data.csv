@@ -21,3 +21,4 @@ Katzbalger Lights,vass_deco_katzbalger_lights,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,SYSTE
 Curtana Forward Launch Bay,vass_curtanabay_forward,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,SYSTEM,,,,,,,,,,,,,,,
 Curtana Back Landing Bay,vass_curtanabay_back,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,SYSTEM,,,,,,,,,,,,,,,
 Illusion Projector,vass_illusion_flarelauncher,,,,600,,5,1,,,,,,,ENERGY,0,0,0,0.1,2,0.2,120,120,0,0,,150,300,8,300,SYSTEM,,,,,,,,,,,,,,,
+Dyrnwyn Blaster (Illusion),vass_dyrnwyn_fake,5,0.1,800,500,,0,,0,50,6,,,,ENERGY,1,,0,0.4,,,1,3,0.3,5,,1000,,,,,SYSTEM,,,,,,,,,,,,,,
