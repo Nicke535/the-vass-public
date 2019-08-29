@@ -1,0 +1,21 @@
+{
+	"id":"vass_asi",  # this id must match what's in the spreadsheet
+	"specClass":"projectile",
+	"type":"BALLISTIC",
+	"size":"SMALL",
+	"everyFrameEffect":"data.scripts.weapons.VassAsiScript",
+	"turretSprite":"graphics/vass/weapons/placeholder_turret_small.png",
+	"turretGlowSprite":"graphics/weapons/railgun_turret_glow.png",
+	"hardpointSprite":"graphics/vass/weapons/placeholder_hardpoint_small.png",
+	"hardpointGlowSprite":"graphics/weapons/railgun_hardpoint_glow.png",
+	"glowColor":[26,102,255,255],
+	"turretOffsets":[-2, 0],
+	"turretAngleOffsets":[0],
+	"hardpointOffsets":[-2, 0],
+	"hardpointAngleOffsets":[0],
+	"barrelMode":"ALTERNATING", # or LINKED.  whether barrels fire at the same time or alternate.
+	"animationType":"GLOW",
+	"autocharge":true,  # whether the weapon will continue charging and fire if the LMB is tapped instead of held
+	"projectileSpecId":"vass_asi_shot",  # projectile that will be fired
+	"fireSoundTwo":"railgun_fire",
+}

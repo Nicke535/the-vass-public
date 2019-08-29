@@ -37,6 +37,14 @@ public class VassTrishulaScript implements EveryFrameWeaponEffectPlugin {
 
                 //Add a new plugin that keeps track of the projectile
                 engine.addPlugin(new VassTimeDistortionProjScript(proj, MathUtils.getRandomNumberInRange(0.6f, 1.6f), null));
+
+                //Re-orient the projectile slightly for a more spread-out look
+                proj.getLocation().set(MathUtils.getRandomPointInCircle(proj.getLocation(), 5f));
+
+                //Randomly decrease the projectile's lifetime slightly (if it's a missile)
+                if (proj instanceof MissileAPI) {
+                    ((MissileAPI) proj).setFlightTime(MathUtils.getRandomNumberInRange(0f, 0.2f));
+                }
             }
         }
 

@@ -1,4 +1,5 @@
-//By Nicke535, automatically reduces relations with certain factions should they ever get above an allowed level
+//By Nicke535
+//Brutally punishes the player (or rather, their crew) when using Vass tech without reading the manual first
 package data.scripts.campaign;
 
 import com.fs.starfarer.api.EveryFrameScript;

@@ -1,12 +1,14 @@
+//By Nicke535
+//Accelerates a projectile after a certain time, and spawns a trail
+//Only works on non-ballistic-as-beam
 package data.scripts.weapons;
 
 import com.fs.starfarer.api.Global;
 import com.fs.starfarer.api.combat.*;
 import com.fs.starfarer.api.input.InputEventAPI;
+import com.fs.starfarer.api.util.Misc;
 import data.scripts.plugins.MagicTrailPlugin;
-import data.scripts.utils.VassTimeDistortionProjScript;
 import data.scripts.utils.VassUtils;
-import org.lazywizard.lazylib.MathUtils;
 import org.lazywizard.lazylib.combat.CombatUtils;
 import org.lwjgl.util.vector.Vector2f;
 
@@ -41,15 +43,7 @@ public class VassAsiScript implements EveryFrameWeaponEffectPlugin {
                 alreadyTriggeredProjectiles.add(proj);
 
                 //Add a new plugin that keeps track of the projectile
-                engine.addPlugin(new VassTimeDistortionProjScript(proj, MathUtils.getRandomNumberInRange(0.6f, 1.65f), "vass_tizona_detonation"));
-
-                //Re-orient the projectile slightly for a more spread-out look
-                proj.getLocation().set(MathUtils.getRandomPointInCircle(proj.getLocation(), 5f));
-
-                //Randomly decrease the projectile's lifetime slightly (if it's a missile)
-                if (proj instanceof MissileAPI) {
-                    ((MissileAPI) proj).setFlightTime(MathUtils.getRandomNumberInRange(0f, 0.2f));
-                }
+                engine.addPlugin(new AsiTrailAccelPlugin(proj));
             }
         }
 
@@ -70,41 +64,53 @@ public class VassAsiScript implements EveryFrameWeaponEffectPlugin {
         boolean hasAccelerated = false;
         float timer = 0f;
         float estimatedAccelPoint;
-        Vector2f currentOffsetVelocity;
+        Vector2f offsetVelocity;
 
         AsiTrailAccelPlugin (DamagingProjectileAPI proj) {
             this.proj = proj;
             currentTrailID = MagicTrailPlugin.getUniqueID();
-            currentOffsetVelocity = proj.getSource().getVelocity();
-            estimatedAccelPoint = (proj.getWeapon().getRange() / proj.getWeapon().getProjectileSpeed()) * 0.2f;
-            proj.getVelocity().x *= 0.2f;
-            proj.getVelocity().y *= 0.2f;
-            currentOffsetVelocity.x *= 0.2f;
-            currentOffsetVelocity.y *= 0.2f;
+            offsetVelocity = new Vector2f(proj.getSource().getVelocity());
+            estimatedAccelPoint = (proj.getWeapon().getRange() / proj.getWeapon().getProjectileSpeed()) * 0.7f;
+            proj.getVelocity().x -= offsetVelocity.x;
+            proj.getVelocity().x *= 0.4f;
+            proj.getVelocity().x += offsetVelocity.x;
+            proj.getVelocity().y -= offsetVelocity.y;
+            proj.getVelocity().y *= 0.4f;
+            proj.getVelocity().y += offsetVelocity.y;
         }
 
         @Override
         public void advance(float amount, List<InputEventAPI> events) {
             //Advance our timer
-            timer += amount;
-
-            if (timer > estimatedAccelPoint && !hasAccelerated) {
-                proj.getVelocity().x *= 6f;
-                proj.getVelocity().y *= 6f;
-                currentOffsetVelocity.x *= 6f;
-                currentOffsetVelocity.y *= 6f;
-                hasAccelerated = true;
+            timer += Global.getCombatEngine().isPaused() ? 0f : amount;
+            if (proj.didDamage() || !Global.getCombatEngine().isEntityInPlay(proj)) {
+                Global.getCombatEngine().removePlugin(this);
             }
 
-            //Adds a new trail piece to the projectile: do this semi-randomly at low high global time mult
+            //If past our accel point, *accelerate!*
+            if (timer > estimatedAccelPoint && !hasAccelerated) {
+                proj.getVelocity().x -= offsetVelocity.x;
+                proj.getVelocity().x *= 6f;
+                proj.getVelocity().x += offsetVelocity.x;
+                proj.getVelocity().y -= offsetVelocity.y;
+                proj.getVelocity().y *= 6f;
+                proj.getVelocity().y += offsetVelocity.y;
+                currentTrailID = MagicTrailPlugin.getUniqueID();
+                hasAccelerated = true;
+
+                //Also play sound, because people love sound cues!
+                Global.getSoundPlayer().playSound("vass_asi_acceleration", 1f, 1f, new Vector2f(proj.getLocation()), Misc.ZERO);
+            }
+
+            //Adds a new trail piece to the projectile: do this semi-randomly at low global time mult
             if (Math.random() < Math.sqrt(Global.getCombatEngine().getTimeMult().getModifiedValue())) {
                 Color colorToUse = VassUtils.getFamilyColor(VassUtils.VASS_FAMILY.TORPOR, 1f);
                 if (hasAccelerated) {
                     colorToUse = VassUtils.getFamilyColor(VassUtils.VASS_FAMILY.ACCEL, 1f);
                 }
                 MagicTrailPlugin.AddTrailMemberSimple(proj, currentTrailID, Global.getSettings().getSprite("vass_fx", "projectile_trail_zappy"),
-                        proj.getLocation(), 0f, proj.getFacing(), 5f, 3f, colorToUse, 0.3f, 0.3f,
-                        true, currentOffsetVelocity, CombatEngineLayers.ABOVE_SHIPS_AND_MISSILES_LAYER);
+                        proj.getLocation(), 0f, proj.getFacing(), 10f, 6f, colorToUse, 0.3f, 0.3f,
+                        true, offsetVelocity, CombatEngineLayers.ABOVE_SHIPS_AND_MISSILES_LAYER);
             }
         }
     }

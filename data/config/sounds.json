@@ -66,6 +66,13 @@
 		{"file":"sounds/vass/weapons/tizona_detonation_test.ogg","pitch":1.08,"volume":0.32},
 	],
 	
+	"vass_asi_acceleration":[
+		{"file":"sounds/vass/weapons/asi_acceleration_test.ogg","pitch":0.80,"volume":0.18},
+		{"file":"sounds/vass/weapons/asi_acceleration_test.ogg","pitch":0.82,"volume":0.18},
+		{"file":"sounds/vass/weapons/asi_acceleration_test.ogg","pitch":0.84,"volume":0.18},
+		{"file":"sounds/vass/weapons/asi_acceleration_test.ogg","pitch":0.86,"volume":0.18},
+		{"file":"sounds/vass/weapons/asi_acceleration_test.ogg","pitch":0.88,"volume":0.18},
+	],
 
 	"vass_fragarach_fire":[
 		{"file":"sounds/vass/weapons/fragarach_fire_mono.ogg","pitch":0.96,"volume":0.35},

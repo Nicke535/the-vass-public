@@ -1,0 +1,16 @@
+{
+	"id":"vass_asi_shot",
+	"specClass":"projectile",
+	"spawnType":"BALLISTIC",
+	"collisionClass":"PROJECTILE_FF",
+	"collisionClassByFighter":"PROJECTILE_FIGHTER",
+	"length":87.0,
+	"hitGlowRadius":80,
+	"width":6.5,
+	"fadeTime":0.05,
+	"fringeColor":[222,57,20,255],
+	"coreColor":[255,132,18,180],
+	"textureScrollSpeed":128.0,
+	"pixelsPerTexel":5.0,
+	"bulletSprite":"graphics/missiles/shell_gauss_cannon.png"	
+}
