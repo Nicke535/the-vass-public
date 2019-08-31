@@ -3,7 +3,7 @@ package data.scripts;
 import com.fs.starfarer.api.BaseModPlugin;
 import com.fs.starfarer.api.Global;
 import com.fs.starfarer.api.campaign.SectorAPI;
-import data.scripts.campaign.VassFactionPowerTrackerPlugin;
+import data.scripts.campaign.VassFamilyTrackerPlugin;
 import data.scripts.campaign.VassSafetyOverridesCrewLossPlugin;
 
 
@@ -44,6 +44,6 @@ public class VassModPlugin extends BaseModPlugin {
     public void onNewGame() {
         SectorAPI sector = Global.getSector();
         sector.addScript(new VassSafetyOverridesCrewLossPlugin());
-        sector.addScript(new VassFactionPowerTrackerPlugin());
+        sector.addScript(new VassFamilyTrackerPlugin());
     }
 }

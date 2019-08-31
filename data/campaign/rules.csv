@@ -1,0 +1,34 @@
+id,trigger,conditions,script,text,options,notes
+"#RULESET_NAME Vass",,,,,,
+,,,,,,
+# FleetEncounters,,,,,,
+,,,,,,
+# Perturba,,,,,,
+vass_perturba_firstShipLootEncounter,OpenCommLink,"$faction.id == vass score:1000
+VassFirstTimePlayerLootsShip",,"""So. You may not quite understand what you've done here, but let's just put it this way: we don't take kindly to people looting highly profitable merchandise under our noses. If you just hand over any and all tech you've...  'salvaged'... from the families, we can go both our merry way and pretend nothing happened, OK?\n\nThere will not be a second warning.""
+OR
+""Alright, so. Technically speakin', I shouldn't be talkin' to ya at the moment. But I'm a kind soul, ya know? How were you s'posed to know what ya did wrong without anyone tellin' ya? So I'm here to make things easy on you.\n\nYou just hand over any and all equipment you found tumbling around with the little label that spells 'Vass Shipyards', and we can both just go home and laugh this incident off.\n\nI should tell you this is a one-time deal: next time I find ya scuttlin' around stealin' Perturba property? They're not gonna let me back home until I personally put you on the other end of a plasma bolt.""",,
+"#END Perturba",,,,,,
+"#END FleetEncounters",,,,,,
+,,,,,,
+# Relationship Level Descriptions,,,,,,
+vass_relLevelNeutral,RelationshipLevelDesc,"$faction.rel == NEUTRAL
+$faction.id == vass",,"The Vass families have made note of you, and consider you a useful asset. While they still don't entrust you with their ships or more critical missions, they are interested in furthering relations.",,
+vass_relLevelInhospitable,RelationshipLevelDesc,"$faction.rel == INHOSPITABLE
+$faction.id == vass",,"You have shown to respect the Vass families and their internal affairs to such an extent that they at least partially respect your presence.",,
+vass_relLevelSuspicious,RelationshipLevelDesc,"$faction.rel == SUSPICIOUS
+$faction.id == vass",,"You have earned enough favour with at least one of the Vass families for them to think twice before giving you trouble, though they still don't fully trust your motives.",,
+vass_relLevelFavorable,RelationshipLevelDesc,"$faction.rel == FAVORABLE
+$faction.id == vass",,"You have useful connections within at least one of the families, and have relatively free access to their services as long as you don't go sticking your nose too deep.",,
+vass_relLevelWelcoming,RelationshipLevelDesc,"$faction.rel == WELCOMING
+$faction.id == vass",,"At least one Vass family considers you a possible member. You have been granted special permission to keep salvaged Vass ships for personal use, though they will not be merciful should you exploit this trust by selling them off second-hand.",,
+vass_relLevelCooperative,RelationshipLevelDesc,"$faction.rel == COOPERATIVE
+$faction.id == vass",,"You have made great contributions to at least one of the families, and can expect proportional treatment for this. .",,
+vass_relLevelFriendly,RelationshipLevelDesc,"$faction.rel == FRIENDLY
+$faction.id == vass",,"The families consider you as one of their own. You are free to own and purchase Vass ships for personal use, and they may be willing to overlook minor reselling to an extent.",,
+vass_relLevelHostile,RelationshipLevelDesc,"$faction.rel == HOSTILE
+$faction.id == vass",,"The $faction families consider you largely beneath their notice, should they know of you at all. They consider you the same way they consider most other independent starfarers; potential profit with a knack for being troublesome.",,
+vass_relLevelVengeful,RelationshipLevelDesc,"$faction.rel == VENGEFUL
+$faction.id == vass",,"The $faction families have a price on your head, and at least one of them are actively hunting you for your troublesome actions. Needless to say, you are no longer welcome to do business of any kind.",,
+"#END Relationship Level Descriptions",,,,,,
+

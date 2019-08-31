@@ -17,5 +17,5 @@
 	"animationType":"GLOW",
 	"autocharge":true,  # whether the weapon will continue charging and fire if the LMB is tapped instead of held
 	"projectileSpecId":"vass_asi_shot",  # projectile that will be fired
-	"fireSoundTwo":"railgun_fire",
+	"fireSoundTwo":"vass_asi_fire",
 }

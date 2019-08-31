@@ -72,10 +72,10 @@ public class VassAsiScript implements EveryFrameWeaponEffectPlugin {
             offsetVelocity = new Vector2f(proj.getSource().getVelocity());
             estimatedAccelPoint = (proj.getWeapon().getRange() / proj.getWeapon().getProjectileSpeed()) * 0.7f;
             proj.getVelocity().x -= offsetVelocity.x;
-            proj.getVelocity().x *= 0.4f;
+            proj.getVelocity().x *= 0.2f;
             proj.getVelocity().x += offsetVelocity.x;
             proj.getVelocity().y -= offsetVelocity.y;
-            proj.getVelocity().y *= 0.4f;
+            proj.getVelocity().y *= 0.2f;
             proj.getVelocity().y += offsetVelocity.y;
         }
 
@@ -90,10 +90,10 @@ public class VassAsiScript implements EveryFrameWeaponEffectPlugin {
             //If past our accel point, *accelerate!*
             if (timer > estimatedAccelPoint && !hasAccelerated) {
                 proj.getVelocity().x -= offsetVelocity.x;
-                proj.getVelocity().x *= 6f;
+                proj.getVelocity().x *= 14.3f;
                 proj.getVelocity().x += offsetVelocity.x;
                 proj.getVelocity().y -= offsetVelocity.y;
-                proj.getVelocity().y *= 6f;
+                proj.getVelocity().y *= 14.3f;
                 proj.getVelocity().y += offsetVelocity.y;
                 currentTrailID = MagicTrailPlugin.getUniqueID();
                 hasAccelerated = true;
@@ -109,7 +109,7 @@ public class VassAsiScript implements EveryFrameWeaponEffectPlugin {
                     colorToUse = VassUtils.getFamilyColor(VassUtils.VASS_FAMILY.ACCEL, 1f);
                 }
                 MagicTrailPlugin.AddTrailMemberSimple(proj, currentTrailID, Global.getSettings().getSprite("vass_fx", "projectile_trail_zappy"),
-                        proj.getLocation(), 0f, proj.getFacing(), 10f, 6f, colorToUse, 0.3f, 0.3f,
+                        proj.getLocation(), 0f, proj.getFacing(), hasAccelerated ? 10f : 20f, hasAccelerated ? 6f : 12f, colorToUse, hasAccelerated ? 0.3f : 0.7f, hasAccelerated ? 0.3f : 0.7f,
                         true, offsetVelocity, CombatEngineLayers.ABOVE_SHIPS_AND_MISSILES_LAYER);
             }
         }
