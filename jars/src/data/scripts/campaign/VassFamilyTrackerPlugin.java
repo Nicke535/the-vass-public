@@ -2,7 +2,23 @@
 package data.scripts.campaign;
 
 import com.fs.starfarer.api.EveryFrameScript;
+import com.fs.starfarer.api.Global;
+import com.fs.starfarer.api.campaign.CampaignFleetAPI;
+import com.fs.starfarer.api.campaign.FleetAssignment;
+import com.fs.starfarer.api.campaign.LocationAPI;
+import com.fs.starfarer.api.campaign.SectorAPI;
+import com.fs.starfarer.api.campaign.ai.FleetAIFlags;
+import com.fs.starfarer.api.campaign.ai.ModularFleetAIAPI;
+import com.fs.starfarer.api.fleet.FleetAPI;
+import com.fs.starfarer.api.fleet.FleetMemberAPI;
+import com.fs.starfarer.api.impl.campaign.fleets.FleetFactoryV3;
+import com.fs.starfarer.api.impl.campaign.fleets.FleetParamsV3;
+import com.fs.starfarer.api.impl.campaign.ids.MemFlags;
+import com.fs.starfarer.api.util.Misc;
 import data.scripts.utils.VassUtils;
+import org.lazywizard.lazylib.MathUtils;
+import org.lazywizard.lazylib.campaign.CampaignUtils;
+import org.lwjgl.util.vector.Vector2f;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -21,6 +37,21 @@ public class VassFamilyTrackerPlugin implements EveryFrameScript {
     //Keeps track of our own plugin instance
     private static VassFamilyTrackerPlugin currentInstance = null;
 
+    //--Loot revenge fleet stats--
+    //How long of a cooldown is left until a new looting-punisher fleet can pop out and hunt the player, and the minimum/maximum cooldown of this
+    //The more power the family that sends the fleet has, the lower the cooldown. Specified in days.
+    private float currentLootRevengeCooldown = 0f;
+    private static final float MAX_LOOT_REVENGE_COOLDOWN = 400f;
+    private static final float MIN_LOOT_REVENGE_COOLDOWN = 150f;
+
+    //How many fleet points can the families dish out per "power" they have?
+    private static final float LOOT_FLEET_FP_PER_POWER = 3f;
+
+    //How many fleet points will a loot revenge fleet have compared to the player fleet?
+    private static final float LOOT_FLEET_FP_FACTOR = 1.2f;
+
+    //--Loot revenge fleet stats end--
+
     @Override
     public void advance( float amount ) {
         //--Initializes the family powers to their starting values--
@@ -29,14 +60,38 @@ public class VassFamilyTrackerPlugin implements EveryFrameScript {
             //In the current version, only Perturba has any power; things will not remain as such later
             familyPowerMap.put(VassUtils.VASS_FAMILY.ACCEL, 0f);
             familyPowerMap.put(VassUtils.VASS_FAMILY.TORPOR, 0f);
-            familyPowerMap.put(VassUtils.VASS_FAMILY.PERTURBA, 30f);
+            familyPowerMap.put(VassUtils.VASS_FAMILY.PERTURBA, 40f);
             familyPowerMap.put(VassUtils.VASS_FAMILY.RECIPRO, 0f);
             familyPowerMap.put(VassUtils.VASS_FAMILY.MULTA, 0f);
         }
         //--End of power initialization
 
-        //Checks the player fleet for possession of a Vass ship, and orders a fleet to... give them some trouble, should they decide to not comply
-
+        //Checks the player fleet for possession of a Vass ship, and orders a fleet to... give them some trouble
+        currentLootRevengeCooldown -= Misc.getDays(amount);
+        if (currentLootRevengeCooldown <= 0f) {
+            boolean hasVassShips = false;
+            for (FleetMemberAPI member : Global.getSector().getPlayerFleet().getFleetData().getMembersListCopy()) {
+                if (member.getHullId().contains("vass_")) {
+                    hasVassShips = true;
+                    break;
+                }
+            }
+            if (hasVassShips) {
+                VassUtils.VASS_FAMILY familyToSpawnVia = VassUtils.VASS_FAMILY.values()[MathUtils.getRandomNumberInRange(0, VassUtils.VASS_FAMILY.values().length-1)];
+                int tests = 0;
+                while (tests < 50) {
+                    if (GetPowerOfFamily(familyToSpawnVia) > Global.getSector().getPlayerFleet().getFleetPoints() * LOOT_FLEET_FP_PER_POWER * LOOT_FLEET_FP_FACTOR) {
+                        break;
+                    } else {
+                        familyToSpawnVia = VassUtils.VASS_FAMILY.values()[MathUtils.getRandomNumberInRange(0, VassUtils.VASS_FAMILY.values().length-1)];
+                        tests++;
+                    }
+                }
+                if (tests < 50) {
+                    SpawnPlayerLootingPunishFleet(familyToSpawnVia);
+                }
+            }
+        }
 
         //Store our plugin for ease-of-use
         currentInstance = this;
@@ -81,6 +136,62 @@ public class VassFamilyTrackerPlugin implements EveryFrameScript {
             return 0f;
         } else {
             return currentInstance.familyRelationMap.get(family);
+        }
+    }
+
+    //Generates a fleet near the player that hunts them for looting Vass stuff. Spawned from a family, and can take some custom arguments for special fleets
+    public static void SpawnPlayerLootingPunishFleet(VassUtils.VASS_FAMILY family) {
+        SpawnPlayerLootingPunishFleet(family, "");
+    }
+    public static void SpawnPlayerLootingPunishFleet(VassUtils.VASS_FAMILY family, String specialOptions) {
+        SectorAPI sector = Global.getSector();
+        LocationAPI loc = sector.getPlayerFleet().getContainingLocation();
+        Vector2f centerPoint = sector.getPlayerFleet().getLocation();
+
+        //Determines faction set to pick ships from
+        String factionToPickFrom = null;
+        if (family == VassUtils.VASS_FAMILY.PERTURBA) {
+            //Normal perturba fleet
+            factionToPickFrom = "vass_perturba";
+        }
+        if (factionToPickFrom == null) {
+            return;
+        }
+
+        //Creates the fleet, with only combat ships and at a location that isn't optimal yet
+        FleetParamsV3 params = new FleetParamsV3(centerPoint, factionToPickFrom, 5f, "taskForce", Global.getSector().getPlayerFleet().getFleetPoints() * LOOT_FLEET_FP_PER_POWER * LOOT_FLEET_FP_FACTOR,
+                0f, 0f, 0f, 0f, 0f, 1f);
+        CampaignFleetAPI newFleet = FleetFactoryV3.createFleet(params);
+        newFleet.setContainingLocation(loc);
+        newFleet.setFaction("vass", true);
+
+        //Gets a spawn point that's not too close to a fleet that would wipe us out, and outside the player's (base) sensor range: if they're currently sensor pinging, it's fine to appear "suddenly"
+        Vector2f desiredSpawnPoint = MathUtils.getPoint(centerPoint, sector.getPlayerFleet().getBaseSensorRangeToDetect(newFleet.getSensorProfile())*1.2f, MathUtils.getRandomNumberInRange(0f, 360f));
+        newFleet.setLocation(desiredSpawnPoint.x, desiredSpawnPoint.y);
+        int tries = 0;
+        while (tries < 50) {
+            CampaignFleetAPI hostileThreat = CampaignUtils.getNearestHostileFleet(newFleet);
+            if (hostileThreat == null) {
+                break;
+            } else if (hostileThreat.getFleetPoints() <= Global.getSector().getPlayerFleet().getFleetPoints() * LOOT_FLEET_FP_PER_POWER * LOOT_FLEET_FP_FACTOR * 0.6f) {
+                break;
+            } else if (MathUtils.getDistance(hostileThreat.getLocation(), desiredSpawnPoint) >= Math.max(newFleet.getRadius()*3f, hostileThreat.getRadius()*3f)) {
+                break;
+            }
+            tries++;
+            desiredSpawnPoint = MathUtils.getPoint(centerPoint, sector.getPlayerFleet().getBaseSensorRangeToDetect(newFleet.getSensorProfile()), MathUtils.getRandomNumberInRange(0f, 360f));
+            newFleet.setLocation(desiredSpawnPoint.x, desiredSpawnPoint.y);
+        }
+
+        //Finally, makes the fleet hostile against the player's fleet, and register that this is indeed a special "loot punish" fleet, since that needs to be accessed in rules.csv
+        newFleet.addTag("$vass_loot_punish_fleet");
+        VassCampaignUtils.makeFleetInterceptOtherFleet(newFleet, Global.getSector().getPlayerFleet(), true, 30f);
+    }
+
+    //Sets the cooldown of spawning a looting-punishment fleet manually
+    public static void SetLootingPunishFleetCooldown(float valueToSetTo) {
+        if (currentInstance != null) {
+            currentInstance.currentLootRevengeCooldown = 0f;
         }
     }
 }

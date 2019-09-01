@@ -1,0 +1,200 @@
+{
+	id:"vass",
+	"color":[79,255,40,255],
+	"secondaryUIColor":[230,240,230,255],
+	        "secondarySegments":3,
+	"displayName":"Vass",
+	"displayNameWithArticle":"The Vass",
+	"displayNameLong":"Vass Families",
+	"displayNameLongWithArticle":"The Vass Families",
+	"logo":"graphics/vass/factions/the_vass_crest.png",
+	"crest":"graphics/vass/factions/the_vass.png",
+	"shipNamePrefix":"",
+	"shipNameSources":{
+		"SPACE":7,
+		"PERSIAN":3,
+		"GREEK":4,
+		"PIRATES":2,
+	},
+	"description":"You should not be seeing this. Turn around. Don't ask questions.",
+	"names":{
+		"modern":2,
+		"world":1,
+	},
+	# variantOverrides restricts hulls to listed variants and adjusts their probability
+	"variantOverrides":{
+	},
+	# multiplier for how often hulls show up in the faction's fleets
+	"hullFrequency":{
+		#"tags":{
+		#	"bp_placeholder":0.5,
+		#},
+		#"hulls":{
+		#	"ship_placeholder":0.2,
+		#},
+	},
+	# ships the faction gets access to when importing S&W out-of-faction
+	"shipsWhenImporting":{
+		"tags":["vass_general_blueprint"],
+		"hulls":[
+		],
+	},
+	"knownShips":{
+		"tags":["vass_general_blueprint"],
+		"hulls":[
+		],
+	},
+	# listing ships here will make the faction mostly use them even if other hulls become available
+	"priorityShips":{
+		"tags":["vass_general_blueprint"],
+		"hulls":[
+		],
+	},
+	"knownFighters":{
+		"tags":["vass_general_blueprint"],
+		"fighters":[
+		],
+	},
+	"priorityFighters":{
+		"tags":["vass_general_blueprint"],
+		"fighters":[
+		],
+	},
+	"knownWeapons":{
+		"tags":["vass_general_blueprint"],
+		"weapons":[
+		],
+	},
+	"priorityWeapons":{
+		"tags":["vass_general_blueprint"],
+		"weapons":[
+		],
+	},
+	"knownHullMods":{
+		"tags":["base_bp", "tritachyon", "vass_general_blueprint"],
+		"hullMods":[
+			"advancedshieldemitter",
+			"turretgyros",
+			"auxiliarythrusters",
+			"dedicated_targeting_core",
+			"eccm",
+			"missleracks",
+			"extendedshieldemitter",
+			"fluxcoil",
+			"fluxdistributor",
+			"frontemitter",
+			"frontshield",
+			"hardenedshieldemitter",
+			"hardened_subsystems",
+			"targetingunit",
+			"adaptiveshields",
+			"fluxbreakers",
+			"stabilizedshieldemitter",
+			"operations_center",
+			"nav_relay",
+			"ecm"
+		],
+	},
+	"factionDoctrine":{
+		"warships":3,
+		"carriers":3,
+		"phaseShips":1,
+		
+		"officerQuality":3,
+		"shipQuality":5,
+		"numShips":1,
+		
+		"shipSize":4,
+		
+		"aggression":2,
+		
+		"combatFreighterProbability":0,     				# instead of some portion of the freighters in a fleet
+		"combatFreighterCombatUseFraction":0,  				# as part of the normal combat lineup
+		"combatFreighterCombatUseFractionWhenPriority":0.33,# as part of normal combat lineup, when marked as priority ship
+		"autofitRandomizeProbability":0.1,
+
+		"commanderSkillsShuffleProbability":0,
+		"commanderSkills":[
+			"electronic_warfare",
+			"fighter_doctrine",
+			"officer_management",
+			"coordinated_maneuvers",
+		],
+	},
+	"illegalCommodities":[
+	],
+	"music":{
+		"theme":"music_tritach_encounter_neutral",
+		"market_neutral":"music_tritach_market_neutral",
+		"market_hostile":"music_tritach_market_hostile",
+		"market_friendly":"music_tritach_market_friendly",
+		"encounter_neutral":"music_tritach_encounter_neutral",
+		"encounter_hostile":"music_tritach_encounter_hostile",
+		"encounter_friendly":"music_tritach_encounter_friendly",
+	},
+	"internalComms":"vass_perturba_internal",
+	"portraits":{
+		"standard_male":[
+			"graphics/portraits/portrait_corporate03.png",
+			"graphics/portraits/portrait_hegemony02.png",
+			"graphics/portraits/portrait30.png",
+			"graphics/portraits/portrait34.png",
+			"graphics/portraits/portrait_mercenary06.png",
+			"graphics/portraits/portrait_mercenary01.png",
+		],
+		"standard_female":[
+			"graphics/portraits/portrait_hegemony02.png",
+			"graphics/portraits/portrait_corporate02.png",
+			"graphics/portraits/portrait29.png",
+			"graphics/portraits/portrait34.png",
+			"graphics/portraits/portrait_pirate02.png",
+		],
+	},
+	"ranks":{
+		"ranks":{
+			"spaceCommander":{"name":"Executive"},
+		},
+		"posts":{
+			"patrolCommander":{"name":"Chief"},
+			"fleetCommander":{"name":"Chief"},
+			"baseCommander":{"name":"Base Supervisor"},
+		},
+	},
+	"custom":{
+		"offersCommissions":false,
+		"engagesInHostilities":false,
+		"buysAICores":false,
+		"AICoreValueMult":1,
+		"AICoreRepMult":1,
+		"buysSurveyData":false,
+		"hostilityImpactOnGrowth":false,
+		"punitiveExpeditionData":{
+			"vsCompetitors":false,
+			"vsFreePort":false,
+			"canBombard":false,
+			"territorial":false,
+		},
+	},	
+	"fleetTypeNames":{
+		"trade":"Smuggler",
+		"tradeLiner":"Trafficker",
+		"tradeSmuggler":"Smuggler",
+		"smallTrader":"Smuggler",
+		
+		"patrolSmall":"Scout",
+		"patrolMedium":"Safety Fleet",
+		"patrolLarge":"Patrol Fleet",
+		
+		"inspectionFleet":"Interrogation Fleet",
+		"taskForce":"Punitive Fleet",
+		
+		"foodReliefFleet":"Exploitational Convoy",
+		
+		#"mercScout":"Contract Scout",
+		#"mercBountyHunter":"Human Recovery Contractor",
+		#"mercPrivateer":"Security Contractor",
+		#"mercPatrol":"Contracted Patrol",
+		#"mercArmada":"Contracted Armada",
+	}
+},
+
