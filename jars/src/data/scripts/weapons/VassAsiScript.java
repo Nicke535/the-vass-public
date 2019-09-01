@@ -38,12 +38,17 @@ public class VassAsiScript implements EveryFrameWeaponEffectPlugin {
             }
 
             //If the projectile is our own, we can do something with it
-            if (proj.getWeapon() == weapon) {
+            if (proj.getWeapon() == weapon && !proj.didDamage() && engine.isEntityInPlay(proj)) {
+                DamagingProjectileAPI newProj = (DamagingProjectileAPI) Global.getCombatEngine().spawnProjectile(proj.getSource(), proj.getWeapon(),
+                        "vass_asi_fake1", proj.getLocation(), proj.getFacing(), weapon.getShip().getVelocity());
+                Global.getCombatEngine().removeEntity(proj);
+
                 //Register that we've triggered on the projectile
                 alreadyTriggeredProjectiles.add(proj);
+                alreadyTriggeredProjectiles.add(newProj);
 
                 //Add a new plugin that keeps track of the projectile
-                engine.addPlugin(new AsiTrailAccelPlugin(proj));
+                engine.addPlugin(new AsiTrailAccelPlugin(newProj));
             }
         }
 
@@ -71,12 +76,6 @@ public class VassAsiScript implements EveryFrameWeaponEffectPlugin {
             currentTrailID = MagicTrailPlugin.getUniqueID();
             offsetVelocity = new Vector2f(proj.getSource().getVelocity());
             estimatedAccelPoint = (proj.getWeapon().getRange() / proj.getWeapon().getProjectileSpeed()) * 0.7f;
-            proj.getVelocity().x -= offsetVelocity.x;
-            proj.getVelocity().x *= 0.2f;
-            proj.getVelocity().x += offsetVelocity.x;
-            proj.getVelocity().y -= offsetVelocity.y;
-            proj.getVelocity().y *= 0.2f;
-            proj.getVelocity().y += offsetVelocity.y;
         }
 
         @Override
@@ -87,14 +86,14 @@ public class VassAsiScript implements EveryFrameWeaponEffectPlugin {
                 Global.getCombatEngine().removePlugin(this);
             }
 
-            //If past our accel point, *accelerate!*
+            //If past our accel point, spawn a new shot with higher SPEED
             if (timer > estimatedAccelPoint && !hasAccelerated) {
-                proj.getVelocity().x -= offsetVelocity.x;
-                proj.getVelocity().x *= 14.3f;
-                proj.getVelocity().x += offsetVelocity.x;
-                proj.getVelocity().y -= offsetVelocity.y;
-                proj.getVelocity().y *= 14.3f;
-                proj.getVelocity().y += offsetVelocity.y;
+                DamagingProjectileAPI newProj = (DamagingProjectileAPI) Global.getCombatEngine().spawnProjectile(proj.getSource(), proj.getWeapon(),
+                        "vass_asi_fake2", proj.getLocation(), proj.getFacing(), offsetVelocity);
+                alreadyTriggeredProjectiles.remove(proj);
+                Global.getCombatEngine().removeEntity(proj);
+                proj = newProj;
+                alreadyTriggeredProjectiles.add(proj);
                 currentTrailID = MagicTrailPlugin.getUniqueID();
                 hasAccelerated = true;
 
@@ -109,7 +108,7 @@ public class VassAsiScript implements EveryFrameWeaponEffectPlugin {
                     colorToUse = VassUtils.getFamilyColor(VassUtils.VASS_FAMILY.ACCEL, 1f);
                 }
                 MagicTrailPlugin.AddTrailMemberSimple(proj, currentTrailID, Global.getSettings().getSprite("vass_fx", "projectile_trail_zappy"),
-                        proj.getLocation(), 0f, proj.getFacing(), hasAccelerated ? 10f : 20f, hasAccelerated ? 6f : 12f, colorToUse, hasAccelerated ? 0.3f : 0.7f, hasAccelerated ? 0.3f : 0.7f,
+                        proj.getLocation(), 0f, proj.getFacing(), hasAccelerated ? 10f : 15f, hasAccelerated ? 6f : 8f, colorToUse, 0.3f, hasAccelerated ? 0.3f : 0.7f,
                         true, offsetVelocity, CombatEngineLayers.ABOVE_SHIPS_AND_MISSILES_LAYER);
             }
         }
