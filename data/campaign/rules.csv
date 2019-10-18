@@ -23,7 +23,7 @@ $faction.id == vass",,"You have useful connections within at least one of the fa
 vass_relLevelWelcoming,RelationshipLevelDesc,"$faction.rel == WELCOMING
 $faction.id == vass",,"At least one Vass family considers you a possible member. You have been granted special permission to keep salvaged Vass ships for personal use, though they will not be merciful should you exploit this trust by selling them off second-hand.",,
 vass_relLevelCooperative,RelationshipLevelDesc,"$faction.rel == COOPERATIVE
-$faction.id == vass",,"You have made great contributions to at least one of the families, and can expect proportional treatment for this. .",,
+$faction.id == vass",,"You have made great contributions to at least one of the families, and can expect proportional treatment for this. They entrust you with both ownership and reselling of any Vass vessels you desire, bar anything personally owned by a family head.",,
 vass_relLevelFriendly,RelationshipLevelDesc,"$faction.rel == FRIENDLY
 $faction.id == vass",,"The families consider you as one of their own. You are free to own and purchase Vass ships for personal use, and they may be willing to overlook minor reselling to an extent.",,
 vass_relLevelHostile,RelationshipLevelDesc,"$faction.rel == HOSTILE

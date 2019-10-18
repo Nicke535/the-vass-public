@@ -4,16 +4,11 @@ package data.scripts.campaign;
 import com.fs.starfarer.api.EveryFrameScript;
 import com.fs.starfarer.api.Global;
 import com.fs.starfarer.api.campaign.CampaignFleetAPI;
-import com.fs.starfarer.api.campaign.FleetAssignment;
 import com.fs.starfarer.api.campaign.LocationAPI;
 import com.fs.starfarer.api.campaign.SectorAPI;
-import com.fs.starfarer.api.campaign.ai.FleetAIFlags;
-import com.fs.starfarer.api.campaign.ai.ModularFleetAIAPI;
-import com.fs.starfarer.api.fleet.FleetAPI;
 import com.fs.starfarer.api.fleet.FleetMemberAPI;
 import com.fs.starfarer.api.impl.campaign.fleets.FleetFactoryV3;
 import com.fs.starfarer.api.impl.campaign.fleets.FleetParamsV3;
-import com.fs.starfarer.api.impl.campaign.ids.MemFlags;
 import com.fs.starfarer.api.util.Misc;
 import data.scripts.utils.VassUtils;
 import org.lazywizard.lazylib.MathUtils;
@@ -64,7 +59,7 @@ public class VassFamilyTrackerPlugin implements EveryFrameScript {
             familyPowerMap.put(VassUtils.VASS_FAMILY.RECIPRO, 0f);
             familyPowerMap.put(VassUtils.VASS_FAMILY.MULTA, 0f);
         }
-        //--End of power initialization
+        //--End of power initialization--
 
         //Checks the player fleet for possession of a Vass ship, and orders a fleet to... give them some trouble
         currentLootRevengeCooldown -= Misc.getDays(amount);
@@ -80,7 +75,7 @@ public class VassFamilyTrackerPlugin implements EveryFrameScript {
                 VassUtils.VASS_FAMILY familyToSpawnVia = VassUtils.VASS_FAMILY.values()[MathUtils.getRandomNumberInRange(0, VassUtils.VASS_FAMILY.values().length-1)];
                 int tests = 0;
                 while (tests < 50) {
-                    if (GetPowerOfFamily(familyToSpawnVia) > Global.getSector().getPlayerFleet().getFleetPoints() * LOOT_FLEET_FP_PER_POWER * LOOT_FLEET_FP_FACTOR) {
+                    if (GetPowerOfFamily(familyToSpawnVia) * LOOT_FLEET_FP_PER_POWER >= Global.getSector().getPlayerFleet().getFleetPoints() * LOOT_FLEET_FP_FACTOR) {
                         break;
                     } else {
                         familyToSpawnVia = VassUtils.VASS_FAMILY.values()[MathUtils.getRandomNumberInRange(0, VassUtils.VASS_FAMILY.values().length-1)];
@@ -89,7 +84,17 @@ public class VassFamilyTrackerPlugin implements EveryFrameScript {
                 }
                 if (tests < 50) {
                     SpawnPlayerLootingPunishFleet(familyToSpawnVia);
+                    currentLootRevengeCooldown = ((100f - GetPowerOfFamily(familyToSpawnVia))/100f)*MAX_LOOT_REVENGE_COOLDOWN + ((GetPowerOfFamily(familyToSpawnVia))/100f)*MIN_LOOT_REVENGE_COOLDOWN;
+                    if (Global.getSector().getMemoryWithoutUpdate().get("$vass_firstTimeVassShipLooted") instanceof Boolean && !(Boolean)Global.getSector().getMemoryWithoutUpdate().get("$vass_firstTimeVassShipLooted")) {
+                        //Not the first time this happens... no extra memory flag needed
+                    } else {
+                        //First time we're punishing the player; mark that in our memory
+                        Global.getSector().getMemoryWithoutUpdate().set("$vass_firstTimeVassShipLooted", true);
+                    }
+
                 }
+            } else {
+                currentLootRevengeCooldown = 0.1f;
             }
         }
 

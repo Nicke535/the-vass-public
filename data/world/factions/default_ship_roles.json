@@ -1,0 +1,19 @@
+{
+	# should be a copy of "combatSmall", minus variants that are annoying to fight in low numbers
+	# for example, no Hyperions or fast beam-based kiting loadouts, or ships with damper field
+	"combatSmallForSmallFleet":{
+		"vass_makhaira_support":1,
+	},
+	"combatSmall":{
+		"vass_makhaira_support":1,
+	},
+	"combatMedium":{
+		"vass_schiavona_hailstorm":1,
+	},
+	
+	# carriers
+	"carrierLarge":{
+		"vass_curtana_strike":1,
+	},
+	
+}

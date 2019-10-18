@@ -1,21 +1,22 @@
 {
   "displayName": "Strike",
-  "fluxCapacitors": 5,
-  "fluxVents": 3,
+  "fluxCapacitors": 3,
+  "fluxVents": 2,
   "goalVariant": true,
   "hullId": "vass_curtana",
   "hullMods": [
-    "eccm"
+    "expanded_deck_crew",
+    "pointdefenseai"
   ],
   "permaMods": [],
   "quality": 0,
   "variantId": "vass_curtana_strike",
   "weaponGroups": [
     {
-      "autofire": false,
+      "autofire": true,
       "mode": "LINKED",
       "weapons": {
-        "WS0002": "sabotpod"
+        "WS0002": "vass_fragarach"
       }
     },
     {
@@ -23,14 +24,25 @@
       "mode": "LINKED",
       "weapons": {
         "WS0003": "pdlaser",
-        "WS0004": "pdlaser",
+        "WS0004": "pdlaser"
+      }
+    },
+    {
+      "autofire": true,
+      "mode": "LINKED",
+      "weapons": {
         "WS0005": "pdlaser",
         "WS0006": "pdlaser"
       }
+    },
+    {
+      "autofire": false,
+      "mode": "LINKED",
+      "weapons": {}
     }
   ],
   "wings": [
-    "dagger_wing",
-    "dagger_wing"
+    "vass_estoc_wing",
+    "vass_estoc_wing"
   ]
 }

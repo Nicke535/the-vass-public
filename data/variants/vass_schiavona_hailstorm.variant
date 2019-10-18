@@ -1,0 +1,41 @@
+{
+  "displayName": "Hailstorm",
+  "fluxCapacitors": 19,
+  "fluxVents": 20,
+  "goalVariant": false,
+  "hullId": "vass_schiavona",
+  "hullMods": [
+    "targetingunit",
+    "stabilizedshieldemitter",
+    "fluxdistributor",
+    "fluxcoil"
+  ],
+  "permaMods": [],
+  "quality": 0,
+  "variantId": "vass_schiavona_hailstorm",
+  "weaponGroups": [
+    {
+      "autofire": false,
+      "mode": "LINKED",
+      "weapons": {
+        "WS0004": "vass_cyllel_farchog"
+      }
+    },
+    {
+      "autofire": false,
+      "mode": "ALTERNATING",
+      "weapons": {
+        "WS0005": "vass_trishula_emitter",
+        "WS0006": "vass_trishula_emitter"
+      }
+    },
+    {
+      "autofire": true,
+      "mode": "LINKED",
+      "weapons": {
+        "WS0002": "vass_cyllel_farchog"
+      }
+    }
+  ],
+  "wings": []
+}

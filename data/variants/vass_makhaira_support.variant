@@ -1,0 +1,30 @@
+{
+  "displayName": "Support",
+  "fluxCapacitors": 0,
+  "fluxVents": 5,
+  "goalVariant": false,
+  "hullId": "vass_makhaira",
+  "hullMods": [
+    "targetingunit"
+  ],
+  "permaMods": [],
+  "quality": 0,
+  "variantId": "vass_makhaira_support",
+  "weaponGroups": [
+    {
+      "autofire": false,
+      "mode": "LINKED",
+      "weapons": {
+        "WS0003": "vass_asi"
+      }
+    },
+    {
+      "autofire": false,
+      "mode": "LINKED",
+      "weapons": {
+        "WS0002": "vass_asi"
+      }
+    }
+  ],
+  "wings": []
+}
