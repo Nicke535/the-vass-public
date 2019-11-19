@@ -16,7 +16,7 @@ public class VassReportFirstLootingContact extends BaseCommandPlugin {
         if (dialog == null) return false;
 
         Global.getSector().getMemory().set("$vass_firstTimeVassShipLooted", false);
-        VassFamilyTrackerPlugin.SetLootingPunishFleetCooldown(15f);
+        VassFamilyTrackerPlugin.setLootingPunishFleetCooldown(15f);
 
         return true;
     }

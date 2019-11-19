@@ -4,6 +4,7 @@ package data.scripts.campaign;
 import com.fs.starfarer.api.EveryFrameScript;
 import com.fs.starfarer.api.Global;
 import com.fs.starfarer.api.campaign.CampaignFleetAPI;
+import com.fs.starfarer.api.campaign.CampaignUIAPI;
 import com.fs.starfarer.api.campaign.LocationAPI;
 import com.fs.starfarer.api.campaign.SectorAPI;
 import com.fs.starfarer.api.fleet.FleetMemberAPI;
@@ -47,35 +48,35 @@ public class VassFamilyTrackerPlugin implements EveryFrameScript {
 
     //--Loot revenge fleet stats end--
 
+    //Required for an EveryFrameScript
+    @Override
+    public boolean isDone() {
+        return false;
+    }
+    @Override
+    public boolean runWhilePaused() {
+        return false;
+    }
+
+    //Main advance() loop
     @Override
     public void advance( float amount ) {
-        //--Initializes the family powers to their starting values--
-        if (familyPowerMap == null) {
-            familyPowerMap = new HashMap<>();
-            //In the current version, only Perturba has any power; things will not remain as such later
-            familyPowerMap.put(VassUtils.VASS_FAMILY.ACCEL, 0f);
-            familyPowerMap.put(VassUtils.VASS_FAMILY.TORPOR, 0f);
-            familyPowerMap.put(VassUtils.VASS_FAMILY.PERTURBA, 40f);
-            familyPowerMap.put(VassUtils.VASS_FAMILY.RECIPRO, 0f);
-            familyPowerMap.put(VassUtils.VASS_FAMILY.MULTA, 0f);
-        }
-        //--End of power initialization--
+        //Store our plugin for ease-of-use
+        currentInstance = this;
 
-        //Checks the player fleet for possession of a Vass ship, and orders a fleet to... give them some trouble
+        //Initializes the family powers to their starting values, if we haven't already
+        if (familyPowerMap == null) {
+            initializeFamilyPower();
+        }
+
+        //--  Checks the player fleet for possession of a Vass ship, and orders a fleet to... give them some trouble  --
         currentLootRevengeCooldown -= Misc.getDays(amount);
         if (currentLootRevengeCooldown <= 0f) {
-            boolean hasVassShips = false;
-            for (FleetMemberAPI member : Global.getSector().getPlayerFleet().getFleetData().getMembersListCopy()) {
-                if (member.getHullId().contains("vass_")) {
-                    hasVassShips = true;
-                    break;
-                }
-            }
-            if (hasVassShips) {
+            if (playerHasVassShips()) {
                 VassUtils.VASS_FAMILY familyToSpawnVia = VassUtils.VASS_FAMILY.values()[MathUtils.getRandomNumberInRange(0, VassUtils.VASS_FAMILY.values().length-1)];
                 int tests = 0;
                 while (tests < 50) {
-                    if (GetPowerOfFamily(familyToSpawnVia) * LOOT_FLEET_FP_PER_POWER >= Global.getSector().getPlayerFleet().getFleetPoints() * LOOT_FLEET_FP_FACTOR) {
+                    if (getPowerOfFamily(familyToSpawnVia) * LOOT_FLEET_FP_PER_POWER >= Global.getSector().getPlayerFleet().getFleetPoints() * LOOT_FLEET_FP_FACTOR) {
                         break;
                     } else {
                         familyToSpawnVia = VassUtils.VASS_FAMILY.values()[MathUtils.getRandomNumberInRange(0, VassUtils.VASS_FAMILY.values().length-1)];
@@ -83,8 +84,8 @@ public class VassFamilyTrackerPlugin implements EveryFrameScript {
                     }
                 }
                 if (tests < 50) {
-                    SpawnPlayerLootingPunishFleet(familyToSpawnVia);
-                    currentLootRevengeCooldown = ((100f - GetPowerOfFamily(familyToSpawnVia))/100f)*MAX_LOOT_REVENGE_COOLDOWN + ((GetPowerOfFamily(familyToSpawnVia))/100f)*MIN_LOOT_REVENGE_COOLDOWN;
+                    spawnPlayerLootingPunishFleet(familyToSpawnVia);
+                    currentLootRevengeCooldown = ((100f - getPowerOfFamily(familyToSpawnVia))/100f)*MAX_LOOT_REVENGE_COOLDOWN + ((getPowerOfFamily(familyToSpawnVia))/100f)*MIN_LOOT_REVENGE_COOLDOWN;
                     if (Global.getSector().getMemoryWithoutUpdate().get("$vass_firstTimeVassShipLooted") instanceof Boolean && !(Boolean)Global.getSector().getMemoryWithoutUpdate().get("$vass_firstTimeVassShipLooted")) {
                         //Not the first time this happens... no extra memory flag needed
                     } else {
@@ -97,46 +98,59 @@ public class VassFamilyTrackerPlugin implements EveryFrameScript {
                 currentLootRevengeCooldown = 0.1f;
             }
         }
-
-        //Store our plugin for ease-of-use
-        currentInstance = this;
+        //--  End of loot punisher fleet code  --
     }
 
-    @Override
-    public boolean isDone() {
+
+    // Initializes the family power map to its default state
+    private void initializeFamilyPower() {
+        familyPowerMap = new HashMap<>();
+        //In the current version, only Perturba has any power; things will not remain as such later
+        familyPowerMap.put(VassUtils.VASS_FAMILY.ACCEL, 0f);
+        familyPowerMap.put(VassUtils.VASS_FAMILY.TORPOR, 0f);
+        familyPowerMap.put(VassUtils.VASS_FAMILY.PERTURBA, 40f);
+        familyPowerMap.put(VassUtils.VASS_FAMILY.RECIPRO, 0f);
+        familyPowerMap.put(VassUtils.VASS_FAMILY.MULTA, 0f);
+    }
+
+
+    // Checks whether the player fleet has any Vass ships in their fleet
+    private boolean playerHasVassShips() {
+        for (FleetMemberAPI member : Global.getSector().getPlayerFleet().getFleetData().getMembersListCopy()) {
+            if (member.getHullId().contains("vass_")) {
+                return true;
+            }
+        }
+
         return false;
     }
 
-    @Override
-    public boolean runWhilePaused() {
-        return false;
-    }
 
     //Static functions for modifying and accessing the power of a Vass family. -1 means that you cannot access the power at the moment. A family at 0 power is eliminated
-    public static void ModifyPowerOfFamily(VassUtils.VASS_FAMILY family, float amount) {
+    public static void modifyPowerOfFamily(VassUtils.VASS_FAMILY family, float amount) {
         if (currentInstance != null) {
             currentInstance.familyPowerMap.put(family, currentInstance.familyPowerMap.get(family)+amount);
         }
     }
-    public static float GetPowerOfFamily(VassUtils.VASS_FAMILY family) {
+    public static float getPowerOfFamily(VassUtils.VASS_FAMILY family) {
         if (currentInstance == null) {
             return -1f;
         } else {
             return currentInstance.familyPowerMap.get(family);
         }
     }
-    public static boolean IsFamilyEliminated(VassUtils.VASS_FAMILY family) {
-        return GetPowerOfFamily(family) == 0f;
+    public static boolean isFamilyEliminated(VassUtils.VASS_FAMILY family) {
+        return getPowerOfFamily(family) == 0f;
     }
 
 
     //Static functions for modifying and accessing the relation of the player to a Vass family
-    public static void ModifyRelationToFamily(VassUtils.VASS_FAMILY family, float amount) {
+    public static void modifyRelationToFamily(VassUtils.VASS_FAMILY family, float amount) {
         if (currentInstance != null) {
             currentInstance.familyRelationMap.put(family, currentInstance.familyRelationMap.get(family)+amount);
         }
     }
-    public static float GetRelationToFamily(VassUtils.VASS_FAMILY family) {
+    public static float getRelationToFamily(VassUtils.VASS_FAMILY family) {
         if (currentInstance == null) {
             return 0f;
         } else {
@@ -144,11 +158,12 @@ public class VassFamilyTrackerPlugin implements EveryFrameScript {
         }
     }
 
+
     //Generates a fleet near the player that hunts them for looting Vass stuff. Spawned from a family, and can take some custom arguments for special fleets
-    public static void SpawnPlayerLootingPunishFleet(VassUtils.VASS_FAMILY family) {
-        SpawnPlayerLootingPunishFleet(family, "");
+    public static void spawnPlayerLootingPunishFleet(VassUtils.VASS_FAMILY family) {
+        spawnPlayerLootingPunishFleet(family, "");
     }
-    public static void SpawnPlayerLootingPunishFleet(VassUtils.VASS_FAMILY family, String specialOptions) {
+    public static void spawnPlayerLootingPunishFleet(VassUtils.VASS_FAMILY family, String specialOptions) {
         SectorAPI sector = Global.getSector();
         LocationAPI loc = sector.getPlayerFleet().getContainingLocation();
         Vector2f centerPoint = sector.getPlayerFleet().getLocation();
@@ -164,9 +179,11 @@ public class VassFamilyTrackerPlugin implements EveryFrameScript {
         }
 
         //Creates the fleet, with only combat ships and at a location that isn't optimal yet
-        FleetParamsV3 params = new FleetParamsV3(centerPoint, factionToPickFrom, 5f, "taskForce", Global.getSector().getPlayerFleet().getFleetPoints() * LOOT_FLEET_FP_PER_POWER * LOOT_FLEET_FP_FACTOR,
+        FleetParamsV3 params = new FleetParamsV3(centerPoint, factionToPickFrom, 5f, "taskForce",
+                Global.getSector().getPlayerFleet().getFleetPoints() * LOOT_FLEET_FP_PER_POWER * LOOT_FLEET_FP_FACTOR,
                 0f, 0f, 0f, 0f, 0f, 1f);
         CampaignFleetAPI newFleet = FleetFactoryV3.createFleet(params);
+        newFleet.inflateIfNeeded();
         newFleet.setContainingLocation(loc);
         newFleet.setFaction("vass", true);
 
@@ -191,12 +208,14 @@ public class VassFamilyTrackerPlugin implements EveryFrameScript {
         //Finally, makes the fleet hostile against the player's fleet, and register that this is indeed a special "loot punish" fleet, since that needs to be accessed in rules.csv
         newFleet.addTag("$vass_loot_punish_fleet");
         VassCampaignUtils.makeFleetInterceptOtherFleet(newFleet, Global.getSector().getPlayerFleet(), true, 30f);
+        loc.addEntity(newFleet);
     }
 
+
     //Sets the cooldown of spawning a looting-punishment fleet manually
-    public static void SetLootingPunishFleetCooldown(float valueToSetTo) {
+    public static void setLootingPunishFleetCooldown(float valueToSetTo) {
         if (currentInstance != null) {
-            currentInstance.currentLootRevengeCooldown = 0f;
+            currentInstance.currentLootRevengeCooldown = valueToSetTo;
         }
     }
 }

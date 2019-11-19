@@ -29,7 +29,7 @@ public class VassFamilyRelationIsAtLeast extends BaseCommandPlugin {
 
         float levelToCheck = params.get(1).getFloat(memoryMap);
 
-        return VassFamilyTrackerPlugin.GetRelationToFamily(family) >= levelToCheck;
+        return VassFamilyTrackerPlugin.getRelationToFamily(family) >= levelToCheck;
     }
 
 }

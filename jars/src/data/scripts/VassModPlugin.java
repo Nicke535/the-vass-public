@@ -5,6 +5,7 @@ import com.fs.starfarer.api.Global;
 import com.fs.starfarer.api.campaign.SectorAPI;
 import data.scripts.campaign.VassFamilyTrackerPlugin;
 import data.scripts.campaign.VassSafetyOverridesCrewLossPlugin;
+import data.scripts.campaign.VassSectorSetupScript;
 
 
 public class VassModPlugin extends BaseModPlugin {
@@ -43,6 +44,7 @@ public class VassModPlugin extends BaseModPlugin {
     @Override
     public void onNewGame() {
         SectorAPI sector = Global.getSector();
+        VassSectorSetupScript.testSpawnDerelict(sector);
         sector.addScript(new VassSafetyOverridesCrewLossPlugin());
         sector.addScript(new VassFamilyTrackerPlugin());
     }

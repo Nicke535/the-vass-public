@@ -29,7 +29,7 @@ public class VassFamilyPowerIsAtLeast extends BaseCommandPlugin {
 
         float levelToCheck = params.get(1).getFloat(memoryMap);
 
-        return VassFamilyTrackerPlugin.GetPowerOfFamily(family) >= levelToCheck;
+        return VassFamilyTrackerPlugin.getPowerOfFamily(family) >= levelToCheck;
     }
 
 }

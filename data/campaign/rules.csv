@@ -4,10 +4,16 @@ id,trigger,conditions,script,text,options,notes
 # FleetEncounters,,,,,,
 ,,,,,,
 # Perturba,,,,,,
-vass_perturba_firstShipLootEncounter,OpenCommLink,"$faction.id == vass score:1000
-VassFirstTimePlayerLootsShip",,"""So. You may not quite understand what you've done here, but let's just put it this way: we don't take kindly to people looting highly profitable merchandise under our noses. If you just hand over any and all tech you've...  'salvaged'... from the families, we can go both our merry way and pretend nothing happened, OK?\n\nThere will not be a second warning.""
+vass_perturba_firstShipLootEncounter,BeginFleetEncounter,"$faction.id == vass score:1000
+VassFirstTimePlayerLootsShip","VassReportFirstLootingContact","""So. You may not quite understand what you've done here, but let's just put it this way: we don't take kindly to people looting highly profitable merchandise under our noses. If you just hand over any and all tech you've...  'salvaged'... from the families, we can go both our merry way and pretend nothing happened, OK?
+
+There will not be a second warning.""
 OR
-""Alright, so. Technically speakin', I shouldn't be talkin' to ya at the moment. But I'm a kind soul, ya know? How were you s'posed to know what ya did wrong without anyone tellin' ya? So I'm here to make things easy on you.\n\nYou just hand over any and all equipment you found tumbling around with the little label that spells 'Vass Shipyards', and we can both just go home and laugh this incident off.\n\nI should tell you this is a one-time deal: next time I find ya scuttlin' around stealin' Perturba property? They're not gonna let me back home until I personally put you on the other end of a plasma bolt.""",,
+""Alright, so. Technically speakin', I shouldn't be talkin' to ya at the moment. But I'm a kind soul, ya know? How were you s'posed to know what ya did wrong without anyone tellin' ya? So I'm here to make things easy on you.
+
+You just hand over any and all equipment you found tumbling around with the little label that spells 'Vass Shipyards', and we can both just go home and laugh this incident off.
+
+I should tell you this is a one-time deal: next time I find ya scuttlin' around stealin' Perturba property? They're not gonna let me back home until I personally put you on the other end of a plasma bolt.""",,
 "#END Perturba",,,,,,
 "#END FleetEncounters",,,,,,
 ,,,,,,

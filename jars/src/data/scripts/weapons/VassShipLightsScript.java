@@ -26,9 +26,11 @@ public class VassShipLightsScript implements EveryFrameWeaponEffectPlugin {
         if (ship == null) {
             return;
         }
+
         ShipSystemAPI system = ship.getSystem();
-        if (engine == null) {                                       //Refit screen! always use max brightness
-            currentBrightness = 1f;
+        if (engine == null || !engine.isEntityInPlay(ship)) {       //Refit screen! Just use frame 1 instead of our "proper" frame
+            weapon.getAnimation().setFrame(0);
+            return;
         } else if (ship.isPiece()) {                                //First: are we a piece? If so, instantly lose all opacity
             currentBrightness = 0f;
         } else if (ship.isHulk()) {                                 //Second: are we a hulk? In that case, slowly fade out our color
@@ -74,7 +76,7 @@ public class VassShipLightsScript implements EveryFrameWeaponEffectPlugin {
             }
 
             //Recipro shipsystem
-            else if (ship.getSystem().getId().contains("vass_false_future") || ship.getSystem().getId().contains("vass_temporal_recall")) {
+            else if (ship.getSystem().getId().contains("vass_temporal_retreat") || ship.getSystem().getId().contains("vass_temporal_recall")) {
                 colorToUse = VassUtils.getFamilyColor(VassUtils.VASS_FAMILY.RECIPRO, currentBrightness);
             }
 
@@ -89,7 +91,8 @@ public class VassShipLightsScript implements EveryFrameWeaponEffectPlugin {
             }
         }
 
-        //And finally actually apply the color
+        //And finally actually apply the color and switch to the right frame
+        weapon.getAnimation().setFrame(1);
         weapon.getSprite().setColor(colorToUse);
     }
 }
