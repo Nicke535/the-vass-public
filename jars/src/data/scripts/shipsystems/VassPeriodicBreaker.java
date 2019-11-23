@@ -4,13 +4,16 @@ package data.scripts.shipsystems;
 
 import java.awt.Color;
 
+import com.fs.starfarer.api.graphics.SpriteAPI;
 import data.scripts.VassModPlugin;
+import data.scripts.util.MagicRender;
 import org.dark.shaders.distortion.DistortionShader;
 import org.dark.shaders.distortion.RippleDistortion;
 import com.fs.starfarer.api.Global;
 import com.fs.starfarer.api.combat.*;
 import com.fs.starfarer.api.impl.combat.BaseShipSystemScript;
 import org.dark.shaders.post.PostProcessShader;
+import org.lazywizard.lazylib.FastTrig;
 import org.lazywizard.lazylib.MathUtils;
 import org.lwjgl.util.vector.Vector2f;
 
@@ -38,6 +41,9 @@ public class VassPeriodicBreaker extends BaseShipSystemScript {
 
     public boolean HAS_FIRED_LIGHTNING = false;
     private boolean hasResetPostProcess = true;
+
+    private float afterimageTracker = 0f;
+    private static final float AFTERIMAGE_TIME = 0.1f;
 
     public void apply(MutableShipStatsAPI stats, String id, State state, float effectLevel) {
         ShipAPI ship = null;
@@ -69,7 +75,7 @@ public class VassPeriodicBreaker extends BaseShipSystemScript {
         jitterLevel *= jitterLevel;
 
         ship.setJitter(this, JITTER_COLOR, jitterLevel, (int)Math.ceil(4 * jitterLevel), 0, 0 + jitterRangeBonus);
-        ship.setJitterUnder(this, JITTER_UNDER_COLOR, jitterLevel, (int)Math.ceil(26 * jitterLevel), 0f, 7f + jitterRangeBonus);
+        ship.setJitterUnder(this, JITTER_UNDER_COLOR, jitterLevel, (int)Math.ceil(20 * jitterLevel), 0f, 5f + jitterRangeBonus);
 
         //We want our effect level to scale near-exponentially
         effectLevel *= effectLevel;
@@ -91,44 +97,14 @@ public class VassPeriodicBreaker extends BaseShipSystemScript {
         ship.getEngineController().fadeToOtherColor(this, JITTER_COLOR, new Color(0,0,0,0), 1.0f, 1.0f);
         ship.getEngineController().extendFlame(this, -0.25f, -0.25f, -0.25f);
 
-        //NEW: adds fancy post-process effects (if we are the player)
-        if (effectLevel > 0f && player) {
-            hasResetPostProcess = false;
-            PostProcessShader.setHueShift(false, 360f * (float)Math.sqrt(Math.sqrt(effectLevel)));
-            PostProcessShader.setRedHSL(false,
-                    0f,
-                    1f + 0.3f*effectLevel,
-                    1f);
-            PostProcessShader.setYellowHSL(false,
-                    -0.12f * effectLevel,
-                    1f - 0.2f*effectLevel,
-                    1f);
-            PostProcessShader.setGreenHSL(false,
-                    0.12f * effectLevel,
-                    1f - 0.2f*effectLevel,
-                    1f);
-            PostProcessShader.setTealHSL(false,
-                    0f,
-                    1f + 0.3f*effectLevel,
-                    1f);
-            PostProcessShader.setBlueHSL(false,
-                    -0.12f * effectLevel,
-                    1f - 0.2f*effectLevel,
-                    1f);
-            PostProcessShader.setMagentaHSL(false,
-                    0.12f * effectLevel,
-                    1f - 0.2f*effectLevel,
-                    1f);
-            float firstNoiseLevel = 0f;
-            if ((float)Math.sqrt(Math.sqrt(effectLevel)) < 0.1f) {
-                firstNoiseLevel = (float)Math.sqrt(Math.sqrt(effectLevel)) * 0.7f;
-            } else {
-                firstNoiseLevel = 0.7f * (1.1f - (float)Math.sqrt(Math.sqrt(effectLevel)));
-            }
-            PostProcessShader.setNoise(false, firstNoiseLevel + 0.15f * effectLevel);
-        } else if (!hasResetPostProcess) {
-            PostProcessShader.resetDefaults();
-            hasResetPostProcess = true;
+        //NEW: adds fancy post-process effects (if we have shaderlib)
+        if (VassModPlugin.hasShaderLib) {
+            handlePostprocessing(effectLevel, player);
+        }
+
+        //NEW: spawns fancy afterimages if we're the player and the system is fully on
+        if (player && effectLevel >= 1f) {
+            handleAfterimages(ship);
         }
 		
 		//Adjusts the size of our lightning and distortions to their correct value
@@ -252,5 +228,80 @@ public class VassPeriodicBreaker extends BaseShipSystemScript {
             return new StatusData("readjusting protocols...", false);
 		}
         return null;
+    }
+
+
+    //Handles enabling/disabling postprocess effects, depending on if we're the player and the state of our effectlevel
+    private void handlePostprocessing(float effectLevel, boolean player) {
+        if (effectLevel > 0f && player) {
+            hasResetPostProcess = false;
+            PostProcessShader.setHueShift(false, 360f * (float)Math.sqrt(Math.sqrt(effectLevel)));
+            PostProcessShader.setRedHSL(false,
+                    0f,
+                    1f + 0.3f*effectLevel,
+                    1f);
+            PostProcessShader.setYellowHSL(false,
+                    -0.12f * effectLevel,
+                    1f - 0.2f*effectLevel,
+                    1f);
+            PostProcessShader.setGreenHSL(false,
+                    0.12f * effectLevel,
+                    1f - 0.2f*effectLevel,
+                    1f);
+            PostProcessShader.setTealHSL(false,
+                    0f,
+                    1f + 0.3f*effectLevel,
+                    1f);
+            PostProcessShader.setBlueHSL(false,
+                    -0.12f * effectLevel,
+                    1f - 0.2f*effectLevel,
+                    1f);
+            PostProcessShader.setMagentaHSL(false,
+                    0.12f * effectLevel,
+                    1f - 0.2f*effectLevel,
+                    1f);
+            float firstNoiseLevel = 0f;
+            if ((float)Math.sqrt(Math.sqrt(effectLevel)) < 0.1f) {
+                firstNoiseLevel = (float)Math.sqrt(Math.sqrt(effectLevel)) * 0.7f;
+            } else {
+                firstNoiseLevel = 0.7f * (1.1f - (float)Math.sqrt(Math.sqrt(effectLevel)));
+            }
+            PostProcessShader.setNoise(false, firstNoiseLevel + 0.15f * effectLevel);
+        } else if (!hasResetPostProcess) {
+            PostProcessShader.resetDefaults();
+            hasResetPostProcess = true;
+        }
+    }
+
+
+    //Spawns afterimages that persist in "true" time, meaning they basically only exist in our perception and not an outside one
+    private void handleAfterimages(ShipAPI ship) {
+        afterimageTracker += Global.getCombatEngine().getElapsedInLastFrame() / Global.getCombatEngine().getTimeMult().getModifiedValue();
+        if (afterimageTracker > AFTERIMAGE_TIME) {
+            afterimageTracker -= AFTERIMAGE_TIME;
+
+            // Sprite offset fuckery - Don't you love trigonometry?
+            SpriteAPI sprite = ship.getSpriteAPI();
+            float offsetX = sprite.getWidth()/2 - sprite.getCenterX();
+            float offsetY = sprite.getHeight()/2 - sprite.getCenterY();
+
+            float trueOffsetX = (float) FastTrig.cos(Math.toRadians(ship.getFacing()-90f))*offsetX - (float)FastTrig.sin(Math.toRadians(ship.getFacing()-90f))*offsetY;
+            float trueOffsetY = (float)FastTrig.sin(Math.toRadians(ship.getFacing()-90f))*offsetX + (float)FastTrig.cos(Math.toRadians(ship.getFacing()-90f))*offsetY;
+
+            MagicRender.battlespace(
+                    Global.getSettings().getSprite(ship.getHullSpec().getSpriteName()),
+                    new Vector2f(ship.getLocation().getX()+trueOffsetX,ship.getLocation().getY()+trueOffsetY),
+                    new Vector2f(ship.getVelocity().x * -1f, ship.getVelocity().y * -1f),
+                    new Vector2f(ship.getSpriteAPI().getWidth(), ship.getSpriteAPI().getHeight()),
+                    new Vector2f(0, 0),
+                    ship.getFacing()-90f,
+                    ship.getAngularVelocity() * -1f,
+                    new Color(JITTER_UNDER_COLOR.getRed()/255f, JITTER_UNDER_COLOR.getGreen()/255f, JITTER_UNDER_COLOR.getBlue()/255f, 0.02f),
+                    true,
+                    0f,
+                    0f,
+                    0.75f * Global.getCombatEngine().getTimeMult().getModifiedValue(),
+                    CombatEngineLayers.BELOW_SHIPS_LAYER);
+        }
     }
 }

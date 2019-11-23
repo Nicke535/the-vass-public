@@ -58,19 +58,21 @@ public class VassTemporalRetreat extends BaseShipSystemScript {
                 timePointQueue.add(new TimePointData(ship));
 
                 if (timePointQueue.size() > MAX_STEPS_BACKWARDS) {
-                    //When de-queueing a time point, we spawn a short clone of our ship at that location
+                    //When de-queueing a time point, we spawn a short clone of our ship at that location, if we're the player ship
                     TimePointData oldestTimePoint = timePointQueue.poll();
-                    SpriteAPI spriteToUse = Global.getSettings().getSprite("graphics/vass/ships/makhaira.png");
-                    //"Chasing" render
-                    MagicRender.battlespace(spriteToUse, oldestTimePoint.position, oldestTimePoint.velocity,
-                            new Vector2f(ship.getSpriteAPI().getWidth(), ship.getSpriteAPI().getHeight()), Misc.ZERO,
-                            oldestTimePoint.angle-90f, oldestTimePoint.angularVelocity, VassUtils.getFamilyColor(VassUtils.VASS_FAMILY.RECIPRO, 0.01f),
-                            true,0.04f, 0.06f, 0.1f);
-                    //"Trailing" render
-                    MagicRender.battlespace(spriteToUse, oldestTimePoint.position, Misc.ZERO,
-                            new Vector2f(ship.getSpriteAPI().getWidth(), ship.getSpriteAPI().getHeight()),Misc.ZERO,
-                            oldestTimePoint.angle-90f, 0f, VassUtils.getFamilyColor(VassUtils.VASS_FAMILY.RECIPRO, 0.05f),
-                            true,0f, 0.05f, 0.35f);
+                    if (Global.getCombatEngine().getPlayerShip().equals(ship)) {
+                        SpriteAPI spriteToUse = Global.getSettings().getSprite("graphics/vass/ships/makhaira.png");
+                        //"Chasing" render
+                        MagicRender.battlespace(spriteToUse, oldestTimePoint.position, oldestTimePoint.velocity,
+                                new Vector2f(ship.getSpriteAPI().getWidth(), ship.getSpriteAPI().getHeight()), Misc.ZERO,
+                                oldestTimePoint.angle-90f, oldestTimePoint.angularVelocity, VassUtils.getFamilyColor(VassUtils.VASS_FAMILY.RECIPRO, 0.01f),
+                                true,0.04f, 0.06f, 0.1f);
+                        //"Trailing" render
+                        MagicRender.battlespace(spriteToUse, oldestTimePoint.position, Misc.ZERO,
+                                new Vector2f(ship.getSpriteAPI().getWidth(), ship.getSpriteAPI().getHeight()),Misc.ZERO,
+                                oldestTimePoint.angle-90f, 0f, VassUtils.getFamilyColor(VassUtils.VASS_FAMILY.RECIPRO, 0.04f),
+                                true,0f, 0.05f, 0.45f);
+                    }
                 }
             }
 
