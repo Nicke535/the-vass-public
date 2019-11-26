@@ -1,15 +1,11 @@
 package data.scripts.hullmods;
 
 import java.awt.Color;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
 import com.fs.starfarer.api.Global;
 import com.fs.starfarer.api.combat.BaseHullMod;
-import com.fs.starfarer.api.combat.MutableShipStatsAPI;
-import com.fs.starfarer.api.combat.ShieldAPI;
-import com.fs.starfarer.api.combat.ShieldAPI.ShieldType;
 import com.fs.starfarer.api.combat.ShipAPI;
 import com.fs.starfarer.api.combat.ShipAPI.HullSize;
 import com.fs.starfarer.api.combat.*;
@@ -17,19 +13,15 @@ import com.fs.starfarer.api.fleet.FleetMemberAPI;
 import com.fs.starfarer.api.graphics.SpriteAPI;
 import com.fs.starfarer.api.mission.FleetSide;
 import com.fs.starfarer.api.ui.Alignment;
-import com.fs.starfarer.api.ui.LabelAPI;
 import com.fs.starfarer.api.ui.TooltipMakerAPI;
-import com.fs.starfarer.api.util.Misc;
-import com.fs.starfarer.api.util.Pair;
 import data.scripts.util.MagicRender;
 import org.lazywizard.lazylib.FastTrig;
-import org.lazywizard.lazylib.MathUtils;
 import org.lazywizard.lazylib.combat.CombatUtils;
 import org.lwjgl.util.vector.Vector2f;
 
 public class VassPeriodicPlating extends BaseHullMod {
     public static final float TIME_MULT = 1.2f;
-    public static final Color AFTERIMAGE_COLOR = new Color(80, 255, 38, 100);
+    public static final Color AFTERIMAGE_COLOR_STANDARD = new Color(80, 255, 38, 100);
     public static final float AFTERIMAGE_THRESHHOLD = 0.1f;
 
     //How much crew percentage is lost from SO, per minute spent in combat. Not actually *applied* in this script, but the data is stored here for use later
@@ -71,34 +63,7 @@ public class VassPeriodicPlating extends BaseHullMod {
 			ship.getMutableStats().getDynamic().getStat("VassAfterimageTracker").modifyFlat("VassAfterimageTrackerNullerID",-1);
 			ship.getMutableStats().getDynamic().getStat("VassAfterimageTracker").modifyFlat("VassAfterimageTrackerID",ship.getMutableStats().getDynamic().getStat("VassAfterimageTracker").getModifiedValue()+amount);
 			if (ship.getMutableStats().getDynamic().getStat("VassAfterimageTracker").getModifiedValue() > AFTERIMAGE_THRESHHOLD) {
-				// Sprite offset fuckery - Don't you love trigonometry?
-				SpriteAPI sprite = ship.getSpriteAPI();
-				float offsetX = sprite.getWidth()/2 - sprite.getCenterX();
-				float offsetY = sprite.getHeight()/2 - sprite.getCenterY();
-
-				float trueOffsetX = (float)FastTrig.cos(Math.toRadians(ship.getFacing()-90f))*offsetX - (float)FastTrig.sin(Math.toRadians(ship.getFacing()-90f))*offsetY;
-				float trueOffsetY = (float)FastTrig.sin(Math.toRadians(ship.getFacing()-90f))*offsetX + (float)FastTrig.cos(Math.toRadians(ship.getFacing()-90f))*offsetY;
-
-				//Determines a layer to render on: fighters render above ships but below fighters, while everything else render below ships
-				CombatEngineLayers layer = CombatEngineLayers.BELOW_SHIPS_LAYER;
-				if (ship.getHullSize().equals(HullSize.FIGHTER)) {
-					layer = CombatEngineLayers.CONTRAILS_LAYER;
-				}
-
-				MagicRender.battlespace(
-						Global.getSettings().getSprite(ship.getHullSpec().getSpriteName()),
-						new Vector2f(ship.getLocation().getX()+trueOffsetX,ship.getLocation().getY()+trueOffsetY),
-						new Vector2f(0, 0),
-						new Vector2f(ship.getSpriteAPI().getWidth(), ship.getSpriteAPI().getHeight()),
-						new Vector2f(0, 0),
-						ship.getFacing()-90f,
-						0f,
-						AFTERIMAGE_COLOR,
-						true,
-						0.01f,
-						0f,
-						0.35f,
-						layer);
+				renderAfterimage(ship);
 				ship.getMutableStats().getDynamic().getStat("VassAfterimageTracker").modifyFlat("VassAfterimageTrackerID",ship.getMutableStats().getDynamic().getStat("VassAfterimageTracker").getModifiedValue()-AFTERIMAGE_THRESHHOLD);
 			}
 		} else {
@@ -150,5 +115,36 @@ public class VassPeriodicPlating extends BaseHullMod {
 							"device's destructive and mind-altering properties without any form of effective protection.", Misc.getGrayColor(),0f); */
 			tooltip.addImageWithText(pad);
 		}
+	}
+
+	private void renderAfterimage(ShipAPI ship) {
+		// Sprite offset fuckery - Don't you love trigonometry?
+		SpriteAPI sprite = ship.getSpriteAPI();
+		float offsetX = sprite.getWidth()/2 - sprite.getCenterX();
+		float offsetY = sprite.getHeight()/2 - sprite.getCenterY();
+
+		float trueOffsetX = (float)FastTrig.cos(Math.toRadians(ship.getFacing()-90f))*offsetX - (float)FastTrig.sin(Math.toRadians(ship.getFacing()-90f))*offsetY;
+		float trueOffsetY = (float)FastTrig.sin(Math.toRadians(ship.getFacing()-90f))*offsetX + (float)FastTrig.cos(Math.toRadians(ship.getFacing()-90f))*offsetY;
+
+		//Determines a layer to render on: fighters render above ships but below fighters, while everything else render below ships
+		CombatEngineLayers layer = CombatEngineLayers.BELOW_SHIPS_LAYER;
+		if (ship.getHullSize().equals(HullSize.FIGHTER)) {
+			layer = CombatEngineLayers.CONTRAILS_LAYER;
+		}
+
+		MagicRender.battlespace(
+				Global.getSettings().getSprite(ship.getHullSpec().getSpriteName()),
+				new Vector2f(ship.getLocation().getX()+trueOffsetX,ship.getLocation().getY()+trueOffsetY),
+				new Vector2f(0, 0),
+				new Vector2f(ship.getSpriteAPI().getWidth(), ship.getSpriteAPI().getHeight()),
+				new Vector2f(0, 0),
+				ship.getFacing()-90f,
+				0f,
+				AFTERIMAGE_COLOR_STANDARD,
+				true,
+				0.01f,
+				0f,
+				0.35f,
+				layer);
 	}
 }

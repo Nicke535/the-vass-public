@@ -204,6 +204,11 @@ public class VassTimeDistortionProjScript extends BaseEveryFrameCombatPlugin {
 				continue;
 			}
 
+			//Doesn't affect allies
+			if (fighter.getOwner() == proj.getOwner()) {
+				continue;
+			}
+
 			//Simply hits the fighter dead-center with EMP, albeit with very random damage
 			Global.getCombatEngine().applyDamage(fighter, fighter.getLocation(), 0f, DamageType.ENERGY,
 					(float)Math.random() * proj.getEmpAmount() * (BASE_AOE_SIZE*damageMult - MathUtils.getDistance(effectLocation, fighter.getLocation())) /(BASE_AOE_SIZE*damageMult),
