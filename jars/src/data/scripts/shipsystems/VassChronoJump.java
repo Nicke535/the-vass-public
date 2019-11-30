@@ -21,6 +21,8 @@ import org.lwjgl.util.vector.Vector2f;
 import java.awt.*;
 import java.util.List;
 
+//TODO: Add sound effects
+//TODO: Make better teleport effect
 public class VassChronoJump extends BaseShipSystemScript {
     //Percieved time mult when charging the system
     public static final float TIME_MULT_PERCIEVED = 0.2f;
@@ -104,7 +106,7 @@ public class VassChronoJump extends BaseShipSystemScript {
                 //Teleport to the future
                 Vector2f startPos = new Vector2f(proj.getLocation());
                 Vector2f destPos = new Vector2f(startPos.x + proj.getVelocity().x * TIME_SKIP_AMOUNT, startPos.y + proj.getVelocity().y * TIME_SKIP_AMOUNT);
-                //BaB has to be moved in a special way, to avoid stretching issues. Notably, they should just dissapear if they have no source
+                //BaB has to be moved in a special way, to avoid stretching issues. Notably, they should just disappear if they have no source
                 if (proj.getSpawnType() == ProjectileSpawnType.BALLISTIC_AS_BEAM) {
                     if (proj.getWeapon() == null || proj.getSource() == null) {
                         engine.removeEntity(proj);
