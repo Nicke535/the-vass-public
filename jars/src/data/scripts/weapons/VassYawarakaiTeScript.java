@@ -1,24 +1,37 @@
 //By Nicke535, speeds up the firerate of a weapon depending on a ship's time mult
 package data.scripts.weapons;
 
+import com.fs.starfarer.api.Global;
 import com.fs.starfarer.api.combat.*;
+import com.fs.starfarer.api.graphics.SpriteAPI;
+import com.fs.starfarer.api.util.Misc;
+import data.scripts.plugins.MagicTrailPlugin;
+import data.scripts.utils.VassUtils;
+import org.lazywizard.lazylib.MathUtils;
+import org.lazywizard.lazylib.VectorUtils;
 import org.lazywizard.lazylib.combat.CombatUtils;
+import org.lwjgl.util.vector.Vector2f;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
 public class VassYawarakaiTeScript implements EveryFrameWeaponEffectPlugin {
+    //Base size of the visual trail that indicates us attacking a target
+    private static final float TRAIL_START_WIDTH = 14f;
+    private static final float TRAIL_END_WIDTH = 9f;
+
+    //Minimum damage dealt from missiles being too far away
+    private static final float MINIMUM_DAMAGE_MULT = 0.33f;
+
+    //Chance to fully disable a missile instead of just flaming it out
+    private static final float FULL_DISABLE_CHANCE = 0.8f;
 
     //Interval for periodic pulses
-    private static final float PULSE_TIME = 0.15f;
+    private static final float PULSE_TIME = 0.23f;
 
-    //Extra effect weight to add to targets within our arc
-    private static final float ARC_WEIGHT = 3f;
-
-    //Our hashmap to keep track of damage dealt to each missile.
-    //Note that it's a WEAK hashmap: don't go iterating over it willy-nilly or try anything smart, just do insertions and lookups
-    private MissileStatusHashmap missileStatusMap = null;
+    //Our hashmap to keep track of damage dealt to each missile
+    private MissileStatusHashMap missileStatusMap = null;
 
     //Counter to run periodically
     private float counter = 0f;
@@ -28,14 +41,17 @@ public class VassYawarakaiTeScript implements EveryFrameWeaponEffectPlugin {
         //To enable automatic cleanup, yet to keep the semblance of a statically saved hashmap, we store it in the
         //engine's customData and load it in for each script
         if (missileStatusMap == null) {
-            if (engine.getCustomData().get("VassYawarakaiTeEffectID") instanceof MissileStatusHashmap) {
+            if (engine.getCustomData().get("VassYawarakaiTeEffectID") instanceof MissileStatusHashMap) {
                 //Unchecked conversion, but we know what we're doing in this rare instance
-                missileStatusMap = (MissileStatusHashmap) engine.getCustomData().get("VassYawarakaiTeEffectID");
+                missileStatusMap = (MissileStatusHashMap) engine.getCustomData().get("VassYawarakaiTeEffectID");
             } else {
-                missileStatusMap = new MissileStatusHashmap();
+                missileStatusMap = new MissileStatusHashMap();
                 engine.getCustomData().put("VassYawarakaiTeEffectID", missileStatusMap);
             }
         }
+
+        //We don't run at all if we have no damage (honestly, this is mostly just to counteract the issues with the Periodic Breaker)
+        if (weapon.getDamage().computeDamageDealt(1f) <= 0f) { return; }
 
         //Only run while firing, and run in pulses
         if (weapon.getChargeLevel() >= 1f) {
@@ -45,51 +61,120 @@ public class VassYawarakaiTeScript implements EveryFrameWeaponEffectPlugin {
 
 
                 //Then, we do the real part of the script: find nearby missiles so we can do stuff
-                float missileCountWeighted = 0f;
-                List<MissileAPI> highPrioMissiles = new ArrayList<>();
-                List<MissileAPI> lowPrioMissiles = new ArrayList<>();
+                float missileCount = 0f;
+                List<MissileAPI> missilesInArc = new ArrayList<>();
+                float mostFarAwayMissile = 0f;
                 for (MissileAPI msl : CombatUtils.getMissilesWithinRange(weapon.getLocation(), weapon.getRange())) {
                     //Ignore friendlies
                     if (msl.getOwner() == weapon.getShip().getOwner()) {
                         continue;
                     }
 
-                    if (missileStatusMap.get(msl) == null) {
-                        missileStatusMap.put(msl, 0f);
-                    } else {
-                        if (missileStatusMap.get(msl) > msl.getHitpoints()) {
-                            //Flame out missiles that take too much "fake damage" from us
-                            msl.flameOut();
-                            continue;
-                        }
-                    }
-
-                    //Register the missile as something to affect, either in the prioritized effect group or the low-prio one depending on if it's within arc
+                    //Register the missile as something to affect if it's within our arc
                     if (weapon.distanceFromArc(msl.getLocation()) <= 0f) {
-                        missileCountWeighted += ARC_WEIGHT;
-                        highPrioMissiles.add(msl);
-                    } else {
-                        missileCountWeighted += 1f;
-                        lowPrioMissiles.add(msl);
+                        //Also, ensure that our status map has the missile in it to simplify later logic
+                        if (missileStatusMap.get(msl) == null) {
+                            missileStatusMap.put(msl, 0f);
+                        } else {
+                            //Also also, ignore targets that are already flamed out by us
+                            if (missileStatusMap.get(msl) > msl.getHitpoints()) {
+                                continue;
+                            }
+                        }
+
+                        missileCount++;
+                        missilesInArc.add(msl);
+
+                        //Used for tracking if we should play a more silent sound or not
+                        mostFarAwayMissile = Math.max(MathUtils.getDistance(weapon.getLocation(), msl.getLocation()), mostFarAwayMissile);
                     }
+                }
+
+                //If there were no missiles in arc, we refund our flux costs while firing and also don't play our sound effect for a pulse
+                if (missileCount <= 0f) {
+                    weapon.getShip().getMutableStats().getFluxDissipation().modifyFlat("VassYawarakaiTeFluxRefund"+weapon.getId(), weapon.getDerivedStats().getFluxPerSecond());
+                    return;
+                } else {
+                    weapon.getShip().getMutableStats().getFluxDissipation().unmodify("VassYawarakaiTeFluxRefund"+weapon.getId());
+                    float volumeFromRange = Math.min(1f, Math.max(MINIMUM_DAMAGE_MULT, 1f - ((mostFarAwayMissile-250f) / 300f)));
+                    Global.getSoundPlayer().playSound("vass_yawaratai_te_pulse", 1f, volumeFromRange, weapon.getLocation(), new Vector2f(Misc.ZERO));
                 }
 
                 //Then, we deal "fake damage" to the missiles; degradation damage, which triggers a flameout when built up
-                for (MissileAPI msl : highPrioMissiles) {
-                    float addedDamage = weapon.getDamage().computeDamageDealt(PULSE_TIME) * ARC_WEIGHT / missileCountWeighted;
-                    missileStatusMap.put(msl, missileStatusMap.get(msl)+addedDamage);
+                for (MissileAPI msl : missilesInArc) {
+                    //Penalty for far-away targets (beyond 250 SU, maxes at about 550 SU): not massive, but a bit of a reduction to combat long-range-hullmod spammability
+                    float distanceToMissile = MathUtils.getDistance(msl, weapon.getLocation());
+                    float extraPenaltyForRange = Math.min(1f, Math.max(MINIMUM_DAMAGE_MULT, 1f - ((distanceToMissile-250f) / 300f)));
+
+
+                    float addedDamage = weapon.getDamage().computeDamageDealt(PULSE_TIME) * extraPenaltyForRange / missileCount;
+                    float newDamage = missileStatusMap.get(msl)+addedDamage;
+                    if (msl.getHitpoints() <= newDamage) {
+                        //The final flame-out-pulse has distinctly more power, to be more noticeable. Also play a sound
+                        spawnVFX(msl, weapon, 2f * extraPenaltyForRange/missileCount);
+                        Global.getSoundPlayer().playSound("vass_yawaratai_te_disable", 1f, Math.min(1f, msl.getHitpoints()/200f), new Vector2f(msl.getLocation()), new Vector2f(msl.getVelocity()));
+
+                        //Disable the missile, and make it completely inert if we've disabled it properly
+                        msl.flameOut();
+                        if (Math.random() < FULL_DISABLE_CHANCE) { msl.setArmingTime(9999f); }
+                    } else {
+                        spawnVFX(msl, weapon, 1f * extraPenaltyForRange/missileCount);
+                    }
+
+                    missileStatusMap.put(msl, newDamage);
                 }
-                for (MissileAPI msl : highPrioMissiles) {
-                    float addedDamage = weapon.getDamage().computeDamageDealt(PULSE_TIME) * ARC_WEIGHT / missileCountWeighted;
-                    missileStatusMap.put(msl, missileStatusMap.get(msl)+addedDamage);
-                }
-                //TODO: fix bloody VFX
             }
+        } else {
+            weapon.getShip().getMutableStats().getFluxDissipation().unmodify("VassYawarakaiTeFluxRefund"+weapon.getId());
         }
     }
 
     /**
-     * It's really only here to solve typecasting safety issues
+     * Spawns VFX for a single effected missile
+     * @param target missile to spawn VFX for
+     * @param weapon source weapon of the VFX
+     * @param effectivePower from 0f to 1f, how much relative power this weapon is directing at this missile
      */
-    private class MissileStatusHashmap extends HashMap<MissileAPI, Float> {}
+    private void spawnVFX(MissileAPI target, WeaponAPI weapon, float effectivePower) {
+        float distanceToTarget = MathUtils.getDistance(weapon.getLocation(), target.getLocation());
+        List<Vector2f> pointsForArc =
+                VassUtils.getFancyArcPoints(
+                        weapon.getLocation(),
+                        target.getLocation(),
+                        MathUtils.getRandomNumberInRange(-1f, 1f) * distanceToTarget * 0.05f,
+                        (int)Math.floor(Math.max(15f, distanceToTarget/40f)));
+
+        float idForTrail = MagicTrailPlugin.getUniqueID();
+        SpriteAPI spriteToUse = Global.getSettings().getSprite("vass_fx","projectile_trail_zappy");
+
+        //Start actually rendering the trail : note that we render one point shorter than the actual trail, to always have a valid direction to next point
+        for (int i = 0; i < pointsForArc.size()-1; i++) {
+            float opacity = (float)Math.sqrt(effectivePower);
+            float extraWidthMult = 1f;
+
+            //Past 25% of range, the trails start fading out in width and opacity
+            if (i > pointsForArc.size()/4f) {
+                opacity *= 1f - ((i-(pointsForArc.size()/4f)) / (pointsForArc.size()*3f/4f));
+                extraWidthMult = 1f - ((i-(pointsForArc.size()/4f)) / (pointsForArc.size()*3f/4f));
+                extraWidthMult = (float)Math.sqrt(extraWidthMult);
+            }
+
+            //Gets the current point, next point, and direction between them
+            Vector2f currPoint = pointsForArc.get(i);
+            Vector2f nextPoint = pointsForArc.get(i+1);
+            float angleToNextPoint = VectorUtils.getAngle(currPoint, nextPoint);
+
+            //Calculates an offset velocity based on distance from target and source
+            Vector2f actualOffsetVelocity = Misc.interpolateVector(new Vector2f(weapon.getShip().getVelocity()), new Vector2f(target.getVelocity()), (float)i/pointsForArc.size());
+
+            MagicTrailPlugin.AddTrailMemberSimple(target, idForTrail, spriteToUse, currPoint, 0f, angleToNextPoint,
+                    TRAIL_START_WIDTH*effectivePower*extraWidthMult, TRAIL_END_WIDTH*effectivePower*extraWidthMult, VassUtils.getFamilyColor(VassUtils.VASS_FAMILY.PERTURBA, 1f),
+                    opacity, PULSE_TIME, true, actualOffsetVelocity, CombatEngineLayers.BELOW_INDICATORS_LAYER);
+        }
+    }
+
+    /**
+     * A type that's really only here to solve typecasting safety issues
+     */
+    private class MissileStatusHashMap extends HashMap<MissileAPI, Float> {}
 }

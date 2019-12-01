@@ -80,8 +80,13 @@ public class VassAsiScript implements EveryFrameWeaponEffectPlugin {
 
         @Override
         public void advance(float amount, List<InputEventAPI> events) {
+            //Don't run when paused
+            if (Global.getCombatEngine().isPaused()) {
+                return;
+            }
+
             //Advance our timer
-            timer += Global.getCombatEngine().isPaused() ? 0f : amount;
+            timer += amount;
             if (proj.didDamage() || !Global.getCombatEngine().isEntityInPlay(proj)) {
                 Global.getCombatEngine().removePlugin(this);
             }
