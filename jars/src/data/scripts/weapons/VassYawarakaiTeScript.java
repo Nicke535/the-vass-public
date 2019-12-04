@@ -149,15 +149,16 @@ public class VassYawarakaiTeScript implements EveryFrameWeaponEffectPlugin {
 
         //Start actually rendering the trail : note that we render one point shorter than the actual trail, to always have a valid direction to next point
         for (int i = 0; i < pointsForArc.size()-1; i++) {
-            float opacity = (float)Math.sqrt(effectivePower);
+            float opacity = effectivePower;
             float extraWidthMult = 1f;
 
             //Past 25% of range, the trails start fading out in width and opacity
             if (i > pointsForArc.size()/4f) {
                 opacity *= 1f - ((i-(pointsForArc.size()/4f)) / (pointsForArc.size()*3f/4f));
                 extraWidthMult = 1f - ((i-(pointsForArc.size()/4f)) / (pointsForArc.size()*3f/4f));
-                extraWidthMult = (float)Math.sqrt(extraWidthMult);
             }
+            opacity = (float)Math.sqrt(opacity) * 0.7f + 0.3f;
+            extraWidthMult = (float)Math.sqrt(extraWidthMult) * 0.7f + 0.3f;
 
             //Gets the current point, next point, and direction between them
             Vector2f currPoint = pointsForArc.get(i);

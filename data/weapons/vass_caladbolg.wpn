@@ -1,0 +1,27 @@
+{
+	"id":"vass_caladbolg",  # this id must match what's in the spreadsheet
+	"specClass":"projectile",
+	"type":"BALLISTIC",
+	"size":"MEDIUM",
+	"everyFrameEffect":"data.scripts.weapons.VassCaladbolgScript",	
+	"turretSprite":"graphics/vass/weapons/caladbolg/caladbolg_turret_base_00.png",
+	"hardpointSprite":"graphics/vass/weapons/caladbolg/caladbolg_hardpoint_base_00.png",
+	"numFrames":48,
+	"frameRate":0,
+	"alwaysAnimate":"false",
+	"turretOffsets":[18, 0],
+	"turretAngleOffsets":[0],
+	"hardpointOffsets":[22, 0],
+	"hardpointAngleOffsets":[0],
+	"barrelMode":"ALTERNATING", # or LINKED.  whether barrels fire at the same time or alternate.
+	"animationType":"MUZZLE_FLASH",  # NONE, GLOW, MUZZLE_FLASH, SMOKE
+	"muzzleFlashSpec":{"length":40.0,   # only used if animationType = MUZZLE_FLASH
+					   "spread":30.0,
+					   "particleSizeMin":16.0,
+					   "particleSizeRange":18.0,
+					   "particleDuration":0.3,
+					   "particleCount":46,
+					   "particleColor":[255,155,75,225]},
+	"projectileSpecId":"vass_caladbolg_shot",  # projectile that will be fired	
+	"fireSoundTwo":"flak_fire",
+}
