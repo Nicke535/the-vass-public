@@ -6,7 +6,7 @@
 	"everyFrameEffect":"data.scripts.weapons.VassCaladbolgScript",	
 	"turretSprite":"graphics/vass/weapons/caladbolg/caladbolg_turret_base_00.png",
 	"hardpointSprite":"graphics/vass/weapons/caladbolg/caladbolg_hardpoint_base_00.png",
-	"numFrames":48,
+	"numFrames":38,
 	"frameRate":0,
 	"alwaysAnimate":"false",
 	"turretOffsets":[18, 0],

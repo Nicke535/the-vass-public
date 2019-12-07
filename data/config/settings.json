@@ -6,6 +6,7 @@
 			"jaculum_reversal_image":"graphics/vass/fx/jaculum_reversal_image.png",
 			"projectile_trail_zappy":"graphics/vass/fx/zappy_trail.png",
 			"katzbalger_illusion":"graphics/vass/fx/katzbalger_illusion.png",
+			"caladbolg_recall_proj":"graphics/vass/fx/caladbolg_recall_proj.png",
 		},
 		"misc":{
 			"vass_chrono_disturber":"graphics/vass/icons/hullsys/chrono_disturber.png",

@@ -59,6 +59,8 @@ public class VassYawarakaiTeScript implements EveryFrameWeaponEffectPlugin {
             if (counter > PULSE_TIME) {
                 counter -= PULSE_TIME;
 
+                //Each pulse, spawn some minor sfx at our source location
+                //TODO: some particles, I guess
 
                 //Then, we do the real part of the script: find nearby missiles so we can do stuff
                 float missileCount = 0f;
