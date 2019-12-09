@@ -47,6 +47,9 @@ public class VassChronoIllusion extends BaseShipSystemScript {
             return;
         }
 
+        //Related to bug with how vanilla systems work when tagged as "weapon"
+        Global.getCombatEngine().getCustomData().put("VassChronoIllusionIsActive"+ship.getId(), true);
+
         //First time we activate, fire off two clones instantly
         if (firstRun) {
             firstRun = false;
@@ -100,6 +103,9 @@ public class VassChronoIllusion extends BaseShipSystemScript {
         }
 
         firstRun = true;
+
+        //Related to bug with how vanilla systems work when tagged as "weapon"
+        Global.getCombatEngine().getCustomData().put("VassChronoIllusionIsActive"+ship.getId(), false);
 
         //Reset opacity and shield damage
         ship.setExtraAlphaMult(1f);

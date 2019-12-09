@@ -20,6 +20,15 @@
 	"vass_temporal_retreat":[
 		{"file":"sounds/vass/systems/time_reverse3.ogg","pitch":1.1,"volume":0.2},
 	],
+	"vass_chrono_jump_start":[
+		{"file":"sounds/vass/systems/chrono_jump_start.ogg","pitch":1.0,"volume":0.5},
+	],
+	"vass_chrono_jump_loop":[
+		{"file":"sounds/vass/systems/periodic_breaker.ogg","pitch":1.7,"volume":0.14},
+	],
+	"vass_chrono_jump_end":[
+		{"file":"sounds/vass/systems/chrono_jump_end.ogg","pitch":1.0,"volume":0.5},
+	],
 	
 	
 	

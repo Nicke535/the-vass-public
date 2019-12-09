@@ -15,6 +15,9 @@ import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * @deprecated Not used for any system anymore
+ */
 public class VassIsochronalMultilinkerStats extends BaseShipSystemScript {
 
 	//Basic jitter stats

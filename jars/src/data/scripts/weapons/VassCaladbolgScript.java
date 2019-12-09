@@ -86,7 +86,7 @@ public class VassCaladbolgScript implements EveryFrameWeaponEffectPlugin {
                 VassUtils.getFancyArcPoints(
                         currentProj.getLocation(),
                         weapon.getLocation(),
-                        -1f* (currentProj.getFacing() - weapon.getCurrAngle()) + MathUtils.getRandomNumberInRange(-distanceToTarget*0.05f, distanceToTarget*0.05f),
+                        MathUtils.getRandomNumberInRange(-distanceToTarget*0.05f, distanceToTarget*0.05f),
                         (int)Math.floor(Math.max(36f, distanceToTarget/10f)));
 
         SpriteAPI spriteToUse = Global.getSettings().getSprite("vass_fx", "caladbolg_recall_proj");
@@ -105,7 +105,7 @@ public class VassCaladbolgScript implements EveryFrameWeaponEffectPlugin {
             float angle = Misc.interpolate(currentProj.getFacing(), weapon.getCurrAngle(), progress);
             MagicRender.battlespace(spriteToUse, pointsForArc.get(i), velocity,
                     new Vector2f(spriteToUse.getWidth(), spriteToUse.getHeight()),Misc.ZERO,
-                    angle-90f, 0f, VassUtils.getFamilyColor(VassUtils.VASS_FAMILY.RECIPRO, 0.18f),
+                    angle-90f, 0f, VassUtils.getFamilyColor(VassUtils.VASS_FAMILY.RECIPRO, opacity),
                     true,0f, 0f, lifetimeThisImage);
         }
     }

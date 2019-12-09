@@ -9,6 +9,6 @@
 	"runScriptWhileIdle":false,  # this means unapply() never gets called
 	"runScriptWhilePaused":true, # only for the player's ship
 	
-	"useSound":"vass_temporal_retreat",
+	"useSound":"vass_silence",
 	"outOfUsesSound":"gun_out_of_ammo",
 }

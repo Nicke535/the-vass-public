@@ -37,11 +37,19 @@ public class VassChronoJump extends BaseShipSystemScript {
     public static final float MAX_ACTIVE_DURATION = 0.5f;
 
     //The minimum duration the system must be kept active before re-activating it
-    public static final float MIN_ACTIVE_DURATION = 0.1f;
+    public static final float MIN_ACTIVE_DURATION = 0.15f;
+
+    // --- Sound --- //
+    //Volume increase for the loop sound when close to activation
+    private static final float LOOP_MAX_VOLUME_INCREASE = 0.5f;
+
+    //Pitch decrease for the loop sound when close to activation
+    private static final float LOOP_MAX_PITCH_DECREASE = 0.4f;
 
     private boolean triggeredOnce = false;
     private float currentActiveDuration = 0f;
     private boolean hasResetPostProcess = true;
+    private boolean hasPlayedSound = false;
 
     public void apply(MutableShipStatsAPI stats, String id, State state, float effectLevel) {
         ShipAPI ship = null;
@@ -90,6 +98,25 @@ public class VassChronoJump extends BaseShipSystemScript {
                     hasResetPostProcess = true;
                 }
                 engine.getTimeMult().unmodify(id);
+            }
+
+            //Also, play some sound (on loop for AI)!
+            if (player) {
+                if (!hasPlayedSound) {
+                    Global.getSoundPlayer().playSound("vass_chrono_jump_start", 1f, 1f, ship.getLocation(), ship.getVelocity());
+                    hasPlayedSound = true;
+                }
+                //And an extra loop for the player, since our main sound isn't loop-friendly. This scales a bit when the system's about to blow
+                if (currentActiveDuration < MAX_ACTIVE_DURATION*0.75f) {
+                    Global.getSoundPlayer().playLoop("vass_chrono_jump_loop", ship, 1f, 1f, ship.getLocation(), ship.getVelocity());
+                } else {
+                    float extraVolumeAndPitchMult = (currentActiveDuration - (MAX_ACTIVE_DURATION*0.75f))/(MAX_ACTIVE_DURATION*0.25f);
+                    Global.getSoundPlayer().playLoop("vass_chrono_jump_loop", ship,
+                            1f - (LOOP_MAX_PITCH_DECREASE*extraVolumeAndPitchMult), 1f + (LOOP_MAX_VOLUME_INCREASE*extraVolumeAndPitchMult),
+                            ship.getLocation(), ship.getVelocity());
+                }
+            } else {
+                Global.getSoundPlayer().playLoop("vass_chrono_jump_start", ship, 1f, 1f, ship.getLocation(), ship.getVelocity());
             }
         }
 
@@ -152,12 +179,21 @@ public class VassChronoJump extends BaseShipSystemScript {
 
                 //Finally, apply special effects for modded weapons that need it
                 applySpecialEffectOnProj(proj);
+            }
 
-                //...and remove our post-processing
-                if (!hasResetPostProcess) {
-                    PostProcessShader.resetDefaults();
-                    hasResetPostProcess = true;
-                }
+            //We also need to play the old loop sounds REALLY quietly to bypass some vanilla sound mixing thingamajigs
+            //...I don't know what I should react to the most: the fact that my comments include "thingamajigies" or the fact that my spellchecker auto-corrected it to "thingamajigs"
+            Global.getSoundPlayer().playLoop("vass_chrono_jump_start", ship, 1f, 0.00001f, ship.getLocation(), ship.getVelocity());
+            Global.getSoundPlayer().playLoop("vass_chrono_jump_loop", ship, 1f, 0.00001f, ship.getLocation(), ship.getVelocity());
+
+            //And play the new effect sound, of course!
+            Global.getSoundPlayer().playSound("vass_chrono_jump_end", 1f, 1f, ship.getLocation(), ship.getVelocity());
+
+
+            //...and remove our post-processing
+            if (!hasResetPostProcess) {
+                PostProcessShader.resetDefaults();
+                hasResetPostProcess = true;
             }
         }
 
@@ -189,6 +225,7 @@ public class VassChronoJump extends BaseShipSystemScript {
         }
 
         Global.getCombatEngine().getTimeMult().unmodify(id);
+        hasPlayedSound = false;
         if (!hasResetPostProcess) {
             PostProcessShader.resetDefaults();
             hasResetPostProcess = true;
@@ -198,11 +235,11 @@ public class VassChronoJump extends BaseShipSystemScript {
     public StatusData getStatusData(int index, State state, float effectLevel) {
         if (index == 0) {
             if (!state.equals(State.OUT)) {
-                if (currentActiveDuration < MIN_ACTIVE_DURATION * 0.25f) {
+                if (currentActiveDuration < MIN_ACTIVE_DURATION * 0.33f) {
                     return new StatusData("Priming system.", true);
-                } else if (currentActiveDuration < MIN_ACTIVE_DURATION * 0.5f) {
+                } else if (currentActiveDuration < MIN_ACTIVE_DURATION * 0.66f) {
                     return new StatusData("Priming system..", true);
-                } else if (currentActiveDuration < MIN_ACTIVE_DURATION * 0.75f) {
+                } else if (currentActiveDuration < MIN_ACTIVE_DURATION) {
                     return new StatusData("Priming system...", true);
                 } else if (currentActiveDuration < MAX_ACTIVE_DURATION *0.75f) {
                     return new StatusData("Priming system...DONE", false);

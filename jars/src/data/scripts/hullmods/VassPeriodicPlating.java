@@ -50,8 +50,8 @@ public class VassPeriodicPlating extends BaseHullMod {
 			}
 		}
 
-		//Not active during shipsystem, overload, landing, or when dead
-		if (!ship.getSystem().isActive() && !ship.getFluxTracker().isOverloadedOrVenting() && !ship.isHulk() && !ship.isLanding()) {
+		//Only activate plating if allowed
+		if (platingCanBeActive(ship)) {
 			if (ship == Global.getCombatEngine().getPlayerShip()) {
 				ship.getMutableStats().getTimeMult().modifyMult("VassPeriodicPlatingDebugID", TIME_MULT);
 				Global.getCombatEngine().getTimeMult().modifyMult("VassPeriodicPlatingDebugID", 1f / TIME_MULT);
@@ -72,6 +72,27 @@ public class VassPeriodicPlating extends BaseHullMod {
                 Global.getCombatEngine().getTimeMult().unmodify("VassPeriodicPlatingDebugID");
             }
 		}
+	}
+
+	/**
+	 * Utility function: checks if the ship can currently use its periodic plating
+	 * @param ship ship to check for
+	 * @return whether the periodic plating of the ship is allowed to be active
+	 */
+	private boolean platingCanBeActive (ShipAPI ship) {
+		if (ship.getSystem().isActive() || ship.getFluxTracker().isOverloadedOrVenting() || ship.isHulk() || ship.isLanding()) {
+			return false;
+		}
+
+		//Related to bug with how vanilla systems work when tagged as "weapon"
+		Object chronoIllusionActive = Global.getCombatEngine().getCustomData().get("VassChronoIllusionIsActive"+ship.getId());
+		if (chronoIllusionActive instanceof Boolean) {
+			if ((boolean)chronoIllusionActive) {
+				return false;
+			}
+		}
+
+		return true;
 	}
 
 	//Prevents the hullmod from being put on ships
