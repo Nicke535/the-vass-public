@@ -1,6 +1,3 @@
-//By Nicke535
-//Accelerates a projectile after a certain time, and spawns a trail
-//Only works on non-ballistic-as-beam
 package data.scripts.weapons;
 
 import com.fs.starfarer.api.Global;
@@ -16,6 +13,11 @@ import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Accelerates a projectile after a certain time, and spawns a trail
+ * Only works on non-ballistic-as-beam
+ * @author Nicke535
+ */
 public class VassAsiScript implements EveryFrameWeaponEffectPlugin {
 
     //Keeps track of already-affected projectiles

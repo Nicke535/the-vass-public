@@ -4,7 +4,7 @@ Periodic Skimmer,vass_periodic_skimmer,,,,,,0.50,,,,0.5,1,0.5,6,,,TRUE,TRUE,,,,,
 
 Time Haven,vass_time_haven,,,0.1,,,,,,,1,0.1,1,5,,,TRUE,TRUE,TRUE,,,,,graphics/icons/hullsys/fortress_shield.png
 
-Chrono Jump,vass_chrono_jump,,0.5,,,,0.15,,,,0.1,,0.2,5,TRUE,,,,,,,,,graphics/vass/icons/hullsys/chrono_disturber.png
+Chrono Jump,vass_chrono_jump,,0.5,,,,0.15,,,,0.1,,0.2,5,TRUE,,,,,,,,,graphics/vass/icons/hullsys/isochronal_multilinker.png
 Chrono Illusion,vass_chrono_illusion,,,,,,,,,,0.5,6,1,16,,,,,,,,,,,graphics/icons/hullsys/isochronal_multilinker.png
 
 Temporal Recall,vass_temporal_recall,,,,,,,,,,2,0.1,1,20,,,,,,,,,,,graphics/icons/hullsys/ammo_feeder.png

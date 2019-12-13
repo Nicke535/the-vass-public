@@ -103,6 +103,9 @@ public class VassPeriodicPlating extends BaseHullMod {
 
 	//A whole bunch of descriptions, most unused for now
 	public String getDescriptionParam(int index, HullSize hullSize) {
+		if (index == 0) {
+			return Math.round((TIME_MULT-1f)*100f) + "%";
+		}
 		return null;
 	}
 

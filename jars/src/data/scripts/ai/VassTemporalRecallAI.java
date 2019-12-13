@@ -1,15 +1,12 @@
-///You can check if a ship is a fighter with ship.isFighter(). If you want to do something to a whole wing, you'd need to use ship.getWingMembers() and apply it to each of them
-//Credit goes to Psiyon for his firecontrol AI script.
+//Credit goes to Psiyon for his firecontrol AI script which this is loosely based on
 package data.scripts.ai;
 
-import com.fs.starfarer.api.Global;
 import com.fs.starfarer.api.combat.*;
 import com.fs.starfarer.api.combat.CombatEngineAPI;
 import com.fs.starfarer.api.combat.ShipAPI;
 import com.fs.starfarer.api.combat.ShipSystemAIScript;
 import com.fs.starfarer.api.combat.ShipSystemAPI;
 import com.fs.starfarer.api.combat.ShipwideAIFlags;
-import org.lazywizard.lazylib.MathUtils;
 import org.lwjgl.util.vector.Vector2f;
 import com.fs.starfarer.api.util.IntervalUtil;
 
@@ -33,9 +30,14 @@ public class VassTemporalRecallAI implements ShipSystemAIScript {
 
         //Once the interval has elapsed...
         if (tracker.intervalElapsed()) {
-            //If our spetum launcher is out of ammo, activate the system
+            //If our spetum launcher is out of ammo, OR we're retreating back to our carrier, activate the system
             for (WeaponAPI weapon : ship.getAllWeapons()) {
                 if (weapon.getAmmo() == 0 && weapon.getId().contains("vass_excalibur_launcher") && ship.getWing().getSourceShip() != null) {
+                    activateSystem();
+                }
+            }
+            if (ship.getWing() != null) {
+                if (ship.getWing().getReturnData(ship) != null) {
                     activateSystem();
                 }
             }

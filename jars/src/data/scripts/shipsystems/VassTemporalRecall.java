@@ -69,7 +69,7 @@ public class VassTemporalRecall extends BaseShipSystemScript {
             ship.setJitterUnder(this, JITTER_UNDER_COLOR, jitterLevel, 25, 0f, 7f + jitterRangeBonus);
             
 			//Creates a copy of the ship near the carrier
-            ship.setCopyLocation(new Vector2f(ship.getWing().getSourceShip().getLocation().x + targetPos.x, ship.getWing().getSourceShip().getLocation().y + targetPos.y), (effectLevel - 0.1f), ship.getFacing());
+            ship.setCopyLocation(new Vector2f(ship.getWing().getSourceShip().getLocation().x + targetPos.x, ship.getWing().getSourceShip().getLocation().y + targetPos.y), (effectLevel * 0.4f), ship.getFacing());
 
             //Actual teleportation
             if (state == State.ACTIVE && hasATarget) {

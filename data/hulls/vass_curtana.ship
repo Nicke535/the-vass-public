@@ -70,7 +70,8 @@
     -4
   ],
   "builtInMods": [
-    "vass_periodic_plating"
+    "vass_periodic_plating",
+    "vass_swiftlaunch_bays"
   ],
   "builtInWeapons": {
     "WS0001": "vass_deco_curtana_lights",
