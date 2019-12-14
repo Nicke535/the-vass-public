@@ -64,9 +64,12 @@ public class VassFamilyTrackerPlugin implements EveryFrameScript {
         //Store our plugin for ease-of-use
         currentInstance = this;
 
-        //Initializes the family powers to their starting values, if we haven't already
+        //Initializes the family powers and relations to their starting values, if we haven't already
         if (familyPowerMap == null) {
             initializeFamilyPower();
+        }
+        if (familyRelationMap == null) {
+            initializeFamilyRelations();
         }
 
         //--  Checks the player fleet for possession of a Vass ship, and orders a fleet to... give them some trouble  --
@@ -111,6 +114,16 @@ public class VassFamilyTrackerPlugin implements EveryFrameScript {
         familyPowerMap.put(VassUtils.VASS_FAMILY.PERTURBA, 40f);
         familyPowerMap.put(VassUtils.VASS_FAMILY.RECIPRO, 0f);
         familyPowerMap.put(VassUtils.VASS_FAMILY.MULTA, 0f);
+    }
+
+    // Initializes the family relations map to its default state
+    private void initializeFamilyRelations() {
+        familyRelationMap = new HashMap<>();
+        familyRelationMap.put(VassUtils.VASS_FAMILY.ACCEL, 0f);
+        familyRelationMap.put(VassUtils.VASS_FAMILY.TORPOR, 0f);
+        familyRelationMap.put(VassUtils.VASS_FAMILY.PERTURBA, 0f);
+        familyRelationMap.put(VassUtils.VASS_FAMILY.RECIPRO, 0f);
+        familyRelationMap.put(VassUtils.VASS_FAMILY.MULTA, 0f);
     }
 
 

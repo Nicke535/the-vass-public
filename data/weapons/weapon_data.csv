@@ -10,7 +10,7 @@ Caladbolg Bombard,vass_caladbolg,3,0.3,2900,700,,600,,40,11,13,,,,HIGH_EXPLOSIVE
 ,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
 #built_in,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
 Trishula Emitter,vass_trishula_emitter,5,,0,800,,250,125,1,0,0,,,,FRAGMENTATION,170,,0,3.5,4,0.15,0,0,0,0,,750,750,1.3,50,"SYSTEM, SHOW_IN_CODEX",,,,,Assault,Fast,None,,,"Disturbs nearby space-time once the projectile destabilizes.",,,,,
-Excalibur Emitter,vass_excalibur_launcher,5,,0,800,,750,375,1,50,0,3,,,FRAGMENTATION,0,,0,7,1,,0,0,0,0,,250,100,6,200,"SYSTEM, SHOW_IN_CODEX, STRIKE",,,,,Strike,Fast,None,,,"Disturbs nearby space-time once the projectile destabilizes.",,,,,
+Excalibur Emitter,vass_excalibur_launcher,5,,0,800,,1000,750,1,50,0,3,,,FRAGMENTATION,0,,0,7,1,,0,0,0,0,,250,100,6,200,"SYSTEM, SHOW_IN_CODEX, STRIKE",,,,,Strike,Fast,None,,,"Disturbs nearby space-time once the projectile destabilizes.",,,,,
 ,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
 #deco,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
 Makhaira Lights,vass_deco_makhaira_lights,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,SYSTEM,,,,,,,,,,,,,,,

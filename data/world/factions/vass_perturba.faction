@@ -177,10 +177,10 @@
 		},
 	},	
 	"fleetTypeNames":{
-		"trade":"Smuggler",
+		"trade":"Courier",
 		"tradeLiner":"Trafficker",
 		"tradeSmuggler":"Smuggler",
-		"smallTrader":"Smuggler",
+		"smallTrader":"Courier",
 		
 		"patrolSmall":"Scout",
 		"patrolMedium":"Safety Fleet",

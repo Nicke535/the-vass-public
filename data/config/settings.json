@@ -12,6 +12,9 @@
 			"vass_chrono_disturber":"graphics/vass/icons/hullsys/chrono_disturber.png",
 			"vass_isochronal_multilinker":"graphics/vass/icons/hullsys/isochronal_multilinker.png",
 		},
+		"intel": {
+			"vass_perturba_deal":"graphics/vass/icons/intel/perturba_deal.png"
+		},
 	},
 
 	# where rule commands called from rules.csv can be implemented.

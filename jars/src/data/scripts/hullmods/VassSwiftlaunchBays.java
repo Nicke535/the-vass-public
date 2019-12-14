@@ -117,10 +117,14 @@ public class VassSwiftlaunchBays extends BaseHullMod {
         }
 
         //Lastly, clean up our already-triggered fighters
+        Set<ShipAPI> toRemove = new HashSet<>();
         for (ShipAPI fighter : alreadyTriggeredFighters) {
             if (engine.isEntityInPlay(fighter)) {
-                alreadyTriggeredFighters.remove(fighter);
+                toRemove.add(fighter);
             }
+        }
+        for (ShipAPI fighter : toRemove) {
+            alreadyTriggeredFighters.remove(fighter);
         }
 	}
 

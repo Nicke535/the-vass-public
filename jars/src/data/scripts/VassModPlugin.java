@@ -3,9 +3,11 @@ package data.scripts;
 import com.fs.starfarer.api.BaseModPlugin;
 import com.fs.starfarer.api.Global;
 import com.fs.starfarer.api.campaign.SectorAPI;
+import com.fs.starfarer.api.impl.campaign.intel.bar.events.BarEventManager;
 import data.scripts.campaign.VassFamilyTrackerPlugin;
 import data.scripts.campaign.VassSafetyOverridesCrewLossPlugin;
 import data.scripts.campaign.VassSectorSetupScript;
+import data.scripts.campaign.barEvents.VassPerturbaWeaponContractEventCreator;
 
 
 public class VassModPlugin extends BaseModPlugin {
@@ -47,5 +49,17 @@ public class VassModPlugin extends BaseModPlugin {
         VassSectorSetupScript.testSpawnDerelict(sector);
         sector.addScript(new VassSafetyOverridesCrewLossPlugin());
         sector.addScript(new VassFamilyTrackerPlugin());
+    }
+
+    //Ensure we have our bar event managers added on any game we load
+    @Override
+    public void onGameLoad(boolean newGame) {
+        addBarEvents();
+    }
+    private void addBarEvents() {
+        BarEventManager bar = BarEventManager.getInstance();
+        if (!bar.hasEventCreator(VassPerturbaWeaponContractEventCreator.class)) {
+            bar.addEventCreator(new VassPerturbaWeaponContractEventCreator());
+        }
     }
 }

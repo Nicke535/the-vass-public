@@ -1,7 +1,7 @@
 {
   "displayName": "Strike",
-  "fluxCapacitors": 3,
-  "fluxVents": 2,
+  "fluxCapacitors": 12,
+  "fluxVents": 5,
   "goalVariant": true,
   "hullId": "vass_curtana",
   "hullMods": [
@@ -16,24 +16,22 @@
       "autofire": true,
       "mode": "LINKED",
       "weapons": {
-        "WS0002": "vass_fragarach"
+        "WS0002": "vass_fragarach",
+        "WS0003": "vass_yawarakai_te",
+        "WS0004": "vass_yawarakai_te",
+        "WS0005": "vass_yawarakai_te",
+        "WS0006": "vass_yawarakai_te"
       }
     },
     {
       "autofire": true,
       "mode": "LINKED",
-      "weapons": {
-        "WS0003": "pdlaser",
-        "WS0004": "pdlaser"
-      }
+      "weapons": {}
     },
     {
       "autofire": true,
       "mode": "LINKED",
-      "weapons": {
-        "WS0005": "pdlaser",
-        "WS0006": "pdlaser"
-      }
+      "weapons": {}
     },
     {
       "autofire": false,

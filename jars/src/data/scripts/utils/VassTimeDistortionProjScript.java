@@ -60,12 +60,21 @@ public class VassTimeDistortionProjScript extends BaseEveryFrameCombatPlugin {
 	//The "affect location" for the explosion. Corresponds to where the projectile detonated
 	private Vector2f effectLocation = new Vector2f(0f, 0f);
 
+	//Multiplier for our AoE
+	private float aoeMult = 1f;
+
 	//Initializers
 	public VassTimeDistortionProjScript(DamagingProjectileAPI proj, float maxTimeDistortMult, @Nullable String soundClipOnDetonation) {
 		this.proj = proj;
 		this.maxTimeDistortMult = maxTimeDistortMult;
 		effectIdSuffix = UUID.randomUUID().toString();
 		this.soundClipOnDetonation = soundClipOnDetonation;
+	}
+
+	//Initializers
+	public VassTimeDistortionProjScript(DamagingProjectileAPI proj, float maxTimeDistortMult, @Nullable String soundClipOnDetonation, float aoeMult) {
+		this(proj, maxTimeDistortMult, soundClipOnDetonation);
+		this.aoeMult = aoeMult;
 	}
 
 	@Override
@@ -121,7 +130,7 @@ public class VassTimeDistortionProjScript extends BaseEveryFrameCombatPlugin {
 			//Then, we apply our time mult to all fighters in range
 			float damageMult = (float)Math.sqrt(proj.getDamageAmount());
 			float timeMultThisFrame = 1f + (maxTimeDistortMult*(1f-(counter/TIME_DISTORTION_DURATION)));
-			for (ShipAPI fighter : CombatUtils.getShipsWithinRange(effectLocation, BASE_AOE_SIZE*damageMult*counter/TIME_DISTORTION_DURATION)) {
+			for (ShipAPI fighter : CombatUtils.getShipsWithinRange(effectLocation, BASE_AOE_SIZE*aoeMult*damageMult*counter/TIME_DISTORTION_DURATION)) {
 				//Only affects fighters
 				if (fighter.getHullSize() != ShipAPI.HullSize.FIGHTER) {
 					continue;
@@ -132,7 +141,7 @@ public class VassTimeDistortionProjScript extends BaseEveryFrameCombatPlugin {
 			}
 
 			//Addition: also accelerates missiles
-			for (MissileAPI msl : CombatUtils.getMissilesWithinRange(effectLocation, BASE_AOE_SIZE*damageMult*counter/TIME_DISTORTION_DURATION)) {
+			for (MissileAPI msl : CombatUtils.getMissilesWithinRange(effectLocation, BASE_AOE_SIZE*aoeMult*damageMult*counter/TIME_DISTORTION_DURATION)) {
 				msl.getLocation().x += msl.getVelocity().x * ((timeMultThisFrame - 1f) * amount);
 				msl.getLocation().x += msl.getVelocity().x * ((timeMultThisFrame - 1f) * amount);
 				msl.setFlightTime(msl.getFlightTime() + ((timeMultThisFrame - 1f) * amount));
@@ -149,7 +158,7 @@ public class VassTimeDistortionProjScript extends BaseEveryFrameCombatPlugin {
 		float damageMult = (float)Math.sqrt(proj.getDamageAmount());
 
 		//Spawn a particle
-		Global.getCombatEngine().addHitParticle(new Vector2f(effectLocation), Misc.ZERO, BASE_AOE_SIZE*damageMult*1.5f,
+		Global.getCombatEngine().addHitParticle(new Vector2f(effectLocation), Misc.ZERO, BASE_AOE_SIZE*aoeMult*damageMult*1.5f,
 				1f, VISUAL_DISTORTION_DURATION, new Color(50,255,50));
 
 		//Play our detonation sound (if we have one)
@@ -188,9 +197,9 @@ public class VassTimeDistortionProjScript extends BaseEveryFrameCombatPlugin {
 			wave.fadeOutIntensity(VISUAL_DISTORTION_DURATION);
 
 			//We want the size to work a bit wierdly, namely to fade in, but start at 25%. So we add that
-			wave.setSize(BASE_AOE_SIZE*damageMult*0.75f);
+			wave.setSize(BASE_AOE_SIZE*aoeMult*damageMult*0.75f);
 			wave.fadeInSize(VISUAL_DISTORTION_DURATION);
-			wave.setSize(BASE_AOE_SIZE*damageMult*0.25f);
+			wave.setSize(BASE_AOE_SIZE*aoeMult*damageMult*0.25f);
 
 			//And finally ensure the distortion is tracked
 			DistortionShader.addDistortion(wave);
@@ -198,7 +207,7 @@ public class VassTimeDistortionProjScript extends BaseEveryFrameCombatPlugin {
 
 		//Addition: Then, apply EMP damage to fighters nearby, and randomly flame-out low-health missiles depending on EMP
 		//This doesn't effect allies, solely due to balance concerns
-		for (ShipAPI fighter : CombatUtils.getShipsWithinRange(effectLocation, BASE_AOE_SIZE*damageMult)) {
+		for (ShipAPI fighter : CombatUtils.getShipsWithinRange(effectLocation, BASE_AOE_SIZE*aoeMult*damageMult)) {
 			//Only affects fighters
 			if (fighter.getHullSize() != ShipAPI.HullSize.FIGHTER) {
 				continue;
@@ -211,15 +220,17 @@ public class VassTimeDistortionProjScript extends BaseEveryFrameCombatPlugin {
 
 			//Simply hits the fighter dead-center with EMP, albeit with very random damage
 			Global.getCombatEngine().applyDamage(fighter, fighter.getLocation(), 0f, DamageType.ENERGY,
-					(float)Math.random() * proj.getEmpAmount() * (BASE_AOE_SIZE*damageMult - MathUtils.getDistance(effectLocation, fighter.getLocation())) /(BASE_AOE_SIZE*damageMult),
+					(float)Math.random() * proj.getEmpAmount() * (BASE_AOE_SIZE*aoeMult*damageMult - MathUtils.getDistance(effectLocation, fighter.getLocation())) /(BASE_AOE_SIZE*aoeMult*damageMult),
 					true, true, proj.getSource(), false);
 		}
-		for (MissileAPI msl : CombatUtils.getMissilesWithinRange(effectLocation, BASE_AOE_SIZE*damageMult)) {
-			if (msl.getHitpoints() < Math.random() * proj.getEmpAmount() * (BASE_AOE_SIZE*damageMult - MathUtils.getDistance(effectLocation, msl.getLocation())) /(BASE_AOE_SIZE*damageMult)) {
-				if (msl.getEmpResistance() > 0) {
-					msl.decrEMPResistance();
-				} else {
-					msl.flameOut();
+		for (MissileAPI msl : CombatUtils.getMissilesWithinRange(effectLocation, BASE_AOE_SIZE*aoeMult*damageMult)) {
+			if (msl.getOwner() != proj.getOwner()) {
+				if (msl.getHitpoints() < Math.random() * proj.getEmpAmount() * (BASE_AOE_SIZE*aoeMult*damageMult - MathUtils.getDistance(effectLocation, msl.getLocation())) /(BASE_AOE_SIZE*aoeMult*damageMult)) {
+					if (msl.getEmpResistance() > 0) {
+						msl.decrEMPResistance();
+					} else {
+						msl.flameOut();
+					}
 				}
 			}
 		}

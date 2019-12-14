@@ -4,6 +4,7 @@ package data.scripts.weapons;
 import com.fs.starfarer.api.Global;
 import com.fs.starfarer.api.combat.*;
 import com.fs.starfarer.api.graphics.SpriteAPI;
+import com.fs.starfarer.api.impl.campaign.ids.Stats;
 import com.fs.starfarer.api.util.Misc;
 import data.scripts.plugins.MagicTrailPlugin;
 import data.scripts.utils.VassUtils;
@@ -25,7 +26,7 @@ public class VassYawarakaiTeScript implements EveryFrameWeaponEffectPlugin {
     private static final float MINIMUM_DAMAGE_MULT = 0.33f;
 
     //Chance to fully disable a missile instead of just flaming it out
-    private static final float FULL_DISABLE_CHANCE = 0.8f;
+    private static final float FULL_DISABLE_CHANCE = 0.75f;
 
     //Interval for periodic pulses
     private static final float PULSE_TIME = 0.23f;
@@ -59,8 +60,13 @@ public class VassYawarakaiTeScript implements EveryFrameWeaponEffectPlugin {
             if (counter > PULSE_TIME) {
                 counter -= PULSE_TIME;
 
-                //Each pulse, spawn some minor sfx at our source location
-                //TODO: some particles, I guess
+                //Check for some stats we might get from hullmods and such
+                float damageMultToMissiles = weapon.getShip().getMutableStats().getDamageToMissiles().getModifiedValue();
+                boolean ignoresFlares = false;
+                if (weapon.getShip().getMutableStats().getDynamic().getMod(Stats.PD_IGNORES_FLARES) != null &&
+                        weapon.getShip().getMutableStats().getDynamic().getMod(Stats.PD_IGNORES_FLARES).flatBonus >= 1f) {
+                    ignoresFlares = true;
+                }
 
                 //Then, we do the real part of the script: find nearby missiles so we can do stuff
                 float missileCount = 0f;
@@ -71,9 +77,13 @@ public class VassYawarakaiTeScript implements EveryFrameWeaponEffectPlugin {
                     if (msl.getOwner() == weapon.getShip().getOwner()) {
                         continue;
                     }
+                    if (ignoresFlares && msl.isFlare()) {
+                        continue;
+                    }
 
                     //Register the missile as something to affect if it's within our arc
                     if (weapon.distanceFromArc(msl.getLocation()) <= 0f) {
+
                         //Also, ensure that our status map has the missile in it to simplify later logic
                         if (missileStatusMap.get(msl) == null) {
                             missileStatusMap.put(msl, 0f);
@@ -92,14 +102,17 @@ public class VassYawarakaiTeScript implements EveryFrameWeaponEffectPlugin {
                     }
                 }
 
-                //If there were no missiles in arc, we refund our flux costs while firing and also don't play our sound effect for a pulse
+                //If there were no missiles in arc, we refund our flux costs while firing and also don't show VFX/SFX
                 if (missileCount <= 0f) {
                     weapon.getShip().getMutableStats().getFluxDissipation().modifyFlat("VassYawarakaiTeFluxRefund"+weapon.getId(), weapon.getDerivedStats().getFluxPerSecond());
                     return;
                 } else {
+                    //Sound and visual effects if we have any missiles in range
                     weapon.getShip().getMutableStats().getFluxDissipation().unmodify("VassYawarakaiTeFluxRefund"+weapon.getId());
-                    float volumeFromRange = Math.min(1f, Math.max(MINIMUM_DAMAGE_MULT, 1f - ((mostFarAwayMissile-250f) / 300f)));
-                    Global.getSoundPlayer().playSound("vass_yawaratai_te_pulse", 1f, volumeFromRange, weapon.getLocation(), new Vector2f(Misc.ZERO));
+                    float rangeMultiplier = Math.min(1f, Math.max(MINIMUM_DAMAGE_MULT, 1f - ((mostFarAwayMissile-250f) / 300f)));
+                    Global.getSoundPlayer().playSound("vass_yawaratai_te_pulse", 1f, rangeMultiplier, weapon.getLocation(), new Vector2f(Misc.ZERO));
+                    engine.spawnExplosion(weapon.getLocation(), weapon.getShip().getVelocity(),
+                            VassUtils.getFamilyColor(VassUtils.VASS_FAMILY.PERTURBA, rangeMultiplier), 6f*rangeMultiplier, PULSE_TIME);
                 }
 
                 //Then, we deal "fake damage" to the missiles; degradation damage, which triggers a flameout when built up
@@ -109,12 +122,14 @@ public class VassYawarakaiTeScript implements EveryFrameWeaponEffectPlugin {
                     float extraPenaltyForRange = Math.min(1f, Math.max(MINIMUM_DAMAGE_MULT, 1f - ((distanceToMissile-250f) / 300f)));
 
 
-                    float addedDamage = weapon.getDamage().computeDamageDealt(PULSE_TIME) * extraPenaltyForRange / missileCount;
+                    float addedDamage = weapon.getDamage().computeDamageDealt(PULSE_TIME) * extraPenaltyForRange * damageMultToMissiles / missileCount;
                     float newDamage = missileStatusMap.get(msl)+addedDamage;
                     if (msl.getHitpoints() <= newDamage) {
-                        //The final flame-out-pulse has distinctly more power, to be more noticeable. Also play a sound
+                        //The final flame-out-pulse has distinctly more power, to be more noticeable. Also play a sound and spawn minor SFX
                         spawnVFX(msl, weapon, 2f * extraPenaltyForRange/missileCount);
                         Global.getSoundPlayer().playSound("vass_yawaratai_te_disable", 1f, Math.min(1f, msl.getHitpoints()/200f), new Vector2f(msl.getLocation()), new Vector2f(msl.getVelocity()));
+                        engine.spawnExplosion(msl.getLocation(), msl.getVelocity(),
+                                VassUtils.getFamilyColor(VassUtils.VASS_FAMILY.PERTURBA, 0.7f), 4f, PULSE_TIME);
 
                         //Disable the missile, and make it completely inert if we've disabled it properly
                         msl.flameOut();
