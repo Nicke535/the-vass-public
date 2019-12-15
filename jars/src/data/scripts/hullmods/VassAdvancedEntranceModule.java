@@ -119,11 +119,14 @@ public class VassAdvancedEntranceModule extends BaseHullMod {
                         1.0f
                 );
             }
-        } else if (!ship.getTravelDrive().isActive()) { //If we aren't using the travel drive, reset the values of everything
+        } else {
             ship.getMutableStats().getTimeMult().unmodify("VassAdvancedEntranceModuleDebugID");
             Global.getCombatEngine().getTimeMult().unmodify("VassAdvancedEntranceModuleDebugID");
 
-            hasFiredLightning.put(ship, false);
+            //If we aren't using the travel drive, reset the values of everything
+            if (!ship.getTravelDrive().isActive()) {
+                hasFiredLightning.put(ship, false);
+            }
         }
     }
 

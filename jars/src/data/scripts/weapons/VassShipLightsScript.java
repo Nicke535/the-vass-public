@@ -1,6 +1,7 @@
 package data.scripts.weapons;
 
 import com.fs.starfarer.api.combat.*;
+import data.scripts.campaign.VassFamilyTrackerPlugin;
 import data.scripts.utils.VassUtils;
 import org.lazywizard.lazylib.MathUtils;
 
@@ -11,7 +12,7 @@ public class VassShipLightsScript implements EveryFrameWeaponEffectPlugin {
     //Various stats for how fast the lights start, stop and blink
     private static final float RECHARGE_TIME = 0.5f;
     private static final float OVERLOAD_FADE_TIME = 0.25f;
-    private static final float HULK_FADE_TIME = 20f;
+    private static final float HULK_FADE_TIME = 40f;
     private static final float TIMER_MULT = 1.5f;
 
     //The basic color of the lights, when no family's color is used
@@ -64,6 +65,10 @@ public class VassShipLightsScript implements EveryFrameWeaponEffectPlugin {
 
         //Now, set the color to the one we want, and include opacity
         Color colorToUse = new Color(COLORS_BASIC[0], COLORS_BASIC[1], COLORS_BASIC[2], currentBrightness);
+        VassUtils.VASS_FAMILY family = VassUtils.getFamilyMembershipOfShip(ship);
+        if (family != null) {
+            colorToUse = VassUtils.getFamilyColor(family, currentBrightness);
+        }
         if (system.isActive()) {
             //Accel shipsystem
             if (ship.getSystem().getId().contains("vass_periodic_breaker") || ship.getSystem().getId().contains("vass_periodic_skimmer")) {

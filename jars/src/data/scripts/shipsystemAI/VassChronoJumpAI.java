@@ -19,7 +19,7 @@ import java.util.Map;
 
 public class VassChronoJumpAI implements ShipSystemAIScript {
     //How much "damage score" do we need to start using the system?
-    private static final float SCORE_THRESHOLD = 3300f;
+    private static final float SCORE_THRESHOLD = 1600f;
 
     //How much *additional* score is needed when we're above, say, 65% flux?
     private static final float SCORE_MODIFIER_HIGHFLUX = 3600f;
@@ -31,8 +31,8 @@ public class VassChronoJumpAI implements ShipSystemAIScript {
     private static final float MISSILE_UNDODGEABLE_TURN_RATE = 45f;
 
     //How much more is actual hull damage worth compared to hardflux gain? Both for low hull and normal hull
-    private static final float SCORE_MULT_HULLDAMAGE = 5f;
-    private static final float SCORE_MULT_HULLDAMAGE_LOWHULL = 7f;
+    private static final float SCORE_MULT_HULLDAMAGE = 4f;
+    private static final float SCORE_MULT_HULLDAMAGE_LOWHULL = 6f;
 
     //How much is engine damage score multiplied by, compared to normal hull hits?
     private static final float SCORE_MULT_ENGINEDAMAGE = 20f;
@@ -228,21 +228,21 @@ public class VassChronoJumpAI implements ShipSystemAIScript {
                             }
                         }
                         if (hitsEngines) {
-                            score += (proj.getDamageAmount()/2f + proj.getEmpAmount()) * SCORE_MULT_ENGINEDAMAGE;
+                            score -= (proj.getDamageAmount()/2f + proj.getEmpAmount()) * SCORE_MULT_ENGINEDAMAGE;
                         }
 
                         //For high-armor hit locations, use armor damage type mult squared, since damage is non-linear against armor
                         int[] gridHit = ship.getArmorGrid().getCellAtLocation(hitLocation);
                         if (ship.getArmorGrid().getArmorFraction(gridHit[0], gridHit[1]) > 0.7f) {
-                            score += proj.getDamageAmount() * proj.getDamageType().getArmorMult() * proj.getDamageType().getArmorMult() * hullScoreMult / 2;
+                            score -= proj.getDamageAmount() * proj.getDamageType().getArmorMult() * proj.getDamageType().getArmorMult() * hullScoreMult / 2;
                         }
                         //For medium-armor hit location, just use armor damage type mult
                         else if (ship.getArmorGrid().getArmorFraction(gridHit[0], gridHit[1]) > 0.3f) {
-                            score += proj.getDamageAmount() * proj.getDamageType().getArmorMult() * hullScoreMult;
+                            score -= proj.getDamageAmount() * proj.getDamageType().getArmorMult() * hullScoreMult;
                         }
                         //For low-armor hit locations, use hull damage type mult
                         else {
-                            score += proj.getDamageAmount() * proj.getDamageType().getHullMult() * hullScoreMult;
+                            score -= proj.getDamageAmount() * proj.getDamageType().getHullMult() * hullScoreMult;
                         }
                     }
                 }

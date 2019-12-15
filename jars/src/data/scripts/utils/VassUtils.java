@@ -1,8 +1,12 @@
 package data.scripts.utils;
 
+import com.fs.starfarer.api.GameState;
+import com.fs.starfarer.api.Global;
 import com.fs.starfarer.api.combat.CombatEntityAPI;
 import com.fs.starfarer.api.combat.ShipAPI;
+import com.fs.starfarer.api.mission.FleetSide;
 import com.fs.starfarer.api.util.Misc;
+import data.scripts.campaign.VassFamilyTrackerPlugin;
 import org.lazywizard.lazylib.CollisionUtils;
 import org.lazywizard.lazylib.FastTrig;
 import org.lazywizard.lazylib.MathUtils;
@@ -89,6 +93,43 @@ public class VassUtils {
             }
         }
         return targetShielded;
+    }
+
+    //Gets which family membership a ship has, which varies depending on being in a mission, being an AI fleet etc.
+    public static VASS_FAMILY getFamilyMembershipOfShip(ShipAPI ship) {
+        if (Global.getSector() == null || Global.getCurrentState().equals(GameState.TITLE) || (Global.getCombatEngine() != null && !Global.getCombatEngine().isInCampaign())) {
+            //Missions: we check for secret hullmods but nothing else
+            if (ship.getVariant().hasHullMod("vass_dummymod_accel_membership")) {
+                return VASS_FAMILY.ACCEL;
+            } else if (ship.getVariant().hasHullMod("vass_dummymod_torpor_membership")) {
+                return VASS_FAMILY.TORPOR;
+            } else if (ship.getVariant().hasHullMod("vass_dummymod_perturba_membership")) {
+                return VASS_FAMILY.PERTURBA;
+            } else if (ship.getVariant().hasHullMod("vass_dummymod_recipro_membership")) {
+                return VASS_FAMILY.RECIPRO;
+            } else if (ship.getVariant().hasHullMod("vass_dummymod_multa_membership")) {
+                return VASS_FAMILY.MULTA;
+            } else {
+                return null;
+            }
+        } else {
+            //In the campaign, we care if the ship belongs to the player's fleet or another fleet
+            if (Global.getCombatEngine() != null && Global.getCombatEngine().isSimulation()) {
+                return VassFamilyTrackerPlugin.getFamilyMembership();
+            }
+            if (ship.getFleetMember().getFleetData().equals(Global.getSector().getPlayerFleet().getFleetData())) {
+                //Player-fleet ship; just check our current membership
+                return VassFamilyTrackerPlugin.getFamilyMembership();
+            } else {
+                //Non-player fleet: check for a memory flag on the fleet to determine
+                Object fleetMembership = ship.getFleetMember().getFleetData().getFleet().getMemoryWithoutUpdate().get("$vass_fleet_family_membership");
+                if (fleetMembership instanceof VASS_FAMILY) {
+                    return (VASS_FAMILY) fleetMembership;
+                } else {
+                    return null;
+                }
+            }
+        }
     }
 
 

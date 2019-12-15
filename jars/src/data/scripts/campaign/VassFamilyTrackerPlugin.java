@@ -12,6 +12,7 @@ import com.fs.starfarer.api.impl.campaign.fleets.FleetFactoryV3;
 import com.fs.starfarer.api.impl.campaign.fleets.FleetParamsV3;
 import com.fs.starfarer.api.util.Misc;
 import data.scripts.utils.VassUtils;
+import org.jetbrains.annotations.Nullable;
 import org.lazywizard.lazylib.MathUtils;
 import org.lazywizard.lazylib.campaign.CampaignUtils;
 import org.lwjgl.util.vector.Vector2f;
@@ -30,6 +31,9 @@ public class VassFamilyTrackerPlugin implements EveryFrameScript {
     // Goes between -100f to 100f, but doesn't tell the whole story: Vass relation also plays a part
     private Map<VassUtils.VASS_FAMILY, Float> familyRelationMap = null;
 
+    //Keeps track of which family, if any, the player has membership status to
+    private VassUtils.VASS_FAMILY currentFamilyMembership = VassUtils.VASS_FAMILY.PERTURBA; //TODO: remove
+
     //Keeps track of our own plugin instance
     private static VassFamilyTrackerPlugin currentInstance = null;
 
@@ -45,7 +49,6 @@ public class VassFamilyTrackerPlugin implements EveryFrameScript {
 
     //How many fleet points will a loot revenge fleet have compared to the player fleet?
     private static final float LOOT_FLEET_FP_FACTOR = 1.2f;
-
     //--Loot revenge fleet stats end--
 
     //Required for an EveryFrameScript
@@ -171,6 +174,20 @@ public class VassFamilyTrackerPlugin implements EveryFrameScript {
         }
     }
 
+    //Static functions for modifying and accessing the family which the player is a member of
+    public static void setFamilyMembership(@Nullable VassUtils.VASS_FAMILY family) {
+        if (currentInstance != null) {
+            currentInstance.currentFamilyMembership = family;
+        }
+    }
+    public static VassUtils.VASS_FAMILY getFamilyMembership() {
+        if (currentInstance == null) {
+            return null;
+        } else {
+            return currentInstance.currentFamilyMembership;
+        }
+    }
+
 
     //Generates a fleet near the player that hunts them for looting Vass stuff. Spawned from a family, and can take some custom arguments for special fleets
     public static void spawnPlayerLootingPunishFleet(VassUtils.VASS_FAMILY family) {
@@ -199,6 +216,7 @@ public class VassFamilyTrackerPlugin implements EveryFrameScript {
         newFleet.inflateIfNeeded();
         newFleet.setContainingLocation(loc);
         newFleet.setFaction("vass", true);
+        newFleet.getMemoryWithoutUpdate().set("$vass_fleet_family_membership", family);
 
         //Gets a spawn point that's not too close to a fleet that would wipe us out, and outside the player's (base) sensor range: if they're currently sensor pinging, it's fine to appear "suddenly"
         Vector2f desiredSpawnPoint = MathUtils.getPoint(centerPoint, sector.getPlayerFleet().getBaseSensorRangeToDetect(newFleet.getSensorProfile())*1.2f, MathUtils.getRandomNumberInRange(0f, 360f));

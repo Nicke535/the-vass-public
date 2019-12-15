@@ -14,7 +14,9 @@ import com.fs.starfarer.api.graphics.SpriteAPI;
 import com.fs.starfarer.api.mission.FleetSide;
 import com.fs.starfarer.api.ui.Alignment;
 import com.fs.starfarer.api.ui.TooltipMakerAPI;
+import data.scripts.campaign.VassFamilyTrackerPlugin;
 import data.scripts.util.MagicRender;
+import data.scripts.utils.VassUtils;
 import org.lazywizard.lazylib.FastTrig;
 import org.lazywizard.lazylib.combat.CombatUtils;
 import org.lwjgl.util.vector.Vector2f;
@@ -50,6 +52,12 @@ public class VassPeriodicPlating extends BaseHullMod {
 			}
 		}
 
+		//We might belong to a specific family; if so, we run their special advance script instead
+		VassUtils.VASS_FAMILY family = VassUtils.getFamilyMembershipOfShip(ship);
+		if (family != null) {
+			//colorToUse = VassUtils.getFamilyColor(family, currentBrightness); TODO: add script
+		}
+
 		//Only activate plating if allowed
 		if (platingCanBeActive(ship)) {
 			if (ship == Global.getCombatEngine().getPlayerShip()) {
@@ -63,7 +71,7 @@ public class VassPeriodicPlating extends BaseHullMod {
 			ship.getMutableStats().getDynamic().getStat("VassAfterimageTracker").modifyFlat("VassAfterimageTrackerNullerID",-1);
 			ship.getMutableStats().getDynamic().getStat("VassAfterimageTracker").modifyFlat("VassAfterimageTrackerID",ship.getMutableStats().getDynamic().getStat("VassAfterimageTracker").getModifiedValue()+amount);
 			if (ship.getMutableStats().getDynamic().getStat("VassAfterimageTracker").getModifiedValue() > AFTERIMAGE_THRESHHOLD) {
-				renderAfterimage(ship);
+				renderAfterimage(ship, family);
 				ship.getMutableStats().getDynamic().getStat("VassAfterimageTracker").modifyFlat("VassAfterimageTrackerID",ship.getMutableStats().getDynamic().getStat("VassAfterimageTracker").getModifiedValue()-AFTERIMAGE_THRESHHOLD);
 			}
 		} else {
@@ -79,7 +87,7 @@ public class VassPeriodicPlating extends BaseHullMod {
 	 * @param ship ship to check for
 	 * @return whether the periodic plating of the ship is allowed to be active
 	 */
-	private boolean platingCanBeActive (ShipAPI ship) {
+	private static boolean platingCanBeActive (ShipAPI ship) {
 		if (ship.getSystem().isActive() || ship.getFluxTracker().isOverloadedOrVenting() || ship.isHulk() || ship.isLanding()) {
 			return false;
 		}
@@ -112,6 +120,31 @@ public class VassPeriodicPlating extends BaseHullMod {
 	//For the cool extra description section
 	@Override
 	public void addPostDescriptionSection(TooltipMakerAPI tooltip, ShipAPI.HullSize hullSize, ShipAPI ship, float width, boolean isForModSpec) {
+		addPostDescriptionContractBonus(tooltip, hullSize, ship, width, isForModSpec);
+		addPostDescriptionHullmodSynergies(tooltip, hullSize, ship, width, isForModSpec);
+	}
+
+	//For bonuses gotten from being a member of a Vass family; not really used now except for debugging
+	private void addPostDescriptionContractBonus (TooltipMakerAPI tooltip, ShipAPI.HullSize hullSize, ShipAPI ship, float width, boolean isForModSpec) {
+		//This does nothing if we're not a member of a family
+		if (VassFamilyTrackerPlugin.getFamilyMembership() == null) {
+			return;
+		}
+
+		float pad = 10f;
+		tooltip.addSectionHeading("Membership Bonus", Alignment.MID, pad);
+
+		//If we have Safety Overrides, inform the player of its... issues
+		if (VassFamilyTrackerPlugin.getFamilyMembership() == VassUtils.VASS_FAMILY.PERTURBA) {
+			TooltipMakerAPI text = tooltip.beginImageWithText("graphics/hullmods/targeting_supercomputer.png", 36); //TODO: fix proper icon
+			text.addPara("Perturba", 0, VassUtils.getFamilyColor(VassUtils.VASS_FAMILY.PERTURBA, 1f), "Perturba");
+			text.addPara("There is currently no bonus for being a member of Perturba... tough luck!", 0);
+			tooltip.addImageWithText(pad);
+		}
+	}
+
+	//For various hullmods that interact strangely with the hullmod
+	private void addPostDescriptionHullmodSynergies (TooltipMakerAPI tooltip, ShipAPI.HullSize hullSize, ShipAPI ship, float width, boolean isForModSpec) {
 		//If we don't have any hullmod synergies, don't display the paragraph at all
 		if (!ship.getVariant().hasHullMod("safetyoverrides")) {
 			return;
@@ -141,7 +174,8 @@ public class VassPeriodicPlating extends BaseHullMod {
 		}
 	}
 
-	private void renderAfterimage(ShipAPI ship) {
+	//Renders a single afterimage of the ship
+	private void renderAfterimage(ShipAPI ship, VassUtils.VASS_FAMILY family) {
 		// Sprite offset fuckery - Don't you love trigonometry?
 		SpriteAPI sprite = ship.getSpriteAPI();
 		float offsetX = sprite.getWidth()/2 - sprite.getCenterX();
@@ -156,6 +190,12 @@ public class VassPeriodicPlating extends BaseHullMod {
 			layer = CombatEngineLayers.CONTRAILS_LAYER;
 		}
 
+		//Gets a color for the afterimage
+		Color colorToUse = AFTERIMAGE_COLOR_STANDARD;
+		if (family != null) {
+			colorToUse = VassUtils.getFamilyColor(family, 0.4f);
+		}
+
 		MagicRender.battlespace(
 				Global.getSettings().getSprite(ship.getHullSpec().getSpriteName()),
 				new Vector2f(ship.getLocation().getX()+trueOffsetX,ship.getLocation().getY()+trueOffsetY),
@@ -164,7 +204,7 @@ public class VassPeriodicPlating extends BaseHullMod {
 				new Vector2f(0, 0),
 				ship.getFacing()-90f,
 				0f,
-				AFTERIMAGE_COLOR_STANDARD,
+				colorToUse,
 				true,
 				0.01f,
 				0f,
