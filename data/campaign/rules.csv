@@ -20,9 +20,9 @@ OR
 vass_relLevelNeutral,RelationshipLevelDesc,"$faction.rel == NEUTRAL
 $faction.id == vass",,"The Vass families have made note of you, and consider you a useful asset. While they still don't entrust you with their ships or more critical missions, they are interested in furthering relations.",,
 vass_relLevelInhospitable,RelationshipLevelDesc,"$faction.rel == INHOSPITABLE
-$faction.id == vass",,"You have shown to respect the Vass families and their internal affairs to such an extent that they at least partially respect your presence.",,
+$faction.id == vass",,"The $faction families consider you largely beneath their notice, should they know of you at all. They consider you the same way they consider most other independent starfarers; potential profit with a knack for being troublesome.",,
 vass_relLevelSuspicious,RelationshipLevelDesc,"$faction.rel == SUSPICIOUS
-$faction.id == vass",,"You have earned enough favour with at least one of the Vass families for them to think twice before giving you trouble, though they still don't fully trust your motives.",,
+$faction.id == vass",,"You have shown to respect the Vass families and their internal affairs to such an extent that they at least partially respect your presence.",,
 vass_relLevelFavorable,RelationshipLevelDesc,"$faction.rel == FAVORABLE
 $faction.id == vass",,"You have useful connections within at least one of the families, and have relatively free access to their services as long as you don't go sticking your nose too deep.",,
 vass_relLevelWelcoming,RelationshipLevelDesc,"$faction.rel == WELCOMING
@@ -32,7 +32,7 @@ $faction.id == vass",,"You have made great contributions to at least one of the 
 vass_relLevelFriendly,RelationshipLevelDesc,"$faction.rel == FRIENDLY
 $faction.id == vass",,"The families consider you as one of their own. You are free to own and purchase Vass ships for personal use, and they may be willing to overlook minor reselling to an extent.",,
 vass_relLevelHostile,RelationshipLevelDesc,"$faction.rel == HOSTILE
-$faction.id == vass",,"The $faction families consider you largely beneath their notice, should they know of you at all. They consider you the same way they consider most other independent starfarers; potential profit with a knack for being troublesome.",,
+$faction.id == vass",,"Your acts of defiance or aggression against the $faction families have not gone unnoticed. While they aren't actively hunting you down, friendly encounters are not to be expected.",,
 vass_relLevelVengeful,RelationshipLevelDesc,"$faction.rel == VENGEFUL
 $faction.id == vass",,"The $faction families have a price on your head, and at least one of them are actively hunting you for your troublesome actions. Needless to say, you are no longer welcome to do business of any kind.",,
 "#END Relationship Level Descriptions",,,,,,

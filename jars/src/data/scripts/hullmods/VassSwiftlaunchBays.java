@@ -112,7 +112,7 @@ public class VassSwiftlaunchBays extends BaseHullMod {
         readyBackupCounter = Math.round(100f * readyBackupCounter);
         if (ship.equals(engine.getPlayerShip())) {
             engine.maintainStatusForPlayerShip("vass_swiftlaunch_bays_displaydata",
-                    "graphics/icons/hullsys/reserve_deployment.png", "Swiftlaynch Bays",
+                    "graphics/icons/hullsys/reserve_deployment.png", "Swiftlaunch Bays",
                     (int)readyBackupCounter + "% of backup craft readied", false);
         }
 

@@ -57,6 +57,7 @@ public class VassPerturbaWeaponContractEvent extends BaseBarEventWithPerson {
 
     private static int PURCHASE_COST = 20000;
     private static float RELATIONS_AFTER_DEAL = 35f;
+    private static float RELATIONS_AFTER_BAD_DEAL = -25f;
 
     public static PersonAPI getContact () {
         return (PersonAPI) Global.getSector().getMemoryWithoutUpdate().get(VASS_PERTURBA_CONTACT_KEY);
@@ -75,6 +76,7 @@ public class VassPerturbaWeaponContractEvent extends BaseBarEventWithPerson {
         //Don't appear if Perturba has been knocked out, or are enemies to the player
         if (VassFamilyTrackerPlugin.isFamilyEliminated(VassUtils.VASS_FAMILY.PERTURBA)) { return false; }
         if (VassFamilyTrackerPlugin.getRelationToFamily(VassUtils.VASS_FAMILY.PERTURBA) < 0f) { return false; }
+        if (!Global.getSector().getPlayerFaction().getRelationshipLevel("vass").isAtWorst(RepLevel.INHOSPITABLE)) { return false; }
 
         //Only the player's ship-producing markets can get the event
         if (!market.getFaction().isPlayerFaction()) { return false; }
@@ -111,12 +113,18 @@ public class VassPerturbaWeaponContractEvent extends BaseBarEventWithPerson {
         }
         super.regen(market);
 
-        if (person.getGender() == Gender.MALE) {
-            person.setPortraitSprite(pickMalePortrait());
+        //If we had an existing person, use that
+        Object oldPerson = Global.getSector().getMemoryWithoutUpdate().get(VASS_PERTURBA_CONTACT_KEY);
+        if (oldPerson instanceof PersonAPI) {
+            person = (PersonAPI) oldPerson;
         } else {
-            person.setPortraitSprite(pickFemalePortrait());
+            if (person.getGender() == Gender.MALE) {
+                person.setPortraitSprite(pickMalePortrait());
+            } else {
+                person.setPortraitSprite(pickFemalePortrait());
+            }
+            Global.getSector().getMemoryWithoutUpdate().set(VASS_PERTURBA_CONTACT_KEY, person);
         }
-        Global.getSector().getMemoryWithoutUpdate().set(VASS_PERTURBA_CONTACT_KEY, person);
     }
 
     // Creates the actual prompt and description when entering the bar. Picks randomly from a list, with some variations based on circumstance
@@ -219,16 +227,21 @@ public class VassPerturbaWeaponContractEvent extends BaseBarEventWithPerson {
 
                 text.setFontSmallInsignia();
                 text.addPara("Lost " + PURCHASE_COST + " credits", n, h, "" + PURCHASE_COST);
-                text.addPara("Relations with Perturba improved to "+Math.round(RELATIONS_AFTER_DEAL), h, "Perturba", ""+Math.round(RELATIONS_AFTER_DEAL));
+
+                float currentPerturbaRelations = VassFamilyTrackerPlugin.getRelationToFamily(VassUtils.VASS_FAMILY.PERTURBA);
+                if (VassFamilyTrackerPlugin.getRelationToFamily(VassUtils.VASS_FAMILY.PERTURBA) < RELATIONS_AFTER_DEAL) {
+                    VassFamilyTrackerPlugin.modifyRelationToFamily(VassUtils.VASS_FAMILY.PERTURBA, RELATIONS_AFTER_DEAL - currentPerturbaRelations);
+                    text.addPara("Relations with Perturba improved to "+Math.round(RELATIONS_AFTER_DEAL), h, "Perturba", ""+Math.round(RELATIONS_AFTER_DEAL));
+                }
+                if (Global.getSector().getPlayerFaction().getRelationshipLevel("vass").isAtBest(RepLevel.SUSPICIOUS)) {
+                    text.addPara("Relations with the Vass Families improved to Neutral", h, "Vass Families", "Neutral");
+                    Global.getSector().getPlayerFaction().setRelationship("vass", RepLevel.NEUTRAL);
+                }
                 text.setFontInsignia();
 
                 text.addPara("'I hope this is the beginning of a long and profitable partnership for us both.'");
 
                 Global.getSector().getPlayerFleet().getCargo().getCredits().add(-1 * PURCHASE_COST);
-                float currentPerturbaRelations = VassFamilyTrackerPlugin.getRelationToFamily(VassUtils.VASS_FAMILY.PERTURBA);
-                if (VassFamilyTrackerPlugin.getRelationToFamily(VassUtils.VASS_FAMILY.PERTURBA) < RELATIONS_AFTER_DEAL) {
-                    VassFamilyTrackerPlugin.modifyRelationToFamily(VassUtils.VASS_FAMILY.PERTURBA, RELATIONS_AFTER_DEAL - currentPerturbaRelations);
-                }
                 for (String weapon : VassPerturbaWeaponContractEvent.UNLOCKED_WEAPONS) {
                     Global.getSector().getPlayerFaction().addKnownWeapon(weapon, true);
                 }
@@ -247,7 +260,12 @@ public class VassPerturbaWeaponContractEvent extends BaseBarEventWithPerson {
                 text.addPara("By the time you've regained your senses, they are nowhere to be seen. Luckily it seems like the bar made it relatively unscathed, even if the guards and bar visitors are visibly shaken; the agent must have thrown some kind of riot suppression weapon.");
                 text.addPara("You have a feeling Perturba won't be offering you any new deals any time soon.");
 
-                VassFamilyTrackerPlugin.modifyRelationToFamily(VassUtils.VASS_FAMILY.PERTURBA, -(20f + VassFamilyTrackerPlugin.getRelationToFamily(VassUtils.VASS_FAMILY.PERTURBA)));
+                text.setFontSmallInsignia();
+                text.addPara("Relations with Perturba worsened to "+Math.round(RELATIONS_AFTER_BAD_DEAL), h, "Perturba", ""+Math.round(RELATIONS_AFTER_DEAL));
+                text.setFontInsignia();
+
+                VassFamilyTrackerPlugin.modifyRelationToFamily(VassUtils.VASS_FAMILY.PERTURBA,
+                        -((-RELATIONS_AFTER_BAD_DEAL) + VassFamilyTrackerPlugin.getRelationToFamily(VassUtils.VASS_FAMILY.PERTURBA)));
 
                 options.addOption("Leave", OptionId.LEAVE);
                 break;

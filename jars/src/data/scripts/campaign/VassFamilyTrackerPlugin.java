@@ -3,14 +3,12 @@ package data.scripts.campaign;
 
 import com.fs.starfarer.api.EveryFrameScript;
 import com.fs.starfarer.api.Global;
-import com.fs.starfarer.api.campaign.CampaignFleetAPI;
-import com.fs.starfarer.api.campaign.CampaignUIAPI;
-import com.fs.starfarer.api.campaign.LocationAPI;
-import com.fs.starfarer.api.campaign.SectorAPI;
+import com.fs.starfarer.api.campaign.*;
 import com.fs.starfarer.api.fleet.FleetMemberAPI;
 import com.fs.starfarer.api.impl.campaign.fleets.FleetFactoryV3;
 import com.fs.starfarer.api.impl.campaign.fleets.FleetParamsV3;
 import com.fs.starfarer.api.util.Misc;
+import com.fs.starfarer.api.util.Pair;
 import data.scripts.utils.VassUtils;
 import org.jetbrains.annotations.Nullable;
 import org.lazywizard.lazylib.MathUtils;
@@ -32,7 +30,7 @@ public class VassFamilyTrackerPlugin implements EveryFrameScript {
     private Map<VassUtils.VASS_FAMILY, Float> familyRelationMap = null;
 
     //Keeps track of which family, if any, the player has membership status to
-    private VassUtils.VASS_FAMILY currentFamilyMembership = VassUtils.VASS_FAMILY.PERTURBA; //TODO: remove
+    private VassUtils.VASS_FAMILY currentFamilyMembership = null;
 
     //Keeps track of our own plugin instance
     private static VassFamilyTrackerPlugin currentInstance = null;
@@ -119,8 +117,9 @@ public class VassFamilyTrackerPlugin implements EveryFrameScript {
         familyPowerMap.put(VassUtils.VASS_FAMILY.MULTA, 0f);
     }
 
-    // Initializes the family relations map to its default state
+    // Initializes the family relations map to its default state. Also sets the player's relation to Vass as a whole
     private void initializeFamilyRelations() {
+        Global.getSector().getPlayerFaction().setRelationship("vass", RepLevel.INHOSPITABLE);
         familyRelationMap = new HashMap<>();
         familyRelationMap.put(VassUtils.VASS_FAMILY.ACCEL, 0f);
         familyRelationMap.put(VassUtils.VASS_FAMILY.TORPOR, 0f);
@@ -163,7 +162,8 @@ public class VassFamilyTrackerPlugin implements EveryFrameScript {
     //Static functions for modifying and accessing the relation of the player to a Vass family
     public static void modifyRelationToFamily(VassUtils.VASS_FAMILY family, float amount) {
         if (currentInstance != null) {
-            currentInstance.familyRelationMap.put(family, currentInstance.familyRelationMap.get(family)+amount);
+            float newRelation = currentInstance.familyRelationMap.get(family) + amount;
+            currentInstance.familyRelationMap.put(family, newRelation);
         }
     }
     public static float getRelationToFamily(VassUtils.VASS_FAMILY family) {
