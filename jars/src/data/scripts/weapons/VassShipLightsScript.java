@@ -20,6 +20,10 @@ public class VassShipLightsScript implements EveryFrameWeaponEffectPlugin {
 
     private float timer = 0f;
     private float currentBrightness = 0f;
+    private VassUtils.VASS_FAMILY family = null;
+    private boolean hasCheckedFamily = false;
+    private boolean isElite = false;
+    private boolean hasCheckedEliteness = false;
 
     @Override
     public void advance(float amount, CombatEngineAPI engine, WeaponAPI weapon) {
@@ -27,10 +31,28 @@ public class VassShipLightsScript implements EveryFrameWeaponEffectPlugin {
         if (ship == null) {
             return;
         }
+        if (!hasCheckedFamily) {
+            try {
+                family = VassUtils.getFamilyMembershipOfShip(ship);
+                hasCheckedFamily = true;
+            } catch (IllegalStateException e) {
+                return;
+            }
+        }
+        if (!hasCheckedEliteness) {
+            try {
+                isElite = VassUtils.isShipAnElite(ship);
+                hasCheckedEliteness = true;
+            } catch (IllegalStateException e) {
+                return;
+            }
+        }
 
         ShipSystemAPI system = ship.getSystem();
         if (engine == null || !engine.isEntityInPlay(ship)) {       //Refit screen! Just use frame 1 instead of our "proper" frame
             weapon.getAnimation().setFrame(0);
+            hasCheckedFamily = false;
+            hasCheckedEliteness = false;
             return;
         } else if (ship.isPiece()) {                                //First: are we a piece? If so, instantly lose all opacity
             currentBrightness = 0f;
@@ -65,8 +87,7 @@ public class VassShipLightsScript implements EveryFrameWeaponEffectPlugin {
 
         //Now, set the color to the one we want, and include opacity
         Color colorToUse = new Color(COLORS_BASIC[0], COLORS_BASIC[1], COLORS_BASIC[2], currentBrightness);
-        VassUtils.VASS_FAMILY family = VassUtils.getFamilyMembershipOfShip(ship);
-        if (family != null) {
+        if (family != null && isElite) {
             colorToUse = VassUtils.getFamilyColor(family, currentBrightness);
         }
         if (system.isActive()) {

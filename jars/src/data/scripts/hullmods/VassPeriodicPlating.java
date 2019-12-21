@@ -3,6 +3,7 @@ package data.scripts.hullmods;
 import java.awt.Color;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.WeakHashMap;
 
 import com.fs.starfarer.api.Global;
 import com.fs.starfarer.api.combat.BaseHullMod;
@@ -31,10 +32,31 @@ public class VassPeriodicPlating extends BaseHullMod {
 
 	//The time spent in combat by the ship, for calculating SO crew losses. Added here, cleared and used in a campaign script
 	public static Map<String, Float> timeInCombatMap = new HashMap<String, Float>();
+
+	private WeakHashMap<ShipAPI, VassUtils.VASS_FAMILY> familyMembership = new WeakHashMap<>();
+	private WeakHashMap<ShipAPI, Boolean> eliteStatus = new WeakHashMap<>();
 	
 	//Changes the ships time mult at every "advanceInCombat", in order to make sure the global time mult is correct in relation to the player ship
 	@Override
 	public void advanceInCombat(ShipAPI ship, float amount) {
+		//Ensures we can properly get our family and elite-ness before running other code
+		if (!familyMembership.containsKey(ship)) {
+			try {
+				familyMembership.put(ship, VassUtils.getFamilyMembershipOfShip(ship));
+			} catch (IllegalStateException e) {
+				familyMembership.remove(ship);
+				return;
+			}
+		}
+		if (!eliteStatus.containsKey(ship)) {
+			try {
+				eliteStatus.put(ship, VassUtils.isShipAnElite(ship));
+			} catch (IllegalStateException e) {
+				eliteStatus.remove(ship);
+				return;
+			}
+		}
+
 		//If we have SO equipped, we store our time spent in combat (only for the player fleet, in the campaign)
 		if (ship.getVariant().hasHullMod("safetyoverrides") && Global.getCombatEngine().getFleetManager(ship.getOwner()) == Global.getCombatEngine().getFleetManager(FleetSide.PLAYER)) {
 			FleetMemberAPI member = CombatUtils.getFleetMember(ship);
@@ -53,8 +75,7 @@ public class VassPeriodicPlating extends BaseHullMod {
 		}
 
 		//We might belong to a specific family; if so, we run their special advance script instead
-		VassUtils.VASS_FAMILY family = VassUtils.getFamilyMembershipOfShip(ship);
-		if (family != null) {
+		if (familyMembership.get(ship) != null && eliteStatus.get(ship)) {
 			//colorToUse = VassUtils.getFamilyColor(family, currentBrightness); TODO: add script
 		}
 
@@ -71,7 +92,7 @@ public class VassPeriodicPlating extends BaseHullMod {
 			ship.getMutableStats().getDynamic().getStat("VassAfterimageTracker").modifyFlat("VassAfterimageTrackerNullerID",-1);
 			ship.getMutableStats().getDynamic().getStat("VassAfterimageTracker").modifyFlat("VassAfterimageTrackerID",ship.getMutableStats().getDynamic().getStat("VassAfterimageTracker").getModifiedValue()+amount);
 			if (ship.getMutableStats().getDynamic().getStat("VassAfterimageTracker").getModifiedValue() > AFTERIMAGE_THRESHHOLD) {
-				renderAfterimage(ship, family);
+				renderAfterimage(ship, familyMembership.get(ship));
 				ship.getMutableStats().getDynamic().getStat("VassAfterimageTracker").modifyFlat("VassAfterimageTrackerID",ship.getMutableStats().getDynamic().getStat("VassAfterimageTracker").getModifiedValue()-AFTERIMAGE_THRESHHOLD);
 			}
 		} else {
@@ -192,7 +213,9 @@ public class VassPeriodicPlating extends BaseHullMod {
 
 		//Gets a color for the afterimage
 		Color colorToUse = AFTERIMAGE_COLOR_STANDARD;
-		if (family != null) {
+
+		//Elites from a family gets a different color
+		if (family != null && eliteStatus.get(ship)) {
 			colorToUse = VassUtils.getFamilyColor(family, 0.4f);
 		}
 

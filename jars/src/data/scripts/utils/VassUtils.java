@@ -7,6 +7,7 @@ import com.fs.starfarer.api.combat.ShipAPI;
 import com.fs.starfarer.api.mission.FleetSide;
 import com.fs.starfarer.api.util.Misc;
 import data.scripts.campaign.VassFamilyTrackerPlugin;
+import org.jetbrains.annotations.NotNull;
 import org.lazywizard.lazylib.CollisionUtils;
 import org.lazywizard.lazylib.FastTrig;
 import org.lazywizard.lazylib.MathUtils;
@@ -95,7 +96,42 @@ public class VassUtils {
         return targetShielded;
     }
 
-    //Gets which family membership a ship has, which varies depending on being in a mission, being an AI fleet etc.
+    /**
+     * Gets a family's name, with option for capitalization
+     */
+    public static String getFamilyName(@NotNull VASS_FAMILY family, boolean capitalized) {
+        if (capitalized) {
+            if (family == VASS_FAMILY.ACCEL) {
+                return "Accel";
+            } else if (family == VASS_FAMILY.TORPOR) {
+                return "Torpor";
+            } else if (family == VASS_FAMILY.PERTURBA) {
+                return "Perturba";
+            } else if (family == VASS_FAMILY.RECIPRO) {
+                return "Recipro";
+            } else if (family == VASS_FAMILY.MULTA) {
+                return "Multa";
+            }
+        } else {
+            if (family == VASS_FAMILY.ACCEL) {
+                return "accel";
+            } else if (family == VASS_FAMILY.TORPOR) {
+                return "torpor";
+            } else if (family == VASS_FAMILY.PERTURBA) {
+                return "perturba";
+            } else if (family == VASS_FAMILY.RECIPRO) {
+                return "recipro";
+            } else if (family == VASS_FAMILY.MULTA) {
+                return "multa";
+            }
+        }
+        //Shouldn't happen, fallback
+        return null;
+    }
+
+    /**
+     * Gets which family membership a ship has, which varies depending on being in a mission, being an AI fleet etc.
+     */
     public static VASS_FAMILY getFamilyMembershipOfShip(ShipAPI ship) {
         if (Global.getSector() == null || Global.getCurrentState().equals(GameState.TITLE) || (Global.getCombatEngine() != null && !Global.getCombatEngine().isInCampaign())) {
             //Missions: we check for secret hullmods but nothing else
@@ -115,18 +151,71 @@ public class VassUtils {
         } else {
             //In the campaign, we care if the ship belongs to the player's fleet or another fleet
             if (Global.getCombatEngine() != null && Global.getCombatEngine().isSimulation()) {
+                //Simulation: just use the player's membership
                 return VassFamilyTrackerPlugin.getFamilyMembership();
             }
+
+            if (ship.getFleetMember() == null || ship.getFleetMember().getFleetData() == null || ship.getFleetMember().getFleetData().getFleet() == null) {
+                //No fleet data: we can't tell which fleet we're from, so throw an exception
+                throw new IllegalStateException("Tried to check family membership status of a ship that has no fleet data!");
+            }
+
             if (ship.getFleetMember().getFleetData().equals(Global.getSector().getPlayerFleet().getFleetData())) {
                 //Player-fleet ship; just check our current membership
                 return VassFamilyTrackerPlugin.getFamilyMembership();
-            } else {
+            }
+
+            else {
                 //Non-player fleet: check for a memory flag on the fleet to determine
                 Object fleetMembership = ship.getFleetMember().getFleetData().getFleet().getMemoryWithoutUpdate().get("$vass_fleet_family_membership");
                 if (fleetMembership instanceof VASS_FAMILY) {
                     return (VASS_FAMILY) fleetMembership;
                 } else {
                     return null;
+                }
+            }
+        }
+    }
+
+    /**
+     * Checks if a ship is an "elite" for certain purposes. Player ships are always elite, as are any in-mission ships.
+     * For non-player campaign fleets, only flagships and ships in elite fleets count as elite
+     */
+    public static boolean isShipAnElite(ShipAPI ship) {
+        if (Global.getSector() == null || Global.getCurrentState().equals(GameState.TITLE) || (Global.getCombatEngine() != null && !Global.getCombatEngine().isInCampaign())) {
+            //Missions: we are always elite
+            return true;
+        } else {
+            //In the campaign, we care if the ship belongs to the player's fleet or another fleet
+            if (Global.getCombatEngine() != null && Global.getCombatEngine().isSimulation()) {
+                //Simulation; count as elite, it's basically a mission
+                return true;
+            }
+
+            if (ship.getFleetMember() == null || ship.getFleetMember().getFleetData() == null || ship.getFleetMember().getFleetData().getFleet() == null) {
+                //No fleet data: we can't tell which fleet we're from, so throw an exception
+                throw new IllegalStateException("Tried to check elite status of a ship that has no fleet data!");
+            }
+
+            if (ship.getFleetMember().getFleetData().equals(Global.getSector().getPlayerFleet().getFleetData())) {
+                //Player-fleet ship; we're elite
+                return true;
+            }
+
+            else {
+                //Non-player fleet: check for a memory flag on the fleet to determine if the whole fleet is elite
+                Object fleetIsElite = ship.getFleetMember().getFleetData().getFleet().getMemoryWithoutUpdate().get("$vass_fleet_family_elite");
+                if (fleetIsElite instanceof Boolean) {
+                    if ((Boolean) fleetIsElite) {
+                        return true;
+                    }
+                }
+
+                //We're not in an elite fleet: thus, we are only elite if we're the flagship
+                if (ship.getFleetMember().equals(ship.getFleetMember().getFleetData().getFleet().getFlagship())) {
+                    return true;
+                } else {
+                    return false;
                 }
             }
         }

@@ -26,7 +26,7 @@ import java.util.Set;
  */
 public class VassPerturbaWeaponContractEvent extends BaseBarEventWithPerson {
 
-    public static final boolean DEBUG_MODE = true;
+    public static final boolean DEBUG_MODE = false;
 
     //Some memory keys used by the event
     public static final String VASS_PERTURBA_CONTACT_KEY = "$vass_perturba_contact_person";

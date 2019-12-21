@@ -8,7 +8,6 @@ import com.fs.starfarer.api.fleet.FleetMemberAPI;
 import com.fs.starfarer.api.impl.campaign.fleets.FleetFactoryV3;
 import com.fs.starfarer.api.impl.campaign.fleets.FleetParamsV3;
 import com.fs.starfarer.api.util.Misc;
-import com.fs.starfarer.api.util.Pair;
 import data.scripts.utils.VassUtils;
 import org.jetbrains.annotations.Nullable;
 import org.lazywizard.lazylib.MathUtils;
@@ -43,10 +42,14 @@ public class VassFamilyTrackerPlugin implements EveryFrameScript {
     private static final float MIN_LOOT_REVENGE_COOLDOWN = 150f;
 
     //How many fleet points can the families dish out per "power" they have?
-    private static final float LOOT_FLEET_FP_PER_POWER = 3f;
+    private static final float LOOT_FLEET_FP_PER_POWER = 6f;
 
     //How many fleet points will a loot revenge fleet have compared to the player fleet?
-    private static final float LOOT_FLEET_FP_FACTOR = 1.2f;
+    private static final float LOOT_FLEET_FP_FACTOR = 1.25f;
+
+    //The chance that a given fleet will be a elite fleet
+    //Note the first fleet the player faces is never an elite
+    private static final float LOOT_FLEET_ELITE_CHANCE = 0.2f;
     //--Loot revenge fleet stats end--
 
     //Required for an EveryFrameScript
@@ -88,18 +91,22 @@ public class VassFamilyTrackerPlugin implements EveryFrameScript {
                     }
                 }
                 if (tests < 50) {
-                    spawnPlayerLootingPunishFleet(familyToSpawnVia);
-                    currentLootRevengeCooldown = ((100f - getPowerOfFamily(familyToSpawnVia))/100f)*MAX_LOOT_REVENGE_COOLDOWN + ((getPowerOfFamily(familyToSpawnVia))/100f)*MIN_LOOT_REVENGE_COOLDOWN;
                     if (Global.getSector().getMemoryWithoutUpdate().get("$vass_firstTimeVassShipLooted") instanceof Boolean && !(Boolean)Global.getSector().getMemoryWithoutUpdate().get("$vass_firstTimeVassShipLooted")) {
-                        //Not the first time this happens... no extra memory flag needed
+                        //Not the first time this happens... no extra memory flag needed, and elite can appear
+                        if (Math.random() < LOOT_FLEET_ELITE_CHANCE) {
+                            spawnPlayerLootingPunishFleet(familyToSpawnVia, "elite");
+                        } else {
+                            spawnPlayerLootingPunishFleet(familyToSpawnVia);
+                        }
                     } else {
-                        //First time we're punishing the player; mark that in our memory
+                        //First time we're punishing the player; mark that in our memory, and don't have a chance of an elite fleet
                         Global.getSector().getMemoryWithoutUpdate().set("$vass_firstTimeVassShipLooted", true);
+                        spawnPlayerLootingPunishFleet(familyToSpawnVia);
                     }
-
+                    currentLootRevengeCooldown = ((100f - getPowerOfFamily(familyToSpawnVia))/100f)*MAX_LOOT_REVENGE_COOLDOWN + ((getPowerOfFamily(familyToSpawnVia))/100f)*MIN_LOOT_REVENGE_COOLDOWN;
                 }
             } else {
-                currentLootRevengeCooldown = 0.1f;
+                currentLootRevengeCooldown = 0.3f;
             }
         }
         //--  End of loot punisher fleet code  --
@@ -210,13 +217,19 @@ public class VassFamilyTrackerPlugin implements EveryFrameScript {
 
         //Creates the fleet, with only combat ships and at a location that isn't optimal yet
         FleetParamsV3 params = new FleetParamsV3(centerPoint, factionToPickFrom, 5f, "taskForce",
-                Global.getSector().getPlayerFleet().getFleetPoints() * LOOT_FLEET_FP_PER_POWER * LOOT_FLEET_FP_FACTOR,
+                Global.getSector().getPlayerFleet().getFleetPoints() * LOOT_FLEET_FP_FACTOR,
                 0f, 0f, 0f, 0f, 0f, 1f);
         CampaignFleetAPI newFleet = FleetFactoryV3.createFleet(params);
         newFleet.inflateIfNeeded();
         newFleet.setContainingLocation(loc);
         newFleet.setFaction("vass", true);
+        newFleet.setNoFactionInName(true);
+        if (specialOptions.contains("elite")) {
+            newFleet.setName("Elite " + newFleet.getName());
+            newFleet.getMemoryWithoutUpdate().set("$vass_fleet_family_elite", true);
+        }
         newFleet.getMemoryWithoutUpdate().set("$vass_fleet_family_membership", family);
+        newFleet.setName(VassUtils.getFamilyName(family, true) + " " + newFleet.getName());
 
         //Gets a spawn point that's not too close to a fleet that would wipe us out, and outside the player's (base) sensor range: if they're currently sensor pinging, it's fine to appear "suddenly"
         Vector2f desiredSpawnPoint = MathUtils.getPoint(centerPoint, sector.getPlayerFleet().getBaseSensorRangeToDetect(newFleet.getSensorProfile())*1.2f, MathUtils.getRandomNumberInRange(0f, 360f));
@@ -226,7 +239,7 @@ public class VassFamilyTrackerPlugin implements EveryFrameScript {
             CampaignFleetAPI hostileThreat = CampaignUtils.getNearestHostileFleet(newFleet);
             if (hostileThreat == null) {
                 break;
-            } else if (hostileThreat.getFleetPoints() <= Global.getSector().getPlayerFleet().getFleetPoints() * LOOT_FLEET_FP_PER_POWER * LOOT_FLEET_FP_FACTOR * 0.6f) {
+            } else if (hostileThreat.getFleetPoints() <= Global.getSector().getPlayerFleet().getFleetPoints() * LOOT_FLEET_FP_FACTOR * 0.6f) {
                 break;
             } else if (MathUtils.getDistance(hostileThreat.getLocation(), desiredSpawnPoint) >= Math.max(newFleet.getRadius()*3f, hostileThreat.getRadius()*3f)) {
                 break;
@@ -237,8 +250,8 @@ public class VassFamilyTrackerPlugin implements EveryFrameScript {
         }
 
         //Finally, makes the fleet hostile against the player's fleet, and register that this is indeed a special "loot punish" fleet, since that needs to be accessed in rules.csv
-        newFleet.addTag("$vass_loot_punish_fleet");
-        VassCampaignUtils.makeFleetInterceptOtherFleet(newFleet, Global.getSector().getPlayerFleet(), true, 30f);
+        newFleet.getMemoryWithoutUpdate().set("$vass_loot_punish_fleet", true);
+        VassCampaignUtils.makeFleetInterceptOtherFleet(newFleet, Global.getSector().getPlayerFleet(), true, 30f, "vassExtortion");
         loc.addEntity(newFleet);
     }
 
