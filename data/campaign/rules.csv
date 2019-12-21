@@ -27,7 +27,6 @@ vass_perturba_handoverBroke,DialogOptionSelected,"$option == vassPerturbaHandove
 VassPlayerHasOnlyVassShips","AddText ""Gained 1x Mercury-class Shuttle"" textPlayerColor
 AddText ""Lost all Vass ships and fighters"" textEnemyColor
 VassRemoveVassShipsGiveCompensation
-VassReportPeacefulHandover
 MakeOtherFleetPreventDisengage vassExtortion false
 MakeOtherFleetAggressive vassExtortion false
 EndConversation","""Good decision. Of course, we can't just leave you drifting here without a ship, now can we? That'd frankly just send the wrong message now that you've gone ahead and actually cooperated. Luckily for you, we happened to just get our hands on a decent enough little frigate; should be enough for you to get back to civilization, I hope. ""
@@ -36,7 +35,6 @@ After getting all your crew and resources abord the frigate, you are transferred
 ",
 vass_perturba_handover,DialogOptionSelected,"$option == vassPerturbaHandover","AddText ""Lost all Vass ships and fighters"" textEnemyColor
 VassRemoveVassShips
-VassReportPeacefulHandover
 MakeOtherFleetPreventDisengage vassExtortion false
 MakeOtherFleetAggressive vassExtortion false
 EndConversation","""Finally, someone with some sense in their skull! You'd be amazed at how many people like playing hero in these kind of situations. Just don't try anything fancy behind my back now; we'll know of a relapse, and I can tell you right now that the situation won't be nearly as pleasant for either of us.""

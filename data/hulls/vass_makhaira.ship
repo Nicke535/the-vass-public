@@ -57,18 +57,19 @@
     -39.5,
     -2
   ],
+  "builtInMods": [
+    "vass_periodic_plating",
+    "shielded_holds"
+  ],
   "builtInWeapons": {
     "WS0001": "vass_deco_makhaira_lights"
   },
-  "builtInMods": [
-    "vass_periodic_plating"
-  ],
   "builtInWings": [],
   "center": [
     35,
     56.5
   ],
-  "collisionRadius": 80.0,
+  "collisionRadius": 80,
   "engineSlots": [
     {
       "angle": 180,
@@ -247,7 +248,7 @@
       "width": 3
     }
   ],
-  "height": 113,
+  "height": 114,
   "hullId": "vass_makhaira",
   "hullName": "Makhaira",
   "hullSize": "FRIGATE",

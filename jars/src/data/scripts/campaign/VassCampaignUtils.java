@@ -70,10 +70,6 @@ public class VassCampaignUtils {
         if (aggressor.getAI() instanceof ModularFleetAIAPI) {
             ((ModularFleetAIAPI)aggressor.getAI()).getTacticalModule().setTarget(defendant);
         }
-        aggressor.addAssignmentAtStart(FleetAssignment.INTERCEPT, defendant, interceptDays, null);
+        aggressor.addAssignmentAtStart(FleetAssignment.INTERCEPT, defendant, interceptDays, null); //TODO: make completion commands work
     }
-
-    /**
-     * Support class for makeFleetInterceptOtherFleet: despawns or renews
-     */
 }

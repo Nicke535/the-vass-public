@@ -2,7 +2,15 @@ id,type,text1,text2,text3,notes
 ,,,,,
 # Ships,,,,,
 ,,,,,
-vass_schiavona,SHIP,"As much a bragging right as a warship, the infamous Schiavona is the most mobile ship employed by the Vass families. Its fearsome Periodic Breaker system allows it to punch far above what its meager weapon loudout would imply.
+vass_makhaira,SHIP,"Possibly the oldest of the ships still in production by Vass Shipyards, the Makhaira has been redisigned numerous times since its inception. The most recent model has been relegated to a supporting role in most of the families' fleets, either as combat support or as a smuggling vessel. Its unique shipsystem allows it to make much more risky manouvers than expected without running the risk of being punished.
+
+Initially designed in a manner similar to a sport car, the Makhaira's external look actually hasn't changed much since its first version. The same, however, can't be said about the interior components. The first Makhaira designs are thought to outdate the Periodic Plating by at least a couple of decades by conservative estimates, and with the sole exception of the luxorious captain's quarters the entirety of the ships internal structure has been redesigned from scratch on multiple occasions.
+
+The newest model in active production, sometimes nicknamed the Makhaira Reverter, started appearing in Vass fleets around cycle 90 post-collapse. The biggest addition over earlier designs is the Temporal Retreat system, which only finished prototyping a year or so earlier. Using some of the most recent inventions in macro-scale type-2 chrono reversion technology, this Recipro system can bring the ship 'back in time' a couple of seconds, undoing almost all effects or damage inflicted during this time. As the system's electronics takes up nearly twenty percent of the ship's volume, some smugglers within the Vass families still prefer the superior cargo capacity of older models. However, these are rarely if ever deployed as warships.
+
+There are rumors about a new Makhaira model in the works, going under several varied names such as the Makhaira X, the Makhaira Penultimate and the Makhaira Multiplexer. However, no reliable details exist, and any information available is either simple myth or highly speculative in nature.",,,
+,,,,,
+vass_schiavona,SHIP,"As much a bragging right as a warship, the infamous Schiavona is the most mobile ship employed by the Vass families. Its fearsome Periodic Breaker system allows it to punch far above what its meager weapon loadout would imply.
 
 Commonly used for hunter-killer duty, the ship is extremely fast and is capable of catching almost all known vessels both in- and out of a combat scenario unprepared. Accel in particular are known to use entire small fleets consisting of nothing but Schiavonas to hunt down those who cross them, earning it the nickname 'Lain's Bloodhound' in certain circles.
 
