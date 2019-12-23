@@ -10,8 +10,18 @@ import org.apache.log4j.Logger;
 public class VassSectorSetupScript {
     private final static Logger LOGGER = Global.getLogger(VassSectorSetupScript.class);
 
-    /** Spawns a test derelict, to more easily test campaign features working as intended
-     * */
+    /**
+     * Runs all setup for the vass during sector generation. Pretty empty right now, actually
+     * @param sector sector to generate in
+     */
+    public static void runSetup(SectorAPI sector) {
+        //TODO: actually add stuff here
+    }
+
+    /**
+     * Spawns a test derelict, to more easily test that campaign features are working as intended
+     *
+     */
     public static void testSpawnDerelict(SectorAPI sector) {
         StarSystemAPI system = sector.getStarSystem("Corvus");
 

@@ -115,8 +115,8 @@ public class VassAsiScript implements EveryFrameWeaponEffectPlugin {
                     colorToUse = VassUtils.getFamilyColor(VassUtils.VASS_FAMILY.ACCEL, 1f);
                 }
                 MagicTrailPlugin.AddTrailMemberSimple(proj, currentTrailID, Global.getSettings().getSprite("vass_fx", "projectile_trail_zappy"),
-                        proj.getLocation(), 0f, proj.getFacing(), hasAccelerated ? 10f : 15f, hasAccelerated ? 6f : 8f, colorToUse, 0.3f, hasAccelerated ? 0.3f : 0.7f,
-                        true, offsetVelocity, CombatEngineLayers.ABOVE_SHIPS_AND_MISSILES_LAYER);
+                        proj.getLocation(), 0f, proj.getFacing(), hasAccelerated ? 15f : 20f, hasAccelerated ? 8f : 10f, colorToUse, 0.3f,
+                        hasAccelerated ? 0.6f : 0.75f,true, offsetVelocity, CombatEngineLayers.ABOVE_SHIPS_AND_MISSILES_LAYER);
             }
         }
     }

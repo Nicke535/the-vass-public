@@ -76,30 +76,40 @@ public class VassPeriodicPlating extends BaseHullMod {
 
 		//We might belong to a specific family; if so, we run their special advance script instead
 		if (familyMembership.get(ship) != null && eliteStatus.get(ship)) {
-			//colorToUse = VassUtils.getFamilyColor(family, currentBrightness); TODO: add script
-		}
-
-		//Only activate plating if allowed
-		if (platingCanBeActive(ship)) {
-			if (ship == Global.getCombatEngine().getPlayerShip()) {
-				ship.getMutableStats().getTimeMult().modifyMult("VassPeriodicPlatingDebugID", TIME_MULT);
-				Global.getCombatEngine().getTimeMult().modifyMult("VassPeriodicPlatingDebugID", 1f / TIME_MULT);
-			} else {
-				ship.getMutableStats().getTimeMult().modifyMult("VassPeriodicPlatingDebugID", TIME_MULT);
-				Global.getCombatEngine().getTimeMult().unmodify("VassPeriodicPlatingDebugID");
-			}
-			
-			ship.getMutableStats().getDynamic().getStat("VassAfterimageTracker").modifyFlat("VassAfterimageTrackerNullerID",-1);
-			ship.getMutableStats().getDynamic().getStat("VassAfterimageTracker").modifyFlat("VassAfterimageTrackerID",ship.getMutableStats().getDynamic().getStat("VassAfterimageTracker").getModifiedValue()+amount);
-			if (ship.getMutableStats().getDynamic().getStat("VassAfterimageTracker").getModifiedValue() > AFTERIMAGE_THRESHHOLD) {
-				renderAfterimage(ship, familyMembership.get(ship));
-				ship.getMutableStats().getDynamic().getStat("VassAfterimageTracker").modifyFlat("VassAfterimageTrackerID",ship.getMutableStats().getDynamic().getStat("VassAfterimageTracker").getModifiedValue()-AFTERIMAGE_THRESHHOLD);
+			if (familyMembership.get(ship) == VassUtils.VASS_FAMILY.ACCEL) {
+				advanceAccel(ship, amount);
+			} else if (familyMembership.get(ship) == VassUtils.VASS_FAMILY.TORPOR) {
+				advanceTorpor(ship, amount);
+			} else if (familyMembership.get(ship) == VassUtils.VASS_FAMILY.PERTURBA) {
+				advancePerturba(ship, amount);
+			} else if (familyMembership.get(ship) == VassUtils.VASS_FAMILY.RECIPRO) {
+				advanceRecipro(ship, amount);
+			} else if (familyMembership.get(ship) == VassUtils.VASS_FAMILY.MULTA) {
+				advanceMulta(ship, amount);
 			}
 		} else {
-			ship.getMutableStats().getTimeMult().unmodify("VassPeriodicPlatingDebugID");
-            if (ship == Global.getCombatEngine().getPlayerShip()) {
-                Global.getCombatEngine().getTimeMult().unmodify("VassPeriodicPlatingDebugID");
-            }
+			//Only activate plating if allowed
+			if (platingCanBeActive(ship)) {
+				if (ship == Global.getCombatEngine().getPlayerShip()) {
+					ship.getMutableStats().getTimeMult().modifyMult("VassPeriodicPlatingDebugID", TIME_MULT);
+					Global.getCombatEngine().getTimeMult().modifyMult("VassPeriodicPlatingDebugID", 1f / TIME_MULT);
+				} else {
+					ship.getMutableStats().getTimeMult().modifyMult("VassPeriodicPlatingDebugID", TIME_MULT);
+					Global.getCombatEngine().getTimeMult().unmodify("VassPeriodicPlatingDebugID");
+				}
+
+				ship.getMutableStats().getDynamic().getStat("VassAfterimageTracker").modifyFlat("VassAfterimageTrackerNullerID",-1);
+				ship.getMutableStats().getDynamic().getStat("VassAfterimageTracker").modifyFlat("VassAfterimageTrackerID",ship.getMutableStats().getDynamic().getStat("VassAfterimageTracker").getModifiedValue()+amount);
+				if (ship.getMutableStats().getDynamic().getStat("VassAfterimageTracker").getModifiedValue() > AFTERIMAGE_THRESHHOLD) {
+					renderAfterimage(ship, familyMembership.get(ship));
+					ship.getMutableStats().getDynamic().getStat("VassAfterimageTracker").modifyFlat("VassAfterimageTrackerID",ship.getMutableStats().getDynamic().getStat("VassAfterimageTracker").getModifiedValue()-AFTERIMAGE_THRESHHOLD);
+				}
+			} else {
+				ship.getMutableStats().getTimeMult().unmodify("VassPeriodicPlatingDebugID");
+				if (ship == Global.getCombatEngine().getPlayerShip()) {
+					Global.getCombatEngine().getTimeMult().unmodify("VassPeriodicPlatingDebugID");
+				}
+			}
 		}
 	}
 
@@ -155,7 +165,8 @@ public class VassPeriodicPlating extends BaseHullMod {
 		float pad = 10f;
 		tooltip.addSectionHeading("Membership Bonus", Alignment.MID, pad);
 
-		//If we have Safety Overrides, inform the player of its... issues
+		//If we have family membership, inform the player of its benefits
+		//TODO: non-placeholder text
 		if (VassFamilyTrackerPlugin.getFamilyMembership() == VassUtils.VASS_FAMILY.PERTURBA) {
 			TooltipMakerAPI text = tooltip.beginImageWithText("graphics/hullmods/targeting_supercomputer.png", 36); //TODO: fix proper icon
 			text.addPara("Perturba", 0, VassUtils.getFamilyColor(VassUtils.VASS_FAMILY.PERTURBA, 1f), "Perturba");
@@ -233,5 +244,137 @@ public class VassPeriodicPlating extends BaseHullMod {
 				0f,
 				0.35f,
 				layer);
+	}
+
+
+	// --- FAMILY SPECIAL ADVANCE SCRIPTS! --- //
+	//Accel : TODO
+	private void advanceAccel(ShipAPI ship, float amount) {
+		//Only activate plating if allowed
+		if (platingCanBeActive(ship)) {
+			if (ship == Global.getCombatEngine().getPlayerShip()) {
+				ship.getMutableStats().getTimeMult().modifyMult("VassPeriodicPlatingDebugID", TIME_MULT);
+				Global.getCombatEngine().getTimeMult().modifyMult("VassPeriodicPlatingDebugID", 1f / TIME_MULT);
+			} else {
+				ship.getMutableStats().getTimeMult().modifyMult("VassPeriodicPlatingDebugID", TIME_MULT);
+				Global.getCombatEngine().getTimeMult().unmodify("VassPeriodicPlatingDebugID");
+			}
+
+			ship.getMutableStats().getDynamic().getStat("VassAfterimageTracker").modifyFlat("VassAfterimageTrackerNullerID",-1);
+			ship.getMutableStats().getDynamic().getStat("VassAfterimageTracker").modifyFlat("VassAfterimageTrackerID",ship.getMutableStats().getDynamic().getStat("VassAfterimageTracker").getModifiedValue()+amount);
+			if (ship.getMutableStats().getDynamic().getStat("VassAfterimageTracker").getModifiedValue() > AFTERIMAGE_THRESHHOLD) {
+				renderAfterimage(ship, familyMembership.get(ship));
+				ship.getMutableStats().getDynamic().getStat("VassAfterimageTracker").modifyFlat("VassAfterimageTrackerID",ship.getMutableStats().getDynamic().getStat("VassAfterimageTracker").getModifiedValue()-AFTERIMAGE_THRESHHOLD);
+			}
+		} else {
+			ship.getMutableStats().getTimeMult().unmodify("VassPeriodicPlatingDebugID");
+			if (ship == Global.getCombatEngine().getPlayerShip()) {
+				Global.getCombatEngine().getTimeMult().unmodify("VassPeriodicPlatingDebugID");
+			}
+		}
+	}
+
+	//Torpor : TODO
+	private void advanceTorpor(ShipAPI ship, float amount) {
+		//Only activate plating if allowed
+		if (platingCanBeActive(ship)) {
+			if (ship == Global.getCombatEngine().getPlayerShip()) {
+				ship.getMutableStats().getTimeMult().modifyMult("VassPeriodicPlatingDebugID", TIME_MULT);
+				Global.getCombatEngine().getTimeMult().modifyMult("VassPeriodicPlatingDebugID", 1f / TIME_MULT);
+			} else {
+				ship.getMutableStats().getTimeMult().modifyMult("VassPeriodicPlatingDebugID", TIME_MULT);
+				Global.getCombatEngine().getTimeMult().unmodify("VassPeriodicPlatingDebugID");
+			}
+
+			ship.getMutableStats().getDynamic().getStat("VassAfterimageTracker").modifyFlat("VassAfterimageTrackerNullerID",-1);
+			ship.getMutableStats().getDynamic().getStat("VassAfterimageTracker").modifyFlat("VassAfterimageTrackerID",ship.getMutableStats().getDynamic().getStat("VassAfterimageTracker").getModifiedValue()+amount);
+			if (ship.getMutableStats().getDynamic().getStat("VassAfterimageTracker").getModifiedValue() > AFTERIMAGE_THRESHHOLD) {
+				renderAfterimage(ship, familyMembership.get(ship));
+				ship.getMutableStats().getDynamic().getStat("VassAfterimageTracker").modifyFlat("VassAfterimageTrackerID",ship.getMutableStats().getDynamic().getStat("VassAfterimageTracker").getModifiedValue()-AFTERIMAGE_THRESHHOLD);
+			}
+		} else {
+			ship.getMutableStats().getTimeMult().unmodify("VassPeriodicPlatingDebugID");
+			if (ship == Global.getCombatEngine().getPlayerShip()) {
+				Global.getCombatEngine().getTimeMult().unmodify("VassPeriodicPlatingDebugID");
+			}
+		}
+	}
+
+	//Perturba : TODO
+	private void advancePerturba(ShipAPI ship, float amount) {
+		//Only activate plating if allowed
+		if (platingCanBeActive(ship)) {
+			if (ship == Global.getCombatEngine().getPlayerShip()) {
+				ship.getMutableStats().getTimeMult().modifyMult("VassPeriodicPlatingDebugID", TIME_MULT);
+				Global.getCombatEngine().getTimeMult().modifyMult("VassPeriodicPlatingDebugID", 1f / TIME_MULT);
+			} else {
+				ship.getMutableStats().getTimeMult().modifyMult("VassPeriodicPlatingDebugID", TIME_MULT);
+				Global.getCombatEngine().getTimeMult().unmodify("VassPeriodicPlatingDebugID");
+			}
+
+			ship.getMutableStats().getDynamic().getStat("VassAfterimageTracker").modifyFlat("VassAfterimageTrackerNullerID",-1);
+			ship.getMutableStats().getDynamic().getStat("VassAfterimageTracker").modifyFlat("VassAfterimageTrackerID",ship.getMutableStats().getDynamic().getStat("VassAfterimageTracker").getModifiedValue()+amount);
+			if (ship.getMutableStats().getDynamic().getStat("VassAfterimageTracker").getModifiedValue() > AFTERIMAGE_THRESHHOLD) {
+				renderAfterimage(ship, familyMembership.get(ship));
+				ship.getMutableStats().getDynamic().getStat("VassAfterimageTracker").modifyFlat("VassAfterimageTrackerID",ship.getMutableStats().getDynamic().getStat("VassAfterimageTracker").getModifiedValue()-AFTERIMAGE_THRESHHOLD);
+			}
+		} else {
+			ship.getMutableStats().getTimeMult().unmodify("VassPeriodicPlatingDebugID");
+			if (ship == Global.getCombatEngine().getPlayerShip()) {
+				Global.getCombatEngine().getTimeMult().unmodify("VassPeriodicPlatingDebugID");
+			}
+		}
+	}
+
+	//Recipro : TODO
+	private void advanceRecipro(ShipAPI ship, float amount) {
+		//Only activate plating if allowed
+		if (platingCanBeActive(ship)) {
+			if (ship == Global.getCombatEngine().getPlayerShip()) {
+				ship.getMutableStats().getTimeMult().modifyMult("VassPeriodicPlatingDebugID", TIME_MULT);
+				Global.getCombatEngine().getTimeMult().modifyMult("VassPeriodicPlatingDebugID", 1f / TIME_MULT);
+			} else {
+				ship.getMutableStats().getTimeMult().modifyMult("VassPeriodicPlatingDebugID", TIME_MULT);
+				Global.getCombatEngine().getTimeMult().unmodify("VassPeriodicPlatingDebugID");
+			}
+
+			ship.getMutableStats().getDynamic().getStat("VassAfterimageTracker").modifyFlat("VassAfterimageTrackerNullerID",-1);
+			ship.getMutableStats().getDynamic().getStat("VassAfterimageTracker").modifyFlat("VassAfterimageTrackerID",ship.getMutableStats().getDynamic().getStat("VassAfterimageTracker").getModifiedValue()+amount);
+			if (ship.getMutableStats().getDynamic().getStat("VassAfterimageTracker").getModifiedValue() > AFTERIMAGE_THRESHHOLD) {
+				renderAfterimage(ship, familyMembership.get(ship));
+				ship.getMutableStats().getDynamic().getStat("VassAfterimageTracker").modifyFlat("VassAfterimageTrackerID",ship.getMutableStats().getDynamic().getStat("VassAfterimageTracker").getModifiedValue()-AFTERIMAGE_THRESHHOLD);
+			}
+		} else {
+			ship.getMutableStats().getTimeMult().unmodify("VassPeriodicPlatingDebugID");
+			if (ship == Global.getCombatEngine().getPlayerShip()) {
+				Global.getCombatEngine().getTimeMult().unmodify("VassPeriodicPlatingDebugID");
+			}
+		}
+	}
+
+	//Multa : TODO
+	private void advanceMulta(ShipAPI ship, float amount) {
+		//Only activate plating if allowed
+		if (platingCanBeActive(ship)) {
+			if (ship == Global.getCombatEngine().getPlayerShip()) {
+				ship.getMutableStats().getTimeMult().modifyMult("VassPeriodicPlatingDebugID", TIME_MULT);
+				Global.getCombatEngine().getTimeMult().modifyMult("VassPeriodicPlatingDebugID", 1f / TIME_MULT);
+			} else {
+				ship.getMutableStats().getTimeMult().modifyMult("VassPeriodicPlatingDebugID", TIME_MULT);
+				Global.getCombatEngine().getTimeMult().unmodify("VassPeriodicPlatingDebugID");
+			}
+
+			ship.getMutableStats().getDynamic().getStat("VassAfterimageTracker").modifyFlat("VassAfterimageTrackerNullerID",-1);
+			ship.getMutableStats().getDynamic().getStat("VassAfterimageTracker").modifyFlat("VassAfterimageTrackerID",ship.getMutableStats().getDynamic().getStat("VassAfterimageTracker").getModifiedValue()+amount);
+			if (ship.getMutableStats().getDynamic().getStat("VassAfterimageTracker").getModifiedValue() > AFTERIMAGE_THRESHHOLD) {
+				renderAfterimage(ship, familyMembership.get(ship));
+				ship.getMutableStats().getDynamic().getStat("VassAfterimageTracker").modifyFlat("VassAfterimageTrackerID",ship.getMutableStats().getDynamic().getStat("VassAfterimageTracker").getModifiedValue()-AFTERIMAGE_THRESHHOLD);
+			}
+		} else {
+			ship.getMutableStats().getTimeMult().unmodify("VassPeriodicPlatingDebugID");
+			if (ship == Global.getCombatEngine().getPlayerShip()) {
+				Global.getCombatEngine().getTimeMult().unmodify("VassPeriodicPlatingDebugID");
+			}
+		}
 	}
 }

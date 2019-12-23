@@ -1,5 +1,3 @@
-//By Nicke535
-//Causes nearby missiles and projectiles to be "shifted" through time, skipping over anything in the way
 package data.scripts.shipsystems;
 
 import com.fs.starfarer.api.Global;
@@ -21,8 +19,10 @@ import org.lwjgl.util.vector.Vector2f;
 import java.awt.*;
 import java.util.List;
 
-//TODO: Add sound effects
-//TODO: Make better teleport effect
+/**
+ * Causes nearby missiles and projectiles to be "shifted" through time, skipping over anything in the way
+ * @author Nicke535
+ */
 public class VassChronoJump extends BaseShipSystemScript {
     //Percieved time mult when charging the system
     public static final float TIME_MULT_PERCIEVED = 0.2f;
@@ -150,7 +150,7 @@ public class VassChronoJump extends BaseShipSystemScript {
                         proj.getSource().getMutableStats().getBallisticWeaponRangeBonus().unmodify("VASS_SUPERTEMP_B_BONUS");
 
                         //Finally, remove the original projectile altogether (and apply special effects on the new projectile)
-                        applySpecialEffectOnProj(newProj);
+                        applySpecialEffectOnProj(newProj, true);
                         engine.removeEntity(proj);
                     }
                 } else {
@@ -172,13 +172,14 @@ public class VassChronoJump extends BaseShipSystemScript {
                     colorToUse = new Color(230, 240, 255, Math.min((int)(proj.getDamageAmount()*7f), 255));
                 }
 
+                //TODO: improve the visuals of this thing
                 for (Vector2f point : pointsToSpawnAt) {
                     engine.addSmoothParticle(point, new Vector2f(0f, 0f), MathUtils.getRandomNumberInRange(0.7f, 1.2f) * (float)Math.sqrt(proj.getDamageAmount()*2f),
                             1f, MathUtils.getRandomNumberInRange(0.2f, 0.4f), colorToUse);
                 }
 
                 //Finally, apply special effects for modded weapons that need it
-                applySpecialEffectOnProj(proj);
+                applySpecialEffectOnProj(proj, false);
             }
 
             //We also need to play the old loop sounds REALLY quietly to bypass some vanilla sound mixing thingamajigs
@@ -286,7 +287,7 @@ public class VassChronoJump extends BaseShipSystemScript {
 
 
     //Applies special effects for specific modded scripted weapons to ensure compatibility mostly staying
-    private void applySpecialEffectOnProj(DamagingProjectileAPI proj) {
+    private void applySpecialEffectOnProj(DamagingProjectileAPI proj, boolean fromNewlySpawnedProjectile) {
         if (proj == null || proj.getProjectileSpecId() == null) {
             return;
         }

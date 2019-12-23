@@ -1,23 +1,32 @@
 {
-  "displayName": "Strike",
-  "fluxCapacitors": 8,
-  "fluxVents": 4,
+  "displayName": "Multirole",
+  "fluxCapacitors": 10,
+  "fluxVents": 7,
   "goalVariant": true,
   "hullId": "vass_curtana",
   "hullMods": [
-    "expanded_deck_crew",
+    "turretgyros",
     "pointdefenseai",
-    "targetingunit"
+    "targetingunit",
+    "advancedshieldemitter"
   ],
   "permaMods": [],
   "quality": 0,
-  "variantId": "vass_curtana_strike",
+  "variantId": "vass_curtana_multirole",
   "weaponGroups": [
+    {
+      "autofire": false,
+      "mode": "LINKED",
+      "weapons": {
+        "WS0002": "vass_caladbolg"
+      }
+    },
     {
       "autofire": true,
       "mode": "LINKED",
       "weapons": {
-        "WS0002": "vass_fragarach"
+        "WS0005": "vass_dyrnwyn",
+        "WS0006": "vass_dyrnwyn"
       }
     },
     {
@@ -25,15 +34,8 @@
       "mode": "LINKED",
       "weapons": {
         "WS0003": "vass_yawarakai_te",
-        "WS0004": "vass_yawarakai_te",
-        "WS0005": "vass_yawarakai_te",
-        "WS0006": "vass_yawarakai_te"
+        "WS0004": "vass_yawarakai_te"
       }
-    },
-    {
-      "autofire": false,
-      "mode": "LINKED",
-      "weapons": {}
     },
     {
       "autofire": false,
@@ -42,7 +44,7 @@
     }
   ],
   "wings": [
-    "vass_estoc_wing",
+    "vass_katzbalger_wing",
     "vass_estoc_wing"
   ]
 }

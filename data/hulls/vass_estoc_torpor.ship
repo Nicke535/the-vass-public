@@ -1,0 +1,126 @@
+{
+  "bounds": [
+    -14.5,
+    12,
+    -6.5,
+    15,
+    -12.5,
+    26.5,
+    10,
+    7,
+    21,
+    3,
+    18,
+    -0,
+    21,
+    -3,
+    10,
+    -7,
+    -12.5,
+    -26.5,
+    -6.5,
+    -15,
+    -14.5,
+    -12,
+    -7.5,
+    -0
+  ],
+  "builtInMods": [
+    "vass_periodic_plating"
+  ],
+  "builtInWeapons": {
+    "WS0001": "vass_deco_estoc_lights",
+    "WS0002": "vass_excalibur_launcher"
+  },
+  "builtInWings": [],
+  "center": [
+    30,
+    27
+  ],
+  "collisionRadius": 34,
+  "engineSlots": [
+    {
+      "angle": 180,
+      "contrailSize": 3,
+      "length": 40,
+      "location": [
+        -13,
+        7
+      ],
+      "style": "VASS_ENGINE_FAR",
+      "width": 3
+    },
+    {
+      "angle": -180,
+      "contrailSize": 3,
+      "length": 40,
+      "location": [
+        -13,
+        -7
+      ],
+      "style": "VASS_ENGINE_FAR",
+      "width": 3
+    },
+    {
+      "angle": -180,
+      "contrailSize": 5,
+      "length": 20,
+      "location": [
+        -14,
+        -7
+      ],
+      "style": "VASS_ENGINE_NEAR",
+      "width": 5
+    },
+    {
+      "angle": 180,
+      "contrailSize": 5,
+      "length": 20,
+      "location": [
+        -14,
+        7
+      ],
+      "style": "VASS_ENGINE_NEAR",
+      "width": 5
+    }
+  ],
+  "height": 54,
+  "hullId": "vass_estoc_torpor",
+  "hullName": "Tuck",
+  "hullSize": "FIGHTER",
+  "shieldCenter": [
+    -7,
+    -0
+  ],
+  "shieldRadius": 29.5,
+  "spriteName": "graphics/vass/ships/estoc.png",
+  "style": "VASS_HULL",
+  "viewOffset": 0,
+  "weaponSlots": [
+    {
+      "angle": 0,
+      "arc": 0,
+      "id": "WS0001",
+      "locations": [
+        0,
+        -0
+      ],
+      "mount": "TURRET",
+      "size": "SMALL",
+      "type": "DECORATIVE"
+    },
+    {
+      "angle": 0,
+      "arc": 15,
+      "id": "WS0002",
+      "locations": [
+        -6,
+        -0
+      ],
+      "mount": "TURRET",
+      "size": "LARGE",
+      "type": "BUILT_IN"
+    }
+  ],
+  "width": 60
+}

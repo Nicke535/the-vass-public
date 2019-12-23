@@ -1,0 +1,52 @@
+{
+  "displayName": "Multipurpose",
+  "fluxCapacitors": 14,
+  "fluxVents": 20,
+  "goalVariant": false,
+  "hullId": "vass_schiavona",
+  "hullMods": [
+    "targetingunit",
+    "insulatedengine",
+    "extendedshieldemitter"
+  ],
+  "permaMods": [],
+  "quality": 0,
+  "variantId": "vass_schiavona_multipurpose",
+  "weaponGroups": [
+    {
+      "autofire": false,
+      "mode": "LINKED",
+      "weapons": {
+        "WS0004": "vass_caladbolg"
+      }
+    },
+    {
+      "autofire": false,
+      "mode": "ALTERNATING",
+      "weapons": {
+        "WS0005": "vass_trishula_emitter",
+        "WS0006": "vass_trishula_emitter"
+      }
+    },
+    {
+      "autofire": true,
+      "mode": "LINKED",
+      "weapons": {
+        "WS0002": "vass_fragarach"
+      }
+    },
+    {
+      "autofire": true,
+      "mode": "LINKED",
+      "weapons": {
+        "WS0003": "vass_yawarakai_te"
+      }
+    },
+    {
+      "autofire": false,
+      "mode": "LINKED",
+      "weapons": {}
+    }
+  ],
+  "wings": []
+}

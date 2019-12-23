@@ -133,6 +133,13 @@ public class VassUtils {
      * Gets which family membership a ship has, which varies depending on being in a mission, being an AI fleet etc.
      */
     public static VASS_FAMILY getFamilyMembershipOfShip(ShipAPI ship) {
+        //If we're a fighter, we get our mothership's bonus
+        if (ship.isFighter()) {
+            if (ship.getWing() != null && ship.getWing().getSourceShip() != null) {
+                return getFamilyMembershipOfShip(ship.getWing().getSourceShip());
+            }
+        }
+
         if (Global.getSector() == null || Global.getCurrentState().equals(GameState.TITLE) || (Global.getCombatEngine() != null && !Global.getCombatEngine().isInCampaign())) {
             //Missions: we check for secret hullmods but nothing else
             if (ship.getVariant().hasHullMod("vass_dummymod_accel_membership")) {
@@ -182,6 +189,17 @@ public class VassUtils {
      * For non-player campaign fleets, only flagships and ships in elite fleets count as elite
      */
     public static boolean isShipAnElite(ShipAPI ship) {
+        //If we're a fighter, and not a "unique" one, we get our mothership's bonus
+        if (ship.isFighter() && !ship.getHullSpec().getTags().contains("vass_family_unique_ship")) {
+            if (ship.getWing() != null && ship.getWing().getSourceShip() != null) {
+                return isShipAnElite(ship.getWing().getSourceShip());
+            }
+        }
+        //Elite fighter wings are *always* elite... thus the name
+        else if (ship.isFighter()) {
+            return true;
+        }
+
         if (Global.getSector() == null || Global.getCurrentState().equals(GameState.TITLE) || (Global.getCombatEngine() != null && !Global.getCombatEngine().isInCampaign())) {
             //Missions: we are always elite
             return true;

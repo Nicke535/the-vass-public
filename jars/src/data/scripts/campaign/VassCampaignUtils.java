@@ -1,5 +1,6 @@
 package data.scripts.campaign;
 
+import com.fs.starfarer.api.EveryFrameScript;
 import com.fs.starfarer.api.Global;
 import com.fs.starfarer.api.Script;
 import com.fs.starfarer.api.campaign.*;
@@ -15,6 +16,7 @@ import com.fs.starfarer.api.impl.campaign.procgen.DefenderDataOverride;
 import com.fs.starfarer.api.impl.campaign.procgen.themes.BaseThemeGenerator;
 import com.fs.starfarer.api.impl.campaign.procgen.themes.SalvageSpecialAssigner;
 import com.fs.starfarer.api.impl.campaign.rulecmd.salvage.special.ShipRecoverySpecial;
+import com.fs.starfarer.api.util.IntervalUtil;
 import com.fs.starfarer.api.util.Misc;
 import org.jetbrains.annotations.Nullable;
 import org.lwjgl.util.vector.Vector2f;
@@ -46,6 +48,7 @@ public class VassCampaignUtils {
 
     /**
      * Utility function for getting a fleet to intercept another fleet
+     * NOTE: makeAggressive only works against the player fleet
      */
     public static void makeFleetInterceptOtherFleet(CampaignFleetAPI aggressor, CampaignFleetAPI defendant, boolean makeAggressive, float interceptDays) {
         makeFleetInterceptOtherFleet(aggressor, defendant, makeAggressive, interceptDays, "generic");
@@ -64,12 +67,82 @@ public class VassCampaignUtils {
         }
 
         aggressor.getMemoryWithoutUpdate().unset(MemFlags.MEMORY_KEY_MAKE_ALLOW_DISENGAGE);
-
         aggressor.getMemoryWithoutUpdate().set(FleetAIFlags.LAST_SEEN_TARGET_LOC, new Vector2f(defendant.getLocation()), interceptDays);
 
         if (aggressor.getAI() instanceof ModularFleetAIAPI) {
             ((ModularFleetAIAPI)aggressor.getAI()).getTacticalModule().setTarget(defendant);
         }
-        aggressor.addAssignmentAtStart(FleetAssignment.INTERCEPT, defendant, interceptDays, null); //TODO: make completion commands work
+
+        //DELIVER_CREW can't be interrupted by other fleets, unlike INTERCEPT or similar
+        aggressor.addAssignment(FleetAssignment.DELIVER_CREW, defendant, interceptDays, "Engaging " + defendant.getNameWithFaction(),null);
+        Global.getSector().addScript(new RenewAggressionPlugin(Global.getSector(), aggressor, defendant, interceptDays));
+    }
+
+
+    /**
+     * Local class for making sure the fleet *keeps* going after the target, alternatively escapes, after any events have happened
+     */
+    static private class RenewAggressionPlugin implements EveryFrameScript {
+        private SectorAPI sector;
+        private CampaignFleetAPI aggressor;
+        private CampaignFleetAPI defendant;
+        private float startingFP;
+        private IntervalUtil timer = new IntervalUtil(0.9f, 1.2f);
+        private float interceptDaysRemaining;
+        RenewAggressionPlugin(SectorAPI sector, CampaignFleetAPI aggressor, CampaignFleetAPI defendant, float interceptDays) {
+            this.sector = sector;
+            this.aggressor = aggressor;
+            this.defendant = defendant;
+            this.startingFP = aggressor.getFleetPoints();
+            this.interceptDaysRemaining = interceptDays;
+        }
+
+        @Override
+        public void advance(float amount) {
+            //Check every second or so
+            interceptDaysRemaining -= Misc.getDays(amount);
+            timer.advance(amount);
+            if (timer.intervalElapsed()) {
+                //Heavily damaged or timed out: retreat to nearest jump point
+                if (aggressor.getFleetPoints() < startingFP*0.5f || interceptDaysRemaining <= 0f) {
+                    if (!aggressor.isCurrentAssignment(FleetAssignment.GO_TO_LOCATION_AND_DESPAWN)) {
+                        aggressor.clearAssignments();
+                        aggressor.addAssignment(FleetAssignment.GO_TO_LOCATION_AND_DESPAWN, Misc.findNearestJumpPointTo(aggressor), 999f);
+                        return;
+                    }
+                }
+
+                //Ordered to flee
+                Object shouldEscape = aggressor.getMemoryWithoutUpdate().get("$vass_fleet_should_escape");
+                if (shouldEscape instanceof Boolean && (Boolean)shouldEscape) {
+                    if (!aggressor.isCurrentAssignment(FleetAssignment.GO_TO_LOCATION_AND_DESPAWN)) {
+                        aggressor.clearAssignments();
+                        aggressor.addAssignment(FleetAssignment.GO_TO_LOCATION_AND_DESPAWN, Misc.findNearestJumpPointTo(aggressor), 999f);
+                        return;
+                    }
+                }
+
+                //No other orders or scenarios: re-engage the target!
+                aggressor.getMemoryWithoutUpdate().unset(MemFlags.MEMORY_KEY_MAKE_ALLOW_DISENGAGE);
+                aggressor.getMemoryWithoutUpdate().set(FleetAIFlags.LAST_SEEN_TARGET_LOC, new Vector2f(defendant.getLocation()), interceptDaysRemaining);
+
+                if (aggressor.getAI() instanceof ModularFleetAIAPI) {
+                    ((ModularFleetAIAPI)aggressor.getAI()).getTacticalModule().setTarget(defendant);
+                }
+
+                //DELIVER_CREW can't be interrupted by other fleets, unlike INTERCEPT or similar
+                aggressor.addAssignment(FleetAssignment.DELIVER_CREW, defendant, interceptDaysRemaining, "Engaging " + defendant.getNameWithFaction(),null);
+            }
+        }
+
+        @Override
+        public boolean runWhilePaused() {
+            return false;
+        }
+
+        @Override
+        public boolean isDone() {
+            return aggressor.isDespawning();
+        }
     }
 }

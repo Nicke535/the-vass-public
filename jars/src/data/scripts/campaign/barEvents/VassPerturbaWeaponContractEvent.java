@@ -227,6 +227,7 @@ public class VassPerturbaWeaponContractEvent extends BaseBarEventWithPerson {
 
                 text.setFontSmallInsignia();
                 text.addPara("Lost " + PURCHASE_COST + " credits", n, h, "" + PURCHASE_COST);
+                Global.getSector().getPlayerFleet().getCargo().getCredits().add(-1 * PURCHASE_COST);
 
                 float currentPerturbaRelations = VassFamilyTrackerPlugin.getRelationToFamily(VassUtils.VASS_FAMILY.PERTURBA);
                 if (VassFamilyTrackerPlugin.getRelationToFamily(VassUtils.VASS_FAMILY.PERTURBA) < RELATIONS_AFTER_DEAL) {
@@ -241,7 +242,6 @@ public class VassPerturbaWeaponContractEvent extends BaseBarEventWithPerson {
 
                 text.addPara("'I hope this is the beginning of a long and profitable partnership for us both.'");
 
-                Global.getSector().getPlayerFleet().getCargo().getCredits().add(-1 * PURCHASE_COST);
                 for (String weapon : VassPerturbaWeaponContractEvent.UNLOCKED_WEAPONS) {
                     Global.getSector().getPlayerFaction().addKnownWeapon(weapon, true);
                 }

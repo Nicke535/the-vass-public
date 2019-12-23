@@ -16,6 +16,8 @@ Commonly used for hunter-killer duty, the ship is extremely fast and is capable 
 
 Of particular note is its Periodic Breaker system, often considered the most defining feature of the ship. The device accelerates the ship's timeflow to near-infinite levels, creating the illusion of time standing still for everything outside its sphere of influence. A side-effect of this is an extremely loud, almost tearing sound, which expands far outside the area directly affected by the system. In fact, for reasons still not entirely documented, this sound seems to travel without carrying mediums: it can be heard onboard other vessels despite being several kilometers away with nothing but the emptiness of space inbetween.",,,
 ,,,,,
+vass_estoc_torpor,SHIP,"This ship is WIP and does not currently work properly; if you found this in the campaign, please tell the mod author (Nicke535) about it!",,,
+,,,,,
 # Weapons,,,,,
 ,,,,,
 ,,,,,
@@ -44,6 +46,12 @@ vass_caladbolg,WEAPON,"A cannon with such an oversized bore that it has no right
 Mostly a tech demo in compact chrono-reversal technology, the shells of the Caladbolg are to-date the smallest such devices in widespread use. While prototype 'ejection seats' of sorts have been created that are technically smaller, they are still prohibitively expensive even by Vass standards and thus only in use by a select few individuals. That's not to say the Caladbolg's shells are a cheap piece of technology; they are still expensive enough to rival that of the cannon it's fired out of.
 
 Said cannon is actually surprisingly simple: a (relatively) simple timeflow-stabilized tracking device for the shells to home in on, a system for injecting and igniting propellant, and solid rifled barrel with a slide-mechanism breach. The breach is mostly used to disperse any unignited propellant and to ensure the chrono-reversal process can be undergone without risk of jamming the barrel. Early prototypes without this breach mechanism tended to have the shot reverted a degree or so off from the original state, causing shots to get stuck in the barrel on ignition and subsequently destroy the entire weapon from the inside out.",Assault,,
+,,,,,
+vass_fragarach,WEAPON,"One of the very few cases of weaponized multi-timeline manipulation, the Fragarach can hit targets it by all rights should have missed by 'grazing' nearby timelines. It is primarily a weapon for knocking out shields, but can be used quite effectively as a PD solution as well.
+
+The Fragarach is the Multa family's first (succesful) attempt at weapons manufacture. At its core, it is a coilgun with an intentionally bad barrel stabilization and circuits that are extremely prone to react to instablities in the ship's flux grid. What this means is that even extremely small changes when firing, almost down to the atomic level, can cascade into a wildly different exit angle for the projectile. While these aspects might appear to be massive flaws to any conventional weapon, they are absolutely critical for the Fragarach.
+
+One of the core issues with timeline-grazing technology is that timelines that interact must be 'close' to eachother. What exactly this 'closeness' entails is a hotly debated subject, but one of the most generally accepted theories is that two timelines are close if their causes are close; that is to say, the smaller the differing 'events' between the timelines, the closer they are. This is exploited to the extreme in the Fragarach, as individual quantum effects can cause the weapon to miss by several degrees and seemingly at random. This means that while the different timelines of the projectile are far away 'geometrically', they are somehow still close 'chronically', allowing the weapon's effects to be considerably more far-reaching than a normal coilgun fielding the technology would be.",Assault/PD,,
 ,,,,,
 # Ship Systems,,,,,
 ,,,,,

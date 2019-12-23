@@ -23,8 +23,22 @@ vass_endCommLink,DialogOptionSelected,"$option == vassEndCommLink","EndConversat
 "#END General",,,,,,
 ,,,,,,
 # Perturba,,,,,,
+vass_perturba_shipLootEncounter,OpenCommLink,"$faction.id == vass score:1000
+VassFleetIsLootPunishFleet","VassReportLootingContact
+$entity.ignorePlayerCommRequests = true 1
+EndConversation","""We're not keen on second chances around here. It was a mistake to let you go the first time; a mistake I'm about to fix.""
+
+The comm link cuts off.
+OR
+""Well look who's been naughty. You should've stopped when you had the chance, kid.""
+
+Comms are cut off from the other side.","vassEndCommLink:Continue",
+,,,,,,
+# First-Time Loot Encounter,,,,,,
 vass_perturba_handoverBroke,DialogOptionSelected,"$option == vassPerturbaHandover
 VassPlayerHasOnlyVassShips","AddText ""Gained 1x Mercury-class Shuttle"" textPlayerColor
+AddText ""Relations with the Vass families improved to Inhospitable"" textPlayerColor
+VassReportPeacefulFirstEncounter
 AddText ""Lost all Vass ships and fighters"" textEnemyColor
 VassRemoveVassShipsGiveCompensation
 MakeOtherFleetPreventDisengage vassExtortion false
@@ -33,7 +47,9 @@ EndConversation","""Good decision. Of course, we can't just leave you drifting h
 
 After getting all your crew and resources abord the frigate, you are transferred command of the vessel and the Perturba fleet assumes a neutral posture, convinced you're no longer a threat","vassEndCommLink:Continue
 ",
-vass_perturba_handover,DialogOptionSelected,"$option == vassPerturbaHandover","AddText ""Lost all Vass ships and fighters"" textEnemyColor
+vass_perturba_handover,DialogOptionSelected,"$option == vassPerturbaHandover","AddText ""Relations with the Vass families improved to Inhospitable"" textPlayerColor
+VassReportPeacefulFirstEncounter
+AddText ""Lost all Vass ships and fighters"" textEnemyColor
 VassRemoveVassShips
 MakeOtherFleetPreventDisengage vassExtortion false
 MakeOtherFleetAggressive vassExtortion false
@@ -57,13 +73,36 @@ $PersonRank $personName sighs.
 
 The line cuts off.","vassEndCommLink:Continue
 ",
+vass_perturba_firstShipLootEncounterDispose,OpenCommLink,"$faction.id == vass score:1000
+VassFleetIsLootPunishFleet
+VassFirstTimePlayerLootsShip score:1000
+VassPlayerHasNoVassShips","VassReportFirstLootingContact
+VassReportLootingContact
+$entity.ignorePlayerCommRequests = true 1
+EndConversation","""Oh, you think you're so SMART, do you? Dumping off our property right in front of my eyes? Do you take me for some sort of idiot!? 'Oh please spare me, as you can see I have none of the goods you're talking of'.""
+
+""I'll teach you what happens to people who treat me like an idiot.""
+
+The comm link cuts off.
+OR
+""Did you seriously think we wouldn't go after you just because you dumped your cargo just before we arrived? I'll pummel you twice as hard for the mere implication that we'd be that stupid!""
+
+Comms are cut off from the other side.","vassEndCommLink:Continue
+",
 vass_perturba_firstShipLootEncounter,OpenCommLink,"$faction.id == vass score:1000
 VassFleetIsLootPunishFleet
 VassFirstTimePlayerLootsShip score:1000","VassReportFirstLootingContact
-VassReportLootingContact","""So. You may not quite understand what you've done here, but let's just put it this way: we don't take kindly to people looting highly profitable merchandise under our noses. If you just hand over any and all tech you've...  'salvaged'... from the families, we can go both our merry way and pretend nothing happened, OK?\n\nThere will not be a second warning.""
+VassReportLootingContact","""So. You may not quite understand what you've done here, but let's just put it this way: we don't take kindly to people looting highly profitable merchandise under our noses. If you just hand over any and all tech you've...  'salvaged'... from the families, we can go both our merry way and pretend nothing happened, OK?""
+
+""There will not be a second warning.""
 OR
-""Alright, so. Technically speakin', I shouldn't be talkin' to ya at the moment. But I'm a kind soul, ya know? How were you s'posed to know what ya did wrong without anyone tellin' ya? So I'm here to make things easy on you.\n\nYou just hand over any and all equipment you found tumbling around with the little label that spells 'Vass Shipyards', and we can both just go home and laugh this incident off.\n\nI should tell you this is a one-time deal: next time I find ya scuttlin' around stealin' Perturba property? They're not gonna let me back home until I personally put you on the other end of a plasma bolt.""","vassPerturbaHandover:Hand over the goods; it's not worth the trouble
+""Alright, so. Technically speakin', I shouldn't be talkin' to ya at the moment. But I'm a kind soul, ya know? How were you s'posed to know what ya did wrong without anyone tellin' ya? So I'm here to make things easy on you.""
+
+""You just hand over any and all equipment you found tumbling around with the little label that spells 'Vass Shipyards', and we can both just go home and laugh this incident off.""
+
+""I should tell you this is a one-time deal: next time I find ya scuttlin' around stealin' Perturba property? They're not gonna let me back home until I personally put you on the other end of a plasma bolt.""","vassPerturbaHandover:Hand over the goods; it's not worth the trouble
 vassPerturbaRefuseHandover:Over your dead body",
+"#END First-Time Loot Encounter",,,,,,
 "#END Perturba",,,,,,
 "#END FleetEncounters",,,,,,
 ,,,,,,
@@ -71,7 +110,7 @@ vassPerturbaRefuseHandover:Over your dead body",
 vass_relLevelNeutral,RelationshipLevelDesc,"$faction.rel == NEUTRAL
 $faction.id == vass",,"The Vass families have made note of you, and consider you a useful asset. While they still don't entrust you with their ships or more critical missions, they are interested in furthering relations.",,
 vass_relLevelInhospitable,RelationshipLevelDesc,"$faction.rel == INHOSPITABLE
-$faction.id == vass",,"The $faction families consider you largely beneath their notice, should they know of you at all. They consider you the same way they consider most other independent starfarers; potential profit with a knack for being troublesome.",,
+$faction.id == vass",,"The $faction families has stopped attacking you on-sight, for now. Just don't do something stupid to catch their ire.",,
 vass_relLevelSuspicious,RelationshipLevelDesc,"$faction.rel == SUSPICIOUS
 $faction.id == vass",,"You have shown to respect the Vass families and their internal affairs to such an extent that they at least partially respect your presence.",,
 vass_relLevelFavorable,RelationshipLevelDesc,"$faction.rel == FAVORABLE
@@ -83,7 +122,7 @@ $faction.id == vass",,"You have made great contributions to at least one of the 
 vass_relLevelFriendly,RelationshipLevelDesc,"$faction.rel == FRIENDLY
 $faction.id == vass",,"The families consider you as one of their own. You are free to own and purchase Vass ships for personal use, and they may be willing to overlook minor reselling to an extent.",,
 vass_relLevelHostile,RelationshipLevelDesc,"$faction.rel == HOSTILE
-$faction.id == vass",,"Your acts of defiance or aggression against the $faction families have not gone unnoticed. While they aren't actively hunting you down, friendly encounters are not to be expected.",,
+$faction.id == vass",,"The $faction families consider you largely beneath their notice, should they know of you at all. They consider you the same way they consider most other independent starfarers; potential profit with a knack for being troublesome.",,
 vass_relLevelVengeful,RelationshipLevelDesc,"$faction.rel == VENGEFUL
 $faction.id == vass",,"The $faction families have a price on your head, and at least one of them are actively hunting you for your troublesome actions. Needless to say, you are no longer welcome to do business of any kind.",,
 "#END Relationship Level Descriptions",,,,,,

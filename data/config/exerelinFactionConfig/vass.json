@@ -1,0 +1,131 @@
+{
+	"playableFaction":false,
+	"corvusCompatible":true,
+
+	# Currently unused
+	"baseFleetCostMultiplier":1.0,
+
+	# Currently unused
+	"customRebelFaction":"",
+	"customRebelFleetId":"",
+	"rebelFleetSuffix":"Splinter Group",
+
+	# Please do the trick
+	"disableDiplomacy":true,
+	
+	"noHomeworld":true,					# Will not get a 'homeworld' (has headquarters condition, size fixed at 7) in random Sector
+	"showIntelEvenIfDead":true,			# Keep this faction in the intel tab even if it is not alive
+	"spawnPatrols":false,				# Forces patrol spawning for factions that don't normally do so (e.g. vanilla pirates)
+	"noRandomizeRelations":true,		# Ignore when randomizing relationships at start
+
+	"freeMarket":true,
+	"marketSpawnWeight":0,				# The share of markets this faction gets in random Sector; 2 means double share etc.
+	
+	"allowAgentActions":false,			# Will use agents/saboteurs and can be targeted by them
+	"allowPrisonerActions":false,		# Can ransom or repatriate prisoners
+	"dropPrisoners":true,				# Can drop prisoners as post-battle loot? (disable for AI factions, aliens, uber-fanatics, etc.)
+
+	# Same list as the Java-side one used for non-random Sector
+	# The values aren't the same though, they map as follows:
+	#		Favorable/Suspicious:	±0.15
+	#		Welcoming/Inhospitable:	±0.35
+	#		Friendly/Hostile:		±0.6
+	#		Cooperative/Vengeful:	±0.8
+	"startRelationships":{
+		# Vanilla factions that should be manually set (IE not "hidden" ones)
+		"independent":-0.6,				# We *are* illegal
+		"pirates":-0.6,						# Pirates should explode
+		"persean":-0.15,					# You're pretty neat! May I interest you in some wares?
+		"tritachyon":-0.6,					# No way you're getting a hold of this tech. Also, stop copying our ideas!
+		"hegemony":-0.6,					# Bad blood doesn't start to cover it
+
+		# These should be set to the same relationship
+		"lions_guard":-0.6,				# Oh noes
+		"sindrian_diktat":-0.6,			# Oh noes
+
+		# More vanilla factions that should be manually set
+		"luddic_church":0,					# Why do we care that our tech is "heretical"?! It's profitable, damnit!
+		"luddic_path":-0.6,					# Why do we care that our tech is "heretical"?! It's profitable, damnit!
+		"remnant":-0.6,						# Packets don't sell all that well among combat-grade AI. I wonder if we could fix that some day?
+
+		# Mod factions
+		#"blackrock_driveyards":0,			# Undecided
+		#"br_consortium":0,					# Undecided
+		#"6eme_bureau":0,					# Undecided
+		#"dassault_mikoyan":0.15,			# Undecided
+		"united_security":-0.6,				# Everything would be so much more profitable if people stopped sending mercenaries after our convoys
+		#"blade_breakers":-0.8,				# Undecided
+		#"diableavionics":-0.35,			# Undecided
+		"exigency":-0.6,					# Who, more exactly?
+		"exipirated":-0.6,					# Moar pirates
+		#"fob":0,							# Undecided
+		"gmda":-1.0,						# You'll never catch me alive, copper!
+		"gmda_patrol":-1.0,					# You'll never catch me alive, copper!
+		"draco":-0.6,						# Moar pirates
+		"fang":-0.6,						# Moar pirates
+		"HMI":-0.6,							# "Legitimate" Pirates that feed the Sector
+		"mess":-0.8,						# Wait, I thought we cleaned up the grey-goo contingency!? Shit!
+		"interstellarimperium":-0.6,		# Oh no. Not those again.
+		"ii_imperial_guard":-0.6,			# Oh no. Not THOSE again.
+		"junk_pirates":-0.6,				# Space Pirates in junk heaps
+		"junk_pirates_hounds":-0.6,			# Space anarchists in junk heaps
+		"junk_pirates_junkboys":-0.6,		# Space anarchists in better junk heaps
+		"junk_pirates_technicians":-0.6,	# Space anarchists in the best junk heaps
+		#"pack":0.15,						# Undecided
+		#"syndicate_asp":0.15,				# Undecided
+		#"syndicate_asp_familia":0.15,		# Undecided
+		"al_ars":0,							# Mysterious... but hey, they speak the language of money! Surely, they can't be all bad
+		#"mayorate":-0.35,					# Undecided
+		#"metelson":-0.15,					# Undecided
+		#"ORA":-0.6,						# Undecided
+		"SCY":-0.6,							# Who, more exactly?
+		"shadow_industry":-0.6,				# Nice curves. Still hardly allied to druglords
+		"the_cartel":-0.6,					# Pirates with a new coat of paint
+		"sylphon":-0.6,						# Pretty much just independents with cooler paintjobs
+		"templars":-0.6,					# Space Assholes™ squared
+		"cabal":-0.6,						# Space Assholes™ with too much money... well, that's hypocritical aint it?
+		"minor_independent_1":-0.6,			# We *are* illegal, after all
+		"minor_independent_2":-0.6,			# We *are* illegal, after all
+		"minor_independent_3":-0.6,			# We *are* illegal, after all
+		"minor_independent_4":-0.6,			# We *are* illegal, after all
+		"minor_independent_5":-0.6,			# We *are* illegal, after all
+		"minor_independent_6":-0.6,			# We *are* illegal, after all
+		"minor_independent_7":-0.6,			# We *are* illegal, after all
+		"minor_independent_8":-0.6,			# We *are* illegal, after all
+		"minor_independent_9":-0.6,			# We *are* illegal, after all
+		"minor_independent_10":-0.6,		# We *are* illegal, after all
+		"minor_independent_11":-0.6,		# We *are* illegal, after all
+		"minor_independent_12":-0.6,		# We *are* illegal, after all
+		"minor_independent_13":-0.6,		# We *are* illegal, after all
+		"minor_independent_14":-0.6,		# We *are* illegal, after all
+		"minor_independent_15":-0.6,		# We *are* illegal, after all
+		"minor_independent_16":-0.6,		# We *are* illegal, after all
+		"minor_independent_17":-0.6,		# We *are* illegal, after all
+		"minor_independent_18":-0.6,		# We *are* illegal, after all
+		"minor_independent_19":-0.6,		# We *are* illegal, after all
+		"minor_independent_20":-0.6,		# We *are* illegal, after all
+		"minor_pirate_1":-0.6,				# Pirates should explode
+		"minor_pirate_2":-0.6,				# Pirates should explode
+		"minor_pirate_3":-0.6,				# Pirates should explode
+		"minor_pirate_4":-0.6,				# Pirates should explode
+		"minor_pirate_5":-0.6,				# Pirates should explode
+		"minor_pirate_6":-0.6,				# Pirates should explode
+	},
+
+	"maxRelationships":{},				# TBD, perhaps someday
+	"diplomacyPositiveChance":{},		# TBD, perhaps someday
+	"diplomacyNegativeChance":{},		# TBD, perhaps someday
+
+	# Used to determine alliance alignment; also affects disposition towards other factions
+	"alignments":{
+		"corporate":0.3,
+		"technocratic":0.7,
+		#"militarist":0,
+		#"diplomatic":0,
+		#"ideological":0,
+	},
+	"diplomacyTraits":["monopolist", "neutralist"],
+
+	# Used for dispositions, also affects rep penalty from slave trade
+	"morality":"neutral",
+}

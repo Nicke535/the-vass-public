@@ -80,7 +80,7 @@ public class VassShipLightsScript implements EveryFrameWeaponEffectPlugin {
         currentMaxBrightness += 0.2f * (float)Math.pow(Math.sin(timer), 2f);
 
         //If our color is above the maximum, set it to the maximum. If it's less than 0, set it to 0
-        currentBrightness = Math.max(0f, Math.min(currentMaxBrightness, currentBrightness));
+        currentBrightness = MathUtils.clamp(currentBrightness, 0f, currentMaxBrightness);
 
         //Then, actually set the proper opacity that we determined earlier
         weapon.getSprite().setAlphaMult(currentBrightness);

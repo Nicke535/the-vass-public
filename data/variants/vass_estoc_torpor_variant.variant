@@ -1,0 +1,21 @@
+{
+  "displayName": "Elite Bomber",
+  "fluxCapacitors": 0,
+  "fluxVents": 0,
+  "goalVariant": true,
+  "hullId": "vass_estoc_torpor",
+  "hullMods": [],
+  "permaMods": [],
+  "quality": 0,
+  "variantId": "vass_estoc_torpor_variant",
+  "weaponGroups": [
+    {
+      "autofire": false,
+      "mode": "LINKED",
+      "weapons": {
+        "WS0002": "vass_excalibur_launcher"
+      }
+    }
+  ],
+  "wings": []
+}

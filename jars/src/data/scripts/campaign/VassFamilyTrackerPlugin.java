@@ -19,6 +19,9 @@ import java.util.Map;
 
 public class VassFamilyTrackerPlugin implements EveryFrameScript {
 
+    //Listener for reporting if the player has sold Vass ships
+    VassPlayerSoldVassShipsListener playerSoldShipsListener = null;
+
     //Keeps track of the actual power each family has in the sector.
     // 100f means that the faction has reached their "final goal"; values above 100 is only possible after said goal
     // 0f means the faction is eliminated from the sector altogether
@@ -62,24 +65,26 @@ public class VassFamilyTrackerPlugin implements EveryFrameScript {
         return false;
     }
 
+    //Constructor
+    public VassFamilyTrackerPlugin() {
+        initializeFamilyPower();
+        initializeFamilyRelations();
+        currentInstance = this;
+        playerSoldShipsListener = new VassPlayerSoldVassShipsListener(true);
+    }
+
     //Main advance() loop
     @Override
     public void advance( float amount ) {
         //Store our plugin for ease-of-use
         currentInstance = this;
 
-        //Initializes the family powers and relations to their starting values, if we haven't already
-        if (familyPowerMap == null) {
-            initializeFamilyPower();
-        }
-        if (familyRelationMap == null) {
-            initializeFamilyRelations();
-        }
-
-        //--  Checks the player fleet for possession of a Vass ship, and orders a fleet to... give them some trouble  --
+        //--  Checks the player fleet has been naughty, and orders a fleet to... give them some trouble  --
         currentLootRevengeCooldown -= Misc.getDays(amount);
         if (currentLootRevengeCooldown <= 0f) {
-            if (playerHasVassShips()) {
+            if ((playerHasVassShips() && !playerAllowedToOwnVassShips()) ||
+                    (playerSoldShipsListener.hasSoldMinor && !playerAllowedToSellMinor()) ||
+                    (playerSoldShipsListener.hasSoldMajor && !playerAllowedToSellMajor())) {
                 VassUtils.VASS_FAMILY familyToSpawnVia = VassUtils.VASS_FAMILY.values()[MathUtils.getRandomNumberInRange(0, VassUtils.VASS_FAMILY.values().length-1)];
                 int tests = 0;
                 while (tests < 50) {
@@ -106,7 +111,8 @@ public class VassFamilyTrackerPlugin implements EveryFrameScript {
                     currentLootRevengeCooldown = ((100f - getPowerOfFamily(familyToSpawnVia))/100f)*MAX_LOOT_REVENGE_COOLDOWN + ((getPowerOfFamily(familyToSpawnVia))/100f)*MIN_LOOT_REVENGE_COOLDOWN;
                 }
             } else {
-                currentLootRevengeCooldown = 0.3f;
+                //Wait half a day to check again
+                currentLootRevengeCooldown = 0.5f;
             }
         }
         //--  End of loot punisher fleet code  --
@@ -124,17 +130,22 @@ public class VassFamilyTrackerPlugin implements EveryFrameScript {
         familyPowerMap.put(VassUtils.VASS_FAMILY.MULTA, 0f);
     }
 
-    // Initializes the family relations map to its default state. Also sets the player's relation to Vass as a whole
+    // Initializes the family relations map to its default state. Also sets the player's relation to Vass as a whole, and sets up relations to other factions
     private void initializeFamilyRelations() {
-        Global.getSector().getPlayerFaction().setRelationship("vass", RepLevel.INHOSPITABLE);
         familyRelationMap = new HashMap<>();
         familyRelationMap.put(VassUtils.VASS_FAMILY.ACCEL, 0f);
         familyRelationMap.put(VassUtils.VASS_FAMILY.TORPOR, 0f);
         familyRelationMap.put(VassUtils.VASS_FAMILY.PERTURBA, 0f);
         familyRelationMap.put(VassUtils.VASS_FAMILY.RECIPRO, 0f);
         familyRelationMap.put(VassUtils.VASS_FAMILY.MULTA, 0f);
-    }
 
+        for (FactionAPI faction : Global.getSector().getAllFactions()) {
+            if (!faction.getId().equals("vass")) {
+                faction.setRelationship("vass", RepLevel.HOSTILE);
+            }
+        }
+        Global.getSector().getPlayerFaction().setRelationship("vass", RepLevel.HOSTILE);
+    }
 
     // Checks whether the player fleet has any Vass ships in their fleet
     private boolean playerHasVassShips() {
@@ -142,11 +153,20 @@ public class VassFamilyTrackerPlugin implements EveryFrameScript {
             if (member.getHullId().contains("vass_")) {
                 return true;
             }
+            for (String wing : member.getVariant().getWings()) {
+                if (wing.startsWith("vass_")) {
+                    return true;
+                }
+            }
+        }
+        for (CargoAPI.CargoItemQuantity<String> fighter : Global.getSector().getPlayerFleet().getCargo().getFighters()) {
+            if (fighter.getItem().startsWith("vass_") && fighter.getCount() > 0) {
+                return true;
+            }
         }
 
         return false;
     }
-
 
     //Static functions for modifying and accessing the power of a Vass family. -1 means that you cannot access the power at the moment. A family at 0 power is eliminated
     public static void modifyPowerOfFamily(VassUtils.VASS_FAMILY family, float amount) {
@@ -236,18 +256,31 @@ public class VassFamilyTrackerPlugin implements EveryFrameScript {
         newFleet.setLocation(desiredSpawnPoint.x, desiredSpawnPoint.y);
         int tries = 0;
         while (tries < 50) {
-            CampaignFleetAPI hostileThreat = CampaignUtils.getNearestHostileFleet(newFleet);
-            if (hostileThreat == null) {
-                break;
-            } else if (hostileThreat.getFleetPoints() <= Global.getSector().getPlayerFleet().getFleetPoints() * LOOT_FLEET_FP_FACTOR * 0.6f) {
-                break;
-            } else if (MathUtils.getDistance(hostileThreat.getLocation(), desiredSpawnPoint) >= Math.max(newFleet.getRadius()*3f, hostileThreat.getRadius()*3f)) {
-                break;
+            boolean hostilesTooClose = false;
+            for (CampaignFleetAPI nearbyHostileFleet : CampaignUtils.getNearbyHostileFleets(newFleet, newFleet.getRadius()*3f)) {
+                if (nearbyHostileFleet.getFleetPoints() <= newFleet.getFleetPoints() * 0.3f) {
+                    continue;
+                }
+                if (MathUtils.getDistance(nearbyHostileFleet.getLocation(), desiredSpawnPoint) >= Math.max(newFleet.getRadius()*3f, nearbyHostileFleet.getRadius()*3f)) {
+                    hostilesTooClose = true;
+                    break;
+                }
             }
+            if (!hostilesTooClose) { break; }
+
             tries++;
             desiredSpawnPoint = MathUtils.getPoint(centerPoint, sector.getPlayerFleet().getBaseSensorRangeToDetect(newFleet.getSensorProfile()), MathUtils.getRandomNumberInRange(0f, 360f));
             newFleet.setLocation(desiredSpawnPoint.x, desiredSpawnPoint.y);
         }
+
+        //Give it basic abilities, if it somehow lacks it
+        newFleet.addAbility("emergency_burn");
+        newFleet.addAbility("interdiction_pulse");
+        newFleet.addAbility("sustained_burn");
+        newFleet.addAbility("sensor_burst");
+
+        //Emergency burn after you!
+        newFleet.getAbilities().get("emergency_burn").activate();
 
         //Finally, makes the fleet hostile against the player's fleet, and register that this is indeed a special "loot punish" fleet, since that needs to be accessed in rules.csv
         newFleet.getMemoryWithoutUpdate().set("$vass_loot_punish_fleet", true);
@@ -255,11 +288,62 @@ public class VassFamilyTrackerPlugin implements EveryFrameScript {
         loc.addEntity(newFleet);
     }
 
-
-    //Sets the cooldown of spawning a looting-punishment fleet manually
+    /**
+     * Sets the cooldown of spawning a looting-punishment fleet manually
+     */
     public static void setLootingPunishFleetCooldown(float valueToSetTo) {
         if (currentInstance != null) {
             currentInstance.currentLootRevengeCooldown = valueToSetTo;
         }
+    }
+
+    /**
+     * Resets the status of the "player has sold ships" listener
+     */
+    public static void resetSoldShipsListener() {
+        if (currentInstance != null) {
+            currentInstance.playerSoldShipsListener.reset();
+        }
+    }
+
+    /**
+     * Gets whether a minor selling of Vass ships has happened
+     */
+    public static boolean hasSoldVassShipMinor() {
+        if (currentInstance != null) {
+            return currentInstance.playerSoldShipsListener.hasSoldMinor;
+        }
+        return false;
+    }
+
+    /**
+     * Gets whether a major selling of Vass ships has happened
+     */
+    public static boolean hasSoldVassShipMajor() {
+        if (currentInstance != null) {
+            return currentInstance.playerSoldShipsListener.hasSoldMajor;
+        }
+        return false;
+    }
+
+    /**
+     * Checks whether the player is allowed to own Vass ships
+     */
+    public static boolean playerAllowedToOwnVassShips() {
+        return Global.getSector().getPlayerFaction().isAtWorst("vass", RepLevel.WELCOMING);
+    }
+
+    /**
+     * Checks whether the player is allowed to do minor Vass ship selling
+     */
+    public static boolean playerAllowedToSellMinor() {
+        return Global.getSector().getPlayerFaction().isAtWorst("vass", RepLevel.FRIENDLY);
+    }
+
+    /**
+     * Checks whether the player is allowed to do major Vass ship selling
+     */
+    public static boolean playerAllowedToSellMajor() {
+        return Global.getSector().getPlayerFaction().isAtWorst("vass", RepLevel.COOPERATIVE);
     }
 }

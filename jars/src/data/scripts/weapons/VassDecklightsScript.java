@@ -2,6 +2,7 @@ package data.scripts.weapons;
 
 import com.fs.starfarer.api.combat.*;
 import data.scripts.utils.VassUtils;
+import org.lazywizard.lazylib.MathUtils;
 
 import java.awt.*;
 
@@ -29,6 +30,7 @@ public class VassDecklightsScript implements EveryFrameWeaponEffectPlugin {
         } else {                                                    //If none of the above are correct, we are recharging our lights. Increase the color back to normal
             currentBrightness = 1f;
         }
+        currentBrightness = MathUtils.clamp(currentBrightness, 0f, 1f);
 
         //And finally actually apply the color
         weapon.getSprite().setColor(new Color(COLORS_BASIC[0], COLORS_BASIC[1], COLORS_BASIC[2], currentBrightness));

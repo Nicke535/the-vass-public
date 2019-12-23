@@ -1,0 +1,52 @@
+{
+  "displayName": "Defensive",
+  "fluxCapacitors": 11,
+  "fluxVents": 20,
+  "goalVariant": false,
+  "hullId": "vass_schiavona",
+  "hullMods": [
+    "targetingunit",
+    "extendedshieldemitter",
+    "turretgyros",
+    "hardenedshieldemitter",
+    "stabilizedshieldemitter"
+  ],
+  "permaMods": [],
+  "quality": 0,
+  "variantId": "vass_schiavona_defensive",
+  "weaponGroups": [
+    {
+      "autofire": true,
+      "mode": "LINKED",
+      "weapons": {
+        "WS0002": "vass_fragarach"
+      }
+    },
+    {
+      "autofire": false,
+      "mode": "ALTERNATING",
+      "weapons": {
+        "WS0005": "vass_trishula_emitter",
+        "WS0006": "vass_trishula_emitter"
+      }
+    },
+    {
+      "autofire": true,
+      "mode": "LINKED",
+      "weapons": {
+        "WS0003": "vass_yawarakai_te"
+      }
+    },
+    {
+      "autofire": false,
+      "mode": "LINKED",
+      "weapons": {}
+    },
+    {
+      "autofire": false,
+      "mode": "LINKED",
+      "weapons": {}
+    }
+  ],
+  "wings": []
+}

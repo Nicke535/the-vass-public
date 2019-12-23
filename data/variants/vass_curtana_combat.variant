@@ -1,23 +1,25 @@
 {
-  "displayName": "Strike",
-  "fluxCapacitors": 8,
-  "fluxVents": 4,
+  "displayName": "Combat",
+  "fluxCapacitors": 16,
+  "fluxVents": 30,
   "goalVariant": true,
   "hullId": "vass_curtana",
   "hullMods": [
-    "expanded_deck_crew",
-    "pointdefenseai",
-    "targetingunit"
+    "targetingunit",
+    "hardenedshieldemitter",
+    "auxiliarythrusters"
   ],
   "permaMods": [],
   "quality": 0,
-  "variantId": "vass_curtana_strike",
+  "variantId": "vass_curtana_combat",
   "weaponGroups": [
     {
       "autofire": true,
       "mode": "LINKED",
       "weapons": {
-        "WS0002": "vass_fragarach"
+        "WS0002": "vass_caladbolg",
+        "WS0005": "vass_asi",
+        "WS0006": "vass_asi"
       }
     },
     {
@@ -25,9 +27,7 @@
       "mode": "LINKED",
       "weapons": {
         "WS0003": "vass_yawarakai_te",
-        "WS0004": "vass_yawarakai_te",
-        "WS0005": "vass_yawarakai_te",
-        "WS0006": "vass_yawarakai_te"
+        "WS0004": "vass_yawarakai_te"
       }
     },
     {
@@ -41,8 +41,5 @@
       "weapons": {}
     }
   ],
-  "wings": [
-    "vass_estoc_wing",
-    "vass_estoc_wing"
-  ]
+  "wings": []
 }

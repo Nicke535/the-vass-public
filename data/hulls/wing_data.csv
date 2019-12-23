@@ -1,3 +1,5 @@
 id,variant,tags,tier,rarity,fleet pts,op cost,formation,range,attackRunRange,attackPositionOffset,num,role,role desc,refit,base value,,,,,,,,,,,,,number
 vass_estoc_wing,vass_estoc_variant,"bomber5, bomber, vass_tech, vass_general_blueprint",3,0.3,7,21,V,6000,3000,500,2,BOMBER,Bomber,18,20500,,,,,,,,,,,,,13
 vass_katzbalger_wing,vass_katzbalger_variant,"fighter5, fighter, vass_tech, vass_general_blueprint",3,0.3,6,18,V,5000,1500,-100,1,FIGHTER,Fighter,20,18000,,,,,,,,,,,,,12
+
+vass_estoc_torpor_wing,vass_estoc_torpor_variant,"bomber6, bomber, vass_tech, vass_torpor_blueprint",3,0.3,7,21,V,6000,3000,500,2,BOMBER,Elite Bomber,18,45000,,,,,,,,,,,,,13
