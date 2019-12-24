@@ -1,15 +1,16 @@
 package data.scripts.weapons;
 
 import com.fs.starfarer.api.combat.*;
+import com.fs.starfarer.api.util.Misc;
 import data.scripts.utils.VassTimeDistortionProjScript;
+import data.scripts.utils.VassTimeSplitProjScript;
 import org.lazywizard.lazylib.MathUtils;
 import org.lazywizard.lazylib.combat.CombatUtils;
-import org.lwjgl.util.vector.Vector2f;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class VassTizonaScript extends VassBasePerturbaMissileScript {
+public class VassColadaScript extends VassBasePerturbaMissileScript {
     @Override
     protected void applyEffectOnProjectile(CombatEngineAPI engine, DamagingProjectileAPI proj) {
         //Add a new plugin that keeps track of the projectile

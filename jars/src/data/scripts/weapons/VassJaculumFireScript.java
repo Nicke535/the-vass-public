@@ -9,6 +9,9 @@ import org.lwjgl.util.vector.Vector2f;
 
 import java.awt.*;
 
+/**
+ * @deprecated
+ */
 public class VassJaculumFireScript implements EveryFrameWeaponEffectPlugin {
     private boolean runOnce = false;
 

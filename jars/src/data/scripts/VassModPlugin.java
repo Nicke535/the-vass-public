@@ -48,14 +48,22 @@ public class VassModPlugin extends BaseModPlugin {
     public void onNewGame() {
         SectorAPI sector = Global.getSector();
         VassSectorSetupScript.runSetup(sector);
-        sector.addScript(new VassSafetyOverridesCrewLossPlugin());
-        sector.addScript(new VassFamilyTrackerPlugin());
-        sector.addScript(new VassRandomEncounterPlugin());
     }
 
     //Ensure we have our bar event managers added on any game we load
+    //Also add all scripts we need to add
     @Override
     public void onGameLoad(boolean newGame) {
+        SectorAPI sector = Global.getSector();
+        if (!sector.hasScript(VassSafetyOverridesCrewLossPlugin.class)) {
+            sector.addScript(new VassSafetyOverridesCrewLossPlugin());
+        }
+        if (!sector.hasScript(VassFamilyTrackerPlugin.class)) {
+            sector.addScript(new VassFamilyTrackerPlugin());
+        }
+        if (!sector.hasScript(VassRandomEncounterPlugin.class)) {
+            sector.addScript(new VassRandomEncounterPlugin());
+        }
         addBarEvents();
     }
     private void addBarEvents() {

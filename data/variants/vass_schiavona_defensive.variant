@@ -26,8 +26,8 @@
       "autofire": false,
       "mode": "ALTERNATING",
       "weapons": {
-        "WS0005": "vass_trishula_emitter",
-        "WS0006": "vass_trishula_emitter"
+        "WS0005": "vass_colada",
+        "WS0006": "vass_colada"
       }
     },
     {

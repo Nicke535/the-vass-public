@@ -16,6 +16,7 @@ import com.fs.starfarer.api.util.WeightedRandomPicker;
 import data.scripts.campaign.VassFamilyTrackerPlugin;
 import data.scripts.utils.VassUtils;
 
+import javax.xml.bind.annotation.XmlElementDecl;
 import java.awt.*;
 import java.util.HashSet;
 import java.util.Set;

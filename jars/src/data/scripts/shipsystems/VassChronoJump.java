@@ -84,6 +84,11 @@ public class VassChronoJump extends BaseShipSystemScript {
                 List<DamagingProjectileAPI> allProjs = CombatUtils.getProjectilesWithinRange(ship.getLocation(),ship.getCollisionRadius()+MAX_RANGE);
                 allProjs.addAll(CombatUtils.getMissilesWithinRange(ship.getLocation(),ship.getCollisionRadius()+MAX_RANGE));
                 for (DamagingProjectileAPI proj : allProjs) {
+                    //Projectiles that have hit something don't count
+                    if (proj.didDamage()) {
+                        continue;
+                    }
+
                     spawnFutureIndicator(proj);
                 }
 
@@ -130,6 +135,11 @@ public class VassChronoJump extends BaseShipSystemScript {
             List<DamagingProjectileAPI> allProjs = CombatUtils.getProjectilesWithinRange(ship.getLocation(),ship.getCollisionRadius()+MAX_RANGE);
             allProjs.addAll(CombatUtils.getMissilesWithinRange(ship.getLocation(),ship.getCollisionRadius()+MAX_RANGE));
             for (DamagingProjectileAPI proj : allProjs) {
+                //Projectiles that have hit something don't count
+                if (proj.didDamage()) {
+                    continue;
+                }
+
                 //Teleport to the future
                 Vector2f startPos = new Vector2f(proj.getLocation());
                 Vector2f destPos = new Vector2f(startPos.x + proj.getVelocity().x * TIME_SKIP_AMOUNT, startPos.y + proj.getVelocity().y * TIME_SKIP_AMOUNT);

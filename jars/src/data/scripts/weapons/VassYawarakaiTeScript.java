@@ -22,6 +22,10 @@ public class VassYawarakaiTeScript implements EveryFrameWeaponEffectPlugin {
     private static final float TRAIL_START_WIDTH = 14f;
     private static final float TRAIL_END_WIDTH = 9f;
 
+    //Ranges that the weapon start dealing less damage, and where it (theoretically) would deal 0 damage
+    private static final float EFFECTIVE_RANGE = 250f;
+    private static final float MIN_DAMAGE_RANGE = 500f;
+
     //Minimum damage dealt from missiles being too far away
     private static final float MINIMUM_DAMAGE_MULT = 0.33f;
 
@@ -60,12 +64,21 @@ public class VassYawarakaiTeScript implements EveryFrameWeaponEffectPlugin {
             if (counter > PULSE_TIME) {
                 counter -= PULSE_TIME;
 
+                float effectiveRange = EFFECTIVE_RANGE;
+                float minDamageRange = MIN_DAMAGE_RANGE;
+
                 //Check for some stats we might get from hullmods and such
                 float damageMultToMissiles = weapon.getShip().getMutableStats().getDamageToMissiles().getModifiedValue();
                 boolean ignoresFlares = false;
                 if (weapon.getShip().getMutableStats().getDynamic().getMod(Stats.PD_IGNORES_FLARES) != null &&
                         weapon.getShip().getMutableStats().getDynamic().getMod(Stats.PD_IGNORES_FLARES).flatBonus >= 1f) {
                     ignoresFlares = true;
+                }
+                Object hasPerturbaBonus = Global.getCombatEngine().getCustomData().get("VassPerturbaPeriodicPlatingBonus" + weapon.getShip().getId());
+                if (hasPerturbaBonus instanceof Boolean && (Boolean)hasPerturbaBonus) {
+                    damageMultToMissiles *= 1.2f;
+                    effectiveRange += 150f;
+                    minDamageRange += 150f;
                 }
 
                 //Then, we do the real part of the script: find nearby missiles so we can do stuff
@@ -109,7 +122,7 @@ public class VassYawarakaiTeScript implements EveryFrameWeaponEffectPlugin {
                 } else {
                     //Sound and visual effects if we have any missiles in range
                     weapon.getShip().getMutableStats().getFluxDissipation().unmodify("VassYawarakaiTeFluxRefund"+weapon.getId());
-                    float rangeMultiplier = Math.min(1f, Math.max(MINIMUM_DAMAGE_MULT, 1f - ((mostFarAwayMissile-250f) / 300f)));
+                    float rangeMultiplier = Math.min(1f, Math.max(MINIMUM_DAMAGE_MULT, 1f - ((mostFarAwayMissile-effectiveRange) / (minDamageRange-effectiveRange))));
                     Global.getSoundPlayer().playSound("vass_yawaratai_te_pulse", 1f, rangeMultiplier, weapon.getLocation(), new Vector2f(Misc.ZERO));
                     engine.spawnExplosion(weapon.getLocation(), weapon.getShip().getVelocity(),
                             VassUtils.getFamilyColor(VassUtils.VASS_FAMILY.PERTURBA, rangeMultiplier), 6f*rangeMultiplier, PULSE_TIME);
@@ -119,8 +132,7 @@ public class VassYawarakaiTeScript implements EveryFrameWeaponEffectPlugin {
                 for (MissileAPI msl : missilesInArc) {
                     //Penalty for far-away targets (beyond 250 SU, maxes at about 550 SU): not massive, but a bit of a reduction to combat long-range-hullmod spammability
                     float distanceToMissile = MathUtils.getDistance(msl, weapon.getLocation());
-                    float extraPenaltyForRange = Math.min(1f, Math.max(MINIMUM_DAMAGE_MULT, 1f - ((distanceToMissile-250f) / 300f)));
-
+                    float extraPenaltyForRange = Math.min(1f, Math.max(MINIMUM_DAMAGE_MULT, 1f - ((distanceToMissile-effectiveRange) / (minDamageRange-effectiveRange))));
 
                     float addedDamage = weapon.getDamage().computeDamageDealt(PULSE_TIME) * extraPenaltyForRange * damageMultToMissiles / missileCount;
                     float newDamage = missileStatusMap.get(msl)+addedDamage;

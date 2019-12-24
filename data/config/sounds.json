@@ -52,14 +52,6 @@
 		{"file":"sounds/vass/weapons/yawaratai_te_disable.ogg","pitch":0.92,"volume":0.25},
 	],
 	
-	"vass_trishula_fire":[
-		{"file":"sounds/vass/weapons/corseque_fire.ogg","pitch":1.36,"volume":0.15},
-		{"file":"sounds/vass/weapons/corseque_fire.ogg","pitch":1.38,"volume":0.15},
-		{"file":"sounds/vass/weapons/corseque_fire.ogg","pitch":1.4,"volume":0.15},
-		{"file":"sounds/vass/weapons/corseque_fire.ogg","pitch":1.42,"volume":0.15},
-		{"file":"sounds/vass/weapons/corseque_fire.ogg","pitch":1.44,"volume":0.15},
-	],
-	
 	"vass_corseque_fire":[
 		{"file":"sounds/vass/weapons/corseque_fire.ogg","pitch":0.88,"volume":0.23},
 		{"file":"sounds/vass/weapons/corseque_fire.ogg","pitch":0.9,"volume":0.23},

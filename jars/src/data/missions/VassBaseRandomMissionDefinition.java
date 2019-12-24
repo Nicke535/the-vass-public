@@ -397,8 +397,7 @@ public class VassBaseRandomMissionDefinition implements MissionDefinitionPlugin
         Random random = new Random();
 
         // Prepare variant randomizer
-        if (randomMode)
-        {
+        if (randomMode) {
             inflater = new VassMissionAutofit(faction);
             auto = new CoreAutofitPlugin(fleet.getCommander());
             auto.setRandom(random);
@@ -417,15 +416,17 @@ public class VassBaseRandomMissionDefinition implements MissionDefinitionPlugin
                 randomizeVariant(auto, inflater, member, fleet, faction, index, random);
             }
 
-            if (!baseMember.isFighterWing() && !flagshipChosen)
-            {
+            if (!baseMember.isFighterWing() && !flagshipChosen) {
                 flagshipChosen = true;
             }
 
             //Ensure that all "forced" hullmods are applied, even if they normally wouldn't fit: we assume they are all hidden hullmods anyhow
+            ShipVariantAPI var = member.getVariant().clone();
             for (String forcedHullmod : forcedHullmods) {
-                member.getVariant().addMod(forcedHullmod);
+                var.addPermaMod(forcedHullmod);
+                var.setSource(VariantSource.REFIT);
             }
+            member.setVariant(var, true, true);
 
             index++;
         }

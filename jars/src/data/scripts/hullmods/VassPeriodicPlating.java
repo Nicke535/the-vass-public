@@ -15,6 +15,7 @@ import com.fs.starfarer.api.graphics.SpriteAPI;
 import com.fs.starfarer.api.mission.FleetSide;
 import com.fs.starfarer.api.ui.Alignment;
 import com.fs.starfarer.api.ui.TooltipMakerAPI;
+import com.fs.starfarer.api.util.Misc;
 import data.scripts.campaign.VassFamilyTrackerPlugin;
 import data.scripts.util.MagicRender;
 import data.scripts.utils.VassUtils;
@@ -158,19 +159,21 @@ public class VassPeriodicPlating extends BaseHullMod {
 	//For bonuses gotten from being a member of a Vass family; not really used now except for debugging
 	private void addPostDescriptionContractBonus (TooltipMakerAPI tooltip, ShipAPI.HullSize hullSize, ShipAPI ship, float width, boolean isForModSpec) {
 		//This does nothing if we're not a member of a family
-		if (VassFamilyTrackerPlugin.getFamilyMembership() == null) {
+		if (VassUtils.getFamilyMembershipOfShip(ship) == null) {
 			return;
 		}
 
 		float pad = 10f;
-		tooltip.addSectionHeading("Membership Bonus", Alignment.MID, pad);
+		tooltip.addSectionHeading("Family Membership Bonus", Alignment.MID, pad);
 
 		//If we have family membership, inform the player of its benefits
-		//TODO: non-placeholder text
-		if (VassFamilyTrackerPlugin.getFamilyMembership() == VassUtils.VASS_FAMILY.PERTURBA) {
+		//Perturba : Weapon bonuses... This thing isn't gonna fit in the screen, is it?
+		if (VassUtils.getFamilyMembershipOfShip(ship) == VassUtils.VASS_FAMILY.PERTURBA) {
 			TooltipMakerAPI text = tooltip.beginImageWithText("graphics/hullmods/targeting_supercomputer.png", 36); //TODO: fix proper icon
-			text.addPara("Perturba", 0, VassUtils.getFamilyColor(VassUtils.VASS_FAMILY.PERTURBA, 1f), "Perturba");
-			text.addPara("There is currently no bonus for being a member of Perturba... tough luck!", 0);
+			text.addPara("Perturba - Exotic weapon specialists", 0, VassUtils.getFamilyColor(VassUtils.VASS_FAMILY.PERTURBA, 1f), Misc.getHighlightColor(), "Exotic weapon specialists");
+			text.addPara("Yawarakai-Te: +150 SU before damage falloff, +20%% damage", 2, Misc.getHighlightColor(),"Yawarakai-Te", "+150", "+20%");
+			text.addPara("Dyrnwyn/Cyllel Farchog: Firerate bonus applies at half the normal time variation", 2, Misc.getHighlightColor(), "Dyrnwyn", "Cyllel Farchog", "half");
+			text.addPara("Perturba Missile Weapons: Regenerates ammo at 20%% of reload rate", 2, Misc.getHighlightColor(), "Perturba Missile Weapons", "Regenerates", "20%");
 			tooltip.addImageWithText(pad);
 		}
 	}
@@ -300,8 +303,12 @@ public class VassPeriodicPlating extends BaseHullMod {
 		}
 	}
 
-	//Perturba : TODO
+	//Perturba : Exotic weapon specialists
+	//Gain various bonuses to certain weapons that Perturba has helped develop
 	private void advancePerturba(ShipAPI ship, float amount) {
+		//Registers that we should gain our weapon bonuses : the actual bonuses are handled per-weapon
+		Global.getCombatEngine().getCustomData().put("VassPerturbaPeriodicPlatingBonus" + ship.getId(), true);
+
 		//Only activate plating if allowed
 		if (platingCanBeActive(ship)) {
 			if (ship == Global.getCombatEngine().getPlayerShip()) {

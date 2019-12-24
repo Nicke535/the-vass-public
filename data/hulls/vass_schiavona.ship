@@ -66,8 +66,8 @@
   ],
   "builtInWeapons": {
     "WS0001": "vass_deco_schiavona_lights",
-    "WS0005": "vass_trishula_emitter",
-    "WS0006": "vass_trishula_emitter"
+    "WS0005": "vass_colada",
+    "WS0006": "vass_colada"
   },
   "builtInWings": [],
   "center": [
