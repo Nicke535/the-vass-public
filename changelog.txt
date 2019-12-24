@@ -1,3 +1,25 @@
+Version 0.3.1 : Time for a small update
+ General:
+  - Added most missing descriptions
+
+ Balance:
+  - Dyrnwyn blaster: 
+     * flux per shot 70 -> 80
+     * Damage per shot 65 -> 80
+  - Cyllel Farchog Array:
+     * flux per shot 65 -> 75
+     * Damage per shot 65 -> 80
+  - Yawarakai-Te:
+     * Damage/sec 140 -> 170
+     * Range 350 -> 400 ["effective" range of 250 unchanged: this is to give Perturba Elites more use of their +150 effective range]
+  - Caladbolg Bombard:
+     * Accuracy slightly improved
+
+ Bugfixes:
+  - The Perturba initial quest no longer freezes by doing certain dialogue actions
+  - Added missing weapon to the initial Perturba quest
+
+
 Version 0.3 : Time to start anew
  - Entire mod effectively rebuilt to work better and to support new mechanics
  - Too many changes to track for now
