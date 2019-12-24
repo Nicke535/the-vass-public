@@ -15,6 +15,7 @@ import com.fs.starfarer.api.util.Misc;
 import com.fs.starfarer.api.util.WeightedRandomPicker;
 import data.scripts.campaign.VassFamilyTrackerPlugin;
 import data.scripts.utils.VassUtils;
+import org.lazywizard.lazylib.MathUtils;
 
 import javax.xml.bind.annotation.XmlElementDecl;
 import java.awt.*;
@@ -42,6 +43,7 @@ public class VassPerturbaWeaponContractEvent extends BaseBarEventWithPerson {
         UNLOCKED_WEAPONS.add("vass_yawarakai_te");
         UNLOCKED_WEAPONS.add("vass_caladbolg");
         UNLOCKED_WEAPONS.add("vass_asi");
+        UNLOCKED_WEAPONS.add("vass_fragarach");
     }
 
     public enum OptionId {
@@ -175,7 +177,7 @@ public class VassPerturbaWeaponContractEvent extends BaseBarEventWithPerson {
 
         Object hasMetContact = Global.getSector().getMemoryWithoutUpdate().get(VASS_PERTURBA_HAS_MET_CONTACT_KEY);
         if (hasMetContact instanceof Boolean && (Boolean)hasMetContact) {
-
+            optionSelectedHandleFollowupTime(text, option, options, t, h, n);
         } else {
             optionSelectedHandleFirstTime(text, option, options, t, h, n);
         }
@@ -190,14 +192,14 @@ public class VassPerturbaWeaponContractEvent extends BaseBarEventWithPerson {
                 text.addPara("'Why hello there captain. Or... maybe you go by some other name here? Commander? Overlord? Either way; I think I may have a business opportunity that might interest you...'");
 
                 options.addOption("Say you'd rather know who you're dealing with before considering 'business opportunities'.", OptionId.CONTINUE_1);
-                options.addOption("Apologize, stating .", OptionId.LEAVE);
+                options.addOption("Apologize, stating you have other matters to attend to.", OptionId.LEAVE);
                 break;
             case CONTINUE_1:
                 text.addPara("'Ah, why of course. Tell me, does the name Perturba ring any bells?'", t, h, "Perturba");
 
                 options.addOption("Inform them you indeed know of a weapon smuggling ring going by that name.", OptionId.CONTINUE_KNOWS_PERTURBA);
                 options.addOption("Tell them you don't recognize any 'Perturba'.", OptionId.CONTINUE_DOES_NOT_KNOW_PERTURBA);
-                options.addOption(".", OptionId.LEAVE);
+                options.addOption("Tell them you honestly have other things to do right now, and leave.", OptionId.LEAVE);
                 break;
             case CONTINUE_KNOWS_PERTURBA:
                 text.addPara("They break a tiny smile. 'Well that makes things easy. See, I'm a... 'contact' of sorts in their employ. I handle external affairs to promising customers. Which is where YOU come in.'");
@@ -224,6 +226,81 @@ public class VassPerturbaWeaponContractEvent extends BaseBarEventWithPerson {
                 options.addOption("You've heard enough from this criminal. Call the guards!", OptionId.LEAVE_HOSTILE);
                 break;
             case CONTINUE_3:
+                text.addPara("'Pleasure doing business with you. Here:' The man hands you a tiny tri-chip. 'This should provide you with a one-way encrypted comms channel to our sales department and a program for easily managing your orders. It should pop up under your normal administrative functions; just make an order and the program should requisition credits and other resources as necessary to our collection location. Then, we'll bring the wares to the agreed-upon drop point once they goods are ready.'", h, "normal administrative functions");
+
+                text.setFontSmallInsignia();
+                text.addPara("Lost " + PURCHASE_COST + " credits", n, h, "" + PURCHASE_COST);
+                Global.getSector().getPlayerFleet().getCargo().getCredits().add(-1 * PURCHASE_COST);
+
+                float currentPerturbaRelations = VassFamilyTrackerPlugin.getRelationToFamily(VassUtils.VASS_FAMILY.PERTURBA);
+                if (VassFamilyTrackerPlugin.getRelationToFamily(VassUtils.VASS_FAMILY.PERTURBA) < RELATIONS_AFTER_DEAL) {
+                    VassFamilyTrackerPlugin.modifyRelationToFamily(VassUtils.VASS_FAMILY.PERTURBA, RELATIONS_AFTER_DEAL - currentPerturbaRelations);
+                    text.addPara("Relations with Perturba improved to "+Math.round(RELATIONS_AFTER_DEAL), h, "Perturba", ""+Math.round(RELATIONS_AFTER_DEAL));
+                }
+                if (Global.getSector().getPlayerFaction().getRelationshipLevel("vass").isAtBest(RepLevel.SUSPICIOUS)) {
+                    text.addPara("Relations with the Vass Families improved to Neutral", h, "Vass Families", "Neutral");
+                    Global.getSector().getPlayerFaction().setRelationship("vass", RepLevel.NEUTRAL);
+                }
+                text.setFontInsignia();
+
+                text.addPara("'I hope this is the beginning of a long and profitable partnership for us both.'");
+
+                for (String weapon : VassPerturbaWeaponContractEvent.UNLOCKED_WEAPONS) {
+                    Global.getSector().getPlayerFaction().addKnownWeapon(weapon, true);
+                }
+                BarEventManager.getInstance().notifyWasInteractedWith(this);
+
+                addIntel();
+                options.addOption("Leave", OptionId.LEAVE);
+                break;
+            case LEAVE_NONHOSTILE:
+                text.addPara("The Perturba agent looks mildly disappointed. 'Is that so? Well, just inform us if you change your mind; I'll probably come back now and then. This IS a rather nice bar, after all.'");
+
+                options.addOption("Leave", OptionId.LEAVE);
+                break;
+            case LEAVE_HOSTILE:
+                text.addPara("'Your loss.' The agent quickly pulls out something from their pocket and throws it in your direction. Before you can react a massive bang and a bright flash of light throws you to the ground.");
+                text.addPara("By the time you've regained your senses, they are nowhere to be seen. Luckily it seems like the bar made it relatively unscathed, even if the guards and bar visitors are visibly shaken; the agent must have thrown some kind of riot suppression weapon.");
+                text.addPara("You have a feeling Perturba won't be offering you any new deals any time soon.");
+
+                text.setFontSmallInsignia();
+                text.addPara("Relations with Perturba worsened to "+Math.round(RELATIONS_AFTER_BAD_DEAL), h, "Perturba", ""+Math.round(RELATIONS_AFTER_DEAL));
+                text.setFontInsignia();
+
+                VassFamilyTrackerPlugin.modifyRelationToFamily(VassUtils.VASS_FAMILY.PERTURBA,
+                        -((-RELATIONS_AFTER_BAD_DEAL) + VassFamilyTrackerPlugin.getRelationToFamily(VassUtils.VASS_FAMILY.PERTURBA)));
+
+                options.addOption("Leave", OptionId.LEAVE);
+                break;
+            case LEAVE:
+                noContinue = true;
+                done = true;
+                break;
+        }
+    }
+
+    //For followup encounters
+    private void optionSelectedHandleFollowupTime(TextPanelAPI text, OptionId option, OptionPanelAPI options, Color t, Color h, Color n) {
+        switch (option) {
+            case INIT:
+                text.addPara("The Perturba agent waves at you as you approach them.");
+                text.addPara("'Why hello there captain. Or... maybe you go by some other name here? Commander? Overlord? Either way; I think I may have a business opportunity that might interest you...'");
+
+                options.addOption("About that deal...", OptionId.CONTINUE_1);
+                options.addOption("You've made up your mind alright. Made up your mind to get rid of this lowlife. Guards!", OptionId.LEAVE_HOSTILE);
+                options.addOption("Tell them you don't have anything to discuss at the moment.", OptionId.LEAVE);
+                break;
+            case CONTINUE_1:
+                text.addPara("Ah, yes, of course. I'll go through deal again for completeness sake: you pay us an up-front cost of about " + PURCHASE_COST + " credits, and after that you and your fleets can acquire as much ordinance as you want from us.", h, ""+PURCHASE_COST);
+                text.addPara("In return, we get fair payment for the weapons we deliver, and you supply a fraction of the more common materials we'll need for their construction.");
+                options.addOption("Agree to pay for their services", OptionId.CONTINUE_2);
+                if (Global.getSector().getPlayerFleet().getCargo().getCredits().get() < PURCHASE_COST) {
+                    options.setEnabled(OptionId.CONTINUE_2, false);
+                    options.setTooltip(OptionId.CONTINUE_2, "You don't have enough credits.");
+                }
+                options.addOption("Inform the agent you're not interested in their services at this moment.", OptionId.LEAVE_NONHOSTILE);
+                break;
+            case CONTINUE_2:
                 text.addPara("'Pleasure doing business with you. Here:' The man hands you a tiny tri-chip. 'This should provide you with a one-way encrypted comms channel to our sales department and a program for easily managing your orders. It should pop up under your normal administrative functions; just make an order and the program should requisition credits and other resources as necessary to our collection location. Then, we'll bring the wares to the agreed-upon drop point once they goods are ready.'", h, "normal administrative functions");
 
                 text.setFontSmallInsignia();
