@@ -1,5 +1,3 @@
-//By Nicke535
-//Brutally punishes the player (or rather, their crew) when using Vass tech without reading the manual first
 package data.scripts.campaign;
 
 import com.fs.starfarer.api.EveryFrameScript;
@@ -23,6 +21,10 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * Brutally punishes the player (or rather, their crew) when using Vass tech without reading the manual first
+ * @author Nicke535
+ */
 public class VassSafetyOverridesCrewLossPlugin implements EveryFrameScript {
 
     IntervalUtil interval = new IntervalUtil(0.5f, 1.2f);

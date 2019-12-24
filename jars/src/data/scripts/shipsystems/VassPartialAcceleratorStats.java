@@ -7,6 +7,9 @@ import com.fs.starfarer.api.combat.MutableShipStatsAPI;
 import com.fs.starfarer.api.combat.ShipAPI;
 import com.fs.starfarer.api.impl.combat.BaseShipSystemScript;
 
+/**
+ * @deprecated
+ */
 public class VassPartialAcceleratorStats extends BaseShipSystemScript {
 
 	public static final float ROF_BONUS = 1f;

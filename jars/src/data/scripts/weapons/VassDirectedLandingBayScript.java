@@ -1,4 +1,3 @@
-//By Nicke535, causes fighters to attempt a "runway landing" rather than the more traditional VTOL-style landing
 package data.scripts.weapons;
 
 import com.fs.starfarer.api.combat.CombatEngineAPI;
@@ -17,6 +16,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * Causes fighters to attempt a "runway landing" rather than the more traditional VTOL-style landing
+ * @author Nicke535
+ */
 public class VassDirectedLandingBayScript implements EveryFrameWeaponEffectPlugin {
     //The "acceleration boost" the fighter gets while landing
     private static final float ACCEL_BOOST = 3f;

@@ -1,4 +1,3 @@
-//By Nicke535, speeds up the firerate of a weapon depending on a ship's time mult
 package data.scripts.weapons;
 
 import com.fs.starfarer.api.combat.CombatEngineAPI;
@@ -12,13 +11,18 @@ import org.lazywizard.lazylib.combat.CombatUtils;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Speeds up the firerate of a weapon depending on a ship's time mult
+ * Also applies a guidance to the projectiles making them turn towards their intended direction once
+ * @author Nicke535
+ */
 public class VassCyllelFarchogScript implements EveryFrameWeaponEffectPlugin {
 
     //Maximum firerate bonus achievable with the weapon
-    static final float MAX_BONUS_FIRERATE = 0.65f;
+    private static final float MAX_BONUS_FIRERATE = 0.65f;
 
     //"Absolute" time mult at which maximum firerate is achieved (0.5f = 2f "absolute")
-    static final float MAX_TIME_MULT_FOR_BONUS = 1.8f;
+    private static final float MAX_TIME_MULT_FOR_BONUS = 1.8f;
 
     private List<DamagingProjectileAPI> alreadyRegisteredProjectiles = new ArrayList<>();
 

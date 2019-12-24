@@ -1,5 +1,3 @@
-//By Nicke535
-//Experience, The World!
 package data.scripts.shipsystems;
 
 import java.awt.Color;
@@ -17,6 +15,10 @@ import org.lazywizard.lazylib.FastTrig;
 import org.lazywizard.lazylib.MathUtils;
 import org.lwjgl.util.vector.Vector2f;
 
+/**
+ * The World is unstoppable!
+ * @author Nicke535
+ */
 public class VassPeriodicBreaker extends BaseShipSystemScript {
     //The time mult for the player and AI, respectively. Should be identical, for fairness sake, but if performance becomes
     //an issue lowering AI time mult slightly may help

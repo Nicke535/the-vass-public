@@ -1,4 +1,3 @@
-//By Nicke535, tracks that a projectile should "grace" nearby timelines to hit targets it barely misses
 package data.scripts.utils;
 
 import com.fs.starfarer.api.Global;
@@ -25,6 +24,10 @@ import java.util.List;
 import static org.lwjgl.opengl.GL11.GL_ONE;
 import static org.lwjgl.opengl.GL11.GL_SRC_ALPHA;
 
+/**
+ * Tracks that a projectile should "grace" nearby timelines to hit targets it barely misses
+ * @author Nicke535
+ */
 public class VassTimeSplitProjScript extends BaseEveryFrameCombatPlugin {
 	//How much the projectile's damage is reduced for each grace, at most
 	private static final float DAMAGE_LOSS_PER_GRACE = 0.05f;

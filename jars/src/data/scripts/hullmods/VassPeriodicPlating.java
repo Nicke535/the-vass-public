@@ -23,6 +23,10 @@ import org.lazywizard.lazylib.FastTrig;
 import org.lazywizard.lazylib.combat.CombatUtils;
 import org.lwjgl.util.vector.Vector2f;
 
+/**
+ * Handles all hullmod effects of the Periodic plating (or, well, most; some is outsourced)
+ * @author Nicke535
+ */
 public class VassPeriodicPlating extends BaseHullMod {
     public static final float TIME_MULT = 1.2f;
     public static final Color AFTERIMAGE_COLOR_STANDARD = new Color(80, 255, 38, 100);

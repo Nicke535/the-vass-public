@@ -9,6 +9,9 @@ import com.fs.starfarer.api.combat.ShipVariantAPI;
 import com.fs.starfarer.api.impl.combat.BaseShipSystemScript;
 import com.fs.starfarer.api.plugins.ShipSystemStatsScript;
 
+/**
+ * @deprecated
+ */
 public class VassChronoAccel extends BaseShipSystemScript {
     public static final float TIME_MULT_PLAYER = 2.0f;
     public static final float TIME_MULT_AI = 2.0f;

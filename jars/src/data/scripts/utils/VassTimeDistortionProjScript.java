@@ -26,17 +26,17 @@ import static org.lwjgl.opengl.GL11.GL_SRC_ALPHA;
 
 public class VassTimeDistortionProjScript extends BaseEveryFrameCombatPlugin {
 	//How long do we apply time distortion effects for?
-	private static float TIME_DISTORTION_DURATION = 0.55f;
+	private static final float TIME_DISTORTION_DURATION = 0.55f;
 
 	//How long the visual distortion lasts (with shaderlib)
-	private static float VISUAL_DISTORTION_DURATION = 0.4f;
+	private static final float VISUAL_DISTORTION_DURATION = 0.4f;
 
 	//Base AoE size, this is then modified by the square root of the damage
-	private static float BASE_AOE_SIZE = 6f;
+	private static final float BASE_AOE_SIZE = 6f;
 
 	//The ID of the effect applied by the script (also gets an unique modifier applied)
-	private static String EFFECT_ID = "VassTimeDistortKey_";
-	private String effectIdSuffix = "";
+	private static final String EFFECT_ID = "VassTimeDistortKey_";
+	private String effectIdSuffix;
 
 
 	//The projectile we are tracking

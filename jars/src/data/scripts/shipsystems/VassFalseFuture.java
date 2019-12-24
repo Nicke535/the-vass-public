@@ -13,6 +13,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * @deprecated
+ */
 public class VassFalseFuture extends BaseShipSystemScript {
 
     public static final Color JITTER_COLOR = new Color(255, 255, 255, 45);

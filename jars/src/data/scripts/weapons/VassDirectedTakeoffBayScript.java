@@ -1,4 +1,3 @@
-//By Nicke535, causes newly-launched fighters to follow a straight path out from a hidden weapon instead of just going "up"
 package data.scripts.weapons;
 
 import com.fs.starfarer.api.combat.*;
@@ -12,6 +11,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * Causes newly-launched fighters to follow a straight path out from a hidden weapon instead of just going "up"
+ * @author Nicke535
+ */
 public class VassDirectedTakeoffBayScript implements EveryFrameWeaponEffectPlugin {
     //The maximum "speed boost" the fighter gets when taking off; 1f means a 100% speed boost initially
     //  This bonus then fades quadratically over the duration

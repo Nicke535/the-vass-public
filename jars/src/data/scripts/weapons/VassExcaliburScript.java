@@ -9,38 +9,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class VassExcaliburScript extends VassBasePerturbaMissileScript {
-
-    //Keeps track of already-affected projectiles
-    private List<MissileAPI> alreadyTriggeredProjectiles = new ArrayList<>();
-
-    //Used for clearing out projectiles we no longer need to care about
-    private List<MissileAPI> toRemove = new ArrayList<>();
-
-    @Override
-    public void advance(float amount, CombatEngineAPI engine, WeaponAPI weapon) {
-        for (MissileAPI msl : CombatUtils.getMissilesWithinRange(weapon.getLocation(), 400f)) {
-            //Only run once per projectile
-            if (alreadyTriggeredProjectiles.contains(msl)) {
-                continue;
-            }
-
-            //If the projectile is our own, we can do something with it
-            if (msl.getWeapon() == weapon) {
-                //Register that we've triggered on the projectile
-                alreadyTriggeredProjectiles.add(msl);
-            }
-        }
-
-        //Also, we clean up our already triggered projectiles when they stop being loaded into the engine
-        for (MissileAPI msl : alreadyTriggeredProjectiles) {
-            if (!engine.isEntityInPlay(msl)) {
-                toRemove.add(msl);
-            }
-        }
-        alreadyTriggeredProjectiles.removeAll(toRemove);
-        toRemove.clear();
-    }
-
     @Override
     protected void applyEffectOnProjectile(CombatEngineAPI engine, DamagingProjectileAPI proj) {
         //Makes projectiles slightly cooler on fade-out
@@ -53,7 +21,6 @@ public class VassExcaliburScript extends VassBasePerturbaMissileScript {
     }
 
     //The Excalibur can't regen ammo, as it's on a bomber
-
     @Override
     protected float ammoRegenMult() {
         return 0f;

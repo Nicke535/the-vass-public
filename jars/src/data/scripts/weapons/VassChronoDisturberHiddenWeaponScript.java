@@ -10,6 +10,9 @@ import org.lwjgl.util.vector.Vector2f;
 
 import java.awt.*;
 
+/**
+ * @deprecated
+ */
 public class VassChronoDisturberHiddenWeaponScript implements EveryFrameWeaponEffectPlugin {
 
     private float rotation = 0f;

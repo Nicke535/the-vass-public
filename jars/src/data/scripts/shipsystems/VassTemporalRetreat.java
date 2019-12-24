@@ -14,6 +14,10 @@ import org.lwjgl.util.vector.Vector2f;
 
 import java.util.*;
 
+/**
+ * Handles the Temporal Retreat shipsystem
+ * @author Nicke535
+ */
 public class VassTemporalRetreat extends BaseShipSystemScript {
 
     //The maximum "divisor" for our time mult (IE 8 here represents a time mult of 1/8)

@@ -17,6 +17,10 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+/**
+ * Handles all the strange mechanics involved in the workings of the over-scripted Yawarakai-Te
+ * @author Nicke535
+ */
 public class VassYawarakaiTeScript implements EveryFrameWeaponEffectPlugin {
     //Base size of the visual trail that indicates us attacking a target
     private static final float TRAIL_START_WIDTH = 14f;

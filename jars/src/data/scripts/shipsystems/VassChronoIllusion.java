@@ -17,18 +17,22 @@ import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * Handles the effects of the Chrono Illusion system
+ * @author Nicke535
+ */
 public class VassChronoIllusion extends BaseShipSystemScript {
     //How long the illusions fired by the system are allowed to exist, at most
-    static final float MAX_ILLUSION_DURATION = 8f;
+    private static final float MAX_ILLUSION_DURATION = 8f;
 
     //How long visual illusion copies which are spawned by each illusion are allowed to live
-    static final float ILLUSION_CLONE_DURATION = 0.45f;
+    private static final float ILLUSION_CLONE_DURATION = 0.45f;
 
     //How quickly visual illusion copies are spawned by each illusion
-    static final float ILLUSION_CLONE_DELAY = 0.1f;
+    private static final float ILLUSION_CLONE_DELAY = 0.1f;
 
 
-    List<ChronoIllusionTracker> activeTrackers = new ArrayList<ChronoIllusionTracker>();
+    private List<ChronoIllusionTracker> activeTrackers = new ArrayList<ChronoIllusionTracker>();
 
     ShipAPI ship = null;
 

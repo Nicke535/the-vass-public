@@ -18,6 +18,10 @@ import org.lwjgl.util.vector.Vector2f;
 import java.awt.*;
 import java.util.ArrayList;
 
+/**
+ * Utility class for various things that are used in the Vass
+ * @author Nicke535
+ */
 public class VassUtils {
     //The families's energy colors (basic is used )
     private static final float[] COLORS_RECIPRO = { 1f, 1f, 1f};

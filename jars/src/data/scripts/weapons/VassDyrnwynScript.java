@@ -1,23 +1,19 @@
-//By Nicke535, speeds up the firerate of a weapon depending on a ship's time mult
 package data.scripts.weapons;
 
-import com.fs.starfarer.api.Global;
 import com.fs.starfarer.api.combat.*;
 import com.fs.starfarer.api.util.Misc;
-import data.scripts.utils.VassTimeDistortionProjScript;
-import org.lazywizard.lazylib.MathUtils;
-import org.lazywizard.lazylib.combat.CombatUtils;
 
-import java.util.ArrayList;
-import java.util.List;
-
+/**
+ * Speeds up the firerate of a weapon depending on a ship's time mult
+ * @author Nicke535
+ */
 public class VassDyrnwynScript implements EveryFrameWeaponEffectPlugin {
 
     //Maximum firerate bonus achievable with the weapon
-    static final float MAX_BONUS_FIRERATE = 0.65f;
+    private static final float MAX_BONUS_FIRERATE = 0.65f;
 
     //"Absolute" time mult at which maximum firerate is achieved (0.5f = 2f "absolute")
-    static final float MAX_TIME_MULT_FOR_BONUS = 1.8f;
+    private static final float MAX_TIME_MULT_FOR_BONUS = 1.8f;
 
     @Override
     public void advance(float amount, CombatEngineAPI engine, WeaponAPI weapon) {

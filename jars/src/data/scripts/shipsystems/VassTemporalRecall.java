@@ -16,6 +16,10 @@ import org.lazywizard.lazylib.combat.entities.SimpleEntity;
 import org.lwjgl.util.vector.Vector2f;
 import org.lazywizard.lazylib.MathUtils;
 
+/**
+ * Handles the Temporal Recall shipsystem
+ * @author Nicke535
+ */
 public class VassTemporalRecall extends BaseShipSystemScript {
 
     public static final float RECALL_SPREAD = 250f;
