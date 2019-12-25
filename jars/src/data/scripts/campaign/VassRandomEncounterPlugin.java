@@ -5,6 +5,7 @@ import com.fs.starfarer.api.Global;
 import com.fs.starfarer.api.campaign.*;
 import com.fs.starfarer.api.impl.campaign.fleets.FleetFactoryV3;
 import com.fs.starfarer.api.impl.campaign.fleets.FleetParamsV3;
+import com.fs.starfarer.api.impl.campaign.ids.Factions;
 import com.fs.starfarer.api.util.IntervalUtil;
 import com.fs.starfarer.api.util.Misc;
 import com.fs.starfarer.api.util.WeightedRandomPicker;
@@ -13,7 +14,17 @@ import org.lazywizard.lazylib.MathUtils;
 import org.lazywizard.lazylib.campaign.CampaignUtils;
 import org.lwjgl.util.vector.Vector2f;
 
+import java.util.HashSet;
+
 public class VassRandomEncounterPlugin implements EveryFrameScript {
+
+    //A list of factions that will never be attacked by random encounters
+    public static final HashSet<String> BLACKLISTED_FACTIONS = new HashSet<>();
+    static {
+        BLACKLISTED_FACTIONS.add(Factions.DERELICT);
+        BLACKLISTED_FACTIONS.add(Factions.REMNANTS);
+        BLACKLISTED_FACTIONS.add(Factions.PLAYER);
+    }
 
     //The minimum and maximum size factor compared to the target that the families will ever send
     private static final float MIN_FP_FACTOR = 1.05f;
@@ -49,6 +60,10 @@ public class VassRandomEncounterPlugin implements EveryFrameScript {
                     continue;
                 }
                 CampaignFleetAPI fleet = (CampaignFleetAPI)entity;
+
+                if (BLACKLISTED_FACTIONS.contains(fleet.getFaction().getId())) {
+                    continue;
+                }
 
                 //Only hostile fleets are targeted
                 if (!fleet.getFaction().getRelationshipLevel("vass").isAtBest(RepLevel.HOSTILE))  {

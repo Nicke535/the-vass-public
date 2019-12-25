@@ -17,7 +17,7 @@
       "autofire": true,
       "mode": "LINKED",
       "weapons": {
-        "WS0002": "vass_caladbolg",
+        "WS0002": "vass_cyllel_farchog",
         "WS0005": "vass_asi",
         "WS0006": "vass_asi"
       }
