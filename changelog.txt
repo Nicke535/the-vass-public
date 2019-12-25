@@ -4,6 +4,7 @@ Version 0.3.1a
   - Changed color for weapon covers
   - Made initial bar quest twice as likely to appear
   - Added a pair of randomized missions that feature normal Vass fleets rather than Perturba Elites
+  - Added some minor forward-compatibility improvements
 
  Balance:
   - Colada Emitter: 

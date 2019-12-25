@@ -15,6 +15,8 @@ import data.scripts.utils.VassUtils;
 import java.awt.*;
 import java.util.Set;
 
+import static data.scripts.campaign.barEvents.VassPerturbaWeaponContractEvent.VASS_PERTURBA_WEAPON_CONTRACT_KEY;
+
 public class VassPerturbaWeaponContractIntel extends BaseIntelPlugin {
     public static final String BUTTON_END_DEAL = "END_DEAL";
     public static final float DEAL_END_RELATIONS_PENALTY = -20f;
@@ -23,6 +25,24 @@ public class VassPerturbaWeaponContractIntel extends BaseIntelPlugin {
 
     public VassPerturbaWeaponContractIntel(VassPerturbaWeaponContractEvent event) {
         this.event = event;
+    }
+
+    //We ensure that the player has access to all the weapons they should, even if said weapons have changed since last time we loaded
+    @Override
+    public void advance(float amount) {
+        super.advance(amount);
+
+        //Only do this if we actually have a contract
+        Object hasContract = Global.getSector().getMemoryWithoutUpdate().get(VASS_PERTURBA_WEAPON_CONTRACT_KEY);
+        if (hasContract instanceof Boolean) {
+            if ((Boolean) hasContract) {
+                for (String weapon : VassPerturbaWeaponContractEvent.UNLOCKED_WEAPONS) {
+                    if (!Global.getSector().getPlayerFaction().knowsWeapon(weapon)) {
+                        Global.getSector().getPlayerFaction().addKnownWeapon(weapon, true);
+                    }
+                }
+            }
+        }
     }
 
     @Override
@@ -168,6 +188,7 @@ public class VassPerturbaWeaponContractIntel extends BaseIntelPlugin {
         for (String weapon : VassPerturbaWeaponContractEvent.UNLOCKED_WEAPONS) {
             Global.getSector().getPlayerFaction().removeKnownWeapon(weapon);
         }
+        Global.getSector().getMemoryWithoutUpdate().set(VASS_PERTURBA_WEAPON_CONTRACT_KEY, false);
         VassFamilyTrackerPlugin.modifyRelationToFamily(VassUtils.VASS_FAMILY.PERTURBA, DEAL_END_RELATIONS_PENALTY);
         endImmediately();
     }

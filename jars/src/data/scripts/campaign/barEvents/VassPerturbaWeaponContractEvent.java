@@ -322,7 +322,9 @@ public class VassPerturbaWeaponContractEvent extends BaseBarEventWithPerson {
                 text.addPara("'I hope this is the beginning of a long and profitable partnership for us both.'");
 
                 for (String weapon : VassPerturbaWeaponContractEvent.UNLOCKED_WEAPONS) {
-                    Global.getSector().getPlayerFaction().addKnownWeapon(weapon, true);
+                    if (!Global.getSector().getPlayerFaction().knowsWeapon(weapon)) {
+                        Global.getSector().getPlayerFaction().addKnownWeapon(weapon, true);
+                    }
                 }
                 BarEventManager.getInstance().notifyWasInteractedWith(this);
 
