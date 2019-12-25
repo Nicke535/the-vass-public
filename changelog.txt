@@ -1,3 +1,20 @@
+Version 0.3.1a
+ General:
+  - Fixed color for design types
+  - Changed color for weapon covers
+  - Made initial bar quest twice as likely to appear
+  - Added a pair of randomized missions that feature normal Vass fleets rather than Perturba Elites
+  - Changed mission icons (still pretty much placeholder, though)
+  - Added some minor forward-compatibility improvements
+
+ Balance:
+  - Colada Emitter: 
+     * tripled shots/burst (this was just bugged, really)
+
+ Bugfixes:
+  - The Perturba initial quest can now appear on any player market if they have ship-production capabilities, not just the market WITH ship production
+
+
 Version 0.3.1 : Time for a small update
  General:
   - Added most missing descriptions

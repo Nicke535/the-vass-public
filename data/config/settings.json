@@ -1,4 +1,13 @@
 {
+	"designTypeColors":{
+            "Vass Shipyards":[60,255,18,255],
+			"Vass Hybrid Tech":[60,255,18,255],
+			"Accel Tech":[255,0,0,255],
+			"Torpor Tech":[26,100,255,255],
+			"Perturba Tech":[204,255,0,255],
+			"Recipro Tech":[255,255,255,255],
+			"Multa Tech":[200,200,200,255],
+    },
 	"graphics":{
 		"vass_fx":{
 			"projectile_jump_indicator":"graphics/vass/fx/projectile_jump_indicator.png",

@@ -23,7 +23,7 @@ public class VassPerturbaWeaponContractEventCreator extends BaseBarEventCreator 
         if (VassPerturbaWeaponContractEvent.DEBUG_MODE) {
             return 99999999999f;
         } else {
-            return super.getBarEventFrequencyWeight() * 2f;
+            return super.getBarEventFrequencyWeight() * 4f;
         }
     }
 }

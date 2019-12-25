@@ -12,7 +12,7 @@
 	"turretOffsets":[0, 0, 0, 0, 0, 0],
 	"hardpointAngleOffsets":[0, 0, 0],
 	"turretAngleOffsets":[0, 0, 0],
-	"barrelMode":"ALTERNATING",	
+	"barrelMode":"LINKED",	
 	"animationType":"GLOW",
 	"glowColor":[100,255,58,180],
 	"interruptibleBurst":false,
