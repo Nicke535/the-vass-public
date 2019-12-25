@@ -5,7 +5,6 @@ import com.fs.starfarer.api.campaign.*;
 import com.fs.starfarer.api.campaign.econ.Industry;
 import com.fs.starfarer.api.campaign.econ.MarketAPI;
 import com.fs.starfarer.api.characters.PersonAPI;
-import com.fs.starfarer.api.impl.campaign.econ.impl.HeavyIndustry;
 import com.fs.starfarer.api.impl.campaign.ids.*;
 import com.fs.starfarer.api.impl.campaign.intel.bar.events.BarEventManager;
 import com.fs.starfarer.api.impl.campaign.intel.bar.events.BaseBarEventWithPerson;
@@ -15,9 +14,7 @@ import com.fs.starfarer.api.util.Misc;
 import com.fs.starfarer.api.util.WeightedRandomPicker;
 import data.scripts.campaign.VassFamilyTrackerPlugin;
 import data.scripts.utils.VassUtils;
-import org.lazywizard.lazylib.MathUtils;
 
-import javax.xml.bind.annotation.XmlElementDecl;
 import java.awt.*;
 import java.util.HashSet;
 import java.util.Set;
@@ -27,7 +24,6 @@ import java.util.Set;
  * @author Nicke535
  */
 public class VassPerturbaWeaponContractEvent extends BaseBarEventWithPerson {
-
     public static final boolean DEBUG_MODE = false;
 
     //Some memory keys used by the event
@@ -81,14 +77,19 @@ public class VassPerturbaWeaponContractEvent extends BaseBarEventWithPerson {
         if (VassFamilyTrackerPlugin.getRelationToFamily(VassUtils.VASS_FAMILY.PERTURBA) < 0f) { return false; }
         if (!Global.getSector().getPlayerFaction().getRelationshipLevel("vass").isAtWorst(RepLevel.INHOSPITABLE)) { return false; }
 
-        //Only the player's ship-producing markets can get the event
+        //Only the player's markets can get the event
         if (!market.getFaction().isPlayerFaction()) { return false; }
+
+        //The player needs to own at least one market with heavy industry
         boolean hasProduction = false;
-        for (Industry industry : market.getIndustries()) {
-            if (industry instanceof HeavyIndustry) {
-                hasProduction = true;
-                break;
+        for (MarketAPI otherMarket: Misc.getFactionMarkets(Global.getSector().getPlayerFaction())) {
+            for (Industry industry : otherMarket.getIndustries()) {
+                if (industry.getSpec().hasTag("heavvyindustry")) {
+                    hasProduction = true;
+                    break;
+                }
             }
+            if (hasProduction) { break; }
         }
         if (!hasProduction) { return false; }
 

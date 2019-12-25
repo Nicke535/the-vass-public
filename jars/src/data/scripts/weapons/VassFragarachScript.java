@@ -1,6 +1,7 @@
 package data.scripts.weapons;
 
 import com.fs.starfarer.api.combat.*;
+import com.fs.starfarer.api.loading.VariantSource;
 import data.scripts.utils.VassTimeSplitProjScript;
 import org.lazywizard.lazylib.combat.CombatUtils;
 

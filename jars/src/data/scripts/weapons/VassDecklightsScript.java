@@ -11,7 +11,7 @@ public class VassDecklightsScript implements EveryFrameWeaponEffectPlugin {
     //Various stats for how fast the lights start, stop and blink
     private static final float HULK_FADE_TIME = 20f;
 
-    //The basic color of the lights, when no family's color is used
+    //The color of the decklights
     private static final float[] COLORS_BASIC = { 0.31f, 1f, 0.15f};
 
     private float currentBrightness = 0f;
