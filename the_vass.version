@@ -13,7 +13,7 @@
     #"masterVersionFile":"https://github.com/LazyWizard/VersionChecker/blob/master/versionchecker.version",
     #"masterVersionFile":"https://github.com/LazyWizard/VersionChecker/releases/download/0.1/versionchecker.version",
     #"masterVersionFile":"https://bitbucket.org/LazyWizard/version-checker/raw/tip/versionchecker.version",
-    "masterVersionFile":"https://raw.githubusercontent.com/Nicke535/The-Vass/master/the_vass.version",
+    "masterVersionFile":"https://raw.githubusercontent.com/Nicke535/the-vass-public/master/the_vass.version",
     # The name that is displayed in-game for your mod
     "modName":"The Vass",
     # The ID of the thread where updates to this mod can be found (optional).
