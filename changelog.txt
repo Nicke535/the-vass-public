@@ -1,5 +1,6 @@
 Version 0.3.1b
  General
+  - Made Vass fleets no longer try and extort Remnant and Derelict fleetsm because that's silly
   - Made the Combat Carrier Curtana variant slightly less shit
   - Fixed minor spelling errors
 
