@@ -14,6 +14,7 @@ import com.fs.starfarer.api.util.Misc;
 import com.fs.starfarer.api.util.WeightedRandomPicker;
 import data.scripts.campaign.VassFamilyTrackerPlugin;
 import data.scripts.utils.VassUtils;
+import org.apache.log4j.Logger;
 
 import java.awt.*;
 import java.util.HashSet;
@@ -24,6 +25,8 @@ import java.util.Set;
  * @author Nicke535
  */
 public class VassPerturbaWeaponContractEvent extends BaseBarEventWithPerson {
+    public static final Logger LOGGER = Global.getLogger(VassPerturbaWeaponContractEvent.class);
+
     public static final boolean DEBUG_MODE = false;
 
     //Some memory keys used by the event
@@ -73,30 +76,48 @@ public class VassPerturbaWeaponContractEvent extends BaseBarEventWithPerson {
         if (DEBUG_MODE) { return true; }
 
         //Don't appear if Perturba has been knocked out, or are enemies to the player
-        if (VassFamilyTrackerPlugin.isFamilyEliminated(VassUtils.VASS_FAMILY.PERTURBA)) { return false; }
-        if (VassFamilyTrackerPlugin.getRelationToFamily(VassUtils.VASS_FAMILY.PERTURBA) < 0f) { return false; }
-        if (!Global.getSector().getPlayerFaction().getRelationshipLevel("vass").isAtWorst(RepLevel.INHOSPITABLE)) { return false; }
+        if (VassFamilyTrackerPlugin.isFamilyEliminated(VassUtils.VASS_FAMILY.PERTURBA)) {
+            LOGGER.info("Threw away Perturba event due to incorrect faction");
+            return false;
+        }
+        if (VassFamilyTrackerPlugin.getRelationToFamily(VassUtils.VASS_FAMILY.PERTURBA) < 0f) {
+            LOGGER.info("Threw away Perturba event due to incorrect faction");
+            return false;
+        }
+        if (!Global.getSector().getPlayerFaction().getRelationshipLevel("vass").isAtWorst(RepLevel.INHOSPITABLE)) {
+            LOGGER.info("Threw away Perturba event due to incorrect faction");
+            return false;
+        }
 
         //Only the player's markets can get the event
-        if (!market.getFaction().isPlayerFaction()) { return false; }
+        if (!market.getFaction().isPlayerFaction()) {
+            LOGGER.info("Threw away Perturba event due to incorrect faction");
+            return false;
+        }
 
         //The player needs to own at least one market with heavy industry
         boolean hasProduction = false;
         for (MarketAPI otherMarket: Misc.getFactionMarkets(Global.getSector().getPlayerFaction())) {
             for (Industry industry : otherMarket.getIndustries()) {
-                if (industry.getSpec().hasTag("heavvyindustry")) {
+                if (industry.getSpec().hasTag("heavyindustry")) {
                     hasProduction = true;
                     break;
                 }
             }
             if (hasProduction) { break; }
         }
-        if (!hasProduction) { return false; }
+        if (!hasProduction) {
+            LOGGER.info("Threw away Perturba event due to missing production");
+            return false;
+        }
 
         //Don't appear if the player has an active contract with Perturba already
         Object hasContract = Global.getSector().getMemoryWithoutUpdate().get(VASS_PERTURBA_WEAPON_CONTRACT_KEY);
         if (hasContract instanceof Boolean) {
-            if ((Boolean) hasContract) { return false; }
+            if ((Boolean) hasContract) {
+                LOGGER.info("Threw away Perturba event due to prior contract");
+                return false;
+            }
         }
 
         return true;
@@ -302,7 +323,9 @@ public class VassPerturbaWeaponContractEvent extends BaseBarEventWithPerson {
                 options.addOption("Inform the agent you're not interested in their services at this moment.", OptionId.LEAVE_NONHOSTILE);
                 break;
             case CONTINUE_2:
-                text.addPara("'Pleasure doing business with you. Here:' The man hands you a tiny tri-chip. 'This should provide you with a one-way encrypted comms channel to our sales department and a program for easily managing your orders. It should pop up under your normal administrative functions; just make an order and the program should requisition credits and other resources as necessary to our collection location. Then, we'll bring the wares to the agreed-upon drop point once they goods are ready.'", h, "normal administrative functions");
+                text.addPara("'Pleasure doing business with you. Here:'");
+                text.addPara("The man hands you a tiny tri-chip.");
+                text.addPara("'This should provide you with a one-way encrypted comms channel to our sales department and a program for easily managing your orders. It should pop up under your normal administrative functions; just make an order and the program should requisition credits and other resources as necessary to our collection location. Then, we'll bring the wares to the agreed-upon drop point once they are ready.'", h, "normal administrative functions");
 
                 text.setFontSmallInsignia();
                 text.addPara("Lost " + PURCHASE_COST + " credits", n, h, "" + PURCHASE_COST);

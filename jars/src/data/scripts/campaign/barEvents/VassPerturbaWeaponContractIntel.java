@@ -61,7 +61,7 @@ public class VassPerturbaWeaponContractIntel extends BaseIntelPlugin {
         super.notifyEnding();
     }
 
-    //Handles the bullet-points on the intel screen, when details are viewed
+    //Handles the bullet-points on the intel screen
     protected void addBulletPoints(TooltipMakerAPI info, ListInfoMode mode) {
         Color h = Misc.getHighlightColor();
         Color g = Misc.getGrayColor();
@@ -72,9 +72,7 @@ public class VassPerturbaWeaponContractIntel extends BaseIntelPlugin {
         if (mode == ListInfoMode.IN_DESC) initPad = opad;
 
         bullet(info);
-
         info.addPara("As long as the deal stands, you can order Perturba's weapon offerings similarly to how you would normally custom-order weapons, and your faction's fleets can utilize them as well.", initPad);
-
         unindent(info);
     }
 
@@ -85,7 +83,10 @@ public class VassPerturbaWeaponContractIntel extends BaseIntelPlugin {
         info.setParaSmallInsignia();
         info.addPara(getName(), c, 0f);
         info.setParaFontDefault();
-        addBulletPoints(info, mode);
+
+        bullet(info);
+        info.addPara("As long as the deal stands, you can order Perturba's weapon offerings similarly to how you would normally custom-order weapons, and your faction's fleets can utilize them as well.", 3f);
+        unindent(info);
     }
 
     // The description shown on the intel screen summary

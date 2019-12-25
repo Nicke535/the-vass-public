@@ -1,3 +1,14 @@
+Version 0.3.1b
+ General
+  - Made Vass fleets no longer try and extort Remnant and Derelict fleetsm because that's silly
+  - Made the Combat Carrier Curtana variant slightly less shit
+  - Fixed minor spelling errors
+
+ Bugfixes:
+  - Hopefully made WIP fighters not spawn in prism freeport
+  - Fixed spelling error causing the initial Perturba quest to never appear
+  
+
 Version 0.3.1a
  General:
   - Fixed color for design types

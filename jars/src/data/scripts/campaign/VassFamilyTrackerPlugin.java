@@ -45,7 +45,7 @@ public class VassFamilyTrackerPlugin implements EveryFrameScript {
     private static final float MIN_LOOT_REVENGE_COOLDOWN = 150f;
 
     //How many fleet points can the families dish out per "power" they have?
-    private static final float LOOT_FLEET_FP_PER_POWER = 6f;
+    private static final float LOOT_FLEET_FP_PER_POWER = 30f;
 
     //How many fleet points will a loot revenge fleet have compared to the player fleet?
     private static final float LOOT_FLEET_FP_FACTOR = 1.25f;
