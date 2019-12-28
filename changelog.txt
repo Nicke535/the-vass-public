@@ -6,6 +6,8 @@ Version 0.3.2
  Balance:
   - Cyllel Farchog Array:
      * flux per shot 75 -> 65
+  - Estoc
+     * slightly improved engine performance: should have less issues firing its bombs now
 
  Bugfixes:
   - Fixed occasional crash issue triggered in the refit screen
