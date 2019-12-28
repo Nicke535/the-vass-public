@@ -74,7 +74,9 @@ public class VassCampaignUtils {
         }
 
         //DELIVER_CREW can't be interrupted by other fleets, unlike INTERCEPT or similar
-        aggressor.addAssignment(FleetAssignment.DELIVER_CREW, defendant, interceptDays, "Engaging " + defendant.getNameWithFaction(),null);
+        String textToDisplay = "Engaging " + defendant.getNameWithFaction();
+        if (defendant.isPlayerFleet()) { textToDisplay = "Engaging player fleet"; }
+        aggressor.addAssignment(FleetAssignment.DELIVER_CREW, defendant, interceptDays, textToDisplay,null);
         Global.getSector().addScript(new RenewAggressionPlugin(Global.getSector(), aggressor, defendant, interceptDays));
     }
 
@@ -131,7 +133,9 @@ public class VassCampaignUtils {
                 }
 
                 //DELIVER_CREW can't be interrupted by other fleets, unlike INTERCEPT or similar
-                aggressor.addAssignment(FleetAssignment.DELIVER_CREW, defendant, interceptDaysRemaining, "Engaging " + defendant.getNameWithFaction(),null);
+                String textToDisplay = "Engaging " + defendant.getNameWithFaction();
+                if (defendant.isPlayerFleet()) { textToDisplay = "Engaging player fleet"; }
+                aggressor.addAssignment(FleetAssignment.DELIVER_CREW, defendant, interceptDaysRemaining, textToDisplay,null);
             }
         }
 

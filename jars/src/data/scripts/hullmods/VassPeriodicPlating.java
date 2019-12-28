@@ -19,6 +19,7 @@ import com.fs.starfarer.api.util.Misc;
 import data.scripts.campaign.VassFamilyTrackerPlugin;
 import data.scripts.util.MagicRender;
 import data.scripts.utils.VassUtils;
+import org.apache.log4j.Logger;
 import org.lazywizard.lazylib.FastTrig;
 import org.lazywizard.lazylib.combat.CombatUtils;
 import org.lwjgl.util.vector.Vector2f;
@@ -28,6 +29,9 @@ import org.lwjgl.util.vector.Vector2f;
  * @author Nicke535
  */
 public class VassPeriodicPlating extends BaseHullMod {
+	public static final Logger LOGGER = Global.getLogger(VassPeriodicPlating.class);
+
+	//Stats
     public static final float TIME_MULT = 1.2f;
     public static final Color AFTERIMAGE_COLOR_STANDARD = new Color(80, 255, 38, 100);
     public static final float AFTERIMAGE_THRESHHOLD = 0.1f;
@@ -156,14 +160,18 @@ public class VassPeriodicPlating extends BaseHullMod {
 	//For the cool extra description section
 	@Override
 	public void addPostDescriptionSection(TooltipMakerAPI tooltip, ShipAPI.HullSize hullSize, ShipAPI ship, float width, boolean isForModSpec) {
-		addPostDescriptionContractBonus(tooltip, hullSize, ship, width, isForModSpec);
-		addPostDescriptionHullmodSynergies(tooltip, hullSize, ship, width, isForModSpec);
+		if (!isForModSpec) {
+			addPostDescriptionContractBonus(tooltip, hullSize, ship, width, isForModSpec);
+			addPostDescriptionHullmodSynergies(tooltip, hullSize, ship, width, isForModSpec);
+		}
 	}
 
 	//For bonuses gotten from being a member of a Vass family; not really used now except for debugging
 	private void addPostDescriptionContractBonus (TooltipMakerAPI tooltip, ShipAPI.HullSize hullSize, ShipAPI ship, float width, boolean isForModSpec) {
 		//This does nothing if we're not a member of a family
-		if (VassUtils.getFamilyMembershipOfShip(ship) == null) {
+		VassUtils.VASS_FAMILY family = null;
+		try {family = VassUtils.getFamilyMembershipOfShip(ship);} catch (IllegalStateException e) {LOGGER.warn(e.getMessage());}
+		if (family == null) {
 			return;
 		}
 
@@ -172,7 +180,7 @@ public class VassPeriodicPlating extends BaseHullMod {
 
 		//If we have family membership, inform the player of its benefits
 		//Perturba : Weapon bonuses... This thing isn't gonna fit in the screen, is it?
-		if (VassUtils.getFamilyMembershipOfShip(ship) == VassUtils.VASS_FAMILY.PERTURBA) {
+		if (family == VassUtils.VASS_FAMILY.PERTURBA) {
 			TooltipMakerAPI text = tooltip.beginImageWithText("graphics/hullmods/targeting_supercomputer.png", 36); //TODO: fix proper icon
 			text.addPara("Perturba - Exotic weapon specialists", 0, VassUtils.getFamilyColor(VassUtils.VASS_FAMILY.PERTURBA, 1f), Misc.getHighlightColor(), "Exotic weapon specialists");
 			text.addPara("Yawarakai-Te: +150 SU before damage falloff, +20%% damage", 2, Misc.getHighlightColor(),"Yawarakai-Te", "+150", "+20%");

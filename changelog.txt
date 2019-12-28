@@ -1,3 +1,16 @@
+Version 0.3.2
+ General:
+  - Added basic faction description
+  - Updated some text for the initial Perturba quest
+
+ Balance:
+  - Cyllel Farchog Array:
+     * flux per shot 75 -> 65
+
+ Bugfixes:
+  - Fixed occasional crash issue triggered in the refit screen
+
+
 Version 0.3.1b
  General
   - Made Vass fleets no longer try and extort Remnant and Derelict fleetsm because that's silly
