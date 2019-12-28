@@ -16,7 +16,6 @@ import com.fs.starfarer.api.mission.FleetSide;
 import com.fs.starfarer.api.ui.Alignment;
 import com.fs.starfarer.api.ui.TooltipMakerAPI;
 import com.fs.starfarer.api.util.Misc;
-import data.scripts.campaign.VassFamilyTrackerPlugin;
 import data.scripts.util.MagicRender;
 import data.scripts.utils.VassUtils;
 import org.apache.log4j.Logger;
@@ -171,6 +170,7 @@ public class VassPeriodicPlating extends BaseHullMod {
 		//This does nothing if we're not a member of a family
 		VassUtils.VASS_FAMILY family = null;
 		try {family = VassUtils.getFamilyMembershipOfShip(ship);} catch (IllegalStateException e) {LOGGER.warn(e.getMessage());}
+		try { family = VassUtils.getFamilyMembershipOfShip(ship); } catch (IllegalStateException e) { LOGGER.warn("Suppressed an exception : " + e.getMessage()); }
 		if (family == null) {
 			return;
 		}

@@ -9,8 +9,10 @@ Version 0.3.2
   - Estoc
      * slightly improved engine performance: should have less issues firing its bombs now
 
+
+Version 0.3.1c
  Bugfixes:
-  - Fixed occasional crash issue triggered in the refit screen
+  - Removed crash error that sometimes appear when entering the refit screen
 
 
 Version 0.3.1b
