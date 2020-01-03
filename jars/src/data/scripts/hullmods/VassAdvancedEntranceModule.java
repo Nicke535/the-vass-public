@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.util.Map;
 import java.util.WeakHashMap;
 
+import com.fs.starfarer.api.GameState;
 import com.fs.starfarer.api.Global;
 import com.fs.starfarer.api.combat.BaseHullMod;
 import com.fs.starfarer.api.combat.MutableShipStatsAPI;
@@ -17,6 +18,12 @@ import org.lazywizard.lazylib.MathUtils;
 import org.lazywizard.lazylib.combat.CombatUtils;
 import org.lwjgl.util.vector.Vector2f;
 
+import javax.xml.bind.annotation.XmlElementDecl;
+
+/**
+ * Activates a pseudo-hacked periodic breaker while the ship is using its travel drive (and isn't too close to allies to collide)
+ * @author Nicke535
+ */
 public class VassAdvancedEntranceModule extends BaseHullMod {
     public static final float TIME_MULT_PLAYER = 100.0f;
     public static final float TIME_MULT_AI = 100.0f;
@@ -29,7 +36,7 @@ public class VassAdvancedEntranceModule extends BaseHullMod {
     //We use a map since the hullmod instance is shared
     public Map<ShipAPI, Boolean> hasFiredLightning = new WeakHashMap<>();
 
-    //Activates a pseudo-hacked periodic breaker while the ship is using its travel drive (and isn't too close to allies to collide)
+
     @Override
     public void advanceInCombat(ShipAPI ship, float amount) {
         //Determines if there's a nearby ally we might bump into

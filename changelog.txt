@@ -9,6 +9,10 @@ Version 0.3.2
   - Estoc
      * slightly improved engine performance: should have less issues firing its bombs now
 
+ Bugfix:
+  - Added Vass ships to Prism blacklist
+  - Various fixes to the Colada Emitter
+
 
 Version 0.3.1c
  Bugfixes:

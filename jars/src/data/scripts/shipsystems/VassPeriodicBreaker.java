@@ -13,6 +13,7 @@ import com.fs.starfarer.api.impl.combat.BaseShipSystemScript;
 import org.dark.shaders.post.PostProcessShader;
 import org.lazywizard.lazylib.FastTrig;
 import org.lazywizard.lazylib.MathUtils;
+import org.lazywizard.lazylib.combat.CombatUtils;
 import org.lwjgl.util.vector.Vector2f;
 
 /**
@@ -42,6 +43,7 @@ public class VassPeriodicBreaker extends BaseShipSystemScript {
 
 
     public boolean HAS_FIRED_LIGHTNING = false;
+    public boolean hasToldEnemiesAboutActivation = false; //Used to cheat enemy ships into being able to time-duel you
     private boolean hasResetPostProcess = true;
 
     private float afterimageTracker = 0f;
@@ -56,6 +58,11 @@ public class VassPeriodicBreaker extends BaseShipSystemScript {
             id = id + "_" + ship.getId();
         } else {
             return;
+        }
+
+        //If we're active, and hasn't told nearby enemies of our activation, do that!
+        if (effectLevel > 0f && !hasToldEnemiesAboutActivation) {
+            handleTimeDuelingCall(ship);
         }
 		
 		//Jitter-based code
@@ -304,6 +311,27 @@ public class VassPeriodicBreaker extends BaseShipSystemScript {
                     0f,
                     0.75f * Global.getCombatEngine().getTimeMult().getModifiedValue(),
                     CombatEngineLayers.BELOW_SHIPS_LAYER);
+        }
+    }
+
+    /**
+     * Informs nearby other Schiavonas that they can activate their system for a time duel, should they wish
+     */
+    private void handleTimeDuelingCall(ShipAPI ship) {
+        //Does nothing if we're not the player
+        if (ship != Global.getCombatEngine().getPlayerShip()) { return; }
+
+        //Gets all Schiavonas that our enemy has near us
+        for (ShipAPI otherShip : CombatUtils.getShipsWithinRange(ship.getLocation(), 2000f)) {
+            if (otherShip.getHullSpec().getHullId().startsWith("vass_schiavona")) {
+                //Check if the other ship has *almost* reloaded its Periodic Breaker
+                if ((otherShip.getSystem().getCooldownRemaining() < 2f && otherShip.getSystem().getState().equals(ShipSystemAPI.SystemState.COOLDOWN))
+                        || otherShip.getSystem().getState().equals(ShipSystemAPI.SystemState.IDLE)) {
+                    //In that case, reduce cooldown and activate!
+                    otherShip.getSystem().setCooldownRemaining(0f);
+                    otherShip.useSystem();
+                }
+            }
         }
     }
 }
