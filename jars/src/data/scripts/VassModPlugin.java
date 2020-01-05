@@ -9,6 +9,7 @@ import data.scripts.campaign.VassRandomEncounterPlugin;
 import data.scripts.campaign.VassSafetyOverridesCrewLossPlugin;
 import data.scripts.campaign.VassSectorSetupScript;
 import data.scripts.campaign.barEvents.VassPerturbaWeaponContractEventCreator;
+import data.scripts.campaign.barEvents.VassPerturbaWeaponTestingEventCreator;
 
 
 public class VassModPlugin extends BaseModPlugin {
@@ -72,6 +73,9 @@ public class VassModPlugin extends BaseModPlugin {
         BarEventManager bar = BarEventManager.getInstance();
         if (!bar.hasEventCreator(VassPerturbaWeaponContractEventCreator.class)) {
             bar.addEventCreator(new VassPerturbaWeaponContractEventCreator());
+        }
+        if (!bar.hasEventCreator(VassPerturbaWeaponTestingEventCreator.class)) {
+            bar.addEventCreator(new VassPerturbaWeaponTestingEventCreator());
         }
     }
 }

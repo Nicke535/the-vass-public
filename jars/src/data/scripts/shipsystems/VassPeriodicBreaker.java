@@ -324,6 +324,10 @@ public class VassPeriodicBreaker extends BaseShipSystemScript {
         //Gets all Schiavonas that our enemy has near us
         for (ShipAPI otherShip : CombatUtils.getShipsWithinRange(ship.getLocation(), 2000f)) {
             if (otherShip.getHullSpec().getHullId().startsWith("vass_schiavona")) {
+                if (otherShip.getOwner() == ship.getOwner() || otherShip.isHulk()) {
+                    continue;
+                }
+
                 //Check if the other ship has *almost* reloaded its Periodic Breaker
                 if ((otherShip.getSystem().getCooldownRemaining() < 2f && otherShip.getSystem().getState().equals(ShipSystemAPI.SystemState.COOLDOWN))
                         || otherShip.getSystem().getState().equals(ShipSystemAPI.SystemState.IDLE)) {

@@ -15,43 +15,47 @@ import data.scripts.campaign.VassFamilyTrackerPlugin;
 import data.scripts.utils.VassUtils;
 import org.apache.log4j.Logger;
 import org.lazywizard.lazylib.MathUtils;
+import org.lazywizard.lazylib.combat.CombatUtils;
 
 import java.awt.*;
 import java.util.HashSet;
 import java.util.Set;
 
 /**
- * Creates an event where the player can hire a contract for Perturba weapons to their faction
+ * Creates repeatable event where Perturba asks the player to test some weapon prototypes for them
  * @author Nicke535
  */
 public class VassPerturbaWeaponTestingEvent extends VassPerturbaBaseEvent {
     public static final Logger LOGGER = Global.getLogger(VassPerturbaWeaponTestingEvent.class);
 
-    public static final boolean DEBUG_MODE = false;
+    public static final boolean DEBUG_MODE = true;
 
     //All the weapon IDs used for testing weapons
-    public static final Set<String> TESTABLE_WEAPON_IDS = new HashSet<>();
+    public static final WeightedRandomPicker<String> TESTABLE_WEAPON_IDS = new WeightedRandomPicker<>();
     static {
-        //None, as of yet
-        //TESTABLE_WEAPON_IDS.add("vass_perturba_testweapon1");
+        TESTABLE_WEAPON_IDS.add("vass_prototype_s1");
     }
 
     public enum OptionId {
         INIT,
         CONTINUE_1,
         CONTINUE_2,
-        CONTINUE_3,
-        LEAVE_NONHOSTILE,
         LEAVE_DIALOG,
         LEAVE,
     }
 
-    private static float COLLATERAL_PERCENTAGE = 0.1f;
-    private static int COLLATERAL_MAX = 100000;
-    private static int COLLATERAL_MIN = 2000;
-    private static float RELATIONS_NEEDED = 20f;
-    private static float RELATIONS_BOOST_PERTURBA = 5f;;
-    private static float RELATIONS_MAX_PERTURBA = 65f;
+    public static final String COLLATERAL_MEM_KEY = "$vass_perturba_current_collateral_paid";
+    private static final float COLLATERAL_PERCENTAGE = 0.1f;
+    private static final int COLLATERAL_MAX = 100000;
+    private static final int COLLATERAL_MIN = 2000;
+    public static final float REWARD_PERCENTAGE_MAX = 0.5f;
+    public static final float REWARD_PERCENTAGE_MIN = 0.2f;
+    private static final float RELATIONS_NEEDED = 20f;
+    public static final float RELATIONS_BOOST_VASS = 3f;
+    public static final float RELATIONS_BOOST_PERTURBA = 5f;
+    public static final float RELATIONS_MAX_PERTURBA = 65f;
+
+    public String currentPrototypeWeaponID = "";
 
     public VassPerturbaWeaponTestingEvent() {
         super();
@@ -75,6 +79,10 @@ public class VassPerturbaWeaponTestingEvent extends VassPerturbaBaseEvent {
             LOGGER.info("Threw away Perturba weapon test event due to not having met their contact");
             return false;
         }
+
+        //If we have told the market that there's a non-repeatable event that should happen instead, we can't appear
+        //Unused for now
+        //TODO: implement when needed
 
         return true;
     }
@@ -136,7 +144,7 @@ public class VassPerturbaWeaponTestingEvent extends VassPerturbaBaseEvent {
 
     //For followup encounters
     private void handleOptionSelected(TextPanelAPI text, OptionId option, OptionPanelAPI options, Color t, Color h, Color n) {
-        float collateral = calculateCollateral();
+        int collateral = calculateCollateral();
         switch (option) {
             case INIT:
                 text.addPara("The Perturba agent smiles as you approach them.");
@@ -162,37 +170,31 @@ public class VassPerturbaWeaponTestingEvent extends VassPerturbaBaseEvent {
                 options.addOption("Agree to take on the contract", OptionId.CONTINUE_2);
                 if (Global.getSector().getPlayerFleet().getCargo().getCredits().get() < collateral) {
                     options.setEnabled(OptionId.CONTINUE_2, false);
-                    options.setTooltip(OptionId.CONTINUE_2, "You don't have enough credits.");
+                    options.setTooltip(OptionId.CONTINUE_2, "You don't have enough credits for the mission collateral.");
                 }
                 options.addOption("Tell them that you're unfortunately preoccupied at the moment.", OptionId.LEAVE);
                 break;
             case CONTINUE_2:
-                text.addPara("We're going to have to take some collateral from you during the mission, though. " +
-                        "A fair sum should be... well, around "+collateral+" credits.", h, ""+collateral);
+                text.addPara("Great, I'll inform my team to deliver the goods to your fleet as soon as possible.");
                 text.addPara("Oh, and also; we'd like to get all those goods back, but honestly the data is more " +
                         "important than the prototypes: once you terminate the contract either by fulfilling it or by " +
-                        "cancelling it, we'll trigger a self-destruct mechanism on the prototypes. I'd recommend staying " +
-                        "at least a good couple of meters away from them.");
+                        "cancelling it, we'll trigger a self-destruct mechanism on any prototypes we didn't get back. " +
+                        "I'd recommend staying at least a good couple of meters away from them.");
                 text.addPara("Though if you come back with none of the prototypes, we can't really pay you: those " +
-                        "prototypes are quite costly. We'll give back the collateral though, since you did give us the " +
+                        "things are quite costly. We'll give back the collateral though, since you did provide the " +
                         "data you were asked for.");
 
+                //Payment
                 text.setFontSmallInsignia();
                 text.addPara("Lost " + collateral + " credits", n, h, "" + collateral);
                 Global.getSector().getPlayerFleet().getCargo().getCredits().add(-1 * collateral);
+                Global.getSector().getMemoryWithoutUpdate().set(COLLATERAL_MEM_KEY, (Integer)collateral);
 
-                //TODO: actually give out the prototypes
-
-                float currentPerturbaRelations = VassFamilyTrackerPlugin.getRelationToFamily(VassUtils.VASS_FAMILY.PERTURBA);
-                if (VassFamilyTrackerPlugin.getRelationToFamily(VassUtils.VASS_FAMILY.PERTURBA) < RELATIONS_MAX_PERTURBA) {
-                    float boost = Math.min(RELATIONS_BOOST_PERTURBA, RELATIONS_MAX_PERTURBA-currentPerturbaRelations);
-                    VassFamilyTrackerPlugin.modifyRelationToFamily(VassUtils.VASS_FAMILY.PERTURBA, boost);
-                    text.addPara("Relations with Perturba improved by "+Math.round(boost), h, "Perturba", ""+Math.round(boost));
-                }
-                if (Global.getSector().getPlayerFaction().getRelationshipLevel("vass").isAtBest(RepLevel.NEUTRAL)) {
-                    text.addPara("Relations with the Vass Families improved by 3", h, "Vass Families", "3");
-                    Global.getSector().getPlayerFaction().adjustRelationship("vass", 3);
-                }
+                //Prototype handout
+                int prototypesHandedOut = MathUtils.getRandomNumberInRange(2, 4);
+                currentPrototypeWeaponID = TESTABLE_WEAPON_IDS.pick();
+                text.addPara("Gained " + prototypesHandedOut + " prototypes", Misc.getPositiveHighlightColor(), h, "" + prototypesHandedOut);
+                Global.getSector().getPlayerFleet().getCargo().addWeapons(currentPrototypeWeaponID, prototypesHandedOut);
                 text.setFontInsignia();
 
                 text.addPara("'Good luck with the testing.'");
@@ -235,7 +237,7 @@ public class VassPerturbaWeaponTestingEvent extends VassPerturbaBaseEvent {
         return post.pick();
     }
 
-    private float calculateCollateral() {
-        return Math.max(COLLATERAL_MIN, Math.min(COLLATERAL_MAX, Global.getSector().getPlayerFleet().getCargo().getCredits().get()*COLLATERAL_PERCENTAGE));
+    private int calculateCollateral() {
+        return Math.round(Math.max(COLLATERAL_MIN, Math.min(COLLATERAL_MAX, Global.getSector().getPlayerFleet().getCargo().getCredits().get()*COLLATERAL_PERCENTAGE)));
     }
 }

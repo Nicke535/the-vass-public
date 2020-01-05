@@ -1,0 +1,16 @@
+{
+	"id":"vass_fake_prototype_shot",
+	"specClass":"projectile",
+	"spawnType":"BALLISTIC",
+	"collisionClass":"NONE",
+	"collisionClassByFighter":"NONE",
+	"length":5.0,
+	"hitGlowRadius":1,
+	"width":5.0,
+	"fadeTime":0.1,
+	"fringeColor":[255,150,70,0],
+	"coreColor":[255,255,255,0],	
+	"textureScrollSpeed":64.0,
+	"pixelsPerTexel":5.0,
+	"bulletSprite":"graphics/vass/missiles/no_sprite.png"
+}

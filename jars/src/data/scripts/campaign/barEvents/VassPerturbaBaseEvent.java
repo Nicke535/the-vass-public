@@ -34,6 +34,9 @@ public class VassPerturbaBaseEvent extends BaseBarEventWithPerson {
     public static final String VASS_PERTURBA_CONTACT_KEY = "$vass_perturba_contact_person";
     public static final String VASS_PERTURBA_HAS_MET_CONTACT_KEY = "$vass_perturba_has_met_contact";
 
+    public static final String CURRENT_EVENT_ALLOWED_KEY = "$vass_perturba_current_event_allowed";
+    public static final String LAST_MARKET_ALLOW_CHECK_KEY = "$vass_perturba_last_market_allow_checked";
+
     /**
      * Gets perturba's contact
      */

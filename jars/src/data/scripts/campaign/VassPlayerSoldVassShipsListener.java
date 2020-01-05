@@ -33,7 +33,7 @@ public class VassPlayerSoldVassShipsListener extends BaseCampaignEventListener i
 
         //Also ignores transaction to any Vass-owned markets; there probably won't be a lot of them, but they are
         //one of the only places selling Vass ships is allowed
-        if (transaction.getSubmarket().getFaction().getId().equals("vass")) {
+        if (transaction.getSubmarket().getFaction().getId().startsWith("vass")) {
             return;
         }
 

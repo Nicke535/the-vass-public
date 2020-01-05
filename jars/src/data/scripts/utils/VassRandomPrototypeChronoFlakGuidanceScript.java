@@ -3,7 +3,10 @@
 package data.scripts.utils;
 
 import com.fs.starfarer.api.Global;
-import com.fs.starfarer.api.combat.*;
+import com.fs.starfarer.api.combat.BaseEveryFrameCombatPlugin;
+import com.fs.starfarer.api.combat.CombatEntityAPI;
+import com.fs.starfarer.api.combat.DamagingProjectileAPI;
+import com.fs.starfarer.api.combat.ShipAPI;
 import com.fs.starfarer.api.input.InputEventAPI;
 import com.fs.starfarer.api.util.Misc;
 import org.jetbrains.annotations.NotNull;
@@ -17,7 +20,7 @@ import org.lwjgl.util.vector.Vector2f;
 import java.util.ArrayList;
 import java.util.List;
 
-public class VassCyllelFarchogGuidanceScript extends BaseEveryFrameCombatPlugin {
+public class VassRandomPrototypeChronoFlakGuidanceScript extends BaseEveryFrameCombatPlugin {
 	//---Settings: adjust to fill the needs of your implementation---
 	//Sets guidance mode for the projectile when a target is fed to the script (or, in the case of ONE_TURN_DUMB, always).
 	//Note that interceptor-style projectiles use notably more memory than the other types (as they practically run missile AI), so they should be used sparingly
@@ -28,7 +31,7 @@ public class VassCyllelFarchogGuidanceScript extends BaseEveryFrameCombatPlugin 
 	//	- "DUMBCHASER_SWARM" : As DUMBCHASER, but targets a random point on the target instead of the center, determined at target acquisition
 	//	- "INTERCEPT" : Heads for an approximate intercept point of the target at all times. Becomes more accurate as distance to target decreases
 	//	- "INTERCEPT_SWARM" : As INTERCEPT, but targets a random point on the target instead of the center, determined at target acquisition
-	private static final String GUIDANCE_MODE_PRIMARY = "ONE_TURN_DUMB";
+	private static final String GUIDANCE_MODE_PRIMARY = "INTERCEPT";
 
 	//Sets behaviour when the original target is lost; if this is a target re-acquiring method, GUIDANCE_MODE_PRIMARY takes effect again with the new target.
 	//Note that if there is no target within TARGET_REACQUIRE_RANGE, "NONE" is the default behaviour for re-acquires until a target is found
@@ -39,7 +42,7 @@ public class VassCyllelFarchogGuidanceScript extends BaseEveryFrameCombatPlugin 
 	//	- "REACQUIRE_RANDOM" : Selects a random valid target within TARGET_REACQUIRE_RANGE of the target
 	//	- "REACQUIRE_RANDOM_PROJ" : Selects a random valid target within TARGET_REACQUIRE_RANGE of the projectile
 	//	- "DISAPPEAR" : Remove the projectile altogether. Should only be used if the projectile has a scripted effect on-death of some sort (such as hand-scripted flak)
-	private static final String GUIDANCE_MODE_SECONDARY = "NONE";
+	private static final String GUIDANCE_MODE_SECONDARY = "REACQUIRE_NEAREST";
 
 	//Determines all valid target types for this projectile's target re-acquiring. Only used if the projectile actually uses re-acquiring of targets
 	//Possible values are:
@@ -52,23 +55,20 @@ public class VassCyllelFarchogGuidanceScript extends BaseEveryFrameCombatPlugin 
 	//	- "CAPITAL"
 	private static final List<String> VALID_TARGET_TYPES = new ArrayList<>();
 	static {
-		VALID_TARGET_TYPES.add("FIGHTER");
-		VALID_TARGET_TYPES.add("FRIGATE");
-		VALID_TARGET_TYPES.add("DESTROYER");
-		VALID_TARGET_TYPES.add("CRUISER");
-		VALID_TARGET_TYPES.add("CAPITAL");
+		VALID_TARGET_TYPES.add("ASTEROID");
+		VALID_TARGET_TYPES.add("MISSILE");
 	}
 
 	//The maximum range a target can be re-acquired at, in SU.
 	//Note that this is counted from the *original* target by default, not the projectile itself (use _PROJ) for that behaviour
-	private static final float TARGET_REACQUIRE_RANGE = 0f;
+	private static final float TARGET_REACQUIRE_RANGE = 350f;
 
 	//The maximum angle a target can be re-acquired at, in degrees.
 	//90 means 90 degrees to either side, I.E. a hemisphere in front of the projectile. Values 180 and above turns off the limitation altogether
-	private static final float TARGET_REACQUIRE_ANGLE = 0f;
+	private static final float TARGET_REACQUIRE_ANGLE = 30f;
 
 	//How fast the projectile is allowed to turn, in degrees/second
-	private static final float TURN_RATE = 520f;
+	private static final float TURN_RATE = 180f;
 
 	//If non-zero, the projectile will sway back-and-forth by this many degrees during its guidance (with a sway period determined by SWAY_PERIOD).
 	//High values, as one might expect, give very poor tracking. Also, high values will decrease effective range (as the projectiles travel further) so be careful
@@ -136,7 +136,7 @@ public class VassCyllelFarchogGuidanceScript extends BaseEveryFrameCombatPlugin 
 	 * The target missile/asteroid/ship for the script's guidance.
 	 * Can be null, if the script does not follow a target ("ONE_TURN_DUMB") or to instantly activate secondary guidance mode.
 	 */
-	public VassCyllelFarchogGuidanceScript(@NotNull DamagingProjectileAPI proj, CombatEntityAPI target) {
+	public VassRandomPrototypeChronoFlakGuidanceScript(@NotNull DamagingProjectileAPI proj, CombatEntityAPI target) {
 		this.proj = proj;
 		this.target = target;
 		lastTargetPos = target != null ? target.getLocation() : new Vector2f(proj.getLocation());

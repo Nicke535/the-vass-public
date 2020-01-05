@@ -1,5 +1,6 @@
 Version 0.3.2
  General:
+  - Added a new repeatable quest for Perturba after you've met their contact
   - Added basic faction description
   - Updated some text for the initial Perturba quest
 
