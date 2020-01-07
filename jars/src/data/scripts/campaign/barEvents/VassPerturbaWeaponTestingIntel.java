@@ -15,15 +15,9 @@ import com.fs.starfarer.api.ui.IntelUIAPI;
 import com.fs.starfarer.api.ui.SectorMapAPI;
 import com.fs.starfarer.api.ui.TooltipMakerAPI;
 import com.fs.starfarer.api.util.Misc;
-import com.fs.starfarer.api.util.WeightedRandomPicker;
 import data.scripts.campaign.VassFamilyTrackerPlugin;
+import data.scripts.utils.VassPerturbaRandomPrototypeManager;
 import data.scripts.utils.VassUtils;
-import data.scripts.weapons.VassDyrnwynScript;
-import data.scripts.weapons.VassRandomPrototypeChronoFlakScript;
-import data.scripts.weapons.VassRandomPrototypeHyperDyrnwynScript;
-import data.scripts.weapons.VassRandomPrototypeScript;
-import data.scripts.weapons.VassRandomPrototypeScript.PrototypeWeaponData;
-import org.lazywizard.lazylib.MathUtils;
 
 import java.awt.*;
 import java.util.HashSet;
@@ -38,81 +32,12 @@ public class VassPerturbaWeaponTestingIntel extends BaseIntelPlugin {
     public static final String BUTTON_END_CONTRACT = "END_CONTRACT";
     public static final float CONTRACT_END_RELATIONS_PENALTY = -5f;
 
-    //Stats for prototype weapon randomization
-    public static final float RANDOM_LASER_ARCHETYPE_WEIGHT = 5f;
-    public static final float RANDOM_CANNON_ARCHETYPE_WEIGHT = 5f;
-    public static final float DYRNWYN_ARCHETYPE_WEIGHT = 3f;
-    public static final float CHRONOFLAK_ARCHETYPE_WEIGHT = 2f;
-
     protected VassPerturbaWeaponTestingEvent event;
     protected WeaponTestingListener listener;
     protected HashSet<MarketAPI> marketsToClean;
 
     //Keeps track of completed battles
     public int battlesCompleted;
-
-    //Generates random prototype weapon data for the quest
-    private PrototypeWeaponData generateRandomPrototypeStats(boolean energy, boolean medium) {
-        PrototypeWeaponData data = null;
-
-        WeightedRandomPicker<String> archetypePicker = new WeightedRandomPicker<>();
-        if (energy) {
-            archetypePicker.add("RANDOM_LASER", RANDOM_LASER_ARCHETYPE_WEIGHT);
-            archetypePicker.add("DYRNWYN", DYRNWYN_ARCHETYPE_WEIGHT);
-        } else {
-            archetypePicker.add("RANDOM_CANNON", RANDOM_CANNON_ARCHETYPE_WEIGHT);
-        }
-        archetypePicker.add("CHRONOFLAK", CHRONOFLAK_ARCHETYPE_WEIGHT);
-
-        String archetype = archetypePicker.pick();
-        if (archetype.equals("RANDOM_LASER")) {
-            data = new PrototypeWeaponData(
-                    MathUtils.getRandomNumberInRange(0.2f, 2f), //Damage
-                    MathUtils.getRandomNumberInRange(0.1f, 1f), //Firerate
-                    MathUtils.getRandomNumberInRange(0f, 12f), //Inaccuracy
-                    MathUtils.getRandomNumberInRange(0f, 0.3f), //Speed variation
-                    medium ? "pulselaser" : "irpulse", //Projectile weapon ID
-                    Math.random() < 0.2f, //PD
-                    null, //Guidance
-                    null, //Script
-                    medium ? "pulse_laser_fire" : "ir_pulse_laser_fire"); //Fire sound
-        } else if (archetype.equals("RANDOM_CANNON")) {
-            data = new PrototypeWeaponData(
-                    MathUtils.getRandomNumberInRange(0.5f, 2f), //Damage
-                    MathUtils.getRandomNumberInRange(0.2f, 1f), //Firerate
-                    MathUtils.getRandomNumberInRange(0f, 12f), //Inaccuracy
-                    MathUtils.getRandomNumberInRange(0f, 0.3f), //Speed variation
-                    medium ? "heavyac" : "lightac", //Projectile weapon ID
-                    Math.random() < 0.2f, //PD
-                    null, //Guidance
-                    null, //Script
-                    medium ? "autocannon_fire" : "light_autocannon_fire"); //Fire sound
-        } else if (archetype.equals("DYRNWYN")) {
-            data = new PrototypeWeaponData(
-                    MathUtils.getRandomNumberInRange(0.7f, 1.3f), //Damage
-                    1f, //Firerate
-                    medium ? MathUtils.getRandomNumberInRange(4f, 12f) : MathUtils.getRandomNumberInRange(0f, 6f), //Inaccuracy
-                    medium ? MathUtils.getRandomNumberInRange(0f, 0.1f) : 0f, //Speed variation
-                    "vass_dyrnwyn", //Projectile weapon ID
-                    false, //PD
-                    null, //Guidance
-                    medium ? new VassRandomPrototypeHyperDyrnwynScript() : new VassDyrnwynScript(), //Script
-                    "vass_dyrnwyn_fire"); //Fire sound
-        } else if (archetype.equals("CHRONOFLAK")) {
-            data = new PrototypeWeaponData(
-                    medium ? MathUtils.getRandomNumberInRange(0.8f, 1.5f) : MathUtils.getRandomNumberInRange(0.3f, 0.6f), //Damage
-                    medium ? MathUtils.getRandomNumberInRange(0.3f, 0.8f) : MathUtils.getRandomNumberInRange(0.6f, 1f), //Firerate
-                    MathUtils.getRandomNumberInRange(2f, 8f), //Inaccuracy
-                    MathUtils.getRandomNumberInRange(0f, 0.1f), //Speed variation
-                    "flak", //Projectile weapon ID
-                    true, //PD
-                    Math.random() < 0.2f ? new VassRandomPrototypeChronoFlakScript.Guidance() : null, //Guidance
-                    new VassRandomPrototypeChronoFlakScript(), //Script
-                    "flak_fire"); //Fire sound
-        }
-
-        return data;
-    }
 
 
     public VassPerturbaWeaponTestingIntel(VassPerturbaWeaponTestingEvent event) {
@@ -121,9 +46,11 @@ public class VassPerturbaWeaponTestingIntel extends BaseIntelPlugin {
         battlesCompleted = 0;
         marketsToClean = new HashSet<>();
 
+        //Generates a random weapon and puts it in memory
         WeaponSpecAPI baseSpec = Global.getSettings().getWeaponSpec(event.currentPrototypeWeaponID);
         Global.getSector().getMemoryWithoutUpdate().set(MEM_KEY_PROTOTYPE_DATA,
-                generateRandomPrototypeStats(baseSpec.getType().equals(WeaponAPI.WeaponType.ENERGY), baseSpec.getSize().equals(WeaponAPI.WeaponSize.MEDIUM)));
+                VassPerturbaRandomPrototypeManager.generateRandomPrototypeStats(baseSpec.getType().equals(WeaponAPI.WeaponType.ENERGY),
+                                                                                baseSpec.getSize().equals(WeaponAPI.WeaponSize.MEDIUM)));
     }
 
     @Override
@@ -335,7 +262,7 @@ public class VassPerturbaWeaponTestingIntel extends BaseIntelPlugin {
         @Override
         public void reportPlayerMarketTransaction(PlayerMarketTransaction transaction) {
             //Check if the transaction contained a prototype
-            for (String id : VassPerturbaWeaponTestingEvent.TESTABLE_WEAPON_IDS.getItems()) {
+            for (String id : VassPerturbaRandomPrototypeManager.PROTOTYPE_WEAPON_IDS.getItems()) {
                 if (transaction.getBought().getNumWeapons(id) > 0 || transaction.getSold().getNumWeapons(id) > 0) {
                     marketsToClean.add(transaction.getMarket());
                     return;
@@ -343,7 +270,7 @@ public class VassPerturbaWeaponTestingIntel extends BaseIntelPlugin {
             }
             //Check if the transaction contained SHIP WITH a prototype
             for (PlayerMarketTransaction.ShipSaleInfo shipSaleInfo : transaction.getShipsSold()) {
-                for (String id : VassPerturbaWeaponTestingEvent.TESTABLE_WEAPON_IDS.getItems()) {
+                for (String id : VassPerturbaRandomPrototypeManager.PROTOTYPE_WEAPON_IDS.getItems()) {
                     for (String slot : shipSaleInfo.getMember().getVariant().getFittedWeaponSlots()) {
                         if (shipSaleInfo.getMember().getVariant().getWeaponId(slot).equals(id)) {
                             marketsToClean.add(transaction.getMarket());

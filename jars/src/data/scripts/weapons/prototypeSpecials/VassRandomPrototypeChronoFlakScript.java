@@ -1,18 +1,14 @@
-package data.scripts.weapons;
+package data.scripts.weapons.prototypeSpecials;
 
 import com.fs.starfarer.api.Global;
 import com.fs.starfarer.api.combat.*;
-import data.scripts.campaign.barEvents.VassPerturbaWeaponTestingIntel;
+import data.scripts.utils.VassPerturbaRandomPrototypeManager;
 import data.scripts.utils.VassRandomPrototypeChronoFlakGuidanceScript;
 import data.scripts.utils.VassTimeDistortionProjScript;
-import org.jetbrains.annotations.Nullable;
 import org.lazywizard.lazylib.MathUtils;
 import org.lazywizard.lazylib.combat.CombatUtils;
 
-import java.awt.*;
-import java.util.ArrayList;
 import java.util.LinkedList;
-import java.util.List;
 
 /**
  * Acts as a form of "chrono-flak": used for the Random Prototype script exclusively
@@ -78,7 +74,7 @@ public class VassRandomPrototypeChronoFlakScript implements EveryFrameWeaponEffe
     private class ProjList extends LinkedList<DamagingProjectileAPI> {}
 
     //For guidance
-    public static class Guidance extends VassRandomPrototypeScript.GuidanceApplier {
+    public static class Guidance extends VassPerturbaRandomPrototypeManager.GuidanceApplier {
         @Override
         public void applyToProjectile(DamagingProjectileAPI proj) {
             Global.getCombatEngine().addPlugin(new VassRandomPrototypeChronoFlakGuidanceScript(proj, null));

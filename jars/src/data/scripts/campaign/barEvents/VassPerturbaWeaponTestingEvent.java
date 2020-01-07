@@ -6,20 +6,16 @@ import com.fs.starfarer.api.campaign.OptionPanelAPI;
 import com.fs.starfarer.api.campaign.RepLevel;
 import com.fs.starfarer.api.campaign.TextPanelAPI;
 import com.fs.starfarer.api.campaign.econ.MarketAPI;
-import com.fs.starfarer.api.characters.FullName.Gender;
-import com.fs.starfarer.api.impl.campaign.ids.Ranks;
 import com.fs.starfarer.api.impl.campaign.intel.bar.events.BarEventManager;
 import com.fs.starfarer.api.util.Misc;
 import com.fs.starfarer.api.util.WeightedRandomPicker;
 import data.scripts.campaign.VassFamilyTrackerPlugin;
+import data.scripts.utils.VassPerturbaRandomPrototypeManager;
 import data.scripts.utils.VassUtils;
 import org.apache.log4j.Logger;
 import org.lazywizard.lazylib.MathUtils;
-import org.lazywizard.lazylib.combat.CombatUtils;
 
 import java.awt.*;
-import java.util.HashSet;
-import java.util.Set;
 
 /**
  * Creates repeatable event where Perturba asks the player to test some weapon prototypes for them
@@ -28,13 +24,8 @@ import java.util.Set;
 public class VassPerturbaWeaponTestingEvent extends VassPerturbaBaseEvent {
     public static final Logger LOGGER = Global.getLogger(VassPerturbaWeaponTestingEvent.class);
 
+    //TODO: Turn off before release
     public static final boolean DEBUG_MODE = true;
-
-    //All the weapon IDs used for testing weapons
-    public static final WeightedRandomPicker<String> TESTABLE_WEAPON_IDS = new WeightedRandomPicker<>();
-    static {
-        TESTABLE_WEAPON_IDS.add("vass_prototype_s1");
-    }
 
     public enum OptionId {
         INIT,
@@ -192,7 +183,7 @@ public class VassPerturbaWeaponTestingEvent extends VassPerturbaBaseEvent {
 
                 //Prototype handout
                 int prototypesHandedOut = MathUtils.getRandomNumberInRange(2, 4);
-                currentPrototypeWeaponID = TESTABLE_WEAPON_IDS.pick();
+                currentPrototypeWeaponID = VassPerturbaRandomPrototypeManager.PROTOTYPE_WEAPON_IDS.pick();
                 text.addPara("Gained " + prototypesHandedOut + " prototypes", Misc.getPositiveHighlightColor(), h, "" + prototypesHandedOut);
                 Global.getSector().getPlayerFleet().getCargo().addWeapons(currentPrototypeWeaponID, prototypesHandedOut);
                 text.setFontInsignia();

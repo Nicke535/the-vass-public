@@ -1,4 +1,4 @@
-package data.scripts.weapons;
+package data.scripts.weapons.prototypeSpecials;
 
 import com.fs.starfarer.api.combat.*;
 import com.fs.starfarer.api.util.Misc;
