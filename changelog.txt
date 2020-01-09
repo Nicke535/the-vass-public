@@ -7,9 +7,8 @@ Version 0.3.2
 
  Balance:
   - Fragarach Chronostimulus
-     * damage per shot 530 -> 490
-     * flux per shot 700 -> 680
-        > Minor debuff, not really outrageously good in any way but always a solid PD pick. Will see if this was excessive later
+     * damage per shot 530 -> 510
+        > Minor nerf, wasn't really outrageously good in any way but always a solid PD pick. Might've been an unnecessary nerf honestly
 
   - Cyllel Farchog Array:
      * spread pattern slightly altered, more centered
