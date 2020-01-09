@@ -141,21 +141,21 @@ public class VassPerturbaWeaponTestingEvent extends VassPerturbaBaseEvent {
                 text.addPara("The Perturba agent smiles as you approach them.");
                 text.addPara("'Hello again. Everything going nicely for you? Won't you join me for a drink?'");
                 text.addPara("You grab a drink and tell them to get to the point: they didn't just drop by to say hi, did they?");
-                text.addPara("Straight to the point, eh? Well, frankly, this IS a nice bar, but as you've guessed I'm not here just to enjoy the scenery. Perturba actually has a contract offer for you, if you're interested.");
+                text.addPara("'Straight to the point, eh? Well, frankly, this IS a nice bar, but as you've guessed I'm not here just to enjoy the scenery. Perturba actually has a contract offer for you, if you're interested.'");
 
                 options.addOption("Go on...", OptionId.CONTINUE_1);
                 options.addOption("Tell them that you're unfortunately preoccupied at the moment.", OptionId.LEAVE);
                 break;
             case CONTINUE_1:
-                text.addPara("Well you see, we're in need of some fresh combat data for some of our prototype " +
+                text.addPara("'Well you see, we're in need of some fresh combat data for some of our prototype " +
                         "weapons. We'd do it ourselves but we thought we'd get more reliable data from someone unaffiliated " +
                         "with the labs themselves. So here's the deal: we hand you the prototypes and you participate in " +
-                        "3 battles with them equipped on a ship. Once you're done, just bring them back here.", h, "3 battles");
-                text.addPara("We're going to have to take some collateral from you during the mission, though. " +
-                        "A fair sum should be... well, around "+collateral+" credits.", h, ""+collateral);
-                text.addPara("Don't worry, once you've completed the mission we'll return it in full, together with " +
+                        "3 battles with them equipped on a ship. Once you're done, just bring them back here.'", h, "3 battles");
+                text.addPara("'We're going to have to take some collateral from you during the mission, though. " +
+                        "A fair sum should be... well, around "+collateral+" credits.'", h, ""+collateral);
+                text.addPara("'Don't worry, once you've completed the mission we'll return it in full, together with " +
                         "payment for the mission itself. It's just standard procedure so we have an insurance in case " +
-                        "you run off with the goods.");
+                        "you run off with the goods.'");
 
 
                 options.addOption("Agree to take on the contract", OptionId.CONTINUE_2);
@@ -166,14 +166,14 @@ public class VassPerturbaWeaponTestingEvent extends VassPerturbaBaseEvent {
                 options.addOption("Tell them that you're unfortunately preoccupied at the moment.", OptionId.LEAVE);
                 break;
             case CONTINUE_2:
-                text.addPara("Great, I'll inform my team to deliver the goods to your fleet as soon as possible.");
-                text.addPara("Oh, and also; we'd like to get all those goods back, but honestly the data is more " +
+                text.addPara("'Great, I'll inform my team to deliver the goods to your fleet as soon as possible.'");
+                text.addPara("'Oh, and also; we'd like to get all those goods back, but honestly the data is more " +
                         "important than the prototypes: once you terminate the contract either by fulfilling it or by " +
                         "cancelling it, we'll trigger a self-destruct mechanism on any prototypes we didn't get back. " +
-                        "I'd recommend staying at least a good couple of meters away from them.");
-                text.addPara("Though if you come back with none of the prototypes, we can't really pay you: those " +
+                        "I'd recommend staying at least a good couple of meters away from them.'");
+                text.addPara("'Though if you come back with none of the prototypes, we can't really pay you: those " +
                         "things are quite costly. We'll give back the collateral though, since you did provide the " +
-                        "data you were asked for.");
+                        "data you were asked for.'");
 
                 //Payment
                 text.setFontSmallInsignia();

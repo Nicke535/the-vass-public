@@ -18,6 +18,7 @@ import com.fs.starfarer.api.util.Misc;
 import data.scripts.campaign.VassFamilyTrackerPlugin;
 import data.scripts.utils.VassPerturbaRandomPrototypeManager;
 import data.scripts.utils.VassUtils;
+import org.apache.log4j.Logger;
 
 import java.awt.*;
 import java.util.HashSet;
@@ -26,6 +27,9 @@ import java.util.Set;
 
 
 public class VassPerturbaWeaponTestingIntel extends BaseIntelPlugin {
+    public static final Logger LOGGER = Global.getLogger(VassPerturbaWeaponTestingIntel.class);
+    public static final boolean DEBUG_MODE = true; //TODO: turn off before 1.0; leave for now
+
     //Memory keys and reputation stats
     public static final String MEM_KEY_PROTOTYPE_DATA = "$vass_perturba_prototype_weapon_data_key";
     public static final String MEM_KEY_PROTOTYPE_WAS_IN_COMBAT = "$vass_perturba_prototype_weapon_was_in_combat_key";
@@ -61,7 +65,26 @@ public class VassPerturbaWeaponTestingIntel extends BaseIntelPlugin {
         Global.getSector().getMemoryWithoutUpdate().unset(VassPerturbaWeaponTestingIntel.MEM_KEY_PROTOTYPE_DATA);
     }
 
-    // Handles setting up the intel screen
+    //Handles the bullet-points on the intel screen
+    protected void addBulletPoints(TooltipMakerAPI info, ListInfoMode mode) {
+        Color h = Misc.getHighlightColor();
+        Color g = Misc.getGrayColor();
+        float pad = 3f;
+        float opad = 10f;
+
+        float initPad = pad;
+        if (mode == ListInfoMode.IN_DESC) initPad = opad;
+
+        bullet(info);
+        if (battlesCompleted >= 3) {
+            info.addPara("All weapon tests completed: return to " + event.getMarket(), pad);
+        } else {
+            info.addPara(battlesCompleted + "/3 weapon tests completed.", pad);
+        }
+        unindent(info);
+    }
+
+    // Summary info
     @Override
     public void createIntelInfo(TooltipMakerAPI info, ListInfoMode mode) {
         Color c = getTitleColor(mode);
@@ -69,12 +92,10 @@ public class VassPerturbaWeaponTestingIntel extends BaseIntelPlugin {
         info.addPara(getName(), c, 0f);
         info.setParaFontDefault();
 
-        bullet(info);
-        info.addPara("Any battles you participate in with a ship equipped with a Perturba Prototype counts towards mission completion.", 3f);
-        unindent(info);
+        addBulletPoints(info, mode);
     }
 
-    // The description shown on the intel screen summary
+    // The description shown on the intel screen
     @Override
     public void createSmallDescription(TooltipMakerAPI info, float width, float height) {
         Color h = Misc.getHighlightColor();
@@ -83,11 +104,9 @@ public class VassPerturbaWeaponTestingIntel extends BaseIntelPlugin {
         float pad = 3f;
         float opad = 10f;
 
-        if (battlesCompleted >= 3) {
-            info.addPara("All weapon tests completed: return to " + event.getMarket(), opad);
-        } else {
-            info.addPara(battlesCompleted + "/3 weapon tests completed.", opad);
-        }
+        info.addPara("Any battles you participate in with a ship equipped with a Perturba Prototype counts towards mission completion.", opad);
+
+        addBulletPoints(info, ListInfoMode.IN_DESC);
 
         ButtonAPI button = info.addButton("End mission", BUTTON_END_CONTRACT,
                 getFactionForUIColors().getBaseUIColor(), getFactionForUIColors().getDarkUIColor(),
@@ -113,7 +132,7 @@ public class VassPerturbaWeaponTestingIntel extends BaseIntelPlugin {
     @Override
     public Set<String> getIntelTags(SectorMapAPI map) {
         Set<String> tags = super.getIntelTags(map);
-        tags.add("Vass");
+        tags.add("vass");
         tags.add("Perturba");
         return tags;
     }
@@ -248,6 +267,9 @@ public class VassPerturbaWeaponTestingIntel extends BaseIntelPlugin {
                     battlesCompleted++;
                     Global.getSector().getMemoryWithoutUpdate().unset(MEM_KEY_PROTOTYPE_WAS_IN_COMBAT);
                     Global.getSector().getIntelManager().addIntel(this.intel, false);
+                    if (DEBUG_MODE) {
+                        LOGGER.info("Progressed weapon testing quest");
+                    }
                 }
             }
         }

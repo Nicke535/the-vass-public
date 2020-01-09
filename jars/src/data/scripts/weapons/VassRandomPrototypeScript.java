@@ -11,13 +11,14 @@ import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 
+import static data.scripts.campaign.barEvents.VassPerturbaWeaponTestingIntel.MEM_KEY_PROTOTYPE_WAS_IN_COMBAT;
+
 /**
  * Gives random bonuses to a weapon, depending on current quest setup
  * @author Nicke535
  */
 public class VassRandomPrototypeScript implements EveryFrameWeaponEffectPlugin {
     private List<DamagingProjectileAPI> alreadyRegisteredProjectiles = new ArrayList<>();
-    private boolean hasReducedHealth = false;
 
     @Override
     public void advance(float amount, CombatEngineAPI engine, WeaponAPI weapon) {
@@ -27,8 +28,7 @@ public class VassRandomPrototypeScript implements EveryFrameWeaponEffectPlugin {
         }
 
         //Prototype weapons always have half the normal weapon health
-        if (!hasReducedHealth) {
-            hasReducedHealth = true;
+        if (weapon.getCurrHealth() > weapon.getCurrHealth()/2f) {
             weapon.setCurrHealth(weapon.getCurrHealth()/2f);
         }
 
@@ -54,10 +54,16 @@ public class VassRandomPrototypeScript implements EveryFrameWeaponEffectPlugin {
         }
         PrototypeWeaponData currentData = (PrototypeWeaponData)dataObject;
 
+        //Register that we have indeed participated in a battle
+        Global.getSector().getMemoryWithoutUpdate().set(MEM_KEY_PROTOTYPE_WAS_IN_COMBAT, true);
+
         //If our current remaining cooldown is above our "actual" cooldown, bring it down to the true cooldown
         if (weapon.getCooldownRemaining() > (weapon.getCooldown()*currentData.reloadMult)) {
             weapon.setRemainingCooldownTo((weapon.getCooldown()*currentData.reloadMult));
         }
+
+        //If we're supposed to be PD, fix that
+        weapon.setPD(currentData.pd);
 
         for (DamagingProjectileAPI proj : CombatUtils.getProjectilesWithinRange(weapon.getLocation(), 200f)) {
             //Projectile replacement! Only for our "initial" fake projectile, though
@@ -71,7 +77,10 @@ public class VassRandomPrototypeScript implements EveryFrameWeaponEffectPlugin {
                             currentData.projectileWeaponId, proj.getLocation(),
                             proj.getFacing()+ MathUtils.getRandomNumberInRange(-currentData.inaccuracy, currentData.inaccuracy),
                             weapon.getShip().getVelocity());
-                    newProj.setDamageAmount(newProj.getDamageAmount()*currentData.damageMult/currentData.shotgunFactor);
+                    newProj.setDamageAmount(weapon.getDamage().getDamage()*currentData.damageMult/currentData.shotgunFactor);
+                    if (newProj.getAI() instanceof ProximityFuseAIAPI) {
+                        ((ProximityFuseAIAPI) newProj.getAI()).updateDamage();
+                    }
                     float speedMultThisShot = 1f + MathUtils.getRandomNumberInRange(-1f, 1f) * currentData.speedVariation;
                     newProj.getVelocity().x = newProj.getVelocity().x * speedMultThisShot + weapon.getShip().getVelocity().x;
                     newProj.getVelocity().y = newProj.getVelocity().y * speedMultThisShot + weapon.getShip().getVelocity().y;

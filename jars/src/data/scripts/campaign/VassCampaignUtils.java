@@ -19,6 +19,7 @@ import com.fs.starfarer.api.impl.campaign.rulecmd.salvage.special.ShipRecoverySp
 import com.fs.starfarer.api.util.IntervalUtil;
 import com.fs.starfarer.api.util.Misc;
 import org.jetbrains.annotations.Nullable;
+import org.lazywizard.lazylib.MathUtils;
 import org.lwjgl.util.vector.Vector2f;
 
 public class VassCampaignUtils {
@@ -89,7 +90,7 @@ public class VassCampaignUtils {
         private CampaignFleetAPI aggressor;
         private CampaignFleetAPI defendant;
         private float startingFP;
-        private IntervalUtil timer = new IntervalUtil(0.9f, 1.2f);
+        private IntervalUtil timer = new IntervalUtil(0.4f, 0.6f);
         private float interceptDaysRemaining;
         RenewAggressionPlugin(SectorAPI sector, CampaignFleetAPI aggressor, CampaignFleetAPI defendant, float interceptDays) {
             this.sector = sector;
@@ -101,7 +102,15 @@ public class VassCampaignUtils {
 
         @Override
         public void advance(float amount) {
-            //Check every second or so
+            ///Very quick check: should we already be ON the enemy? Then, engage them more aggressively
+            if (MathUtils.getDistance(aggressor.getLocation(), defendant.getLocation()) < aggressor.getRadius()+defendant.getRadius()) {
+                aggressor.clearAssignments();
+                String textToDisplay = "Engaging " + defendant.getNameWithFaction();
+                if (defendant.isPlayerFleet()) { textToDisplay = "Engaging player fleet"; }
+                aggressor.addAssignment(FleetAssignment.INTERCEPT, defendant, 0.5f, textToDisplay);
+            }
+
+            //Check every half second or so
             interceptDaysRemaining -= Misc.getDays(amount);
             timer.advance(amount);
             if (timer.intervalElapsed()) {

@@ -4,15 +4,36 @@ Version 0.3.2
   - Added basic faction description
   - Updated some text for the initial Perturba quest
 
- Balance:
-  - Cyllel Farchog Array:
-     * flux per shot 75 -> 65
-  - Estoc
-     * slightly improved engine performance: should have less issues firing its bombs now
 
- Bugfix:
+ Balance:
+  - Fragarach Chronostimulus
+     * damage per shot 530 -> 490
+     * flux per shot 700 -> 680
+        > Minor debuff, not really outrageously good in any way but always a solid PD pick. Will see if this was excessive later
+
+  - Cyllel Farchog Array:
+     * spread pattern slightly altered, more centered
+     * flux per shot 75 -> 67
+        > The poor Cyllel suffers from excessive flux and wierd spreading. This hopefully remedies that slightly
+
+  - Estoc
+     * deployment range 6000 -> 4000
+     * flux capacity 800 -> 600
+     * slightly improved engine performance: should have less issues firing its bombs now
+        > Range was just an oversight, it wasn't meant to be that high. Durability was a tad bit high when paired with the Curtana; the synergy is nice, but maybe a bit TOO nice. Engine performance changes mostly for AI benefit; not sure how much it actually contributed but it is worth a shot and seems to give minor improvements for me
+
+  - Katzbalger
+     * deployment range 6000 -> 4000
+        > Same oversight here
+
+
+ Bugfixes:
+  - Fixed some issues with the initial Vass encounter such as fighers not being taken and issues with fleet interception
+  - The Baselard and Tuck should no longer incorrectly appear in various places
   - Added Vass ships to Prism blacklist
   - Various fixes to the Colada Emitter
+
+
 
 
 Version 0.3.1c

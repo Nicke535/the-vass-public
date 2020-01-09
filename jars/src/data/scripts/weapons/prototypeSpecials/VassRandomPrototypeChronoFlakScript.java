@@ -41,7 +41,7 @@ public class VassRandomPrototypeChronoFlakScript implements EveryFrameWeaponEffe
             }
 
             //Ignore our fake projectiles
-            if (proj.getProjectileSpecId().equals("vass_fake_prototype_shot")) {
+            if (("vass_fake_prototype_shot").equals(proj.getProjectileSpecId())) {
                 continue;
             }
 
@@ -66,7 +66,7 @@ public class VassRandomPrototypeChronoFlakScript implements EveryFrameWeaponEffe
         toRemove.clear();
     }
 
-    private void applyEffectOnProjectile(CombatEngineAPI engine, DamagingProjectileAPI proj) {
+    public static void applyEffectOnProjectile(CombatEngineAPI engine, DamagingProjectileAPI proj) {
         engine.addPlugin(new VassTimeDistortionProjScript(proj, MathUtils.getRandomNumberInRange(0.7f, 1.35f), "vass_tizona_detonation"));
     }
 

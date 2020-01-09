@@ -72,7 +72,7 @@ public class VassPerturbaWeaponContractIntel extends BaseIntelPlugin {
         if (mode == ListInfoMode.IN_DESC) initPad = opad;
 
         bullet(info);
-        info.addPara("As long as the deal stands, you can order Perturba's weapon offerings similarly to how you would normally custom-order weapons, and your faction's fleets can utilize them as well.", initPad);
+        info.addPara("You have an ongoing contract with Perturba, allowing you and your faction to use their services.", opad);
         unindent(info);
     }
 
@@ -84,9 +84,7 @@ public class VassPerturbaWeaponContractIntel extends BaseIntelPlugin {
         info.addPara(getName(), c, 0f);
         info.setParaFontDefault();
 
-        bullet(info);
-        info.addPara("As long as the deal stands, you can order Perturba's weapon offerings similarly to how you would normally custom-order weapons, and your faction's fleets can utilize them as well.", 3f);
-        unindent(info);
+        addBulletPoints(info, mode);
     }
 
     // The description shown on the intel screen summary
@@ -98,7 +96,7 @@ public class VassPerturbaWeaponContractIntel extends BaseIntelPlugin {
         float pad = 3f;
         float opad = 10f;
 
-        info.addPara("You have an ongoing contract with Perturba, allowing you and your faction to use their services.", opad);
+        info.addPara("As long as the deal stands, you can order Perturba's weapon offerings similarly to how you would normally custom-order weapons, and your faction's fleets can utilize them as well.", pad);
 
         addBulletPoints(info, ListInfoMode.IN_DESC);
 
@@ -117,7 +115,7 @@ public class VassPerturbaWeaponContractIntel extends BaseIntelPlugin {
     @Override
     public Set<String> getIntelTags(SectorMapAPI map) {
         Set<String> tags = super.getIntelTags(map);
-        tags.add("Vass");
+        tags.add("vass");
         tags.add("Perturba");
         return tags;
     }
