@@ -119,6 +119,14 @@ public class VassFamilyTrackerPlugin implements EveryFrameScript {
     }
 
 
+    /**
+     * Re-Initializes the family power map to its default state
+     */
+    public static void reinitializeFamilyPower() {
+        if (currentInstance != null) {
+            currentInstance.initializeFamilyPower();
+        }
+    }
     // Initializes the family power map to its default state
     private void initializeFamilyPower() {
         familyPowerMap = new HashMap<>();
@@ -130,8 +138,16 @@ public class VassFamilyTrackerPlugin implements EveryFrameScript {
         familyPowerMap.put(VassUtils.VASS_FAMILY.MULTA, 0f);
     }
 
+    /**
+     * Re-Initializes the family relations map to its default state
+     */
+    public static void reinitializeFamilyRelations() {
+        if (currentInstance != null) {
+            currentInstance.initializeFamilyRelations();
+        }
+    }
     // Initializes the family relations map to its default state. Also sets the player's relation to Vass as a whole, and sets up relations to other factions
-    private void initializeFamilyRelations() {
+    public void initializeFamilyRelations() {
         familyRelationMap = new HashMap<>();
         familyRelationMap.put(VassUtils.VASS_FAMILY.ACCEL, 0f);
         familyRelationMap.put(VassUtils.VASS_FAMILY.TORPOR, 0f);

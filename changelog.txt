@@ -1,8 +1,12 @@
-Version 0.3.2
+Version 0.3.2: Time for a new quest
  General:
   - Added a new repeatable quest for Perturba after you've met their contact
+	> This one's almost my favorite addition, and has some interesting mechanics behind it. There'll be more additions to it later
   - Added basic faction description
   - Updated some text for the initial Perturba quest
+  - Added a pair of Command Console commands for manipulating Vass standing and resetting the mod practically back to square 1
+	> Mostly in case people want to change their approach between patches without needing an entirely new savefile. Use at own risk, though, it's not 100% stable in all situations
+  - Added the Tizona Emitter, the first missile weapon of the families
 
 
  Balance:
@@ -13,22 +17,26 @@ Version 0.3.2
   - Cyllel Farchog Array:
      * spread pattern slightly altered, more centered
      * flux per shot 75 -> 67
-        > The poor Cyllel suffers from excessive flux and wierd spreading. This hopefully remedies that slightly
+	> The poor Cyllel suffers from excessive flux and wierd spreading. This hopefully remedies that slightly
 
   - Estoc
+     * weapon damage 1000x3 -> 700x3
+     * weapon EMP 750x3 -> 525x3
      * deployment range 6000 -> 4000
      * flux capacity 800 -> 600
      * slightly improved engine performance: should have less issues firing its bombs now
-        > Range was just an oversight, it wasn't meant to be that high. Durability was a tad bit high when paired with the Curtana; the synergy is nice, but maybe a bit TOO nice. Engine performance changes mostly for AI benefit; not sure how much it actually contributed but it is worth a shot and seems to give minor improvements for me
+        > Range and damage was just an oversight, it wasn't ever meant to be that high. Durability was a tad bit high when paired with the Curtana; the synergy is nice, but maybe a bit TOO nice. Engine performance changes mostly for AI benefit; not sure how much it actually contributed but it is worth a shot and seems to give minor improvements for me
 
   - Katzbalger
      * deployment range 6000 -> 4000
-        > Same oversight here
+        > Same range oversight here
 
 
  Bugfixes:
   - Fixed some issues with the initial Vass encounter such as fighers not being taken and issues with fleet interception
   - The Baselard and Tuck should no longer incorrectly appear in various places
+  - Safety Overrides no longer kills your crew in simulations
+	> Oops.
   - Added Vass ships to Prism blacklist
   - Various fixes to the Colada Emitter
 

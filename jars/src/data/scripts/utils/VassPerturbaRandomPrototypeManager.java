@@ -24,8 +24,8 @@ public class VassPerturbaRandomPrototypeManager {
     //Stats for prototype weapon randomization
     private static final float RANDOM_LASER_ARCHETYPE_WEIGHT = 8f;
     private static final float SUPERCHARGED_ARCHETYPE_WEIGHT = 6f;
-    private static final float DYRNWYN_ARCHETYPE_WEIGHT = 6f;
-    private static final float RANDOM_CANNON_ARCHETYPE_WEIGHT = 8f;
+    private static final float DYRNWYN_ARCHETYPE_WEIGHT = 5f;
+    private static final float RANDOM_CANNON_ARCHETYPE_WEIGHT = 7f;
     private static final float CHRONOFLAK_ARCHETYPE_WEIGHT = 4f;
     private static final float BREEDER_ARCHETYPE_WEIGHT = 3f;
 

@@ -17,7 +17,7 @@ public class VassExcaliburScript extends VassBasePerturbaMissileScript {
         }
 
         //Add a new plugin that keeps track of the projectile
-        engine.addPlugin(new VassTimeDistortionProjScript(proj, MathUtils.getRandomNumberInRange(0.5f, 1.8f), "vass_excalibur_detonation", 0.85f));
+        engine.addPlugin(new VassTimeDistortionProjScript(proj, MathUtils.getRandomNumberInRange(0.5f, 1.8f), "vass_excalibur_detonation"));
     }
 
     //The Excalibur can't regen ammo, as it's on a bomber

@@ -1,6 +1,6 @@
 //By Nicke535, licensed under CC-BY-NC-SA 4.0 (https://creativecommons.org/licenses/by-nc-sa/4.0/)
 //General script meant to be modified for each implementation. Causes a projectile to rotate mid-flight depending on several settings, simulating guidance
-package data.scripts.utils;
+package data.scripts.weapons.prototypeSpecials;
 
 import com.fs.starfarer.api.Global;
 import com.fs.starfarer.api.combat.BaseEveryFrameCombatPlugin;

@@ -1,0 +1,30 @@
+{
+  "displayName": "Threatener",
+  "fluxCapacitors": 0,
+  "fluxVents": 4,
+  "goalVariant": false,
+  "hullId": "vass_makhaira",
+  "hullMods": [
+    "missleracks"
+  ],
+  "permaMods": [],
+  "quality": 0,
+  "variantId": "vass_makhaira_threatener",
+  "weaponGroups": [
+    {
+      "autofire": false,
+      "mode": "LINKED",
+      "weapons": {
+        "WS0003": "vass_asi"
+      }
+    },
+    {
+      "autofire": false,
+      "mode": "LINKED",
+      "weapons": {
+        "WS0002": "vass_tizona"
+      }
+    }
+  ],
+  "wings": []
+}

@@ -39,7 +39,7 @@ public class VassPeriodicPlating extends BaseHullMod {
 	public static final float CREW_LOST_FRACTION_PER_MINUTE = 0.07f;
 
 	//The time spent in combat by the ship, for calculating SO crew losses. Added here, cleared and used in a campaign script
-	public static Map<String, Float> timeInCombatMap = new HashMap<String, Float>();
+	public static Map<String, Float> timeInCombatMap = new HashMap<>();
 
 	private WeakHashMap<ShipAPI, VassUtils.VASS_FAMILY> familyMembership = new WeakHashMap<>();
 	private WeakHashMap<ShipAPI, Boolean> eliteStatus = new WeakHashMap<>();
@@ -65,8 +65,11 @@ public class VassPeriodicPlating extends BaseHullMod {
 			}
 		}
 
-		//If we have SO equipped, we store our time spent in combat (only for the player fleet, in the campaign)
-		if (ship.getVariant().hasHullMod("safetyoverrides") && Global.getCombatEngine().getFleetManager(ship.getOwner()) == Global.getCombatEngine().getFleetManager(FleetSide.PLAYER)) {
+		//If we have SO equipped, we store our time spent in combat (only for the player fleet, in the campaign, outside of sims)
+		if (ship.getVariant().hasHullMod("safetyoverrides")
+				&& Global.getCombatEngine().getFleetManager(ship.getOwner()) == Global.getCombatEngine().getFleetManager(FleetSide.PLAYER)
+				&& !Global.getCombatEngine().isSimulation()
+				&& Global.getCombatEngine().isInCampaign()) {
 			FleetMemberAPI member = CombatUtils.getFleetMember(ship);
 			if (member != null) {
 				//We assume that if the ship is destroyed, the additional crew loss is marginal at most, so we remove it from our nice list

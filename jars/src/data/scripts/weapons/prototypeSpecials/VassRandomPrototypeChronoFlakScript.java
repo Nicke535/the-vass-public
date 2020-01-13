@@ -3,7 +3,6 @@ package data.scripts.weapons.prototypeSpecials;
 import com.fs.starfarer.api.Global;
 import com.fs.starfarer.api.combat.*;
 import data.scripts.utils.VassPerturbaRandomPrototypeManager;
-import data.scripts.utils.VassRandomPrototypeChronoFlakGuidanceScript;
 import data.scripts.utils.VassTimeDistortionProjScript;
 import org.lazywizard.lazylib.MathUtils;
 import org.lazywizard.lazylib.combat.CombatUtils;

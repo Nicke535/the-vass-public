@@ -1,0 +1,47 @@
+{
+  "displayName": "Threatener",
+  "fluxCapacitors": 25,
+  "fluxVents": 11,
+  "goalVariant": false,
+  "hullId": "vass_curtana",
+  "hullMods": [
+    "missleracks"
+  ],
+  "permaMods": [],
+  "quality": 0,
+  "variantId": "vass_curtana_threatener",
+  "weaponGroups": [
+    {
+      "autofire": false,
+      "mode": "LINKED",
+      "weapons": {
+        "WS0003": "vass_tizona",
+        "WS0004": "vass_tizona"
+      }
+    },
+    {
+      "autofire": true,
+      "mode": "LINKED",
+      "weapons": {
+        "WS0002": "vass_fragarach"
+      }
+    },
+    {
+      "autofire": true,
+      "mode": "LINKED",
+      "weapons": {
+        "WS0005": "vass_yawarakai_te",
+        "WS0006": "vass_yawarakai_te"
+      }
+    },
+    {
+      "autofire": false,
+      "mode": "LINKED",
+      "weapons": {}
+    }
+  ],
+  "wings": [
+    "vass_estoc_wing",
+    "vass_estoc_wing"
+  ]
+}

@@ -124,7 +124,7 @@ public class VassRandomPrototypeBreederScript implements EveryFrameWeaponEffectP
                                 proj.getFacing() + MathUtils.getRandomNumberInRange(-BREED_INACCURACY, BREED_INACCURACY),
                                 new Vector2f(0f, 0f));
                         newProj.setFromMissile(true);
-                        newProj.setDamageAmount(proj.getDamageAmount());
+                        newProj.setDamageAmount(proj.getBaseDamageAmount());
                         if (newProj.getAI() instanceof ProximityFuseAIAPI) {
                             ((ProximityFuseAIAPI) newProj.getAI()).updateDamage();
                         }
