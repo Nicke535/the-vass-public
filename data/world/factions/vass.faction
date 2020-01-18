@@ -7,8 +7,8 @@
 	"displayNameWithArticle":"The Vass",
 	"displayNameLong":"Vass Families",
 	"displayNameLongWithArticle":"The Vass Families",
-	"logo":"graphics/vass/factions/the_vass_crest.png",
-	"crest":"graphics/vass/factions/the_vass.png",
+	"logo":"graphics/vass/factions/the_vass.png",
+	"crest":"graphics/vass/factions/the_vass_crest.png",
 	"shipNamePrefix":"",
 	"shipNameSources":{
 		"SPACE":7,

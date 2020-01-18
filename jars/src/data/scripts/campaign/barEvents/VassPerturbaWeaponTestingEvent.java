@@ -71,9 +71,11 @@ public class VassPerturbaWeaponTestingEvent extends VassPerturbaBaseEvent {
             return false;
         }
 
-        //If we have told the market that there's a non-repeatable event that should happen instead, we can't appear
+        //If we have told the sector that there's a non-repeatable event that should happen instead, we can't appear
         //Unused for now
-        //TODO: implement when needed
+        if (Global.getSector().getMemoryWithoutUpdate().contains(VassPerturbaBaseEvent.CURRENT_EVENT_ALLOWED_KEY)) {
+            return false;
+        }
 
         return true;
     }

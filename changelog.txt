@@ -7,6 +7,9 @@ Version 0.3.2: Time for a new quest
   - Added a pair of Command Console commands for manipulating Vass standing and resetting the mod practically back to square 1
 	> Mostly in case people want to change their approach between patches without needing an entirely new savefile. Use at own risk, though, it's not 100% stable in all situations
   - Added the Tizona Emitter, the first missile weapon of the families
+  - Adjusted Chrono Jump visuals
+	> No more particles, viva la trail!
+  - Vass punishment fleets will now take a day or so before arriving, instead of instantly popping up the second you steal something
 
 
  Balance:
@@ -39,6 +42,7 @@ Version 0.3.2: Time for a new quest
 	> Oops.
   - Added Vass ships to Prism blacklist
   - Various fixes to the Colada Emitter
+  - Vass fleets don't spawn against other factions nearly as excessively, now
 
 
 

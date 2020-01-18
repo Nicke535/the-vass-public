@@ -3,9 +3,13 @@ package data.scripts.campaign;
 import com.fs.starfarer.api.EveryFrameScript;
 import com.fs.starfarer.api.Global;
 import com.fs.starfarer.api.campaign.*;
+import com.fs.starfarer.api.combat.ShipVariantAPI;
+import com.fs.starfarer.api.fleet.FleetMemberAPI;
 import com.fs.starfarer.api.impl.campaign.fleets.FleetFactoryV3;
 import com.fs.starfarer.api.impl.campaign.fleets.FleetParamsV3;
 import com.fs.starfarer.api.impl.campaign.ids.Factions;
+import com.fs.starfarer.api.loading.HullModSpecAPI;
+import com.fs.starfarer.api.loading.VariantSource;
 import com.fs.starfarer.api.util.IntervalUtil;
 import com.fs.starfarer.api.util.Misc;
 import com.fs.starfarer.api.util.WeightedRandomPicker;
@@ -14,8 +18,13 @@ import org.lazywizard.lazylib.MathUtils;
 import org.lazywizard.lazylib.campaign.CampaignUtils;
 import org.lwjgl.util.vector.Vector2f;
 
+import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 
+/**
+ * Handles random Vass encounters out "in the wild"
+ */
 public class VassRandomEncounterPlugin implements EveryFrameScript {
 
     //A list of factions that will never be attacked by random encounters
@@ -26,9 +35,16 @@ public class VassRandomEncounterPlugin implements EveryFrameScript {
         BLACKLISTED_FACTIONS.add(Factions.PLAYER);
     }
 
+    //A list of factions that will get a Vass ship when attacked
+    public static final HashSet<String> STEALING_FACTIONS = new HashSet<>();
+    static {
+        STEALING_FACTIONS.add(Factions.INDEPENDENT);
+        STEALING_FACTIONS.add(Factions.PIRATES);
+    }
+
     //The minimum and maximum size factor compared to the target that the families will ever send
-    private static final float MIN_FP_FACTOR = 1.05f;
-    private static final float MAX_FP_FACTOR = 1.35f;
+    private static final float MIN_FP_FACTOR = 1.15f;
+    private static final float MAX_FP_FACTOR = 1.45f;
 
     //How many FP of fleet can the families dish out compared to their power?
     private static final float FLEET_FP_PER_POWER = 4f;
@@ -37,10 +53,11 @@ public class VassRandomEncounterPlugin implements EveryFrameScript {
     private static final float ELITE_CHANCE = 0.15f;
 
     //Determines how often Vass fleets can spawn against nearby fleets
-    private IntervalUtil interval = new IntervalUtil(17f, 34f);
+    private IntervalUtil interval = new IntervalUtil(27f, 55f);
 
     @Override
     public void advance(float amount) {
+        if (Global.getSector().isPaused()) { amount = 0f; }
         interval.advance(Misc.getDays(amount));
         if (interval.intervalElapsed()) {
             //Choose one family to trigger with: stronger families are more likely
@@ -101,10 +118,13 @@ public class VassRandomEncounterPlugin implements EveryFrameScript {
                 //Have a chance of spawning an elite
                 boolean isElite = Math.random() < ELITE_CHANCE;
                 spawnHuntFleet(family, target, isElite ? "elite" : "");
+                if (STEALING_FACTIONS.contains(target.getFaction().getId())) {
+                    giftVassShip(target);
+                }
+            } else {
+                //If no fleet was found, re-pay the interval a bit of its progress
+                interval.advance(interval.getMinInterval()*0.7f);
             }
-
-            //If no fleet was found, re-pay the interval a bit of its progress
-            interval.advance(interval.getMinInterval()*0.7f);
         }
     }
 
@@ -123,6 +143,55 @@ public class VassRandomEncounterPlugin implements EveryFrameScript {
         return true;
     }
 
+    /**
+     * Gifts a Vass ship to a fleet based on luck and their FP
+     */
+    private static void giftVassShip(CampaignFleetAPI fleet) {
+        String baseVariant;
+        if (Math.random() * fleet.getFleetPoints() < 40f) {
+            baseVariant = "vass_makhaira_support";
+        } else if (Math.random() * fleet.getFleetPoints() < 70f) {
+            baseVariant = "vass_schiavona_defensive";
+        } else {
+            baseVariant = "vass_curtana_support";
+        }
+        FleetMemberAPI newlyAdded = fleet.getFleetData().addFleetMember(baseVariant);
+        ShipVariantAPI variant = newlyAdded.getVariant().clone();
+
+        //Gets a whole bunch of Dmods randomly
+        WeightedRandomPicker<String> dmodPicker = new WeightedRandomPicker<>();
+        for (HullModSpecAPI modSpec : Global.getSettings().getAllHullModSpecs()) {
+            if (modSpec.hasTag("damage") || modSpec.hasTag("damageStruct")) {
+                dmodPicker.add(modSpec.getId());
+            }
+        }
+        for (int i = MathUtils.getRandomNumberInRange(1, 5); i > 0; i--) {
+            variant.addPermaMod(dmodPicker.pick());
+        }
+
+        //Remove weapons randomly
+        List<String> slotList = new ArrayList<>(variant.getFittedWeaponSlots());
+        for (String slot : slotList) {
+            if (Math.random() < 0.75f) {
+                variant.clearSlot(slot);
+            }
+        }
+
+        //Adjust final parameters and update stats
+        variant.setVariantDisplayName("Looted");
+        variant.setSource(VariantSource.REFIT);
+        newlyAdded.setVariant(variant, false, true);
+        newlyAdded.getRepairTracker().setCR(MathUtils.getRandomNumberInRange(0.1f, 0.35f));
+        newlyAdded.updateStats();
+    }
+
+    /**
+     * Spawns a hunter fleet after a target fleet (assumed to not be the player)
+     * @param family vass family sending the hunter fleet
+     * @param target target of the hunter fleet
+     * @param specialOptions special options for the fleet spawn. Currently supported:
+     *                          elite : spawns the fleet as an Elite fleet
+     */
     public static void spawnHuntFleet(VassUtils.VASS_FAMILY family, CampaignFleetAPI target, String specialOptions) {
         SectorAPI sector = Global.getSector();
         LocationAPI loc = target.getContainingLocation();

@@ -10,6 +10,10 @@ import com.fs.starfarer.api.impl.campaign.ids.Submarkets;
 import com.fs.starfarer.api.loading.FighterWingSpecAPI;
 import com.fs.starfarer.api.util.Misc;
 
+/**
+ * Listener for detecting when a Vass ship is sold
+ * @author Nicke535
+ */
 public class VassPlayerSoldVassShipsListener extends BaseCampaignEventListener implements EveryFrameScript {
     public boolean hasSoldMinor = false;
     public boolean hasSoldMajor = false;

@@ -9,6 +9,7 @@
 		"vass_makhaira_defensive":3,
 		"vass_makhaira_aggressor":4,
 		"vass_makhaira_support":3,
+		"vass_makhaira_threatener":3,
 	},
 	"combatMedium":{
 		"vass_schiavona_hailstorm":3,
@@ -22,8 +23,9 @@
 	# carriers
 	"carrierLarge":{
 		"vass_curtana_strike":5,
-		"vass_curtana_support":3,
+		"vass_curtana_support":4,
 		"vass_curtana_multirole":4,
+		"vass_curtana_threatener":3,
 	},
 	
 }

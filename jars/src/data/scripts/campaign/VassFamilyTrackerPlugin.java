@@ -38,11 +38,17 @@ public class VassFamilyTrackerPlugin implements EveryFrameScript {
     private static VassFamilyTrackerPlugin currentInstance = null;
 
     //--Loot revenge fleet stats--
-    //How long of a cooldown is left until a new looting-punisher fleet can pop out and hunt the player, and the minimum/maximum cooldown of this
+    //How long of a cooldown is left until a new looting-punisher fleet can pop out and hunt the player, and the 
+    //minimum/maximum cooldown of this, as well as the cooldown while passively checking this
     //The more power the family that sends the fleet has, the lower the cooldown. Specified in days.
-    private float currentLootRevengeCooldown = 0f;
+    private static final float CONTINOUS_CHECK_REVENGE_COOLDOWN = 0.5f;
     private static final float MAX_LOOT_REVENGE_COOLDOWN = 400f;
     private static final float MIN_LOOT_REVENGE_COOLDOWN = 150f;
+    private float currentLootRevengeCooldown = 0f;
+    
+    //How many days are needed in sequence to actually trigger a fleet to hunt the player down?
+    private static final float DAYS_NEEDED_TO_SEND_REVENGE_FLEET = 1.5f;
+    private float lootRevengeDaysInSequence = 0f;
 
     //How many fleet points can the families dish out per "power" they have?
     private static final float LOOT_FLEET_FP_PER_POWER = 30f;
@@ -79,40 +85,52 @@ public class VassFamilyTrackerPlugin implements EveryFrameScript {
         //Store our plugin for ease-of-use
         currentInstance = this;
 
+        //When paused, amount stops being correctly calculated. We adjust for that here
+        if (Global.getSector().isPaused()) {
+            amount = 0f;
+        }
+
         //--  Checks the player fleet has been naughty, and orders a fleet to... give them some trouble  --
         currentLootRevengeCooldown -= Misc.getDays(amount);
         if (currentLootRevengeCooldown <= 0f) {
             if ((playerHasVassShips() && !playerAllowedToOwnVassShips()) ||
                     (playerSoldShipsListener.hasSoldMinor && !playerAllowedToSellMinor()) ||
                     (playerSoldShipsListener.hasSoldMajor && !playerAllowedToSellMajor())) {
-                VassUtils.VASS_FAMILY familyToSpawnVia = VassUtils.VASS_FAMILY.values()[MathUtils.getRandomNumberInRange(0, VassUtils.VASS_FAMILY.values().length-1)];
-                int tests = 0;
-                while (tests < 50) {
-                    if (getPowerOfFamily(familyToSpawnVia) * LOOT_FLEET_FP_PER_POWER >= Global.getSector().getPlayerFleet().getFleetPoints() * LOOT_FLEET_FP_FACTOR) {
-                        break;
-                    } else {
-                        familyToSpawnVia = VassUtils.VASS_FAMILY.values()[MathUtils.getRandomNumberInRange(0, VassUtils.VASS_FAMILY.values().length-1)];
-                        tests++;
-                    }
-                }
-                if (tests < 50) {
-                    if (Global.getSector().getMemoryWithoutUpdate().get("$vass_firstTimeVassShipLooted") instanceof Boolean && !(Boolean)Global.getSector().getMemoryWithoutUpdate().get("$vass_firstTimeVassShipLooted")) {
-                        //Not the first time this happens... no extra memory flag needed, and elite can appear
-                        if (Math.random() < LOOT_FLEET_ELITE_CHANCE) {
-                            spawnPlayerLootingPunishFleet(familyToSpawnVia, "elite");
+                //We need several consecutive checks ot succeed for a fleet to be sent, to give a player some leeway
+                if (lootRevengeDaysInSequence < DAYS_NEEDED_TO_SEND_REVENGE_FLEET) {
+                    lootRevengeDaysInSequence += CONTINOUS_CHECK_REVENGE_COOLDOWN;
+                    currentLootRevengeCooldown = CONTINOUS_CHECK_REVENGE_COOLDOWN;
+                } else {
+                    VassUtils.VASS_FAMILY familyToSpawnVia = VassUtils.VASS_FAMILY.values()[MathUtils.getRandomNumberInRange(0, VassUtils.VASS_FAMILY.values().length-1)];
+                    int tests = 0;
+                    while (tests < 50) {
+                        if (getPowerOfFamily(familyToSpawnVia) * LOOT_FLEET_FP_PER_POWER >= Global.getSector().getPlayerFleet().getFleetPoints() * LOOT_FLEET_FP_FACTOR) {
+                            break;
                         } else {
+                            familyToSpawnVia = VassUtils.VASS_FAMILY.values()[MathUtils.getRandomNumberInRange(0, VassUtils.VASS_FAMILY.values().length-1)];
+                            tests++;
+                        }
+                    }
+                    if (tests < 50) {
+                        if (Global.getSector().getMemoryWithoutUpdate().get("$vass_firstTimeVassShipLooted") instanceof Boolean && !(Boolean)Global.getSector().getMemoryWithoutUpdate().get("$vass_firstTimeVassShipLooted")) {
+                            //Not the first time this happens... no extra memory flag needed, and elite can appear
+                            if (Math.random() < LOOT_FLEET_ELITE_CHANCE) {
+                                spawnPlayerLootingPunishFleet(familyToSpawnVia, "elite");
+                            } else {
+                                spawnPlayerLootingPunishFleet(familyToSpawnVia);
+                            }
+                        } else {
+                            //First time we're punishing the player; mark that in our memory, and don't have a chance of an elite fleet
+                            Global.getSector().getMemoryWithoutUpdate().set("$vass_firstTimeVassShipLooted", true);
                             spawnPlayerLootingPunishFleet(familyToSpawnVia);
                         }
-                    } else {
-                        //First time we're punishing the player; mark that in our memory, and don't have a chance of an elite fleet
-                        Global.getSector().getMemoryWithoutUpdate().set("$vass_firstTimeVassShipLooted", true);
-                        spawnPlayerLootingPunishFleet(familyToSpawnVia);
+                        currentLootRevengeCooldown = ((100f - getPowerOfFamily(familyToSpawnVia))/100f)*MAX_LOOT_REVENGE_COOLDOWN + ((getPowerOfFamily(familyToSpawnVia))/100f)*MIN_LOOT_REVENGE_COOLDOWN;
                     }
-                    currentLootRevengeCooldown = ((100f - getPowerOfFamily(familyToSpawnVia))/100f)*MAX_LOOT_REVENGE_COOLDOWN + ((getPowerOfFamily(familyToSpawnVia))/100f)*MIN_LOOT_REVENGE_COOLDOWN;
                 }
             } else {
-                //Wait half a day to check again
+                //Wait some time to check again
                 currentLootRevengeCooldown = 0.5f;
+                lootRevengeDaysInSequence = 0f;
             }
         }
         //--  End of loot punisher fleet code  --

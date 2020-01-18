@@ -184,7 +184,7 @@ public class VassPeriodicPlating extends BaseHullMod {
 		//If we have family membership, inform the player of its benefits
 		//Perturba : Weapon bonuses... This thing isn't gonna fit in the screen, is it?
 		if (family == VassUtils.VASS_FAMILY.PERTURBA) {
-			TooltipMakerAPI text = tooltip.beginImageWithText("graphics/hullmods/targeting_supercomputer.png", 36); //TODO: fix proper icon
+			TooltipMakerAPI text = tooltip.beginImageWithText("graphics/vass/hullmods/perturba_hullmod.png", 36);
 			text.addPara("Perturba - Exotic weapon specialists", 0, VassUtils.getFamilyColor(VassUtils.VASS_FAMILY.PERTURBA, 1f), Misc.getHighlightColor(), "Exotic weapon specialists");
 			text.addPara("Yawarakai-Te: +150 SU before damage falloff, +20%% damage", 2, Misc.getHighlightColor(),"Yawarakai-Te", "+150", "+20%");
 			text.addPara("Dyrnwyn/Cyllel Farchog: Firerate bonus applies at half the normal time variation", 2, Misc.getHighlightColor(), "Dyrnwyn", "Cyllel Farchog", "half");
