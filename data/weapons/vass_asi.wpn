@@ -9,17 +9,17 @@
 	"hardpointSprite":"graphics/vass/weapons/asi_hardpoint.png",
 	"hardpointGlowSprite":"graphics/vass/weapons/asi_hardpoint_glow.png",
 	"glowColor":[26,102,255,255],
-	"turretOffsets":[-5, 0],
+	"turretOffsets":[5, 0],
 	"turretAngleOffsets":[0],
-	"hardpointOffsets":[-7, 0],
+	"hardpointOffsets":[7, 0],
 	"hardpointAngleOffsets":[0],
 	"barrelMode":"ALTERNATING", # or LINKED.  whether barrels fire at the same time or alternate.
 	"animationType":"GLOW_AND_FLASH",
 	"muzzleFlashSpec":{"length":12.0,   # only used if animationType = MUZZLE_FLASH
-					   "spread":7.0,
+					   "spread":8.0,
 					   "particleSizeMin":8.0,
 					   "particleSizeRange":11.0,
-					   "particleDuration":0.09,
+					   "particleDuration":0.15,
 					   "particleCount":7,
 					   "particleColor":[26,102,255,180]},	
 	"autocharge":true,  # whether the weapon will continue charging and fire if the LMB is tapped instead of held

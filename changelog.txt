@@ -10,6 +10,8 @@ Version 0.3.2: Time for a new quest
   - Adjusted Chrono Jump visuals
 	> No more particles, viva la trail!
   - Vass punishment fleets will now take a day or so before arriving, instead of instantly popping up the second you steal something
+  - Slightly adjusted visuals and timing of the Asi, and gave it a new sound courtesy of MesoTroniK
+  - Gave the Caladbolg a new sound courtesy of MesoTroniK
 
 
  Balance:
