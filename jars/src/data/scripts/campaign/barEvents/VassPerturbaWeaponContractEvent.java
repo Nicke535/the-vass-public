@@ -24,14 +24,12 @@ import java.util.Set;
  * Creates an event where the player can hire a contract for Perturba weapons to their faction
  * @author Nicke535
  */
-public class VassPerturbaWeaponContractEvent extends BaseBarEventWithPerson {
+public class VassPerturbaWeaponContractEvent extends VassPerturbaBaseEvent {
     public static final Logger LOGGER = Global.getLogger(VassPerturbaWeaponContractEvent.class);
 
     public static final boolean DEBUG_MODE = false;
 
     //Some memory keys used by the event
-    public static final String VASS_PERTURBA_CONTACT_KEY = "$vass_perturba_contact_person";
-    public static final String VASS_PERTURBA_HAS_MET_CONTACT_KEY = "$vass_perturba_has_met_contact";
     public static final String VASS_PERTURBA_WEAPON_CONTRACT_KEY = "$vass_perturba_weapon_contract";
 
     //All the blueprints unlocked by the even
@@ -61,10 +59,6 @@ public class VassPerturbaWeaponContractEvent extends BaseBarEventWithPerson {
     private static float RELATIONS_AFTER_DEAL = 35f;
     private static float RELATIONS_AFTER_BAD_DEAL = -25f;
 
-    public static PersonAPI getContact () {
-        return (PersonAPI) Global.getSector().getMemoryWithoutUpdate().get(VASS_PERTURBA_CONTACT_KEY);
-    }
-
     public VassPerturbaWeaponContractEvent() {
         super();
     }
@@ -75,23 +69,13 @@ public class VassPerturbaWeaponContractEvent extends BaseBarEventWithPerson {
 
         if (DEBUG_MODE) { return true; }
 
-        //Don't appear if Perturba has been knocked out, or are enemies to the player
-        if (VassFamilyTrackerPlugin.isFamilyEliminated(VassUtils.VASS_FAMILY.PERTURBA)) {
-            LOGGER.info("Threw away Perturba event due to incorrect faction");
-            return false;
-        }
+        //Don't appear if Perturba are enemies to the player
         if (VassFamilyTrackerPlugin.getRelationToFamily(VassUtils.VASS_FAMILY.PERTURBA) < 0f) {
-            LOGGER.info("Threw away Perturba event due to incorrect faction");
+            LOGGER.info("Threw away Perturba event due to bad relations with Perturba");
             return false;
         }
         if (!Global.getSector().getPlayerFaction().getRelationshipLevel("vass").isAtWorst(RepLevel.INHOSPITABLE)) {
-            LOGGER.info("Threw away Perturba event due to incorrect faction");
-            return false;
-        }
-
-        //Only the player's markets can get the event
-        if (!market.getFaction().isPlayerFaction()) {
-            LOGGER.info("Threw away Perturba event due to incorrect faction");
+            LOGGER.info("Threw away Perturba event due to bad relations with Vass");
             return false;
         }
 
@@ -128,28 +112,6 @@ public class VassPerturbaWeaponContractEvent extends BaseBarEventWithPerson {
         TextPanelAPI text = dialog.getTextPanel();
         VassPerturbaWeaponContractIntel intel = new VassPerturbaWeaponContractIntel(this);
         Global.getSector().getIntelManager().addIntel(intel, false, text);
-    }
-
-    // Creates an NPC if necessary, ensuring they have a portrait that fits and that they are stored in the global memory
-    @Override
-    protected void regen(MarketAPI market) {
-        if (this.market == market) {
-            return;
-        }
-        super.regen(market);
-
-        //If we had an existing person, use that
-        Object oldPerson = Global.getSector().getMemoryWithoutUpdate().get(VASS_PERTURBA_CONTACT_KEY);
-        if (oldPerson instanceof PersonAPI) {
-            person = (PersonAPI) oldPerson;
-        } else {
-            if (person.getGender() == Gender.MALE) {
-                person.setPortraitSprite(pickMalePortrait());
-            } else {
-                person.setPortraitSprite(pickFemalePortrait());
-            }
-            Global.getSector().getMemoryWithoutUpdate().set(VASS_PERTURBA_CONTACT_KEY, person);
-        }
     }
 
     // Creates the actual prompt and description when entering the bar. Picks randomly from a list, with some variations based on circumstance
@@ -197,11 +159,10 @@ public class VassPerturbaWeaponContractEvent extends BaseBarEventWithPerson {
         TextPanelAPI text = dialog.getTextPanel();
         options.clearOptions();
 
-        Object hasMetContact = Global.getSector().getMemoryWithoutUpdate().get(VASS_PERTURBA_HAS_MET_CONTACT_KEY);
-        if (hasMetContact instanceof Boolean && (Boolean)hasMetContact) {
-            optionSelectedHandleFollowupTime(text, option, options, t, h, n);
-        } else {
+        if (!hasMetContact()) {
             optionSelectedHandleFirstTime(text, option, options, t, h, n);
+        } else {
+            optionSelectedHandleFollowupTime(text, option, options, t, h, n);
         }
     }
 
@@ -306,7 +267,7 @@ public class VassPerturbaWeaponContractEvent extends BaseBarEventWithPerson {
         switch (option) {
             case INIT:
                 text.addPara("The Perturba agent waves at you as you approach them.");
-                text.addPara("'Why hello there captain. Or... maybe you go by some other name here? Commander? Overlord? Either way; I think I may have a business opportunity that might interest you...'");
+                text.addPara("'Hello there. Made up your mind about our offer yet?'");
 
                 options.addOption("About that deal...", OptionId.CONTINUE_1);
                 options.addOption("You've made up your mind alright. Made up your mind to get rid of this lowlife. Guards!", OptionId.LEAVE_HOSTILE);
@@ -380,53 +341,6 @@ public class VassPerturbaWeaponContractEvent extends BaseBarEventWithPerson {
         }
     }
 
-    protected transient boolean failed = false;
-    protected void doDataFail() {
-        failed = true;
-    }
-
-    // All of these are settings for the interaction target
-    @Override
-    protected String getPersonFaction() {
-        return "vass_perturba";
-    }
-
-    @Override
-    protected String getPersonRank() {
-        return Ranks.POST_CITIZEN;
-    }
-
-    @Override
-    protected String getPersonPost() {
-        return Ranks.POST_SHADY;
-    }
-
-    @Override
-    protected String getPersonPortrait() {
-        return null;
-    }
-
-    @Override
-    protected Gender getPersonGender() {
-        return Gender.ANY;
-    }
-
-    private String pickMalePortrait() {
-        WeightedRandomPicker<String> post = new WeightedRandomPicker<String>();
-        post.add("graphics/portraits/portrait_mercenary01.png");
-        post.add("graphics/portraits/portrait_corporate03.png");
-        post.add("graphics/portraits/portrait33.png");
-        return post.pick();
-    }
-
-    private String pickFemalePortrait() {
-        WeightedRandomPicker<String> post = new WeightedRandomPicker<String>();
-        post.add("graphics/portraits/portrait_corporate02.png");
-        post.add("graphics/portraits/portrait_pirate02.png");
-        post.add("graphics/portraits/portrait27.png");
-        return post.pick();
-    }
-
     //The description is slightly different if you've already met the Perturba contact before
     private String pickDescription() {
         WeightedRandomPicker<String> post = new WeightedRandomPicker<String>();
@@ -446,7 +360,7 @@ public class VassPerturbaWeaponContractEvent extends BaseBarEventWithPerson {
         Object hasMetContact = Global.getSector().getMemoryWithoutUpdate().get(VASS_PERTURBA_HAS_MET_CONTACT_KEY);
         if (hasMetContact instanceof Boolean && (Boolean)hasMetContact) {
             post.add("Walk up to the Perturba agent.");
-            post.add("Grab a drink and movee up to the arms dealer.");
+            post.add("Grab a drink and move up to the arms dealer.");
         } else {
             post.add("Confront the suspicious individual.");
             post.add("Sit down with the suspicious individual and see what they want with you.");

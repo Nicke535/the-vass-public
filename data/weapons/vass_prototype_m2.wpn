@@ -1,0 +1,27 @@
+{
+	"id":"vass_prototype_m2",  # this id must match what's in the spreadsheet
+	"specClass":"projectile",
+	"type":"BALLISTIC",
+	"size":"MEDIUM",
+	"everyFrameEffect":"data.scripts.weapons.VassRandomPrototypeScript",	
+	"turretSprite":"graphics/vass/weapons/prototype/mt2base.png",
+	"turretGunSprite":"graphics/vass/weapons/prototype/mt2recoil.png",
+	"hardpointSprite":"graphics/vass/weapons/prototype/mh2base.png",
+	"hardpointGunSprite":"graphics/vass/weapons/prototype/mh2recoil.png",
+	"visualRecoil":10.0,  # the gun sprites are only used if this is non-0
+	"renderHints":[RENDER_BARREL_BELOW],
+	"turretOffsets":[19, 0],
+	"turretAngleOffsets":[0],
+	"hardpointOffsets":[25, 0],
+	"hardpointAngleOffsets":[0],
+	"barrelMode":"ALTERNATING", # or LINKED.  whether barrels fire at the same time or alternate.
+	"animationType":"MUZZLE_FLASH",
+	"muzzleFlashSpec":{"length":14.0,   # only used if animationType = MUZZLE_FLASH
+					   "spread":7.0,
+					   "particleSizeMin":9.0,
+					   "particleSizeRange":15.0,
+					   "particleDuration":0.22,
+					   "particleCount":9,
+					   "particleColor":[245,110,12,255]},
+	"projectileSpecId":"vass_fake_prototype_shot",  # projectile that will be fired
+}

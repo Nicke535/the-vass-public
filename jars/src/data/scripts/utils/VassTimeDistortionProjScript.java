@@ -105,8 +105,8 @@ public class VassTimeDistortionProjScript extends BaseEveryFrameCombatPlugin {
 				return;
 			}
 
-			//If the projectile has <=0 health, it should also detonate
-			if (proj.getHitpoints() <= 0f) {
+			//If the projectile has <=0 health, it should also detonate (if it's a missile)
+			if (proj instanceof MissileAPI && proj.getHitpoints() <= 0f) {
 				detonate();
 				return;
 			}

@@ -1,6 +1,24 @@
 id,trigger,conditions,script,text,options,notes
 "#RULESET_NAME Vass",,,,,,
 ,,,,,,
+# Quests,,,,,,
+,,,,,,
+# Perturba Weapon Testing,,,,,,
+vass_perturba_weapon_testing_handin_bad_continue,DialogOptionSelected,"$option == vassPerturbaWeaponTestContinueBad","VassPerturbaWeaponTestingHandinBad","The agent transfers the credits to your account and leaves in their shuttle, allowing you to go on with your business.",,
+vass_perturba_weapon_testing_handin_bad,OpenInteractionDialog,"VassPerturbaWeaponTestingCanTriggerFinalDialog score:1000",,"A tiny shuttle intercepts you as you get close to the market. Once it gets closer you realize it's broadcasting on an encrypted Perturba frequency; this is most likely your mission contact for handover.
+
+""Finished with the testing, I'd presume? From our readings, it seems like you've misplaced all the prototypes we handed out... well, these sorta things happen. We'll trigger the self-destruct charges in case someone managed to get their hands on them, and you'll still get your collateral back: you completed the contract after all.""
+
+""Personally though, I'd recommend being a bit more gentle with them the next time.""","vassPerturbaWeaponTestContinueBad:Continue",
+vass_perturba_weapon_testing_handin_continue,DialogOptionSelected,"$option == vassPerturbaWeaponTestContinueGood","VassPerturbaWeaponTestingHandin","The agent collects the prototypes, transfers credits to your account and leaves in the shuttle, allowing you to go on with your business.",,
+vass_perturba_weapon_testing_handin,OpenInteractionDialog,"VassPerturbaWeaponTestingCanTriggerFinalDialog score:1000
+VassPerturbaWeaponTestingHasPrototypes score:10","
+","A tiny shuttle intercepts you as you get close to the market. Once it gets closer you realize it's broadcasting on an encrypted Perturba frequency; this is most likely your mission contact for handover.
+
+""Ah, so you're finished with the testing, I'd presume? Perfect. And from the readings I'm getting, you still have some prototypes intact! I'm coming aboard and defusing them: don't want the buggers exploding in our faces now do we?""","vassPerturbaWeaponTestContinueGood:Continue",
+"#END Perturba Weapon Testing",,,,,,
+"#END Quests",,,,,,
+,,,,,,
 # FleetEncounters,,,,,,
 ,,,,,,
 # General,,,,,,

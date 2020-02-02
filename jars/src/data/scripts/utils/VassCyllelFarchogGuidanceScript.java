@@ -68,7 +68,7 @@ public class VassCyllelFarchogGuidanceScript extends BaseEveryFrameCombatPlugin 
 	private static final float TARGET_REACQUIRE_ANGLE = 0f;
 
 	//How fast the projectile is allowed to turn, in degrees/second
-	private static final float TURN_RATE = 360f;
+	private static final float TURN_RATE = 520f;
 
 	//If non-zero, the projectile will sway back-and-forth by this many degrees during its guidance (with a sway period determined by SWAY_PERIOD).
 	//High values, as one might expect, give very poor tracking. Also, high values will decrease effective range (as the projectiles travel further) so be careful
@@ -89,7 +89,7 @@ public class VassCyllelFarchogGuidanceScript extends BaseEveryFrameCombatPlugin 
 
 	//Only used for ONE_TURN_DUMB: the actual target angle is randomly offset by this much, to simulate inaccuracy
 	//2f means up to 2 degrees angle off from the actual target angle
-	private static final float ONE_TURN_DUMB_INACCURACY = 6f;
+	private static final float ONE_TURN_DUMB_INACCURACY = 7f;
 
 	//Only used for ONE_TURN_TARGET: the actual target point is randomly offset by this many SU, to simulate inaccuracy
 	//20f means up to 20 SU away from the actual target point

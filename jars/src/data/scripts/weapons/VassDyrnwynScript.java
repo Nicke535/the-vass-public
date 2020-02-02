@@ -2,6 +2,8 @@ package data.scripts.weapons;
 
 import com.fs.starfarer.api.combat.*;
 import com.fs.starfarer.api.util.Misc;
+import org.lazywizard.lazylib.MathUtils;
+import org.lwjgl.util.vector.Vector2f;
 
 /**
  * Speeds up the firerate of a weapon depending on a ship's time mult

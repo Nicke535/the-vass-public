@@ -104,19 +104,26 @@ public class VassAsiScript implements EveryFrameWeaponEffectPlugin {
                 currentTrailID = MagicTrailPlugin.getUniqueID();
                 hasAccelerated = true;
 
+                //Spawn an extra glow!
+                Global.getCombatEngine().addHitParticle(proj.getLocation(), offsetVelocity, 32f,
+                        1f, 0.15f, VassUtils.getFamilyColor(VassUtils.VASS_FAMILY.ACCEL, 1f));
+
                 //Also play sound, because people love sound cues!
                 Global.getSoundPlayer().playSound("vass_asi_acceleration", 1f, 1f, new Vector2f(proj.getLocation()), Misc.ZERO);
             }
 
-            //Adds a new trail piece to the projectile: do this semi-randomly at low global time mult
-            if (Math.random() < Math.sqrt(Global.getCombatEngine().getTimeMult().getModifiedValue())) {
-                Color colorToUse = VassUtils.getFamilyColor(VassUtils.VASS_FAMILY.TORPOR, 1f);
-                if (hasAccelerated) {
-                    colorToUse = VassUtils.getFamilyColor(VassUtils.VASS_FAMILY.ACCEL, 1f);
+            if (!hasAccelerated) {
+                //We're not accelerated, so spawn a growing glow, sorta
+                Global.getCombatEngine().addHitParticle(proj.getLocation(), proj.getVelocity(), 27f * timer / estimatedAccelPoint,
+                                                        1f, amount*2f, VassUtils.getFamilyColor(VassUtils.VASS_FAMILY.TORPOR, 1f));
+            } else {
+                //When accelerated: adds a new trail piece to the projectile. Do this semi-randomly at low global time mult
+                if (Math.random() < Math.sqrt(Global.getCombatEngine().getTimeMult().getModifiedValue())) {
+                    Color colorToUse = VassUtils.getFamilyColor(VassUtils.VASS_FAMILY.ACCEL, 1f);
+                    MagicTrailPlugin.AddTrailMemberSimple(proj, currentTrailID, Global.getSettings().getSprite("vass_fx", "projectile_trail_zappy"),
+                            proj.getLocation(), 0f, proj.getFacing(), 15f, 8f, colorToUse, 0.3f,
+                            0.6f,true, offsetVelocity, CombatEngineLayers.ABOVE_SHIPS_AND_MISSILES_LAYER);
                 }
-                MagicTrailPlugin.AddTrailMemberSimple(proj, currentTrailID, Global.getSettings().getSprite("vass_fx", "projectile_trail_zappy"),
-                        proj.getLocation(), 0f, proj.getFacing(), hasAccelerated ? 15f : 20f, hasAccelerated ? 8f : 10f, colorToUse, 0.3f,
-                        hasAccelerated ? 0.6f : 0.75f,true, offsetVelocity, CombatEngineLayers.ABOVE_SHIPS_AND_MISSILES_LAYER);
             }
         }
     }

@@ -63,7 +63,7 @@ public class VassRemoveVassShipsGiveCompensation extends BaseCommandPlugin {
             }
         }
         for (CargoAPI.CargoItemQuantity<String> fighter : toRemove) {
-            playerFleet.getCargo().removeCommodity(fighter.getItem(), fighter.getCount());
+            playerFleet.getCargo().removeItems(CargoAPI.CargoItemType.FIGHTER_CHIP, fighter.getItem(), fighter.getCount());
         }
 
         Global.getSector().getPlayerFleet().forceSync();

@@ -1,0 +1,27 @@
+{
+	"id":"vass_prototype_m1",  # this id must match what's in the spreadsheet
+	"specClass":"projectile",
+	"type":"ENERGY",
+	"size":"MEDIUM",
+	"everyFrameEffect":"data.scripts.weapons.VassRandomPrototypeScript",	
+	"turretSprite":"graphics/vass/weapons/prototype/mt1base.png",
+	"turretGlowSprite":"graphics/vass/weapons/prototype/mt1glow.png",
+	"hardpointSprite":"graphics/vass/weapons/prototype/mh1base.png",
+	"hardpointGlowSprite":"graphics/vass/weapons/prototype/mh1glow.png",
+	"glowColor":[245,152,20,255],
+	"turretOffsets":[13, 0],
+	"turretAngleOffsets":[0],
+	"hardpointOffsets":[16, 0],
+	"hardpointAngleOffsets":[0],
+	"barrelMode":"ALTERNATING", # or LINKED.  whether barrels fire at the same time or alternate.
+	#"animationType":"GLOW",
+	"animationType":"GLOW_AND_FLASH",
+	"muzzleFlashSpec":{"length":18.0,   # only used if animationType = MUZZLE_FLASH
+					   "spread":9.0,
+					   "particleSizeMin":9.0,
+					   "particleSizeRange":15.0,
+					   "particleDuration":0.32,
+					   "particleCount":13,
+					   "particleColor":[245,152,20,255]},
+	"projectileSpecId":"vass_fake_prototype_shot",  # projectile that will be fired
+}

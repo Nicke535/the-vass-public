@@ -22,33 +22,33 @@ public class VassReactiveChronalDissonator extends BaseHullMod {
     @Override
     public void advanceInCombat(ShipAPI ship, float amount) {
         if (ship == Global.getCombatEngine().getPlayerShip() && !ship.isHulk() && !ship.getSystem().isOn()) {
-      boolean shouldSlowTime = false;
-      boolean shouldSlowTimeAlot = false;
+            boolean shouldSlowTime = false;
+            boolean shouldSlowTimeAlot = false;
 
-      for (DamagingProjectileAPI proj : CombatUtils.getProjectilesWithinRange(ship.getLocation(), EFFECT_RANGE)) {
-        if (proj.getSource().getOwner() != ship.getOwner()) {
-          shouldSlowTime = true;
-          break;
-        }
-      }
-      for (MissileAPI proj : CombatUtils.getMissilesWithinRange(ship.getLocation(), EFFECT_RANGE)) {
-        if (proj.getSource().getOwner() != ship.getOwner() || shouldSlowTime) {
-          shouldSlowTime = true;
-          break;
-        }
-      }
-      for (DamagingProjectileAPI proj : CombatUtils.getProjectilesWithinRange(ship.getLocation(), EFFECT_RANGE_CLOSE)) {
-        if (proj.getSource().getOwner() != ship.getOwner() && proj.getDamageAmount() >= ship.getHullLevel() * ship.getMaxHitpoints() * 0.5f) {
-          shouldSlowTimeAlot = true;
-          break;
-        }
-      }
-      for (MissileAPI proj : CombatUtils.getMissilesWithinRange(ship.getLocation(), EFFECT_RANGE_CLOSE)) {
-        if ((proj.getSource().getOwner() != ship.getOwner() && proj.getDamageAmount() >= ship.getHullLevel() * ship.getMaxHitpoints() * 0.5f) || shouldSlowTimeAlot) {
-          shouldSlowTimeAlot = true;
-          break;
-        }
-      }
+            for (DamagingProjectileAPI proj : CombatUtils.getProjectilesWithinRange(ship.getLocation(), EFFECT_RANGE)) {
+                if (proj.getSource().getOwner() != ship.getOwner()) {
+                    shouldSlowTime = true;
+                    break;
+                }
+            }
+            for (MissileAPI proj : CombatUtils.getMissilesWithinRange(ship.getLocation(), EFFECT_RANGE)) {
+                if (proj.getSource().getOwner() != ship.getOwner() || shouldSlowTime) {
+                    shouldSlowTime = true;
+                    break;
+                }
+            }
+            for (DamagingProjectileAPI proj : CombatUtils.getProjectilesWithinRange(ship.getLocation(), EFFECT_RANGE_CLOSE)) {
+                if (proj.getSource().getOwner() != ship.getOwner() && proj.getDamageAmount() >= ship.getHullLevel() * ship.getMaxHitpoints() * 0.5f) {
+                    shouldSlowTimeAlot = true;
+                    break;
+                }
+            }
+            for (MissileAPI proj : CombatUtils.getMissilesWithinRange(ship.getLocation(), EFFECT_RANGE_CLOSE)) {
+                if ((proj.getSource().getOwner() != ship.getOwner() && proj.getDamageAmount() >= ship.getHullLevel() * ship.getMaxHitpoints() * 0.5f) || shouldSlowTimeAlot) {
+                    shouldSlowTimeAlot = true;
+                    break;
+                }
+            }
 
             if (shouldSlowTimeAlot) {
                 float timeMult = 1f + (TIME_MULT_SUPERCLOSE - 1f);

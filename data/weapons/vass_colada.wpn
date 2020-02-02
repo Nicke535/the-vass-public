@@ -12,7 +12,8 @@
 	"turretOffsets":[0, 0, 0, 0, 0, 0],
 	"hardpointAngleOffsets":[0, 0, 0],
 	"turretAngleOffsets":[0, 0, 0],
-	"barrelMode":"LINKED",	
+	"barrelMode":"LINKED", # or ALTERNATING.  whether barrels fire at the same time or alternate.
+	"separateRecoilForLinkedBarrels":"TRUE",
 	"animationType":"GLOW",
 	"glowColor":[100,255,58,180],
 	"interruptibleBurst":false,

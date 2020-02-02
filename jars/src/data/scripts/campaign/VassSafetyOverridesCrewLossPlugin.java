@@ -2,24 +2,12 @@ package data.scripts.campaign;
 
 import com.fs.starfarer.api.EveryFrameScript;
 import com.fs.starfarer.api.Global;
-import com.fs.starfarer.api.campaign.FactionAPI;
-import com.fs.starfarer.api.campaign.LocationAPI;
 import com.fs.starfarer.api.campaign.SectorAPI;
-import com.fs.starfarer.api.campaign.SectorEntityToken;
-import com.fs.starfarer.api.campaign.comm.IntelInfoPlugin;
-import com.fs.starfarer.api.campaign.econ.MarketAPI;
-import com.fs.starfarer.api.campaign.econ.MarketConditionAPI;
 import com.fs.starfarer.api.fleet.FleetMemberAPI;
-import com.fs.starfarer.api.impl.campaign.ids.Conditions;
-import com.fs.starfarer.api.impl.campaign.ids.Factions;
 import com.fs.starfarer.api.util.IntervalUtil;
 import com.fs.starfarer.api.util.Misc;
 import data.scripts.hullmods.VassPeriodicPlating;
 import org.lazywizard.lazylib.MathUtils;
-
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
 
 /**
  * Brutally punishes the player (or rather, their crew) when using Vass tech without reading the manual first
@@ -27,7 +15,7 @@ import java.util.Map;
  */
 public class VassSafetyOverridesCrewLossPlugin implements EveryFrameScript {
 
-    IntervalUtil interval = new IntervalUtil(0.5f, 1.2f);
+    private IntervalUtil interval = new IntervalUtil(0.5f, 1.2f);
 
     @Override
     public void advance( float amount ) {

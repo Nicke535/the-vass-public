@@ -5,7 +5,9 @@
 	"size":"MEDIUM",
 	"everyFrameEffect":"data.scripts.weapons.VassCaladbolgScript",	
 	"turretSprite":"graphics/vass/weapons/caladbolg/caladbolg_turret_base_00.png",
+	"turretUnderSprite":"graphics/vass/weapons/caladbolg/caladbolg_turret_under.png",
 	"hardpointSprite":"graphics/vass/weapons/caladbolg/caladbolg_hardpoint_base_00.png",
+	"hardpointUnderSprite":"graphics/vass/weapons/caladbolg/caladbolg_hardpoint_under.png",
 	"numFrames":38,
 	"frameRate":0,
 	"alwaysAnimate":"false",
@@ -23,5 +25,5 @@
 					   "particleCount":46,
 					   "particleColor":[255,155,75,225]},
 	"projectileSpecId":"vass_caladbolg_shot",  # projectile that will be fired	
-	"fireSoundTwo":"flak_fire",
+	"fireSoundTwo":"vass_caladbolg_fire",
 }

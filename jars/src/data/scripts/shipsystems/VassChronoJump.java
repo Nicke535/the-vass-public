@@ -6,6 +6,7 @@ import com.fs.starfarer.api.graphics.SpriteAPI;
 import com.fs.starfarer.api.impl.combat.BaseShipSystemScript;
 import com.fs.starfarer.api.loading.ProjectileSpawnType;
 import com.fs.starfarer.api.util.Misc;
+import data.scripts.plugins.MagicTrailPlugin;
 import data.scripts.util.MagicRender;
 import data.scripts.utils.VassTimeSplitProjScript;
 import data.scripts.utils.VassUtils;
@@ -18,6 +19,9 @@ import org.lwjgl.util.vector.Vector2f;
 
 import java.awt.*;
 import java.util.List;
+
+import static org.lwjgl.opengl.GL11.GL_ONE;
+import static org.lwjgl.opengl.GL11.GL_SRC_ALPHA;
 
 /**
  * Causes nearby missiles and projectiles to be "shifted" through time, skipping over anything in the way
@@ -140,6 +144,9 @@ public class VassChronoJump extends BaseShipSystemScript {
                     continue;
                 }
 
+                //Cut trails!
+                MagicTrailPlugin.cutTrailsOnEntity(proj);
+
                 //Teleport to the future
                 Vector2f startPos = new Vector2f(proj.getLocation());
                 Vector2f destPos = new Vector2f(startPos.x + proj.getVelocity().x * TIME_SKIP_AMOUNT, startPos.y + proj.getVelocity().y * TIME_SKIP_AMOUNT);
@@ -182,10 +189,18 @@ public class VassChronoJump extends BaseShipSystemScript {
                     colorToUse = new Color(230, 240, 255, Math.min((int)(proj.getDamageAmount()*7f), 255));
                 }
 
-                //TODO: improve the visuals of this thing
-                for (Vector2f point : pointsToSpawnAt) {
-                    engine.addSmoothParticle(point, new Vector2f(0f, 0f), MathUtils.getRandomNumberInRange(0.7f, 1.2f) * (float)Math.sqrt(proj.getDamageAmount()*2f),
-                            1f, MathUtils.getRandomNumberInRange(0.2f, 0.4f), colorToUse);
+                //Spawns some fancy trails for the projectiles
+                float trailID = MagicTrailPlugin.getUniqueID();
+                SpriteAPI trailSprite = Global.getSettings().getSprite("fx", "base_trail_zap");
+                float sizeMod = (float)Math.sqrt(proj.getDamageAmount()*2f);
+                for (int i = 0; i < pointsToSpawnAt.size()-1; i++) {
+                    boolean underShips = Math.random() < 0.5f;
+                    MagicTrailPlugin.AddTrailMemberAdvanced(null, trailID, trailSprite, pointsToSpawnAt.get(i),
+                            0f, 200f, VectorUtils.getAngle(pointsToSpawnAt.get(i), pointsToSpawnAt.get(i+1)),
+                            0f, MathUtils.getRandomNumberInRange(-400f, 400f), sizeMod, sizeMod/3f,
+                            colorToUse, colorToUse,0.5f, 0f, 0.3f * i/pointsToSpawnAt.size(), 0.3f,
+                            GL_SRC_ALPHA, GL_ONE, 128f, 0f, new Vector2f(0f, 0f), null,
+                            underShips ? CombatEngineLayers.BELOW_SHIPS_LAYER : CombatEngineLayers.BELOW_INDICATORS_LAYER);
                 }
 
                 //Finally, apply special effects for modded weapons that need it

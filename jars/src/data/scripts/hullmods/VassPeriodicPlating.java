@@ -30,6 +30,7 @@ import org.lwjgl.util.vector.Vector2f;
 public class VassPeriodicPlating extends BaseHullMod {
 	public static final Logger LOGGER = Global.getLogger(VassPeriodicPlating.class);
 
+	//Stats
     public static final float TIME_MULT = 1.2f;
     public static final Color AFTERIMAGE_COLOR_STANDARD = new Color(80, 255, 38, 100);
     public static final float AFTERIMAGE_THRESHHOLD = 0.1f;
@@ -38,7 +39,7 @@ public class VassPeriodicPlating extends BaseHullMod {
 	public static final float CREW_LOST_FRACTION_PER_MINUTE = 0.07f;
 
 	//The time spent in combat by the ship, for calculating SO crew losses. Added here, cleared and used in a campaign script
-	public static Map<String, Float> timeInCombatMap = new HashMap<String, Float>();
+	public static Map<String, Float> timeInCombatMap = new HashMap<>();
 
 	private WeakHashMap<ShipAPI, VassUtils.VASS_FAMILY> familyMembership = new WeakHashMap<>();
 	private WeakHashMap<ShipAPI, Boolean> eliteStatus = new WeakHashMap<>();
@@ -64,8 +65,11 @@ public class VassPeriodicPlating extends BaseHullMod {
 			}
 		}
 
-		//If we have SO equipped, we store our time spent in combat (only for the player fleet, in the campaign)
-		if (ship.getVariant().hasHullMod("safetyoverrides") && Global.getCombatEngine().getFleetManager(ship.getOwner()) == Global.getCombatEngine().getFleetManager(FleetSide.PLAYER)) {
+		//If we have SO equipped, we store our time spent in combat (only for the player fleet, in the campaign, outside of sims)
+		if (ship.getVariant().hasHullMod("safetyoverrides")
+				&& Global.getCombatEngine().getFleetManager(ship.getOwner()) == Global.getCombatEngine().getFleetManager(FleetSide.PLAYER)
+				&& !Global.getCombatEngine().isSimulation()
+				&& Global.getCombatEngine().isInCampaign()) {
 			FleetMemberAPI member = CombatUtils.getFleetMember(ship);
 			if (member != null) {
 				//We assume that if the ship is destroyed, the additional crew loss is marginal at most, so we remove it from our nice list
@@ -168,6 +172,7 @@ public class VassPeriodicPlating extends BaseHullMod {
 	private void addPostDescriptionContractBonus (TooltipMakerAPI tooltip, ShipAPI.HullSize hullSize, ShipAPI ship, float width, boolean isForModSpec) {
 		//This does nothing if we're not a member of a family
 		VassUtils.VASS_FAMILY family = null;
+		try {family = VassUtils.getFamilyMembershipOfShip(ship);} catch (IllegalStateException e) {LOGGER.warn(e.getMessage());}
 		try { family = VassUtils.getFamilyMembershipOfShip(ship); } catch (IllegalStateException e) { LOGGER.warn("Suppressed an exception : " + e.getMessage()); }
 		if (family == null) {
 			return;
@@ -179,7 +184,7 @@ public class VassPeriodicPlating extends BaseHullMod {
 		//If we have family membership, inform the player of its benefits
 		//Perturba : Weapon bonuses... This thing isn't gonna fit in the screen, is it?
 		if (family == VassUtils.VASS_FAMILY.PERTURBA) {
-			TooltipMakerAPI text = tooltip.beginImageWithText("graphics/hullmods/targeting_supercomputer.png", 36); //TODO: fix proper icon
+			TooltipMakerAPI text = tooltip.beginImageWithText("graphics/vass/hullmods/perturba_hullmod.png", 36);
 			text.addPara("Perturba - Exotic weapon specialists", 0, VassUtils.getFamilyColor(VassUtils.VASS_FAMILY.PERTURBA, 1f), Misc.getHighlightColor(), "Exotic weapon specialists");
 			text.addPara("Yawarakai-Te: +150 SU before damage falloff, +20%% damage", 2, Misc.getHighlightColor(),"Yawarakai-Te", "+150", "+20%");
 			text.addPara("Dyrnwyn/Cyllel Farchog: Firerate bonus applies at half the normal time variation", 2, Misc.getHighlightColor(), "Dyrnwyn", "Cyllel Farchog", "half");
