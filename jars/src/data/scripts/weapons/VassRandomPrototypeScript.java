@@ -2,6 +2,7 @@ package data.scripts.weapons;
 
 import com.fs.starfarer.api.Global;
 import com.fs.starfarer.api.combat.*;
+import com.fs.starfarer.api.util.Misc;
 import data.scripts.campaign.barEvents.VassPerturbaWeaponTestingIntel;
 import data.scripts.utils.VassPerturbaRandomPrototypeManager.PrototypeWeaponData;
 import org.lazywizard.lazylib.MathUtils;
@@ -25,11 +26,6 @@ public class VassRandomPrototypeScript implements EveryFrameWeaponEffectPlugin {
         //Failsafe : refit screen and more!
         if (engine == null || !engine.isEntityInPlay(weapon.getShip())) {
             return;
-        }
-
-        //Prototype weapons always have half the normal weapon health
-        if (weapon.getCurrHealth() > weapon.getCurrHealth()/2f) {
-            weapon.setCurrHealth(weapon.getCurrHealth()/2f);
         }
 
         //Instantly disable in simulation or missions
@@ -76,7 +72,7 @@ public class VassRandomPrototypeScript implements EveryFrameWeaponEffectPlugin {
                     DamagingProjectileAPI newProj = (DamagingProjectileAPI) engine.spawnProjectile(weapon.getShip(), weapon,
                             currentData.projectileWeaponId, proj.getLocation(),
                             proj.getFacing()+ MathUtils.getRandomNumberInRange(-currentData.inaccuracy, currentData.inaccuracy),
-                            weapon.getShip().getVelocity());
+                            null);
                     newProj.setDamageAmount(weapon.getDamage().getDamage()*currentData.damageMult/currentData.shotgunFactor);
                     if (newProj.getAI() instanceof ProximityFuseAIAPI) {
                         ((ProximityFuseAIAPI) newProj.getAI()).updateDamage();

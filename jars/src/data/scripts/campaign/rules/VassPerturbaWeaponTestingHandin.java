@@ -35,7 +35,7 @@ public class VassPerturbaWeaponTestingHandin extends BaseCommandPlugin {
         Color h = Misc.getHighlightColor();
 
         //Prototype removal - text
-        text.addPara("Lost all perturba prototypes");
+        text.addPara("Lost all perturba prototypes", Misc.getNegativeHighlightColor());
 
         //Credit payment
         int creditsEarned = Math.round((Integer)Global.getSector().getMemoryWithoutUpdate().get(VassPerturbaWeaponTestingEvent.COLLATERAL_MEM_KEY)

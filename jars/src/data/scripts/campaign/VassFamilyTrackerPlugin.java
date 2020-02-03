@@ -42,12 +42,12 @@ public class VassFamilyTrackerPlugin implements EveryFrameScript {
     //minimum/maximum cooldown of this, as well as the cooldown while passively checking this
     //The more power the family that sends the fleet has, the lower the cooldown. Specified in days.
     private static final float CONTINOUS_CHECK_REVENGE_COOLDOWN = 0.5f;
-    private static final float MAX_LOOT_REVENGE_COOLDOWN = 400f;
-    private static final float MIN_LOOT_REVENGE_COOLDOWN = 150f;
+    private static final float MAX_LOOT_REVENGE_COOLDOWN = 270f;
+    private static final float MIN_LOOT_REVENGE_COOLDOWN = 100f;
     private float currentLootRevengeCooldown = 0f;
     
     //How many days are needed in sequence to actually trigger a fleet to hunt the player down?
-    private static final float DAYS_NEEDED_TO_SEND_REVENGE_FLEET = 1.5f;
+    private static final float DAYS_NEEDED_TO_SEND_REVENGE_FLEET = 2.5f;
     private float lootRevengeDaysInSequence = 0f;
 
     //How many fleet points can the families dish out per "power" they have?
@@ -92,12 +92,14 @@ public class VassFamilyTrackerPlugin implements EveryFrameScript {
 
         //--  Checks the player fleet has been naughty, and orders a fleet to... give them some trouble  --
         currentLootRevengeCooldown -= Misc.getDays(amount);
+        Global.getSector().getCampaignUI().addMessage("Loot fleet cooldown : " + currentLootRevengeCooldown);
         if (currentLootRevengeCooldown <= 0f) {
             if ((playerHasVassShips() && !playerAllowedToOwnVassShips()) ||
                     (playerSoldShipsListener.hasSoldMinor && !playerAllowedToSellMinor()) ||
                     (playerSoldShipsListener.hasSoldMajor && !playerAllowedToSellMajor())) {
                 //We need several consecutive checks ot succeed for a fleet to be sent, to give a player some leeway
                 if (lootRevengeDaysInSequence < DAYS_NEEDED_TO_SEND_REVENGE_FLEET) {
+                    Global.getSector().getCampaignUI().addMessage("Loot fleet waiting : " + lootRevengeDaysInSequence + " days in sequence waited.");
                     lootRevengeDaysInSequence += CONTINOUS_CHECK_REVENGE_COOLDOWN;
                     currentLootRevengeCooldown = CONTINOUS_CHECK_REVENGE_COOLDOWN;
                 } else {
@@ -129,7 +131,7 @@ public class VassFamilyTrackerPlugin implements EveryFrameScript {
                 }
             } else {
                 //Wait some time to check again
-                currentLootRevengeCooldown = 0.5f;
+                currentLootRevengeCooldown = CONTINOUS_CHECK_REVENGE_COOLDOWN;
                 lootRevengeDaysInSequence = 0f;
             }
         }

@@ -61,8 +61,8 @@ public class VassPerturbaWeaponTestingIntel extends BaseIntelPlugin {
     protected void notifyEnded() {
         super.notifyEnded();
         Global.getSector().removeScript(this);
-        Global.getSector().getMemoryWithoutUpdate().unset(VassPerturbaWeaponTestingEvent.COLLATERAL_MEM_KEY);
-        Global.getSector().getMemoryWithoutUpdate().unset(VassPerturbaWeaponTestingIntel.MEM_KEY_PROTOTYPE_DATA);
+        Global.getSector().getMemory().unset(VassPerturbaWeaponTestingEvent.COLLATERAL_MEM_KEY);
+        Global.getSector().getMemory().unset(VassPerturbaWeaponTestingIntel.MEM_KEY_PROTOTYPE_DATA);
     }
 
     //Handles the bullet-points on the intel screen
@@ -77,7 +77,7 @@ public class VassPerturbaWeaponTestingIntel extends BaseIntelPlugin {
 
         bullet(info);
         if (battlesCompleted >= 3) {
-            info.addPara("All weapon tests completed: return to " + event.getMarket(), pad);
+            info.addPara("All weapon tests completed: return to " + event.getMarket().getName(), pad);
         } else {
             info.addPara(battlesCompleted + "/3 weapon tests completed.", pad);
         }
