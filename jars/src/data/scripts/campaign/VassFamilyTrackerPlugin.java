@@ -92,14 +92,12 @@ public class VassFamilyTrackerPlugin implements EveryFrameScript {
 
         //--  Checks the player fleet has been naughty, and orders a fleet to... give them some trouble  --
         currentLootRevengeCooldown -= Misc.getDays(amount);
-        Global.getSector().getCampaignUI().addMessage("Loot fleet cooldown : " + currentLootRevengeCooldown);
         if (currentLootRevengeCooldown <= 0f) {
             if ((playerHasVassShips() && !playerAllowedToOwnVassShips()) ||
                     (playerSoldShipsListener.hasSoldMinor && !playerAllowedToSellMinor()) ||
                     (playerSoldShipsListener.hasSoldMajor && !playerAllowedToSellMajor())) {
                 //We need several consecutive checks ot succeed for a fleet to be sent, to give a player some leeway
                 if (lootRevengeDaysInSequence < DAYS_NEEDED_TO_SEND_REVENGE_FLEET) {
-                    Global.getSector().getCampaignUI().addMessage("Loot fleet waiting : " + lootRevengeDaysInSequence + " days in sequence waited.");
                     lootRevengeDaysInSequence += CONTINOUS_CHECK_REVENGE_COOLDOWN;
                     currentLootRevengeCooldown = CONTINOUS_CHECK_REVENGE_COOLDOWN;
                 } else {
