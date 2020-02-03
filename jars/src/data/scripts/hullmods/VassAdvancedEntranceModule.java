@@ -44,7 +44,8 @@ public class VassAdvancedEntranceModule extends BaseHullMod {
         for (ShipAPI possibleCollision : CombatUtils.getShipsWithinRange(ship.getLocation(), ship.getCollisionRadius())) {
             if (!possibleCollision.getCollisionClass().equals(CollisionClass.NONE) &&
                     !possibleCollision.getCollisionClass().equals(CollisionClass.FIGHTER) &&
-                    possibleCollision.getOwner() == ship.getOwner()) {
+                    possibleCollision.getOwner() == ship.getOwner() &&
+                    possibleCollision != ship) {
                 safetyDistanceBreached = true;
                 break;
             }

@@ -1,3 +1,20 @@
+Version 0.3.2a
+ General:
+  - Made Vass punishment fleets considerably more common at low Vass Power, and slightly more common at high ones
+  - Increased spawn delay for Vass Punishment fleets slightly
+  - Stopped the Vass from attempting to extort battlestations
+
+ Bugfixes:
+  - Fixed the Perturba Weapon Testing event not being finishable
+  - The Debug flag is no longer enabled for the Perturba Weapon Testing event; it should no longer appear all the time regardless of condition
+  - Fixed the intel description for the Perturba Weapon Testing event
+  - Fixed Perturba Prototypes auto-disabling themselves in combat at times
+  - Fixed Perturba Prototypes having more target leading issues than intended
+     > This quest was quite broken on release! I'm sorry for that, hopefully the big issues are now fixed
+  
+
+
+
 Version 0.3.2: Time for a new quest
  General:
   - Added a new repeatable quest for Perturba after you've met their contact

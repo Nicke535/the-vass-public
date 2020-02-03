@@ -97,6 +97,11 @@ public class VassRandomEncounterPlugin implements EveryFrameScript {
                     continue;
                 }
 
+                //Ignore fleets that have *stations*, because that's silly and buggable
+                if (fleet.isStationMode() || fleetHasStation(fleet)) {
+                    continue;
+                }
+
                 //Only fleets that are somewhat isolated from other enemies are targeted
                 boolean valid = true;
                 for (CampaignFleetAPI otherFleet : CampaignUtils.getNearbyFleets(fleet, 500f)) {
@@ -141,6 +146,18 @@ public class VassRandomEncounterPlugin implements EveryFrameScript {
             }
         }
         return true;
+    }
+
+    /**
+     * Checks if a fleet contains any ship that counts as a station
+     */
+    private boolean fleetHasStation(CampaignFleetAPI fleet){
+        for (FleetMemberAPI member : fleet.getMembersWithFightersCopy()) {
+            if (member.isStation()) {
+                return true;
+            }
+        }
+        return false;
     }
 
     /**

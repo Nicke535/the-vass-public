@@ -38,7 +38,7 @@ public class VassPerturbaWeaponTestingCanTriggerFinalDialog extends BaseCommandP
         }
 
         //No collateral data: something either went wrong, or we haven't started the mission
-        Object collateral = Global.getSector().getMemoryWithoutUpdate().get(VassPerturbaWeaponTestingEvent.COLLATERAL_MEM_KEY);
+        Object collateral = Global.getSector().getMemory().get(VassPerturbaWeaponTestingEvent.COLLATERAL_MEM_KEY);
         if (!(collateral instanceof Integer)) {
             return false;
         }

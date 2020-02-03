@@ -24,8 +24,7 @@ import java.awt.*;
 public class VassPerturbaWeaponTestingEvent extends VassPerturbaBaseEvent {
     public static final Logger LOGGER = Global.getLogger(VassPerturbaWeaponTestingEvent.class);
 
-    //TODO: Turn off before release
-    public static final boolean DEBUG_MODE = true;
+    public static final boolean DEBUG_MODE = false;
 
     public enum OptionId {
         INIT,
@@ -42,7 +41,7 @@ public class VassPerturbaWeaponTestingEvent extends VassPerturbaBaseEvent {
     public static final float REWARD_PERCENTAGE_MAX = 0.5f;
     public static final float REWARD_PERCENTAGE_MIN = 0.2f;
     private static final float RELATIONS_NEEDED = 20f;
-    public static final float RELATIONS_BOOST_VASS = 3f;
+    public static final float RELATIONS_BOOST_VASS = 0.03f;
     public static final float RELATIONS_BOOST_PERTURBA = 5f;
     public static final float RELATIONS_MAX_PERTURBA = 65f;
 
