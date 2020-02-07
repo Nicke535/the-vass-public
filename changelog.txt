@@ -1,3 +1,8 @@
+Version 0.3.X
+ Bugfix:
+  - Removed the no-autofit tag from Vass ships, as it caused issues with custom orders and some modded hullmods
+
+
 Version 0.3.2b
  Bugfix:
   - Removed massive debug logs spawning all the time
