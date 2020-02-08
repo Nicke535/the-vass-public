@@ -23,6 +23,8 @@ public class VassDecklightsScript implements EveryFrameWeaponEffectPlugin {
             return;
         }
 
+        weapon.getSpec().getWeaponId()
+
         if (ship.isPiece()) {                                       //First: are we a piece? If so, instantly lose all opacity
             currentBrightness = 0f;
         } else if (ship.isHulk()) {                                 //Second: are we a hulk? In that case, slowly fade out our color
