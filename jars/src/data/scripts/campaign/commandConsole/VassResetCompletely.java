@@ -35,6 +35,8 @@ public class VassResetCompletely implements BaseCommand {
         Global.getSector().getMemoryWithoutUpdate().unset(VassPerturbaWeaponTestingIntel.MEM_KEY_PROTOTYPE_DATA);
         Global.getSector().getMemoryWithoutUpdate().unset(VassPerturbaWeaponTestingIntel.MEM_KEY_PROTOTYPE_WAS_IN_COMBAT);
 
+        Global.getSector().getMemoryWithoutUpdate().unset("$vass_firstTimeVassShipLooted");
+
         Console.showMessage("Most info about the Vass families successfully scrubbed from memory!");
         return CommandResult.SUCCESS;
     }
