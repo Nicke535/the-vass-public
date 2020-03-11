@@ -45,8 +45,18 @@ public class VassYawarakaiTeScript implements EveryFrameWeaponEffectPlugin {
     //Counter to run periodically
     private float counter = 0f;
 
+    //Unique ID counter for all script instances, and the ID for this instance
+    private static int uidCounter = 0;
+    private static Integer ourUID = null;
+
     @Override
     public void advance(float amount, CombatEngineAPI engine, WeaponAPI weapon) {
+        //Get an ID
+        if (ourUID == null) {
+            ourUID = uidCounter;
+            uidCounter++;
+        }
+
         //To enable automatic cleanup, yet to keep the semblance of a statically saved hashmap, we store it in the
         //engine's customData and load it in for each script
         if (missileStatusMap == null) {
@@ -121,11 +131,11 @@ public class VassYawarakaiTeScript implements EveryFrameWeaponEffectPlugin {
 
                 //If there were no missiles in arc, we refund our flux costs while firing and also don't show VFX/SFX
                 if (missileCount <= 0f) {
-                    weapon.getShip().getMutableStats().getFluxDissipation().modifyFlat("VassYawarakaiTeFluxRefund"+weapon.getId(), weapon.getDerivedStats().getFluxPerSecond());
+                    weapon.getShip().getMutableStats().getFluxDissipation().modifyFlat("VassYawarakaiTeFluxRefund"+ourUID, weapon.getDerivedStats().getFluxPerSecond());
                     return;
                 } else {
                     //Sound and visual effects if we have any missiles in range
-                    weapon.getShip().getMutableStats().getFluxDissipation().unmodify("VassYawarakaiTeFluxRefund"+weapon.getId());
+                    weapon.getShip().getMutableStats().getFluxDissipation().unmodify("VassYawarakaiTeFluxRefund"+ourUID);
                     float rangeMultiplier = Math.min(1f, Math.max(MINIMUM_DAMAGE_MULT, 1f - ((mostFarAwayMissile-effectiveRange) / (minDamageRange-effectiveRange))));
                     Global.getSoundPlayer().playSound("vass_yawaratai_te_pulse", 1f, rangeMultiplier, weapon.getLocation(), new Vector2f(Misc.ZERO));
                     engine.spawnExplosion(weapon.getLocation(), weapon.getShip().getVelocity(),
@@ -158,7 +168,7 @@ public class VassYawarakaiTeScript implements EveryFrameWeaponEffectPlugin {
                 }
             }
         } else {
-            weapon.getShip().getMutableStats().getFluxDissipation().unmodify("VassYawarakaiTeFluxRefund"+weapon.getId());
+            weapon.getShip().getMutableStats().getFluxDissipation().unmodify("VassYawarakaiTeFluxRefund"+ourUID);
         }
     }
 
