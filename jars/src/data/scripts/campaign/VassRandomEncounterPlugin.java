@@ -8,6 +8,7 @@ import com.fs.starfarer.api.fleet.FleetMemberAPI;
 import com.fs.starfarer.api.impl.campaign.fleets.FleetFactoryV3;
 import com.fs.starfarer.api.impl.campaign.fleets.FleetParamsV3;
 import com.fs.starfarer.api.impl.campaign.ids.Factions;
+import com.fs.starfarer.api.impl.campaign.ids.MemFlags;
 import com.fs.starfarer.api.loading.HullModSpecAPI;
 import com.fs.starfarer.api.loading.VariantSource;
 import com.fs.starfarer.api.util.IntervalUtil;
@@ -87,6 +88,11 @@ public class VassRandomEncounterPlugin implements EveryFrameScript {
                     continue;
                 }
 
+                //Ignore fleets that are mission-critical for some reason
+                if (fleet.getMemoryWithoutUpdate().get(MemFlags.ENTITY_MISSION_IMPORTANT) != null) {
+                    continue;
+                }
+
                 //Ignore fleets too close to the player fleet
                 if (MathUtils.getDistance(fleet.getLocation(), Global.getSector().getPlayerFleet().getLocation()) < Global.getSector().getPlayerFleet().getBaseSensorRangeToDetect(fleet.getSensorProfile()*1.5f)) {
                     continue;
@@ -113,8 +119,8 @@ public class VassRandomEncounterPlugin implements EveryFrameScript {
                 }
                 if (!valid) { continue; }
 
-                //If everything above passed, add us to the picker
-                picker.add(fleet);
+                //If everything above passed, add us to the picker, with an inverse weight for fleet size
+                picker.add(fleet, 1f / (float)Math.sqrt(fleet.getFleetPoints()));
             }
 
             //Pick one fleet at random to target. If none is valid, don't do anything
