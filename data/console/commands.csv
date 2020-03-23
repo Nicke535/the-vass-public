@@ -1,3 +1,4 @@
 command,class,tags,syntax,help
 VassResetStanding,data.scripts.campaign.commandConsole.VassResetStanding,"vass,campaign",vassresetstanding,"Resets all the relations to the five Vass families."
 VassResetCompletely,data.scripts.campaign.commandConsole.VassResetCompletely,"vass,campaign",vassresetcompletely,"Resets practically all data that can be reset in the Vass mod. Might be not be 100 percent stable, use at your own risk."
+VassMeetPerturbaContact,data.scripts.campaign.commandConsole.VassMeetPerturbaContact,"vass,campaign",vassmeetperturbacontact,"'Meets' the Perturba contact person. Mainly for getting yourself out of a bugged situation."

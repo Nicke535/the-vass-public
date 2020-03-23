@@ -1,3 +1,25 @@
+Version 0.3.2d
+ General:
+  - Vass fleets should no longer hunt any mission-critical targets, including person bounties
+     > This checks for a vanilla flag, so if you encounter a mod this still happens with, tell me
+
+ Balance:
+  - Makhaira:
+     * Cargo space from 10 -> 24
+     * Fuel from 20 -> 18
+        > It's a smuggling ship, after all.
+  - Schiavona:
+     * Cargo space from 80 -> 60
+     * Fuel from 80 -> 70
+        > It's not a smuggling ship, after all.
+  - Yawarakai-Te:
+     * DPS from 170 -> 210
+
+ Bugfix:
+  - Fixed missing memory key in the weapon-contract event preventing you from ever getting the weapon-testing event
+     > I also included a new Console Command to fix this for anyone who has already taken the weapon-contract event: just do the command "VassMeetPerturbaContact" and you're good to go
+
+
 Version 0.3.2c
  Bugfix:
   - Removed the no-autofit tag from Vass ships, as it caused issues with custom orders and some modded hullmods
