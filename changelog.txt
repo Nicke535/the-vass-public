@@ -10,6 +10,7 @@ Version 0.3.3 : Time for some shaders
  Bugfixes:
   - You can no longer start a Weapon Testing event while already performing one
   - Fixed bug causing partially-fitted carriers to occassionally bug out the first Vass encounter
+  - Fixed display bug for the Perturba version of the Vass hullmod (as of yet mission-exclusive)
 
 
 Version 0.3.2d
