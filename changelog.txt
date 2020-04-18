@@ -1,3 +1,17 @@
+Version 0.3.3 : Time for some shaders
+ General:
+  - Added GraphicsLib support for normal maps on ships and [most] weapons
+  - Added GraphicsLib light support for some guns and effects
+  - Made Yawarakai Te FX fade out faster if the player is firing it while under influence (timeflow influence, that is)
+
+ Balance:
+  - Made Perturba Weapon Testing missions more profitable, and improved the relations bonus gotten from them
+
+ Bugfixes:
+  - You can no longer start a Weapon Testing event while already performing one
+  - Fixed bug causing partially-fitted carriers to occassionally bug out the first Vass encounter
+
+
 Version 0.3.2d
  General:
   - Vass fleets should no longer hunt any mission-critical targets, including person bounties

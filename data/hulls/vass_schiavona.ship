@@ -319,7 +319,7 @@
       "arc": 0,
       "id": "WS0005",
       "locations": [
-        48,
+        47,
         -21
       ],
       "mount": "HARDPOINT",
@@ -331,7 +331,7 @@
       "arc": 0,
       "id": "WS0006",
       "locations": [
-        48,
+        47,
         21
       ],
       "mount": "HARDPOINT",

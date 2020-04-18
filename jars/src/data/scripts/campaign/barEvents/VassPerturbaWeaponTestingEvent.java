@@ -35,14 +35,14 @@ public class VassPerturbaWeaponTestingEvent extends VassPerturbaBaseEvent {
     }
 
     public static final String COLLATERAL_MEM_KEY = "$vass_perturba_current_collateral_paid";
-    private static final float COLLATERAL_PERCENTAGE = 0.1f;
+    private static final float COLLATERAL_PERCENTAGE = 0.2f;
     private static final int COLLATERAL_MAX = 100000;
     private static final int COLLATERAL_MIN = 2000;
-    public static final float REWARD_PERCENTAGE_MAX = 0.5f;
-    public static final float REWARD_PERCENTAGE_MIN = 0.2f;
+    public static final float REWARD_PERCENTAGE_MAX = 1.8f;
+    public static final float REWARD_PERCENTAGE_MIN = 1.2f;
     private static final float RELATIONS_NEEDED = 20f;
-    public static final float RELATIONS_BOOST_VASS = 0.03f;
-    public static final float RELATIONS_BOOST_PERTURBA = 5f;
+    public static final float RELATIONS_BOOST_VASS = 0.07f;
+    public static final float RELATIONS_BOOST_PERTURBA = 6f;
     public static final float RELATIONS_MAX_PERTURBA = 65f;
 
     public String currentPrototypeWeaponID = "";
@@ -57,6 +57,10 @@ public class VassPerturbaWeaponTestingEvent extends VassPerturbaBaseEvent {
 
         if (DEBUG_MODE) { return true; }
 
+        if (Global.getSector().getMemoryWithoutUpdate().get(VassPerturbaWeaponTestingIntel.MEM_KEY_PROTOTYPE_DATA) != null) {
+            LOGGER.info("Threw away Perturba weapon test event due to already doing the event");
+            return false;
+        }
         if (VassFamilyTrackerPlugin.getRelationToFamily(VassUtils.VASS_FAMILY.PERTURBA) < RELATIONS_NEEDED) {
             LOGGER.info("Threw away Perturba weapon test event due to bad relations with Perturba");
             return false;

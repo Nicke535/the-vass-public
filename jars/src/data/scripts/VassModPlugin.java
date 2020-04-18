@@ -10,6 +10,9 @@ import data.scripts.campaign.VassSafetyOverridesCrewLossPlugin;
 import data.scripts.campaign.VassSectorSetupScript;
 import data.scripts.campaign.barEvents.VassPerturbaWeaponContractEventCreator;
 import data.scripts.campaign.barEvents.VassPerturbaWeaponTestingEventCreator;
+import org.dark.shaders.light.LightData;
+import org.dark.shaders.util.ShaderLib;
+import org.dark.shaders.util.TextureData;
 
 
 public class VassModPlugin extends BaseModPlugin {
@@ -40,8 +43,13 @@ public class VassModPlugin extends BaseModPlugin {
             throw new ClassNotFoundException(message);
         }
 
-        //Checks for ShaderLib
+        //Checks for ShaderLib, and starts light/texture data if we have it
         hasShaderLib = Global.getSettings().getModManager().isModEnabled("shaderLib");
+        if (hasShaderLib) {
+            ShaderLib.init();
+            //LightData.readLightDataCSV("data/lights/vass_light_data.csv");
+            TextureData.readTextureDataCSV("data/lights/vass_texture_data.csv");
+        }
     }
 
     //Adds all our campaign plugins on new game start
