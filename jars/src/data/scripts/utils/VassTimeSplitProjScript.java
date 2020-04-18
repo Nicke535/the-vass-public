@@ -58,8 +58,7 @@ public class VassTimeSplitProjScript extends BaseEveryFrameCombatPlugin {
 	//Stores a timer so we don't spawn too many visual effects on the projectile
 	private IntervalUtil timer = new IntervalUtil(0.03f, 0.1f);
 
-	//For GraphicsLib Light data : ensures lights fades out over time, like the trails they are related to
-
+	
 	//Initializer
 	public VassTimeSplitProjScript(DamagingProjectileAPI proj, float graceDistanceMax, float globalDamageMult) {
 		this.proj = proj;
