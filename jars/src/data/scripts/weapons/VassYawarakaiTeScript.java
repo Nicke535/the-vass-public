@@ -152,7 +152,7 @@ public class VassYawarakaiTeScript implements EveryFrameWeaponEffectPlugin {
                     float newDamage = missileStatusMap.get(msl)+addedDamage;
                     if (msl.getHitpoints() <= newDamage) {
                         //The final flame-out-pulse has distinctly more power, to be more noticeable. Also play a sound and spawn minor SFX
-                        spawnVFX(msl, weapon, 2f * extraPenaltyForRange/missileCount);
+                        spawnVFX(msl, weapon, 2f * extraPenaltyForRange/missileCount, false);
                         Global.getSoundPlayer().playSound("vass_yawaratai_te_disable", 1f, Math.min(1f, msl.getHitpoints()/200f), new Vector2f(msl.getLocation()), new Vector2f(msl.getVelocity()));
                         engine.spawnExplosion(msl.getLocation(), msl.getVelocity(),
                                 VassUtils.getFamilyColor(VassUtils.VASS_FAMILY.PERTURBA, 0.7f), 4f, PULSE_TIME);
@@ -161,7 +161,7 @@ public class VassYawarakaiTeScript implements EveryFrameWeaponEffectPlugin {
                         msl.flameOut();
                         if (Math.random() < FULL_DISABLE_CHANCE) { msl.setArmingTime(9999f); }
                     } else {
-                        spawnVFX(msl, weapon, 1f * extraPenaltyForRange/missileCount);
+                        spawnVFX(msl, weapon, 1f * extraPenaltyForRange/missileCount, true);
                     }
 
                     missileStatusMap.put(msl, newDamage);
@@ -177,8 +177,9 @@ public class VassYawarakaiTeScript implements EveryFrameWeaponEffectPlugin {
      * @param target missile to spawn VFX for
      * @param weapon source weapon of the VFX
      * @param effectivePower from 0f to 1f, how much relative power this weapon is directing at this missile
+     * @param fadeFaster if true, the effect fades faster if the player fires it and has a lot of time mult
      */
-    private void spawnVFX(MissileAPI target, WeaponAPI weapon, float effectivePower) {
+    private void spawnVFX(MissileAPI target, WeaponAPI weapon, float effectivePower, boolean fadeFaster) {
         float distanceToTarget = MathUtils.getDistance(weapon.getLocation(), target.getLocation());
         List<Vector2f> pointsForArc =
                 VassUtils.getFancyArcPoints(
@@ -189,6 +190,11 @@ public class VassYawarakaiTeScript implements EveryFrameWeaponEffectPlugin {
 
         float idForTrail = MagicTrailPlugin.getUniqueID();
         SpriteAPI spriteToUse = Global.getSettings().getSprite("vass_fx","projectile_trail_zappy");
+
+        float effectDuration = PULSE_TIME;
+        if (fadeFaster && weapon.getShip().equals(Global.getCombatEngine().getPlayerShip())) {
+            effectDuration /= weapon.getShip().getMutableStats().getTimeMult().modified;
+        }
 
         //Start actually rendering the trail : note that we render one point shorter than the actual trail, to always have a valid direction to next point
         for (int i = 0; i < pointsForArc.size()-1; i++) {
@@ -213,7 +219,7 @@ public class VassYawarakaiTeScript implements EveryFrameWeaponEffectPlugin {
 
             MagicTrailPlugin.AddTrailMemberSimple(target, idForTrail, spriteToUse, currPoint, 0f, angleToNextPoint,
                     TRAIL_START_WIDTH*effectivePower*extraWidthMult, TRAIL_END_WIDTH*effectivePower*extraWidthMult, VassUtils.getFamilyColor(VassUtils.VASS_FAMILY.PERTURBA, 1f),
-                    opacity, PULSE_TIME, true, actualOffsetVelocity, CombatEngineLayers.BELOW_INDICATORS_LAYER);
+                    opacity, effectDuration, true, actualOffsetVelocity, CombatEngineLayers.BELOW_INDICATORS_LAYER);
         }
     }
 

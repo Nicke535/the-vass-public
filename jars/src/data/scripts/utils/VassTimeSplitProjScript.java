@@ -10,6 +10,10 @@ import data.scripts.VassModPlugin;
 import data.scripts.plugins.MagicTrailPlugin;
 import org.dark.shaders.distortion.DistortionShader;
 import org.dark.shaders.distortion.WaveDistortion;
+import org.dark.shaders.light.LightAPI;
+import org.dark.shaders.light.LightData;
+import org.dark.shaders.light.LightShader;
+import org.dark.shaders.light.StandardLight;
 import org.lazywizard.lazylib.CollisionUtils;
 import org.lazywizard.lazylib.FastTrig;
 import org.lazywizard.lazylib.MathUtils;
@@ -54,6 +58,7 @@ public class VassTimeSplitProjScript extends BaseEveryFrameCombatPlugin {
 	//Stores a timer so we don't spawn too many visual effects on the projectile
 	private IntervalUtil timer = new IntervalUtil(0.03f, 0.1f);
 
+	
 	//Initializer
 	public VassTimeSplitProjScript(DamagingProjectileAPI proj, float graceDistanceMax, float globalDamageMult) {
 		this.proj = proj;
@@ -102,6 +107,16 @@ public class VassTimeSplitProjScript extends BaseEveryFrameCombatPlugin {
 							proj.getFacing(), 0f, 0f, startSize * (((float)i * 0.4f / 8f) + 0.6f), startSize*0.3f * (((float)i * 0.4f / 8f) + 0.6f),
 							color, color, 0.85f, 0f, 0.25f, 0.3f, GL_SRC_ALPHA, GL_ONE,
 							500f, 0f, offsetVel, null);
+				}
+
+				//New: GraphicsLib support for point lights on the effects
+				if (VassModPlugin.hasShaderLib) {
+					StandardLight light = new StandardLight(originPoint, (Vector2f)new Vector2f(proj.getVelocity()).scale(0.5f),
+							new Vector2f(0f, 0f),null, damageAdjustment, damageAdjustment*70f);
+					light.setColor(color);
+					light.setLifetime(0.25f);
+					light.setAutoFadeOutTime(0.3f);
+					LightShader.addLight(light);
 				}
 			}
 		}
@@ -244,6 +259,16 @@ public class VassTimeSplitProjScript extends BaseEveryFrameCombatPlugin {
 					angle, 0f, 0f, startSize * (((float)i * 0.4f / 8f) + 0.6f), startSize * 0.3f * (((float)i * 0.4f / 8f) + 0.6f),
 					color, color, 0.85f, 0f, 0.35f, 0.4f, GL_SRC_ALPHA, GL_ONE,
 					500f, 0f, new Vector2f(0f, 0f), null);
+		}
+
+		//New: GraphicsLib support for point lights on the effects
+		if (VassModPlugin.hasShaderLib) {
+			StandardLight light = new StandardLight(collisionPoint, (Vector2f)new Vector2f(proj.getVelocity()).scale(0.5f),
+					new Vector2f(0f, 0f),null, damageAdjustment*2f, damageAdjustment*70f);
+			light.setColor(color);
+			light.setLifetime(0.25f);
+			light.setAutoFadeOutTime(0.6f);
+			LightShader.addLight(light);
 		}
 
 		//Oh, and also reduce the damage of the main projectile once we've graced

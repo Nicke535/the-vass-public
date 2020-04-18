@@ -10,6 +10,8 @@ import data.scripts.VassModPlugin;
 import data.scripts.plugins.MagicTrailPlugin;
 import org.dark.shaders.distortion.DistortionShader;
 import org.dark.shaders.distortion.WaveDistortion;
+import org.dark.shaders.light.LightShader;
+import org.dark.shaders.light.StandardLight;
 import org.jetbrains.annotations.Nullable;
 import org.lazywizard.lazylib.MathUtils;
 import org.lazywizard.lazylib.VectorUtils;
@@ -160,6 +162,17 @@ public class VassTimeDistortionProjScript extends BaseEveryFrameCombatPlugin {
 		//Spawn a particle
 		Global.getCombatEngine().addHitParticle(new Vector2f(effectLocation), Misc.ZERO, BASE_AOE_SIZE*aoeMult*damageMult*1.5f,
 				1f, VISUAL_DISTORTION_DURATION, new Color(50,255,50));
+
+		//ADDITION : Spawns a GraphicsLib light on the detonation location
+		if (VassModPlugin.hasShaderLib) {
+			Color averageLightColor = Misc.interpolateColor(new Color(50, 255, 50), VassUtils.getFamilyColor(VassUtils.VASS_FAMILY.PERTURBA, 1f), 0.5f);
+			StandardLight light = new StandardLight(effectLocation, new Vector2f(0f, 0f),
+					new Vector2f(0f, 0f),null, (float)Math.sqrt(damageMult) / 10f, BASE_AOE_SIZE*aoeMult*damageMult*1.5f);
+			light.setColor(averageLightColor);
+			light.setLifetime(0f);
+			light.setAutoFadeOutTime(VISUAL_DISTORTION_DURATION);
+			LightShader.addLight(light);
+		}
 
 		//Play our detonation sound (if we have one)
 		if (soundClipOnDetonation != null) {

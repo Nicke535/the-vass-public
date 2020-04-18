@@ -42,8 +42,8 @@ public class VassRemoveVassShipsGiveCompensation extends BaseCommandPlugin {
 
             //We ALSO take fighters from ships
             else {
-                for (int i = 0; i < member.getVariant().getWings().size(); i++) {
-                    if (member.getVariant().getWingId(i).startsWith("vass_")) {
+                for (int i = 0; i < member.getStats().getNumFighterBays().getModifiedValue(); i++) {
+                    if (member.getVariant().getWingId(i) != null && member.getVariant().getWingId(i).startsWith("vass_")) {
                         member.getVariant().setWingId(i, null);
                     }
                 }
