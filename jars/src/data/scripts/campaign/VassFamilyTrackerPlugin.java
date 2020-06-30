@@ -20,7 +20,7 @@ import java.util.Map;
 public class VassFamilyTrackerPlugin implements EveryFrameScript {
 
     //Listener for reporting if the player has sold Vass ships
-    VassPlayerSoldVassShipsListener playerSoldShipsListener = null;
+    private VassPlayerSoldVassShipsListener playerSoldShipsListener;
 
     //Keeps track of the actual power each family has in the sector.
     // 100f means that the faction has reached their "final goal"; values above 100 is only possible after said goal
@@ -151,7 +151,7 @@ public class VassFamilyTrackerPlugin implements EveryFrameScript {
         //In the current version, only Perturba has any power; things will not remain as such later
         familyPowerMap.put(VassUtils.VASS_FAMILY.ACCEL, 0f);
         familyPowerMap.put(VassUtils.VASS_FAMILY.TORPOR, 0f);
-        familyPowerMap.put(VassUtils.VASS_FAMILY.PERTURBA, 40f);
+        familyPowerMap.put(VassUtils.VASS_FAMILY.PERTURBA, 35f);
         familyPowerMap.put(VassUtils.VASS_FAMILY.RECIPRO, 0f);
         familyPowerMap.put(VassUtils.VASS_FAMILY.MULTA, 0f);
     }

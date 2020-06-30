@@ -2,7 +2,6 @@ package data.scripts.weapons;
 
 import com.fs.starfarer.api.Global;
 import com.fs.starfarer.api.combat.*;
-import com.fs.starfarer.api.util.Misc;
 import data.scripts.campaign.barEvents.VassPerturbaWeaponTestingIntel;
 import data.scripts.utils.VassPerturbaRandomPrototypeManager.PrototypeWeaponData;
 import org.lazywizard.lazylib.MathUtils;
@@ -10,9 +9,11 @@ import org.lazywizard.lazylib.combat.CombatUtils;
 
 import java.awt.*;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
-import static data.scripts.campaign.barEvents.VassPerturbaWeaponTestingIntel.MEM_KEY_PROTOTYPE_WAS_IN_COMBAT;
+import static data.scripts.campaign.barEvents.VassPerturbaWeaponTestingIntel.MEM_KEY_PROTOTYPE_IN_COMBAT_SCORE_HANDLER;
 
 /**
  * Gives random bonuses to a weapon, depending on current quest setup
@@ -20,6 +21,8 @@ import static data.scripts.campaign.barEvents.VassPerturbaWeaponTestingIntel.MEM
  */
 public class VassRandomPrototypeScript implements EveryFrameWeaponEffectPlugin {
     private List<DamagingProjectileAPI> alreadyRegisteredProjectiles = new ArrayList<>();
+
+    private VassPerturbaWeaponTestingIntel.TestingCombatScoreHandler scoreHandler = null;
 
     @Override
     public void advance(float amount, CombatEngineAPI engine, WeaponAPI weapon) {
@@ -50,8 +53,16 @@ public class VassRandomPrototypeScript implements EveryFrameWeaponEffectPlugin {
         }
         PrototypeWeaponData currentData = (PrototypeWeaponData)dataObject;
 
-        //Register that we have indeed participated in a battle
-        Global.getSector().getMemoryWithoutUpdate().set(MEM_KEY_PROTOTYPE_WAS_IN_COMBAT, true);
+        //Use and/or instantiate a score handler for this combat, to determine quest progression
+        if (scoreHandler == null) {
+            Object handlerObj = Global.getSector().getMemoryWithoutUpdate().get(MEM_KEY_PROTOTYPE_IN_COMBAT_SCORE_HANDLER);
+            if (!(handlerObj instanceof VassPerturbaWeaponTestingIntel.TestingCombatScoreHandler)) {
+                scoreHandler = new VassPerturbaWeaponTestingIntel.TestingCombatScoreHandler();
+            } else {
+                scoreHandler = (VassPerturbaWeaponTestingIntel.TestingCombatScoreHandler)handlerObj;
+            }
+        }
+        scoreHandler.handleScoreThisFrame(weapon, amount);
 
         //If our current remaining cooldown is above our "actual" cooldown, bring it down to the true cooldown
         if (weapon.getCooldownRemaining() > (weapon.getCooldown()*currentData.reloadMult)) {

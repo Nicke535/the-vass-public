@@ -104,7 +104,7 @@ public class VassTemporalRetreat extends BaseShipSystemScript {
 
                 //Armor has to be done iteratively
                 for (int ix = 0; ix < (ship.getArmorGrid().getLeftOf() + ship.getArmorGrid().getRightOf()); ix++) {
-                    for (int iy = 0; iy < (ship.getArmorGrid().getLeftOf() + ship.getArmorGrid().getRightOf()); iy++) {
+                    for (int iy = 0; iy < (ship.getArmorGrid().getAbove() + ship.getArmorGrid().getBelow()); iy++) {
                         ship.getArmorGrid().setArmorValue(ix, iy, dataToJumpTo.armor[ix][iy]);
                     }
                 }

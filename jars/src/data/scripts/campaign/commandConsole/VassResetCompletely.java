@@ -33,7 +33,7 @@ public class VassResetCompletely implements BaseCommand {
 
         Global.getSector().getMemoryWithoutUpdate().unset(VassPerturbaWeaponTestingEvent.COLLATERAL_MEM_KEY);
         Global.getSector().getMemoryWithoutUpdate().unset(VassPerturbaWeaponTestingIntel.MEM_KEY_PROTOTYPE_DATA);
-        Global.getSector().getMemoryWithoutUpdate().unset(VassPerturbaWeaponTestingIntel.MEM_KEY_PROTOTYPE_WAS_IN_COMBAT);
+        Global.getSector().getMemoryWithoutUpdate().unset(VassPerturbaWeaponTestingIntel.MEM_KEY_PROTOTYPE_IN_COMBAT_SCORE_HANDLER);
 
         Global.getSector().getMemoryWithoutUpdate().unset("$vass_firstTimeVassShipLooted");
 

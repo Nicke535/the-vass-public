@@ -51,6 +51,7 @@ public class VassPerturbaWeaponTestingHandinBad extends BaseCommandPlugin {
                     Misc.getPositiveHighlightColor(), h, "Vass Families", ""+VassPerturbaWeaponTestingEvent.RELATIONS_BOOST_VASS);
             Global.getSector().getPlayerFaction().adjustRelationship("vass", VassPerturbaWeaponTestingEvent.RELATIONS_BOOST_VASS);
         }
+        VassFamilyTrackerPlugin.modifyPowerOfFamily(VassUtils.VASS_FAMILY.PERTURBA, VassPerturbaWeaponTestingEvent.FAMILY_POWER_BOOST_PERTURBA);
 
         //Cleanup
         for (IntelInfoPlugin intel : Global.getSector().getIntelManager().getIntel(VassPerturbaWeaponTestingIntel.class)) {

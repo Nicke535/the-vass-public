@@ -21,9 +21,7 @@ import data.scripts.utils.VassUtils;
 import org.apache.log4j.Logger;
 
 import java.awt.*;
-import java.util.HashSet;
-import java.util.LinkedList;
-import java.util.Set;
+import java.util.*;
 
 
 public class VassPerturbaWeaponTestingIntel extends BaseIntelPlugin {
@@ -32,7 +30,7 @@ public class VassPerturbaWeaponTestingIntel extends BaseIntelPlugin {
 
     //Memory keys and reputation stats
     public static final String MEM_KEY_PROTOTYPE_DATA = "$vass_perturba_prototype_weapon_data_key";
-    public static final String MEM_KEY_PROTOTYPE_WAS_IN_COMBAT = "$vass_perturba_prototype_weapon_was_in_combat_key";
+    public static final String MEM_KEY_PROTOTYPE_IN_COMBAT_SCORE_HANDLER = "$vass_perturba_prototype_weapon_was_in_combat_key";
     public static final String BUTTON_END_CONTRACT = "END_CONTRACT";
     public static final float CONTRACT_END_RELATIONS_PENALTY = -5f;
 
@@ -41,13 +39,13 @@ public class VassPerturbaWeaponTestingIntel extends BaseIntelPlugin {
     protected HashSet<MarketAPI> marketsToClean;
 
     //Keeps track of completed battles
-    public int battlesCompleted;
+    public float questFinishProgress;
 
 
     public VassPerturbaWeaponTestingIntel(VassPerturbaWeaponTestingEvent event) {
         this.event = event;
         listener = new WeaponTestingListener(this);
-        battlesCompleted = 0;
+        questFinishProgress = 0f;
         marketsToClean = new HashSet<>();
 
         //Generates a random weapon and puts it in memory
@@ -63,6 +61,7 @@ public class VassPerturbaWeaponTestingIntel extends BaseIntelPlugin {
         Global.getSector().removeScript(this);
         Global.getSector().getMemory().unset(VassPerturbaWeaponTestingEvent.COLLATERAL_MEM_KEY);
         Global.getSector().getMemory().unset(VassPerturbaWeaponTestingIntel.MEM_KEY_PROTOTYPE_DATA);
+        Global.getSector().getMemory().unset(MEM_KEY_PROTOTYPE_IN_COMBAT_SCORE_HANDLER);
     }
 
     //Handles the bullet-points on the intel screen
@@ -76,10 +75,10 @@ public class VassPerturbaWeaponTestingIntel extends BaseIntelPlugin {
         if (mode == ListInfoMode.IN_DESC) initPad = opad;
 
         bullet(info);
-        if (battlesCompleted >= 3) {
-            info.addPara("All weapon tests completed: return to " + event.getMarket().getName(), pad);
+        if (questFinishProgress >= 100f) {
+            info.addPara("Weapon testing completed: return to " + event.getMarket().getName(), pad);
         } else {
-            info.addPara(battlesCompleted + "/3 weapon tests completed.", pad);
+            info.addPara((int)Math.floor(questFinishProgress) + "% of required weapon test data collected.", pad);
         }
         unindent(info);
     }
@@ -105,6 +104,7 @@ public class VassPerturbaWeaponTestingIntel extends BaseIntelPlugin {
         float opad = 10f;
 
         info.addPara("Any battles you participate in with a ship equipped with a Perturba Prototype counts towards mission completion.", opad);
+        info.addPara("Data collected varies, but is significantly improved by using the weapon in live combat situations and stressing conditions.", opad);
 
         addBulletPoints(info, ListInfoMode.IN_DESC);
 
@@ -254,21 +254,21 @@ public class VassPerturbaWeaponTestingIntel extends BaseIntelPlugin {
         @Override
         public void reportBattleOccurred(CampaignFleetAPI primaryWinner, BattleAPI battle) {
             //If we have completed enough battles already, don't do anything
-            if (battlesCompleted >= 3) {
+            if (questFinishProgress >= 100f) {
                 return;
             }
 
             //Only care about the player's battles
             if (battle.isPlayerInvolved()) {
                 //Check if the prototype was in combat
-                Object obj = Global.getSector().getMemoryWithoutUpdate().get(MEM_KEY_PROTOTYPE_WAS_IN_COMBAT);
-                if (obj instanceof Boolean && (Boolean)obj) {
-                    //We were in combat: register that to our list of completed battles and clear the memory key
-                    battlesCompleted++;
-                    Global.getSector().getMemoryWithoutUpdate().unset(MEM_KEY_PROTOTYPE_WAS_IN_COMBAT);
+                Object obj = Global.getSector().getMemoryWithoutUpdate().get(MEM_KEY_PROTOTYPE_IN_COMBAT_SCORE_HANDLER);
+                if (obj instanceof TestingCombatScoreHandler) {
+                    //We were in combat: register our quest progression and clear the memory key
+                    questFinishProgress += ((TestingCombatScoreHandler) obj).scoreThisCombat;
+                    Global.getSector().getMemoryWithoutUpdate().unset(MEM_KEY_PROTOTYPE_IN_COMBAT_SCORE_HANDLER);
                     Global.getSector().getIntelManager().addIntel(this.intel, false);
                     if (DEBUG_MODE) {
-                        LOGGER.info("Progressed weapon testing quest");
+                        LOGGER.info("Progressed weapon testing quest by " + (float)obj);
                     }
                 }
             }
@@ -300,6 +300,49 @@ public class VassPerturbaWeaponTestingIntel extends BaseIntelPlugin {
                         }
                     }
                 }
+            }
+        }
+    }
+
+    public static class TestingCombatScoreHandler {
+        float scoreThisCombat;
+        boolean hasGottenFromDisabling;
+        boolean hasGottenFromOverload;
+        float remainingScorePossibleForCombatTime;
+        float remainingScorePossibleForLowCR;
+        Set<WeaponAPI> weapons = new HashSet<>(); //Only one weapon counts at a time
+
+        public TestingCombatScoreHandler() {
+            scoreThisCombat = 15f;
+            hasGottenFromDisabling = false;
+            hasGottenFromOverload = false;
+            remainingScorePossibleForCombatTime = 25f;
+            remainingScorePossibleForLowCR = 10f;
+        }
+
+        public void handleScoreThisFrame(WeaponAPI weapon, float amount) {
+            //Add the weapon to our list (it's a set, so no duplicates happen)
+            weapons.add(weapon);
+
+            if (weapon.isDisabled() && !hasGottenFromDisabling) {
+                scoreThisCombat += 7f;
+                hasGottenFromDisabling = true;
+            }
+            if (weapon.getShip().getFluxTracker().isOverloaded() && !hasGottenFromOverload) {
+                scoreThisCombat += 7f;
+                hasGottenFromOverload = true;
+            }
+
+            if (weapon.getShip().areAnyEnemiesInRange()) {
+                float scoreToAdd = Math.min(remainingScorePossibleForCombatTime, amount/(8f*weapons.size()));
+                remainingScorePossibleForCombatTime -= scoreToAdd;
+                scoreThisCombat += scoreToAdd;
+            }
+
+            if (weapon.getShip().getCurrentCR() < 40f) {
+                float scoreToAdd = Math.min(remainingScorePossibleForLowCR, amount/(3f*weapons.size()));
+                remainingScorePossibleForLowCR -= scoreToAdd;
+                scoreThisCombat += scoreToAdd;
             }
         }
     }

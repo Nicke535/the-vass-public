@@ -1,3 +1,19 @@
+Version 0.3.3a
+ Additions:
+  - Started implementing the as-of-yet hidden Family Power mechanic with som of the player's actions
+     > Currently does nothing notable and can't be seen in-game: that will change later
+
+ Changes:
+  - The Perturba Weapon Testing quest now tracks an arbitrary "progress" value rather than number of battles.
+     > Experimental change. The end result of this change is that the quest is slower (around 5-6 battles needed) when just deploying the ship and not using it in combat, but shorter when actually allowing it to fight (down to 2 missions needed if you use it actively a lot and/or use it in stressing situations)
+  - The Perturba Weapon Testing quest now increases relations (both Vass and Perturba) slightly more
+
+ Bugfixes:
+  - The Perturba Weapon Testing quest can now only raise your relations to Friendly, not Cooperative
+  - The Perturba Weapon Testing quest now properly displays its relations-increase (it was 7, not 0.07 as shown)
+  - Temporal Retreat no longer sneakily forgets to revert the top- and bottom-most armor grid rows
+
+
 Version 0.3.3 : Time for some shaders
  General:
   - Added GraphicsLib support for normal maps on ships and [most] weapons
