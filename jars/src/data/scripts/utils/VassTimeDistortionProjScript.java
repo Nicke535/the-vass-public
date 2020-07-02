@@ -34,7 +34,7 @@ public class VassTimeDistortionProjScript extends BaseEveryFrameCombatPlugin {
 	private static final float VISUAL_DISTORTION_DURATION = 0.4f;
 
 	//Base AoE size, this is then modified by the square root of the damage
-	private static final float BASE_AOE_SIZE = 6f;
+	private static final float BASE_AOE_SIZE = 5f;
 
 	//The ID of the effect applied by the script (also gets an unique modifier applied)
 	private static final String EFFECT_ID = "VassTimeDistortKey_";

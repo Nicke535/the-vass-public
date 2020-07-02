@@ -9,6 +9,10 @@ Version 0.3.3a
   - The Perturba Weapon Testing quest now increases relations (both Vass and Perturba) slightly more
   - Minor visual changes in refit screens for Vass ships
 
+ Balance:
+  - All Perturba missile weapons (Tizona, Colada, Excalibur) damage and EMP increased by ~30%
+     > These were underperforming across the board, so it was about time they got a bit of love
+
  Bugfixes:
   - The Perturba Weapon Testing quest can now only raise your relations to Friendly, not Cooperative
   - The Perturba Weapon Testing quest now properly displays its relations-increase (it was 7, not 0.07 as shown)
