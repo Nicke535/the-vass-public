@@ -7,6 +7,7 @@ Version 0.3.3a
   - The Perturba Weapon Testing quest now tracks an arbitrary "progress" value rather than number of battles.
      > Experimental change. The end result of this change is that the quest is slower (around 5-6 battles needed) when just deploying the ship and not using it in combat, but shorter when actually allowing it to fight (down to 2 missions needed if you use it actively a lot and/or use it in stressing situations)
   - The Perturba Weapon Testing quest now increases relations (both Vass and Perturba) slightly more
+  - Minor visual changes in refit screens for Vass ships
 
  Bugfixes:
   - The Perturba Weapon Testing quest can now only raise your relations to Friendly, not Cooperative
