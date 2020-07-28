@@ -1,14 +1,14 @@
 {
-	id:"vass_perturba",
+	id:"vass_torpor",
 	"color":[79,255,40,255],
 	"secondaryUIColor":[230,240,230,255],
 	        "secondarySegments":3,
-	"displayName":"Perturba",
-	"displayNameWithArticle":"The Perturba",
-	"displayNameLong":"Perturba",
-	"displayNameLongWithArticle":"The Perturba",
-	"logo":"graphics/vass/factions/the_vass_perturba.png",
-	"crest":"graphics/vass/factions/the_vass_perturba_crest.png",
+	"displayName":"Torpor",
+	"displayNameWithArticle":"The Torpor",
+	"displayNameLong":"Torpor",
+	"displayNameLongWithArticle":"The Torpor",
+	"logo":"graphics/vass/factions/the_vass_torpor.png",
+	"crest":"graphics/vass/factions/the_vass_torpor_crest.png",
 	"showInIntelTab":false,
 	"shipNamePrefix":"",
 	"shipNameSources":{
@@ -97,8 +97,8 @@
 		],
 	},
 	"factionDoctrine":{
-		"warships":3,
-		"carriers":3,
+		"warships":4,
+		"carriers":2,
 		"phaseShips":1,
 		
 		"officerQuality":3,

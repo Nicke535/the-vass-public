@@ -2,6 +2,7 @@ Version 0.3.3a
  Additions:
   - Started implementing the as-of-yet hidden Family Power mechanic with som of the player's actions
      > Currently does nothing notable and can't be seen in-game: that will change later
+  - Added a new mission allowing a first look at the (very WIP) Torpor family elites
 
  Changes:
   - The Perturba Weapon Testing quest now tracks an arbitrary "progress" value rather than number of battles.
