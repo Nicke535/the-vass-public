@@ -31,6 +31,11 @@
 	],
 	
 	
+	"vass_overload_cancel":[
+		{"file":"sounds/vass/other/overload_cancel.ogg","pitch":1,"volume":1},
+	],
+	
+	
 	
 	"vass_yawaratai_te_pulse":[
 		{"file":"sounds/vass/weapons/yawaratai_te_pulse.ogg","pitch":1.06,"volume":0.15},
