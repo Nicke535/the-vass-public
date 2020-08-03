@@ -27,10 +27,10 @@ public class VassDirectedTakeoffBayScript implements EveryFrameWeaponEffectPlugi
     private static final float MOVE_DURATION = 0.5f;
 
     //Long long should we boost our moving our fighters' deceleration to help if they're being deployed the wrong direction (in seconds)?
-    private static final float HELPER_DURATION = 0.65f;
+    private static final float HELPER_DURATION = 1f;
 
     //Multiplier for fighter deceleration during helper time
-    private static final float HELPER_DECEL_MULT = 3f;
+    private static final float HELPER_DECEL_MULT = 4f;
 
     //Store how long we've been tracking each fighter.
     private Map<ShipAPI, Float> timers = new HashMap<>();

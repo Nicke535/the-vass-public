@@ -552,7 +552,7 @@ public class VassPeriodicPlating extends BaseHullMod {
 
 	//Renders a bunch of "afterimages" due to some Multa nonsense
 	private void renderMultaMultiverseImages(ShipAPI ship) {
-		int amountToSpawn = MathUtils.getRandomNumberInRange(4, 9);
+		int amountToSpawn = MathUtils.getRandomNumberInRange(10, 18);
 		for (int i = 0; i < amountToSpawn; i++) {
 			// Sprite offset fuckery - Don't you love trigonometry?
 			SpriteAPI sprite = ship.getSpriteAPI();
@@ -562,7 +562,7 @@ public class VassPeriodicPlating extends BaseHullMod {
 			float trueOffsetX = (float)FastTrig.cos(Math.toRadians(ship.getFacing()-90f))*offsetX - (float)FastTrig.sin(Math.toRadians(ship.getFacing()-90f))*offsetY;
 			float trueOffsetY = (float)FastTrig.sin(Math.toRadians(ship.getFacing()-90f))*offsetX + (float)FastTrig.cos(Math.toRadians(ship.getFacing()-90f))*offsetY;
 
-			Vector2f spotToSpawnOn = MathUtils.getRandomPointInCircle(new Vector2f(ship.getLocation().getX()+trueOffsetX,ship.getLocation().getY()+trueOffsetY), ship.getCollisionRadius());
+			Vector2f spotToSpawnOn = MathUtils.getRandomPointInCircle(new Vector2f(ship.getLocation().getX()+trueOffsetX,ship.getLocation().getY()+trueOffsetY), ship.getCollisionRadius()*1.5f);
 
 			//Determines a layer to render on: fighters render above ships but below fighters, while everything else render below ships
 			CombatEngineLayers layer = CombatEngineLayers.BELOW_SHIPS_LAYER;
@@ -583,9 +583,9 @@ public class VassPeriodicPlating extends BaseHullMod {
 					0f,
 					colorToUse,
 					true,
-					MathUtils.getRandomNumberInRange(0.01f, 0.1f),
+					MathUtils.getRandomNumberInRange(0.01f, 0.25f),
 					0f,
-					MathUtils.getRandomNumberInRange(0.15f, 0.45f),
+					MathUtils.getRandomNumberInRange(0.25f, 0.45f),
 					layer);
 		}
 	}

@@ -8,6 +8,8 @@ Version 0.3.3a
      > Experimental change. The end result of this change is that the quest is slower (around 5-6 battles needed) when just deploying the ship and not using it in combat, but shorter when actually allowing it to fight (down to 2 missions needed if you use it actively a lot and/or use it in stressing situations)
   - The Perturba Weapon Testing quest now increases relations (both Vass and Perturba) slightly more
   - Minor visual changes in refit screens for Vass ships
+  - Multa elites now have adjusted passive colors, which are slightly less spaztic
+     > They still don't spawn anywhere but through cheats, though
 
  Balance:
   - All Perturba missile weapons (Tizona, Colada, Excalibur) damage and EMP increased by ~30%

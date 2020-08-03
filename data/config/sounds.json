@@ -32,7 +32,7 @@
 	
 	
 	"vass_overload_cancel":[
-		{"file":"sounds/vass/other/overload_cancel.ogg","pitch":1,"volume":1},
+		{"file":"sounds/vass/other/overload_cancel.ogg","pitch":1,"volume":2.0},
 	],
 	
 	
