@@ -2,6 +2,8 @@ Version 0.3.3a
  Additions:
   - Started implementing the as-of-yet hidden Family Power mechanic with som of the player's actions
      > Currently does nothing notable and can't be seen in-game: that will change later
+  - Started implementing the four other families' Elite bonuses
+     > Still not available in the campaign
 
  Changes:
   - The Perturba Weapon Testing quest now tracks an arbitrary "progress" value rather than number of battles.
@@ -10,12 +12,20 @@ Version 0.3.3a
   - Minor visual changes in refit screens for Vass ships
   - Multa elites now have adjusted passive colors, which are slightly less spaztic
      > They still don't spawn anywhere but through cheats, though
+  - The Tiandong (if enabled) can now steal Vass ships in their random encounters, like the Independent and Pirates
 
  Balance:
   - All Perturba missile weapons (Tizona, Colada, Excalibur) damage and EMP increased by ~30%
      > These were underperforming across the board, so it was about time they got a bit of love
+  - The Katzbalger's Chrono Illusion system now spawns more illusions, and the illusions have more health
+  - Katzbalger armor increased from 60 to 80
+  - The Swiftlaunch Bays now refill up to 95% of the refit time of a returning fighter, instead of up to 80%
+     > Used to be 65% flat, 15% based on hull level. Now 70% flat, 25% based on hulllevel
+  - The Swiftlaunch Bays are now slightly more aggressive with recalling its fighters when they are damaged
 
  Bugfixes:
+  - The Perturba Weapon Contract event is no longer bugged, and will properly show the dialogue it is meant to
+     > It had issues showing around half of the intended dialogue; *whoops*
   - The Perturba Weapon Testing quest can now only raise your relations to Friendly, not Cooperative
   - The Perturba Weapon Testing quest now properly displays its relations-increase (it was 7, not 0.07 as shown)
   - Temporal Retreat no longer sneakily forgets to revert the top- and bottom-most armor grid rows

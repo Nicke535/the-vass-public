@@ -17,11 +17,11 @@ public class VassSwiftlaunchBays extends BaseHullMod {
     private static final float REPLACEMENT_TIME_MULT = 0.5f;
 
     //Hull-level for fighters to count as being in "trouble"
-    private static final float LOW_HULL_LEVEL = 0.5f;
+    private static final float LOW_HULL_LEVEL = 0.6f;
 
     //How much of a refit-refill we get from returning fighters
-    private static final float RETURNER_BONUS_BASE = 0.65f;
-    private static final float RETURNER_BONUS_HULL_LEVEL = 0.15f;
+    private static final float RETURNER_BONUS_BASE = 0.7f;
+    private static final float RETURNER_BONUS_HULL_LEVEL = 0.25f;
 
     private CombatEngineAPI engine = null;
     private HashMap<FighterWingAPI, Float> replacementFighters = new HashMap<>();

@@ -41,6 +41,7 @@ public class VassRandomEncounterPlugin implements EveryFrameScript {
     static {
         STEALING_FACTIONS.add(Factions.INDEPENDENT);
         STEALING_FACTIONS.add(Factions.PIRATES);
+        STEALING_FACTIONS.add("tiandong");
     }
 
     //The minimum and maximum size factor compared to the target that the families will ever send
