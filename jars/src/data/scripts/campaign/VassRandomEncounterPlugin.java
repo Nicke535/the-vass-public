@@ -34,6 +34,7 @@ public class VassRandomEncounterPlugin implements EveryFrameScript {
         BLACKLISTED_FACTIONS.add(Factions.DERELICT);
         BLACKLISTED_FACTIONS.add(Factions.REMNANTS);
         BLACKLISTED_FACTIONS.add(Factions.PLAYER);
+        BLACKLISTED_FACTIONS.add("templars");
     }
 
     //A list of factions that will get a Vass ship when attacked

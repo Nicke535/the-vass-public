@@ -13,6 +13,7 @@ Version 0.3.3a
   - Multa elites now have adjusted passive colors, which are slightly less spaztic
      > They still don't spawn anywhere but through cheats, though
   - The Tiandong (if enabled) can now steal Vass ships in their random encounters, like the Independent and Pirates
+  - If the Templars are enabled, Vass fleets will no longer suicidally spawn to engage them
 
  Balance:
   - All Perturba missile weapons (Tizona, Colada, Excalibur) damage and EMP increased by ~30%
