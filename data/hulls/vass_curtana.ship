@@ -83,7 +83,8 @@
   ],
   "builtInWeapons": {
     "WS0001": "vass_deco_curtana_lights",
-    "WS0009": "vass_deco_curtana_decklights"
+    "WS0008": "vass_curtanabay_back",
+    "WS0010": "vass_curtanabay_forward"
   },
   "builtInWings": [],
   "center": [
@@ -366,7 +367,7 @@
     -0
   ],
   "shieldRadius": 149,
-  "spriteName": "graphics/vass/ships/new_curtana/main_sprite.png",
+  "spriteName": "graphics/vass/ships/new_curtana/Cruiser Deck Lights 2.png",
   "style": "VASS_HULL",
   "viewOffset": 0,
   "weaponSlots": [
@@ -447,12 +448,10 @@
       "arc": 360,
       "id": "LB 1",
       "locations": [
-        79,
-        13,
-        78,
-        11,
-        -60.5,
-        10.5
+        -67,
+        17,
+        -73,
+        9
       ],
       "mount": "HIDDEN",
       "size": "LARGE",
@@ -463,28 +462,14 @@
       "arc": 360,
       "id": "LB 3",
       "locations": [
-        79,
-        5,
-        78,
-        7,
-        -60.5,
-        6.5
+        -67,
+        -17,
+        -73,
+        -9
       ],
       "mount": "HIDDEN",
       "size": "LARGE",
       "type": "LAUNCH_BAY"
-    },
-    {
-      "angle": 0,
-      "arc": 0,
-      "id": "WS0009",
-      "locations": [
-        0,
-        -0
-      ],
-      "mount": "TURRET",
-      "size": "SMALL",
-      "type": "DECORATIVE"
     },
     {
       "angle": 0,
@@ -497,6 +482,30 @@
       "mount": "TURRET",
       "size": "SMALL",
       "type": "HYBRID"
+    },
+    {
+      "angle": 180,
+      "arc": 0,
+      "id": "WS0008",
+      "locations": [
+        -80,
+        -0
+      ],
+      "mount": "TURRET",
+      "size": "SMALL",
+      "type": "DECORATIVE"
+    },
+    {
+      "angle": 180,
+      "arc": 0,
+      "id": "WS0010",
+      "locations": [
+        -78,
+        -0
+      ],
+      "mount": "TURRET",
+      "size": "SMALL",
+      "type": "DECORATIVE"
     }
   ],
   "width": 144

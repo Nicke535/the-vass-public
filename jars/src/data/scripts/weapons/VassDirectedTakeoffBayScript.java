@@ -18,15 +18,15 @@ import java.util.Map;
 public class VassDirectedTakeoffBayScript implements EveryFrameWeaponEffectPlugin {
     //The maximum "speed boost" the fighter gets when taking off; 1f means a 100% speed boost initially
     //  This bonus then fades quadratically over the duration
-    private static final float MAX_SPEED_BOOST = 2.5f;
+    private static final float MAX_SPEED_BOOST = 0f;
 
     //Additional limit on max speed boost: if we would accelerate a ship more than to this, only accelerate to this
-    private static final float MAX_FLAT_SPEED = 500f;
+    private static final float MAX_FLAT_SPEED = 300f;
 
     //Long long should we keep moving our fighters (in seconds)?
-    private static final float MOVE_DURATION = 0.5f;
+    private static final float MOVE_DURATION = 0.05f;
 
-    //Long long should we boost our moving our fighters' deceleration to help if they're being deployed the wrong direction (in seconds)?
+    //How long should we boost our moving our fighters' deceleration to help if they're being deployed the wrong direction (in seconds)?
     private static final float HELPER_DURATION = 1f;
 
     //Multiplier for fighter deceleration during helper time
@@ -37,7 +37,7 @@ public class VassDirectedTakeoffBayScript implements EveryFrameWeaponEffectPlugi
 
     //How big the "bay area" is, as a circle's radius
     //  Fighters will appear to randomly come from within this circle
-    private static final float SPAWN_RADIUS = 10f;
+    private static final float SPAWN_RADIUS = 15f;
 
     //We occasionally clean our timer map
     private static final float CLEAN_WAIT = 10f;

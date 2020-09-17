@@ -76,7 +76,7 @@ public class VassShipLightsScript implements EveryFrameWeaponEffectPlugin {
         timer += amount * TIMER_MULT;
 
         //Sets our current maximum brightness
-        float currentMaxBrightness = 0.7f;
+        float currentMaxBrightness = 0.75f;
         if (system.isActive() || ship.getFluxTracker().isEngineBoostActive() || ship.getTravelDrive().isActive()) {
             currentMaxBrightness += 0.1f;
         }
@@ -85,7 +85,7 @@ public class VassShipLightsScript implements EveryFrameWeaponEffectPlugin {
         }
 
         //Adds a clock-like effect to our maximum brightness
-        currentMaxBrightness += 0.2f * (float) Math.pow(Math.sin(timer), 2f);
+        currentMaxBrightness += 0.15f * (float) Math.pow(Math.sin(timer), 2f);
 
         //If our color is above the maximum, set it to the maximum. If it's less than 0, set it to 0
         currentBrightness = MathUtils.clamp(currentBrightness, 0f, currentMaxBrightness);
