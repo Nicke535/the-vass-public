@@ -182,7 +182,7 @@
       "width": 3
     },
     {
-      "angle": -155,
+      "angle": -160,
       "contrailSize": 4,
       "length": 74,
       "location": [
@@ -193,7 +193,7 @@
       "width": 4
     },
     {
-      "angle": 155,
+      "angle": 160,
       "contrailSize": 4,
       "length": 74,
       "location": [
@@ -204,29 +204,29 @@
       "width": 4
     },
     {
-      "angle": -155,
+      "angle": -160,
       "contrailSize": 7,
       "length": 35,
       "location": [
-        -67,
+        -67.5,
         -56
       ],
       "style": "VASS_ENGINE_NEAR",
       "width": 7
     },
     {
-      "angle": 155,
+      "angle": 160,
       "contrailSize": 7,
       "length": 35,
       "location": [
-        -67,
+        -67.5,
         56
       ],
       "style": "VASS_ENGINE_NEAR",
       "width": 7
     },
     {
-      "angle": -149,
+      "angle": -152.5,
       "contrailSize": 3,
       "length": 10,
       "location": [
@@ -237,7 +237,7 @@
       "width": 3
     },
     {
-      "angle": 149,
+      "angle": 152.5,
       "contrailSize": 3,
       "length": 10,
       "location": [
@@ -248,22 +248,22 @@
       "width": 3
     },
     {
-      "angle": -161,
+      "angle": -164.5,
       "contrailSize": 3,
       "length": 10,
       "location": [
-        -65,
+        -65.5,
         -57
       ],
       "style": "VASS_ENGINE_NEAR",
       "width": 3
     },
     {
-      "angle": 161,
+      "angle": 164.5,
       "contrailSize": 3,
       "length": 10,
       "location": [
-        -65,
+        -65.5,
         57
       ],
       "style": "VASS_ENGINE_NEAR",

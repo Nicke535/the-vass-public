@@ -28,6 +28,8 @@ Version 0.3.4 : Time for another sprite rework
         > Used to be 65% flat, 15% based on hull level. Now 70% flat, 25% based on hulllevel
      -- Swiftlaunch Bays are now slightly more aggressive with recalling its fighters when they are damaged
     > I also minorly reworked all Curtana variants due to the abovementioned changes
+  - Schiavona:
+     -- Now has a frontal small turret instead of a rear small turret.
   - Katzbalger:
      -- The Chrono Illusion system now spawns more illusions, and the illusions have more health
      -- Armor increased from 60 to 80

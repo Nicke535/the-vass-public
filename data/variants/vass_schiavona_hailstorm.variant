@@ -1,14 +1,13 @@
 {
   "displayName": "Hailstorm",
-  "fluxCapacitors": 14,
+  "fluxCapacitors": 16,
   "fluxVents": 20,
   "goalVariant": false,
   "hullId": "vass_schiavona",
   "hullMods": [
     "targetingunit",
     "stabilizedshieldemitter",
-    "fluxdistributor",
-    "fluxcoil"
+    "fluxdistributor"
   ],
   "permaMods": [],
   "quality": 0,
@@ -34,6 +33,13 @@
       "mode": "LINKED",
       "weapons": {
         "WS0002": "vass_cyllel_farchog"
+      }
+    },
+    {
+      "autofire": true,
+      "mode": "LINKED",
+      "weapons": {
+        "WS0003": "vass_dyrnwyn"
       }
     }
   ],
