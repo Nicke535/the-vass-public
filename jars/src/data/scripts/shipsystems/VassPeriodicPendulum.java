@@ -20,6 +20,7 @@ import java.awt.*;
 /**
  * Funky flavor of time mult incoming!
  * @author Nicke535
+ * @deprecated
  */
 public class VassPeriodicPendulum extends BaseShipSystemScript {
     //The maximum and minimum time mult the system can achieve

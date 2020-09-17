@@ -1,13 +1,13 @@
 {
-	"id":"vass_periodic_pendulum",
+	"id":"vass_isochronal_field",
 	"type":"STAT_MOD",
 	"aiType":"TEMPORAL_SHELL",
 	
-	"statsScript":"data.scripts.shipsystems.VassPeriodicPendulum",
+	"statsScript":"data.scripts.shipsystems.VassIsochronalField",
+	
+	"runScriptWhileIdle":true,  # this means unapply() never gets called
 
-	"fadeActivationSoundOnChargedown":true,
 	"loopSound":"vass_periodic_breaker_loop",
-	"deactivateSound":"system_temporalshell_off",
 	"outOfUsesSound":"gun_out_of_ammo",
 	
 	"aiHints":{
