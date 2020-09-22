@@ -4,7 +4,7 @@ Version 0.3.4 : Time for another sprite rework
   - Started implementing the as-of-yet hidden Family Power mechanic with som of the player's actions
      > Currently does nothing notable and can't be seen in-game: that will change later
   - Started implementing the four other families' Elite bonuses
-     > Still not available in the campaign
+     > Still not available in the campaign, but there are some test missions allowing you to get a preview of what to expect
 
  Graphics:
   - Updated all ship sprites, courtesy of Gwyvern
