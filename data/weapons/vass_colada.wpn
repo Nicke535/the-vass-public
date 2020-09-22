@@ -24,7 +24,6 @@
 					   "particleCount":9,
 					   "particleColor":[100,255,58,160]},	
 	"glowColor":[100,255,58,180],
-	"interruptibleBurst":false,
 	"projectileSpecId":"vass_tizona_rocket",
 	"fireSoundTwo":"vass_tizona_fire",
 }

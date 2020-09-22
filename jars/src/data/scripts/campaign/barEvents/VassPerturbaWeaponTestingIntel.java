@@ -206,6 +206,9 @@ public class VassPerturbaWeaponTestingIntel extends BaseIntelPlugin {
 
         removeAllPrototypes();
 
+        //Unlocks so new Perturba events may spawn again
+        Global.getSector().getMemoryWithoutUpdate().set(VassPerturbaBaseEvent.PERTURBA_EVENTS_BLOCKED_KEY, false);
+
         endImmediately();
     }
 

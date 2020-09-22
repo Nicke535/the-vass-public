@@ -1,263 +1,162 @@
 {
   "bounds": [
-    -39.5,
-    2,
-    -52.5,
-    2.5,
-    -56,
-    11,
-    -49.5,
+    -54.5,
+    4,
+    -44,
     14.5,
-    -54,
+    -54.5,
     21,
-    -45,
-    24.5,
-    -56,
-    32.5,
-    -35,
-    32.5,
-    -12,
-    25.5,
-    -0.5,
-    18,
-    1.5,
+    -43.5,
+    26.5,
+    -51.5,
+    31.5,
+    -27,
+    32,
+    -2,
     22,
-    42.5,
-    12,
-    42,
-    9.5,
-    55.5,
-    7.5,
-    55.5,
-    -7.5,
-    42,
-    -9.5,
-    42.5,
-    -12,
-    1.5,
+    11,
+    22.5,
+    15,
+    15.5,
+    58,
+    8.5,
+    58,
+    -8.5,
+    15,
+    -15.5,
+    11,
+    -22.5,
+    -2,
     -22,
-    -0.5,
-    -18,
-    -12,
-    -25.5,
-    -35,
-    -32.5,
-    -56,
-    -32.5,
-    -45,
-    -24.5,
-    -54,
+    -27,
+    -32,
+    -51.5,
+    -31.5,
+    -43.5,
+    -26.5,
+    -54.5,
     -21,
-    -49.5,
+    -44,
     -14.5,
-    -56,
-    -11,
-    -52.5,
-    -2.5,
-    -39.5,
-    -2
+    -54.5,
+    -4
   ],
   "builtInMods": [
     "vass_periodic_plating",
     "shielded_holds"
   ],
   "builtInWeapons": {
-    "WS0001": "vass_deco_makhaira_lights"
+    "WS0001": "vass_deco_makhaira_lights",
+    "WS0004": "vass_makhaira_builtin",
+    "WS0005": "vass_makhaira_builtin",
+    "WS0006": "vass_deco_makhaira_cover"
   },
   "builtInWings": [],
   "center": [
     35,
     56.5
   ],
-  "collisionRadius": 80,
+  "collisionRadius": 75.5,
   "engineSlots": [
     {
-      "angle": 180,
-      "contrailSize": 2,
-      "length": 56,
-      "location": [
-        -55.5,
-        -10
-      ],
-      "style": "VASS_ENGINE_FAR",
-      "width": 2
-    },
-    {
-      "angle": -180,
-      "contrailSize": 2,
-      "length": 56,
-      "location": [
-        -55.5,
-        10
-      ],
-      "style": "VASS_ENGINE_FAR",
-      "width": 2
-    },
-    {
-      "angle": 180,
+      "angle": -172.5,
       "contrailSize": 2,
       "length": 40,
+      "location": [
+        -53,
+        -21.5
+      ],
+      "style": "VASS_ENGINE_FAR",
+      "width": 2
+    },
+    {
+      "angle": 172.5,
+      "contrailSize": 2,
+      "length": 40,
+      "location": [
+        -53,
+        21.5
+      ],
+      "style": "VASS_ENGINE_FAR",
+      "width": 2
+    },
+    {
+      "angle": -175,
+      "contrailSize": 4,
+      "length": 14,
+      "location": [
+        -53,
+        -23
+      ],
+      "style": "VASS_ENGINE_NEAR",
+      "width": 4
+    },
+    {
+      "angle": 175,
+      "contrailSize": 4,
+      "length": 14,
+      "location": [
+        -53,
+        23
+      ],
+      "style": "VASS_ENGINE_NEAR",
+      "width": 4
+    },
+    {
+      "angle": -170,
+      "contrailSize": 4,
+      "length": 14,
       "location": [
         -53.5,
         -20
       ],
-      "style": "VASS_ENGINE_FAR",
-      "width": 2
+      "style": "VASS_ENGINE_NEAR",
+      "width": 4
     },
     {
-      "angle": -180,
-      "contrailSize": 2,
-      "length": 40,
+      "angle": 170,
+      "contrailSize": 4,
+      "length": 14,
       "location": [
         -53.5,
         20
       ],
-      "style": "VASS_ENGINE_FAR",
-      "width": 2
-    },
-    {
-      "angle": -177,
-      "contrailSize": 4,
-      "length": 17,
-      "location": [
-        -55.5,
-        -9
-      ],
       "style": "VASS_ENGINE_NEAR",
       "width": 4
     },
     {
-      "angle": 177,
-      "contrailSize": 4,
-      "length": 17,
-      "location": [
-        -55.5,
-        9
-      ],
-      "style": "VASS_ENGINE_NEAR",
-      "width": 4
-    },
-    {
-      "angle": 177,
-      "contrailSize": 4,
-      "length": 17,
-      "location": [
-        -55.5,
-        -11
-      ],
-      "style": "VASS_ENGINE_NEAR",
-      "width": 4
-    },
-    {
-      "angle": -177,
-      "contrailSize": 4,
-      "length": 17,
-      "location": [
-        -55.5,
-        11
-      ],
-      "style": "VASS_ENGINE_NEAR",
-      "width": 4
-    },
-    {
-      "angle": 177,
-      "contrailSize": 4,
-      "length": 14,
-      "location": [
-        -53.5,
-        -21
-      ],
-      "style": "VASS_ENGINE_NEAR",
-      "width": 4
-    },
-    {
-      "angle": -177,
-      "contrailSize": 4,
-      "length": 14,
-      "location": [
-        -53.5,
-        21
-      ],
-      "style": "VASS_ENGINE_NEAR",
-      "width": 4
-    },
-    {
-      "angle": -177,
-      "contrailSize": 4,
-      "length": 14,
-      "location": [
-        -53.5,
-        -19
-      ],
-      "style": "VASS_ENGINE_NEAR",
-      "width": 4
-    },
-    {
-      "angle": 177,
-      "contrailSize": 4,
-      "length": 14,
-      "location": [
-        -53.5,
-        19
-      ],
-      "style": "VASS_ENGINE_NEAR",
-      "width": 4
-    },
-    {
-      "angle": 180,
+      "angle": -172,
       "contrailSize": 3,
       "length": 28,
       "location": [
         -54.5,
-        -20
+        -21.5
       ],
       "style": "VASS_ENGINE_NEAR",
       "width": 3
     },
     {
-      "angle": -180,
+      "angle": 172,
       "contrailSize": 3,
       "length": 28,
       "location": [
         -54.5,
-        20
-      ],
-      "style": "VASS_ENGINE_NEAR",
-      "width": 3
-    },
-    {
-      "angle": 180,
-      "contrailSize": 3,
-      "length": 32,
-      "location": [
-        -56.5,
-        -10
-      ],
-      "style": "VASS_ENGINE_NEAR",
-      "width": 3
-    },
-    {
-      "angle": -180,
-      "contrailSize": 3,
-      "length": 32,
-      "location": [
-        -56.5,
-        10
+        21.5
       ],
       "style": "VASS_ENGINE_NEAR",
       "width": 3
     }
   ],
-  "height": 114,
+  "height": 117,
   "hullId": "vass_makhaira",
   "hullName": "Makhaira",
   "hullSize": "FRIGATE",
   "shieldCenter": [
-    -3.5,
+    1.5,
     -0
   ],
-  "shieldRadius": 75,
-  "spriteName": "graphics/vass/ships/makhaira.png",
+  "shieldRadius": 72.5,
+  "spriteName": "graphics/vass/ships/new_makhaira/main_sprite.png",
   "style": "VASS_HULL",
   "viewOffset": 0,
   "weaponSlots": [
@@ -266,7 +165,7 @@
       "arc": 0,
       "id": "WS0001",
       "locations": [
-        0,
+        2,
         -0
       ],
       "mount": "TURRET",
@@ -278,7 +177,7 @@
       "arc": 360,
       "id": "WS0002",
       "locations": [
-        8.5,
+        11.5,
         -0
       ],
       "mount": "TURRET",
@@ -290,12 +189,48 @@
       "arc": 5,
       "id": "WS0003",
       "locations": [
-        51.5,
+        45.5,
         -0
       ],
       "mount": "HARDPOINT",
       "size": "SMALL",
       "type": "HYBRID"
+    },
+    {
+      "angle": -74.5,
+      "arc": 169,
+      "id": "WS0004",
+      "locations": [
+        8,
+        -18.5
+      ],
+      "mount": "HARDPOINT",
+      "size": "SMALL",
+      "type": "BUILT_IN"
+    },
+    {
+      "angle": 74.5,
+      "arc": 169,
+      "id": "WS0005",
+      "locations": [
+        8,
+        18.5
+      ],
+      "mount": "HARDPOINT",
+      "size": "SMALL",
+      "type": "BUILT_IN"
+    },
+    {
+      "angle": 0,
+      "arc": 0,
+      "id": "WS0006",
+      "locations": [
+        40.5,
+        -0
+      ],
+      "mount": "TURRET",
+      "size": "MEDIUM",
+      "type": "DECORATIVE"
     }
   ],
   "width": 70

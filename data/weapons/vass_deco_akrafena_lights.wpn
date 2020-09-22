@@ -1,5 +1,5 @@
 {
-	"id":"vass_deco_makhaira_lights",  # this id must match what's in the spreadsheet
+	"id":"vass_deco_akrafena_lights",  # this id must match what's in the spreadsheet
 	"specClass":"beam",
 	"type":"DECORATIVE",
 	"size":"SMALL",
@@ -7,8 +7,8 @@
 	"renderBelowAllWeapons":true,
 	"everyFrameEffect":"data.scripts.weapons.VassShipLightsScript",	
 	"renderHints":["RENDER_ADDITIVE"],	
-	"turretSprite":"graphics/vass/ships/new_makhaira/glow_00.png",
-	"hardpointSprite":"graphics/vass/ships/new_makhaira/glow_00.png",
+	"turretSprite":"graphics/vass/ships/akrafena/glow_00.png",
+	"hardpointSprite":"graphics/vass/ships/akrafena/glow_00.png",
 	"numFrames":2,
 	"frameRate":0,
 	"turretOffsets":[0, 0],

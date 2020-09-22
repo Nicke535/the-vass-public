@@ -194,6 +194,9 @@ public class VassPerturbaWeaponTestingEvent extends VassPerturbaBaseEvent {
                 Global.getSector().getPlayerFleet().getCargo().addWeapons(currentPrototypeWeaponID, prototypesHandedOut);
                 text.setFontInsignia();
 
+                //Lock so no other Perturba events show up when we're on the mission
+                Global.getSector().getMemoryWithoutUpdate().set(PERTURBA_EVENTS_BLOCKED_KEY, true);
+
                 text.addPara("'Good luck with the testing.'");
                 BarEventManager.getInstance().notifyWasInteractedWith(this);
                 addIntel();

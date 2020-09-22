@@ -65,7 +65,7 @@ public class VassTemporalRetreat extends BaseShipSystemScript {
                     //When de-queueing a time point, we spawn a short clone of our ship at that location, if we're the player ship
                     TimePointData oldestTimePoint = timePointQueue.poll();
                     if (Global.getCombatEngine().getPlayerShip().equals(ship)) {
-                        SpriteAPI spriteToUse = Global.getSettings().getSprite("graphics/vass/ships/makhaira.png");
+                        SpriteAPI spriteToUse = Global.getSettings().getSprite("graphics/vass/ships/new_makhaira/main_sprite.png");
                         //"Chasing" render
                         MagicRender.battlespace(spriteToUse, oldestTimePoint.position, oldestTimePoint.velocity,
                                 new Vector2f(ship.getSpriteAPI().getWidth(), ship.getSpriteAPI().getHeight()), Misc.ZERO,
@@ -114,7 +114,7 @@ public class VassTemporalRetreat extends BaseShipSystemScript {
                 float lifeTimeReducerTracker = (float)MAX_STEPS_BACKWARDS + 5f;
                 while (!timePointQueue.isEmpty()) {
                     TimePointData afterimageData = timePointQueue.poll();
-                    SpriteAPI spriteToUse = Global.getSettings().getSprite("graphics/vass/ships/makhaira.png");
+                    SpriteAPI spriteToUse = Global.getSettings().getSprite("graphics/vass/ships/new_makhaira/main_sprite.png");
                     float lifetimeThisImage = 0.5f * (lifeTimeReducerTracker/(float)MAX_STEPS_BACKWARDS);
                     MagicRender.battlespace(spriteToUse, afterimageData.position, Misc.ZERO,
                             new Vector2f(ship.getSpriteAPI().getWidth(), ship.getSpriteAPI().getHeight()),Misc.ZERO,

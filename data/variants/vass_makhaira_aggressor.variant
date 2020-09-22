@@ -15,14 +15,23 @@
       "autofire": false,
       "mode": "LINKED",
       "weapons": {
-        "WS0002": "vass_dyrnwyn",
+        "WS0002": "vass_dyrnwyn"
+      }
+    },
+    {
+      "autofire": true,
+      "mode": "LINKED",
+      "weapons": {
         "WS0003": "vass_dyrnwyn"
       }
     },
     {
       "autofire": true,
       "mode": "LINKED",
-      "weapons": {}
+      "weapons": {
+        "WS0004": "vass_makhaira_builtin",
+        "WS0005": "vass_makhaira_builtin"
+      }
     }
   ],
   "wings": []

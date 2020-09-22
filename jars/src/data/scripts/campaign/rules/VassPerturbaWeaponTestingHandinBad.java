@@ -10,6 +10,7 @@ import com.fs.starfarer.api.campaign.rules.MemoryAPI;
 import com.fs.starfarer.api.impl.campaign.rulecmd.BaseCommandPlugin;
 import com.fs.starfarer.api.util.Misc;
 import data.scripts.campaign.VassFamilyTrackerPlugin;
+import data.scripts.campaign.barEvents.VassPerturbaBaseEvent;
 import data.scripts.campaign.barEvents.VassPerturbaWeaponTestingEvent;
 import data.scripts.campaign.barEvents.VassPerturbaWeaponTestingIntel;
 import data.scripts.utils.VassUtils;
@@ -60,6 +61,9 @@ public class VassPerturbaWeaponTestingHandinBad extends BaseCommandPlugin {
                 intelConverted.endImmediately();
             }
         }
+
+        //Unlocks so new Perturba events may spawn again
+        Global.getSector().getMemoryWithoutUpdate().set(VassPerturbaBaseEvent.PERTURBA_EVENTS_BLOCKED_KEY, false);
 
         return true;
     }

@@ -1,0 +1,275 @@
+{
+  "bounds": [
+    -51,
+    5,
+    -40.5,
+    11,
+    -44,
+    21.5,
+    -31,
+    34,
+    -11,
+    37,
+    -5.5,
+    29.5,
+    19.5,
+    17.5,
+    38.5,
+    31.5,
+    46,
+    31.5,
+    56.5,
+    24.5,
+    46,
+    15,
+    58,
+    7.5,
+    50.5,
+    4,
+    50.5,
+    -4,
+    58,
+    -7.5,
+    46,
+    -15,
+    56.5,
+    -24.5,
+    46,
+    -31.5,
+    38.5,
+    -31.5,
+    19.5,
+    -17.5,
+    -5.5,
+    -29.5,
+    -11,
+    -37,
+    -31,
+    -34,
+    -44,
+    -21.5,
+    -40.5,
+    -11,
+    -51,
+    -5
+  ],
+  "builtInMods": [
+    "vass_periodic_plating",
+    "insulatedengine"
+  ],
+  "builtInWeapons": {
+    "WS0001": "vass_deco_akrafena_cover_right",
+    "WS0002": "vass_deco_akrafena_cover_left",
+    "WS0008": "vass_deco_akrafena_lights"
+  },
+  "builtInWings": [],
+  "center": [
+    38,
+    52
+  ],
+  "collisionRadius": 75,
+  "engineSlots": [
+    {
+      "angle": 180,
+      "contrailSize": 3,
+      "length": 60,
+      "location": [
+        -51,
+        -3
+      ],
+      "style": "VASS_ENGINE_FAR",
+      "width": 3
+    },
+    {
+      "angle": -180,
+      "contrailSize": 3,
+      "length": 60,
+      "location": [
+        -51,
+        3
+      ],
+      "style": "VASS_ENGINE_FAR",
+      "width": 3
+    },
+    {
+      "angle": 180,
+      "contrailSize": 6,
+      "length": 30,
+      "location": [
+        -52,
+        -3
+      ],
+      "style": "VASS_ENGINE_NEAR",
+      "width": 6
+    },
+    {
+      "angle": -180,
+      "contrailSize": 6,
+      "length": 30,
+      "location": [
+        -52,
+        3
+      ],
+      "style": "VASS_ENGINE_NEAR",
+      "width": 6
+    },
+    {
+      "angle": 180,
+      "contrailSize": 10,
+      "length": 10,
+      "location": [
+        -51,
+        -2
+      ],
+      "style": "VASS_ENGINE_NEAR",
+      "width": 10
+    },
+    {
+      "angle": 180,
+      "contrailSize": 10,
+      "length": 10,
+      "location": [
+        -51,
+        2
+      ],
+      "style": "VASS_ENGINE_NEAR",
+      "width": 10
+    },
+    {
+      "angle": 175,
+      "contrailSize": 4,
+      "length": 15,
+      "location": [
+        -51,
+        -4.5
+      ],
+      "style": "VASS_ENGINE_NEAR",
+      "width": 4
+    },
+    {
+      "angle": -175,
+      "contrailSize": 4,
+      "length": 15,
+      "location": [
+        -51,
+        4.5
+      ],
+      "style": "VASS_ENGINE_NEAR",
+      "width": 4
+    }
+  ],
+  "height": 111,
+  "hullId": "vass_akrafena",
+  "hullName": "Akrafena",
+  "hullSize": "FRIGATE",
+  "shieldCenter": [
+    6,
+    -0
+  ],
+  "shieldRadius": 68,
+  "spriteName": "graphics/vass/ships/akrafena/main_sprite.png",
+  "style": "VASS_HULL",
+  "viewOffset": 0,
+  "weaponSlots": [
+    {
+      "angle": -0,
+      "arc": 0,
+      "id": "WS0001",
+      "locations": [
+        30,
+        -10.5
+      ],
+      "mount": "TURRET",
+      "size": "SMALL",
+      "type": "DECORATIVE"
+    },
+    {
+      "angle": 0,
+      "arc": 0,
+      "id": "WS0002",
+      "locations": [
+        30,
+        10.5
+      ],
+      "mount": "TURRET",
+      "size": "SMALL",
+      "type": "DECORATIVE"
+    },
+    {
+      "angle": 180,
+      "arc": 270,
+      "id": "WS0003",
+      "locations": [
+        1,
+        -0
+      ],
+      "mount": "TURRET",
+      "size": "SMALL",
+      "type": "ENERGY"
+    },
+    {
+      "angle": 0,
+      "arc": 5,
+      "id": "WS0004",
+      "locations": [
+        37,
+        -0
+      ],
+      "mount": "HARDPOINT",
+      "size": "SMALL",
+      "type": "SYNERGY",
+	  "renderOrderMod": -100
+    },
+    {
+      "angle": 0,
+      "arc": 5,
+      "id": "WS0005",
+      "locations": [
+        25,
+        -0
+      ],
+      "mount": "HARDPOINT",
+      "size": "SMALL",
+      "type": "SYNERGY"
+    },
+    {
+      "angle": -0,
+      "arc": 5,
+      "id": "WS0006",
+      "locations": [
+        43,
+        -16
+      ],
+      "mount": "HARDPOINT",
+      "size": "SMALL",
+      "type": "HYBRID",
+	  "renderOrderMod": -50
+    },
+    {
+      "angle": 0,
+      "arc": 5,
+      "id": "WS0007",
+      "locations": [
+        43,
+        16
+      ],
+      "mount": "HARDPOINT",
+      "size": "SMALL",
+      "type": "HYBRID",
+	  "renderOrderMod": -50
+    },
+    {
+      "angle": 0,
+      "arc": 0,
+      "id": "WS0008",
+      "locations": [
+        3.5,
+        -0
+      ],
+      "mount": "TURRET",
+      "size": "SMALL",
+      "type": "DECORATIVE"
+    }
+  ],
+  "width": 76
+}

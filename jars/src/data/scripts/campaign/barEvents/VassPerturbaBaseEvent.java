@@ -36,6 +36,7 @@ public class VassPerturbaBaseEvent extends BaseBarEventWithPerson {
 
     public static final String CURRENT_EVENT_ALLOWED_KEY = "$vass_perturba_current_event_allowed";
     public static final String LAST_MARKET_ALLOW_CHECK_KEY = "$vass_perturba_last_market_allow_checked";
+    public static final String PERTURBA_EVENTS_BLOCKED_KEY = "$vass_perturba_events_blocked";
 
     /**
      * Gets perturba's contact
@@ -73,6 +74,12 @@ public class VassPerturbaBaseEvent extends BaseBarEventWithPerson {
 
         //Only the player's markets can get the event
         if (!market.getFaction().isPlayerFaction()) {
+            return false;
+        }
+
+        //If we're currently blocked from showing Perturba events, don't show up either
+        Object blocked = Global.getSector().getMemoryWithoutUpdate().get(PERTURBA_EVENTS_BLOCKED_KEY);
+        if (blocked instanceof Boolean && blocked.equals(Boolean.TRUE)) {
             return false;
         }
 

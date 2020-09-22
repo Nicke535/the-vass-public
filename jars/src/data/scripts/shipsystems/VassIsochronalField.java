@@ -49,6 +49,8 @@ public class VassIsochronalField extends BaseShipSystemScript {
     private boolean runOnce = false;
     private float defensiveCooldownLeft = 0f;
     private Set<DamagingProjectileAPI> alreadyManagedProjectiles = new HashSet<>();
+    private int generalGracePeriod = 0; //Used for some scripted weapons
+    private int asiGracePeriod = 0; //Used for the Asi
 
     public void apply(MutableShipStatsAPI stats, String id, State state, float effectLevel) {
         ShipAPI ship = null;
@@ -180,15 +182,17 @@ public class VassIsochronalField extends BaseShipSystemScript {
     private void runOffensiveMode (float amount, ShipAPI ship, boolean player) {
         //Determine if we're gonna clone projectiles this frame
         boolean cloneThisFrame = Math.random() < MULTIPLY_CHANCE;
+        if (generalGracePeriod > 0) {
+            cloneThisFrame = false;
+        }
         boolean hasActuallyClonedThisFrame = false;
 
         //Get all projectiles close to the ship, that belongs to our ship (and haven't already been managed)
         Set<DamagingProjectileAPI> allProjs = new HashSet<>(CombatUtils.getProjectilesWithinRange(ship.getLocation(), 300f));
         allProjs.addAll(CombatUtils.getMissilesWithinRange(ship.getLocation(), 300f));
-        allProjs.removeAll(alreadyManagedProjectiles);
         for (DamagingProjectileAPI proj : allProjs) {
-            //Checks so the projectile belongs to us
-            if (proj.getSource() != ship) {
+            //Checks so the projectile belongs to us, and isn't already unloaded from the engine
+            if (proj.getSource() != ship || !Global.getCombatEngine().isEntityInPlay(proj)) {
                 continue;
             }
 
@@ -197,22 +201,30 @@ public class VassIsochronalField extends BaseShipSystemScript {
                 continue;
             }
 
+            //Don't manage already-tracked projectiles
+            if (alreadyManagedProjectiles.contains(proj)) {
+                continue;
+            }
+
             //Now, check if the projectile should be duplicated, and if so, duplicate
-            if (cloneThisFrame) {
+            if (cloneThisFrame && isAllowedToClone(proj)) {
                 DamagingProjectileAPI newProj = (DamagingProjectileAPI)Global.getCombatEngine().spawnProjectile(ship, proj.getWeapon(),
                         proj.getWeapon().getId(), MathUtils.getRandomPointInCircle(proj.getLocation(), 10f),
                         proj.getFacing()+MathUtils.getRandomNumberInRange(-3f, 3f), ship.getVelocity());
-                runCustomEffects(newProj, proj);
-                alreadyManagedProjectiles.add(newProj);
+                runCustomEffectsPostClone(newProj, proj);
                 hasActuallyClonedThisFrame = true;
+                alreadyManagedProjectiles.add(newProj);
             }
             //Either way, this projectile can no longer be affected again
             alreadyManagedProjectiles.add(proj);
         }
 
-        //Play a sound if we cloned something
+        //Play a sound if we cloned something, and register for next frame
         if (hasActuallyClonedThisFrame) {
             Global.getSoundPlayer().playSound(CLONE_SOUND, 1f, 1f, ship.getLocation(), new Vector2f(0f, 0f));
+        } else {
+            generalGracePeriod--;
+            asiGracePeriod--;
         }
     }
 
@@ -241,13 +253,30 @@ public class VassIsochronalField extends BaseShipSystemScript {
     }
 
 
-    //Custom effects for special projectiles that needs it
-    private void runCustomEffects(DamagingProjectileAPI newProj, DamagingProjectileAPI oldProj) {
+    //Returns false if the projectile is disallowed from cloning was blocked from happening, true otherwise
+    private boolean isAllowedToClone(DamagingProjectileAPI proj) {
+        //Asi nonsense: we don't want multiple clonings, or cloning of the fake projectile
+        if (proj.getProjectileSpecId().equals("vass_asi_shot")) {
+            return false;
+        } else if (asiGracePeriod > 0 && proj.getProjectileSpecId().contains("vass_asi_shot")) {
+            return false;
+        }
+
+        //Other projectiles: nothing needed yet, might need a blacklist later on
+        return true;
+    }
+
+    //Custom effects for special projectiles that needs it, post-cloning
+    private void runCustomEffectsPostClone(DamagingProjectileAPI newProj, DamagingProjectileAPI oldProj) {
         //If it's a guided missile, we need to give it the same target as the old one (its AI will adjust it further if needed, hopefully)
         if (oldProj instanceof MissileAPI && newProj instanceof MissileAPI) {
             if (((MissileAPI) oldProj).getMissileAI() instanceof GuidedMissileAI && ((MissileAPI) newProj).getMissileAI() instanceof GuidedMissileAI) {
                 ((GuidedMissileAI) ((MissileAPI) newProj).getMissileAI()).setTarget(((GuidedMissileAI) ((MissileAPI) oldProj).getMissileAI()).getTarget());
             }
+        }
+
+        if (oldProj.getProjectileSpecId().equals("vass_asi_shot_slow")) {
+            asiGracePeriod = 4;
         }
 
         //Other effects: nothing needed yet, might need a blacklist later on

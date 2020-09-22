@@ -1,4 +1,3 @@
-//By Nicke535, speeds up the firerate of a weapon depending on a ship's time mult
 package data.scripts.weapons;
 
 import com.fs.starfarer.api.Global;
