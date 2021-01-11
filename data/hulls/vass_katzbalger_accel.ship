@@ -30,7 +30,9 @@
   ],
   "builtInWeapons": {
     "WS0001": "vass_deco_katzbalger_lights",
-    "WS0002": "vass_dyrnwyn"
+    "WS0002": "vass_asi",
+    "WS0004": "vass_dyrnwyn",
+    "WS0005": "vass_dyrnwyn"
   },
   "builtInWings": [],
   "center": [
@@ -132,6 +134,30 @@
       "mount": "HIDDEN",
       "size": "SMALL",
       "type": "SYSTEM"
+    },
+    {
+      "angle": 0,
+      "arc": 10,
+      "id": "WS0004",
+      "locations": [
+        12,
+        -13.5
+      ],
+      "mount": "HIDDEN",
+      "size": "SMALL",
+      "type": "BUILT_IN"
+    },
+    {
+      "angle": -0,
+      "arc": 10,
+      "id": "WS0005",
+      "locations": [
+        12,
+        13.5
+      ],
+      "mount": "HIDDEN",
+      "size": "SMALL",
+      "type": "BUILT_IN"
     }
   ],
   "width": 50

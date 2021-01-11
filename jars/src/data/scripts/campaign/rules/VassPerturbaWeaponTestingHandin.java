@@ -68,6 +68,9 @@ public class VassPerturbaWeaponTestingHandin extends BaseCommandPlugin {
             }
         }
 
+        //Run the random event picker from the base event script, in case a special event should appear
+        VassPerturbaBaseEvent.checkAndSetAllowedEvent();
+
         //Unlocks so new Perturba events may spawn again
         Global.getSector().getMemoryWithoutUpdate().set(VassPerturbaBaseEvent.PERTURBA_EVENTS_BLOCKED_KEY, false);
 

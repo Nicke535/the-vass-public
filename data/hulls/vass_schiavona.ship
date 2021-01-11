@@ -89,8 +89,19 @@
     52,
     104
   ],
-  "collisionRadius": 113,
+  "collisionRadius": 122.5,
   "engineSlots": [
+    {
+      "angle": 180,
+      "contrailSize": 7,
+      "length": 30,
+      "location": [
+        -57,
+        -28
+      ],
+      "style": "VASS_ENGINE_NEAR",
+      "width": 7
+    },
     {
       "angle": -180,
       "contrailSize": 4,
@@ -112,17 +123,6 @@
       ],
       "style": "VASS_ENGINE_FAR",
       "width": 4
-    },
-    {
-      "angle": 180,
-      "contrailSize": 7,
-      "length": 30,
-      "location": [
-        -57,
-        -28
-      ],
-      "style": "VASS_ENGINE_NEAR",
-      "width": 7
     },
     {
       "angle": -180,
@@ -320,7 +320,7 @@
     0,
     -0
   ],
-  "shieldRadius": 112,
+  "shieldRadius": 120.5,
   "spriteName": "graphics/vass/ships/new_schiavona/main_sprite_extra_gold.png",
   "style": "VASS_HULL",
   "viewOffset": 0,

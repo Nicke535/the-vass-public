@@ -76,7 +76,6 @@ public class VassPerturbaWeaponTestingEvent extends VassPerturbaBaseEvent {
         }
 
         //If we have told the sector that there's a non-repeatable event that should happen instead, we can't appear
-        //Unused for now
         if (Global.getSector().getMemoryWithoutUpdate().contains(VassPerturbaBaseEvent.CURRENT_EVENT_ALLOWED_KEY)) {
             return false;
         }
@@ -150,7 +149,7 @@ public class VassPerturbaWeaponTestingEvent extends VassPerturbaBaseEvent {
                 text.addPara("'Straight to the point, eh? Well, frankly, this IS a nice bar, but as you've guessed I'm not here just to enjoy the scenery. Perturba actually has a contract offer for you, if you're interested.'");
 
                 options.addOption("Go on...", OptionId.CONTINUE_1);
-                options.addOption("Tell them that you're unfortunately preoccupied at the moment.", OptionId.LEAVE);
+                options.addOption("Tell them that you're unfortunately preoccupied at the moment.", OptionId.LEAVE_DIALOG);
                 break;
             case CONTINUE_1:
                 text.addPara("'Well you see, we're in need of some fresh combat data for some of our prototype " +
@@ -169,7 +168,7 @@ public class VassPerturbaWeaponTestingEvent extends VassPerturbaBaseEvent {
                     options.setEnabled(OptionId.CONTINUE_2, false);
                     options.setTooltip(OptionId.CONTINUE_2, "You don't have enough credits for the mission collateral.");
                 }
-                options.addOption("Tell them that you're unfortunately preoccupied at the moment.", OptionId.LEAVE);
+                options.addOption("Tell them that you're unfortunately preoccupied at the moment.", OptionId.LEAVE_DIALOG);
                 break;
             case CONTINUE_2:
                 text.addPara("'Great, I'll inform my team to deliver the goods to your fleet as soon as possible.'");

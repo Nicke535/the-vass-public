@@ -13,7 +13,15 @@
       "autofire": false,
       "mode": "LINKED",
       "weapons": {
-        "WS0002": "vass_dyrnwyn"
+        "WS0004": "vass_dyrnwyn",
+        "WS0005": "vass_dyrnwyn"
+      }
+    },
+    {
+      "autofire": false,
+      "mode": "LINKED",
+      "weapons": {
+        "WS0002": "vass_asi"
       }
     }
   ],

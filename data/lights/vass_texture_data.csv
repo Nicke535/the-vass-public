@@ -2,6 +2,7 @@ id,type,frame,magnitude,map,path
 ,,,,,
 ,,,,,
 vass_makhaira,ship,,2,normal,graphics/vass/shaders/ships/makhaira_n.png
+vass_akrafena,ship,,2,normal,graphics/vass/shaders/ships/akrafena_n.png
 ,,,,,
 vass_schiavona,ship,,2,normal,graphics/vass/shaders/ships/schiavona_n.png
 ,,,,,

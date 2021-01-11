@@ -2,10 +2,7 @@ package data.scripts.campaign.commandConsole;
 
 import com.fs.starfarer.api.Global;
 import data.scripts.campaign.VassFamilyTrackerPlugin;
-import data.scripts.campaign.barEvents.VassPerturbaBaseEvent;
-import data.scripts.campaign.barEvents.VassPerturbaWeaponContractEvent;
-import data.scripts.campaign.barEvents.VassPerturbaWeaponTestingEvent;
-import data.scripts.campaign.barEvents.VassPerturbaWeaponTestingIntel;
+import data.scripts.campaign.barEvents.*;
 import org.lazywizard.console.BaseCommand;
 import org.lazywizard.console.CommonStrings;
 import org.lazywizard.console.Console;
@@ -34,6 +31,8 @@ public class VassResetCompletely implements BaseCommand {
         Global.getSector().getMemoryWithoutUpdate().unset(VassPerturbaWeaponTestingEvent.COLLATERAL_MEM_KEY);
         Global.getSector().getMemoryWithoutUpdate().unset(VassPerturbaWeaponTestingIntel.MEM_KEY_PROTOTYPE_DATA);
         Global.getSector().getMemoryWithoutUpdate().unset(VassPerturbaWeaponTestingIntel.MEM_KEY_PROTOTYPE_IN_COMBAT_SCORE_HANDLER);
+
+        Global.getSector().getMemoryWithoutUpdate().unset(VassPerturbaGetShipSubmarketEvent.VASS_PERTURBA_SHIP_SUBMARKET_CONTRACT_KEY);
 
         Global.getSector().getMemoryWithoutUpdate().unset("$vass_firstTimeVassShipLooted");
 

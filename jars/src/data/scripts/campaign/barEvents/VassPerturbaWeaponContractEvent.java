@@ -28,7 +28,7 @@ public class VassPerturbaWeaponContractEvent extends VassPerturbaBaseEvent {
     //Some memory keys used by the event
     public static final String VASS_PERTURBA_WEAPON_CONTRACT_KEY = "$vass_perturba_weapon_contract";
 
-    //All the blueprints unlocked by the even
+    //All the blueprints unlocked by the event
     public static final Set<String> UNLOCKED_WEAPONS = new HashSet<>();
     static {
         UNLOCKED_WEAPONS.add("vass_dyrnwyn");
@@ -37,6 +37,7 @@ public class VassPerturbaWeaponContractEvent extends VassPerturbaBaseEvent {
         UNLOCKED_WEAPONS.add("vass_caladbolg");
         UNLOCKED_WEAPONS.add("vass_asi");
         UNLOCKED_WEAPONS.add("vass_fragarach");
+        UNLOCKED_WEAPONS.add("vass_tizona");
     }
 
     public enum OptionId {
@@ -232,6 +233,7 @@ public class VassPerturbaWeaponContractEvent extends VassPerturbaBaseEvent {
                     Global.getSector().getPlayerFaction().addKnownWeapon(weapon, true);
                 }
                 BarEventManager.getInstance().notifyWasInteractedWith(this);
+                Global.getSector().getMemoryWithoutUpdate().set(VASS_PERTURBA_WEAPON_CONTRACT_KEY, true);
 
                 addIntel();
                 options.addOption("Leave", OptionId.LEAVE);

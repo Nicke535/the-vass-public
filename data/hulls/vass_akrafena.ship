@@ -71,6 +71,17 @@
   "engineSlots": [
     {
       "angle": 180,
+      "contrailSize": 6,
+      "length": 30,
+      "location": [
+        -52,
+        -3
+      ],
+      "style": "VASS_ENGINE_NEAR",
+      "width": 6
+    },
+    {
+      "angle": 180,
       "contrailSize": 3,
       "length": 60,
       "location": [
@@ -90,17 +101,6 @@
       ],
       "style": "VASS_ENGINE_FAR",
       "width": 3
-    },
-    {
-      "angle": 180,
-      "contrailSize": 6,
-      "length": 30,
-      "location": [
-        -52,
-        -3
-      ],
-      "style": "VASS_ENGINE_NEAR",
-      "width": 6
     },
     {
       "angle": -180,

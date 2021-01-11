@@ -271,7 +271,7 @@ public class VassPerturbaWeaponTestingIntel extends BaseIntelPlugin {
                     Global.getSector().getMemoryWithoutUpdate().unset(MEM_KEY_PROTOTYPE_IN_COMBAT_SCORE_HANDLER);
                     Global.getSector().getIntelManager().addIntel(this.intel, false);
                     if (DEBUG_MODE) {
-                        LOGGER.info("Progressed weapon testing quest by " + (float)obj);
+                        LOGGER.info("Progressed weapon testing quest by " + ((TestingCombatScoreHandler) obj).scoreThisCombat);
                     }
                 }
             }

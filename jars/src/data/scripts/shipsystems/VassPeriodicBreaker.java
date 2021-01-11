@@ -42,7 +42,7 @@ public class VassPeriodicBreaker extends BaseShipSystemScript {
     public static final float ELECTRIC_SIZE_SCHIAVONA = 300.0f;
 
 
-    public boolean HAS_FIRED_LIGHTNING = false;
+    private boolean HAS_FIRED_LIGHTNING = false;
     public boolean hasToldEnemiesAboutActivation = false; //Used to cheat enemy ships into being able to time-duel you
     private boolean hasResetPostProcess = true;
 
