@@ -25,6 +25,9 @@ import java.util.List;
  */
 public class VassIsochronalField extends BaseShipSystemScript {
 
+    //Memory key to store the ship's "offensive/defensive" mode, to be read by other scripts
+    public static final String OFFENSE_MEM_KEY = "vass_isochronal_field_mode_memory_key";
+
     //Chance for our projectiles to multiply when in offensive mode
     private static final float MULTIPLY_CHANCE = 0.4f;
 
@@ -33,7 +36,7 @@ public class VassIsochronalField extends BaseShipSystemScript {
     private static final float TIMESTEP_LENGTH_REDIRECTION = 2f;
 
     //Maximum angle to redirect a projectile
-    private static final float REDIRECTION_MAX_ANGLE = 15f;
+    private static final float REDIRECTION_MAX_ANGLE = 20f;
 
     //Cooldown to apply to our passive system, depending on how much we redirected the projectile
     //This is the highest possible cooldown: scales linearly with smaller redirections
@@ -61,6 +64,13 @@ public class VassIsochronalField extends BaseShipSystemScript {
             player = Global.getCombatEngine().getPlayerShip() == ship;
         } else {
             return;
+        }
+
+        //Always flag whether we are in offensive or defensive mode
+        if (offensiveMode) {
+            Global.getCombatEngine().getCustomData().put(OFFENSE_MEM_KEY, true);
+        } else {
+            Global.getCombatEngine().getCustomData().remove(OFFENSE_MEM_KEY);
         }
 
         //If we are a wreck, we don't run any shipsystem stuff
@@ -321,9 +331,10 @@ public class VassIsochronalField extends BaseShipSystemScript {
 
     //Utility function: checks if a projectile will collide with a ship within a certain time, with a certain angle offset
     private boolean projectileWillCollide(DamagingProjectileAPI proj, ShipAPI ship, float angleOffset, float time) {
+        Vector2f relativeVel = new Vector2f(proj.getVelocity().x-ship.getVelocity().x, proj.getVelocity().y-ship.getVelocity().y);
         Vector2f predictPoint = MathUtils.getPoint(proj.getLocation(),
-                proj.getVelocity().length()*time,
-                VectorUtils.getAngle(new Vector2f(0f, 0f), proj.getVelocity())+angleOffset);
+                relativeVel.length()*time,
+                VectorUtils.getAngle(new Vector2f(0f, 0f), relativeVel)+angleOffset);
 
         //Shield handling
         if (ship.getShield() != null

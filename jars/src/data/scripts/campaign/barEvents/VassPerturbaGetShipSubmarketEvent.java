@@ -41,7 +41,7 @@ public class VassPerturbaGetShipSubmarketEvent extends VassPerturbaBaseEvent {
         LEAVE,
     }
 
-    private static final int PURCHASE_COST = 130000;
+    private static final int PURCHASE_COST = 175000;
 
     private static final float PERTURBA_DEAL_RELATION_BONUS = 10f;
 
