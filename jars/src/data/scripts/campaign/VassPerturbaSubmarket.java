@@ -6,8 +6,6 @@ import com.fs.starfarer.api.campaign.CargoAPI.CargoItemQuantity;
 import com.fs.starfarer.api.campaign.CargoStackAPI;
 import com.fs.starfarer.api.campaign.FactionAPI;
 import com.fs.starfarer.api.campaign.FactionAPI.ShipPickParams;
-import com.fs.starfarer.api.campaign.RepLevel;
-import com.fs.starfarer.api.campaign.econ.SubmarketAPI;
 import com.fs.starfarer.api.fleet.FleetMemberAPI;
 import com.fs.starfarer.api.fleet.FleetMemberType;
 import com.fs.starfarer.api.fleet.ShipRolePick;
@@ -47,17 +45,12 @@ public class VassPerturbaSubmarket extends BaseSubmarketPlugin {
     private static final List<String> FIGHTERS_SOLD = new ArrayList<>();
     static {
         FIGHTERS_SOLD.add("vass_estoc_wing");
-        FIGHTERS_SOLD.add("vass_katbalger_wing");
+        FIGHTERS_SOLD.add("vass_katzbalger_wing");
     }
 
     //Logger, for... well, logging!
     private static Logger log = Global.getLogger(VassPerturbaSubmarket.class);
 
-    @Override
-    public void init(SubmarketAPI submarket) {
-        super.init(submarket);
-        sinceLastCargoUpdate = 0f;
-    }
 
     @Override
     public void updateCargoPrePlayerInteraction() {
@@ -99,23 +92,13 @@ public class VassPerturbaSubmarket extends BaseSubmarketPlugin {
         CargoAPI cargo = getCargo();
 
         WeightedRandomPicker<String> rolePicker = new WeightedRandomPicker<>(itemGenRandom);
-        rolePicker.add(ShipRoles.CIV_RANDOM, 1f);
-        rolePicker.add(ShipRoles.FREIGHTER_SMALL, 1f);
-        rolePicker.add(ShipRoles.FREIGHTER_MEDIUM, 1f);
-        rolePicker.add(ShipRoles.FREIGHTER_LARGE, 5f);
-        rolePicker.add(ShipRoles.TANKER_SMALL, 1f);
-        rolePicker.add(ShipRoles.TANKER_MEDIUM, 1f);
-        rolePicker.add(ShipRoles.TANKER_LARGE, 1f);
-        rolePicker.add(ShipRoles.COMBAT_FREIGHTER_SMALL, 1f);
-        rolePicker.add(ShipRoles.COMBAT_FREIGHTER_MEDIUM, 1f);
-        rolePicker.add(ShipRoles.COMBAT_FREIGHTER_LARGE, 5f);
-        rolePicker.add(ShipRoles.COMBAT_SMALL, 25f);
+        rolePicker.add(ShipRoles.COMBAT_SMALL, 35f);
         rolePicker.add(ShipRoles.COMBAT_MEDIUM, 30f);
         rolePicker.add(ShipRoles.COMBAT_LARGE, 25f);
-        rolePicker.add(ShipRoles.COMBAT_CAPITAL, 15f);
-        rolePicker.add(ShipRoles.CARRIER_SMALL, 5f);
-        rolePicker.add(ShipRoles.CARRIER_MEDIUM, 5f);
-        rolePicker.add(ShipRoles.CARRIER_LARGE, 5f);
+        rolePicker.add(ShipRoles.CARRIER_SMALL, 25f);
+        rolePicker.add(ShipRoles.CARRIER_MEDIUM, 25f);
+        rolePicker.add(ShipRoles.CARRIER_LARGE, 25f);
+
 
         int tries = 0;
         FactionAPI faction = Global.getSector().getFaction("vass_perturba");
@@ -138,7 +121,8 @@ public class VassPerturbaSubmarket extends BaseSubmarketPlugin {
                     String variantId = pick.variantId;
 
                     FleetMemberAPI member = Global.getFactory().createFleetMember(type, variantId);
-                    variantId = member.getHullId() + "_Hull";
+                    String hullId = member.getHullId();
+                    variantId = hullId + "_Hull";
                     member = Global.getFactory().createFleetMember(FleetMemberType.SHIP, variantId);
 
                     // Adds D-mods randomly: they are only allowed to sell you "defect" ships
@@ -149,11 +133,12 @@ public class VassPerturbaSubmarket extends BaseSubmarketPlugin {
                     }
 
                     //Disallow ships that we aren't allowed to sell
-                    if (SHIPS_SOLD.contains(member.getHullId())) {
+                    if (SHIPS_SOLD.contains(hullId)) {
                         member.getRepairTracker().setMothballed(true);
                         member.getRepairTracker().setCR(0.5f);
                         getCargo().getMothballedShips().addFleetMember(member);
                     } else {
+                        log.warn("Threw away Vass ship : "+hullId);
                         i -= 1;
                     }
                 }

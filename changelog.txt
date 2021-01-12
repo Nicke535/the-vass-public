@@ -26,9 +26,11 @@ Version 0.3.4 : Time for another sprite rework
      -- Gained a new Small mount
      -- OP up from 135 to 145
      -- Rearranged mount types slightly
+     -- Dissipation up from 380 to 500
+         > Oversight originally, it was never meant to have this low dissipation. Might be an overbuff now, but will have to see
      -- System recieved slightly tweaked AI and now "punts" projectiles slightly further into the future
      -- Swiftlaunch Bays now refill up to 95% of the refit time of a returning fighter, instead of up to 80%   
-        > Used to be 65% flat, 15% based on hull level. Now 70% flat, 25% based on hulllevel
+         > Used to be 65% flat, 15% based on hull level. Now 70% flat, 25% based on hulllevel
      -- Swiftlaunch Bays are now slightly more aggressive with recalling its fighters when they are damaged
      -- Fleet point cost down from 24 FP to 19 FP
      -- Supplies/month down from 29 to 24
