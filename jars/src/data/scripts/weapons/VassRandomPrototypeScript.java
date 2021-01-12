@@ -58,6 +58,7 @@ public class VassRandomPrototypeScript implements EveryFrameWeaponEffectPlugin {
             Object handlerObj = Global.getSector().getMemoryWithoutUpdate().get(MEM_KEY_PROTOTYPE_IN_COMBAT_SCORE_HANDLER);
             if (!(handlerObj instanceof VassPerturbaWeaponTestingIntel.TestingCombatScoreHandler)) {
                 scoreHandler = new VassPerturbaWeaponTestingIntel.TestingCombatScoreHandler();
+                Global.getSector().getMemoryWithoutUpdate().set(MEM_KEY_PROTOTYPE_IN_COMBAT_SCORE_HANDLER, scoreHandler);
             } else {
                 scoreHandler = (VassPerturbaWeaponTestingIntel.TestingCombatScoreHandler)handlerObj;
             }

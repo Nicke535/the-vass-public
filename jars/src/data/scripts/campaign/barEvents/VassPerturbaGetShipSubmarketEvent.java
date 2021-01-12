@@ -1,5 +1,6 @@
 package data.scripts.campaign.barEvents;
 
+import com.fs.starfarer.api.EveryFrameScript;
 import com.fs.starfarer.api.Global;
 import com.fs.starfarer.api.campaign.InteractionDialogAPI;
 import com.fs.starfarer.api.campaign.OptionPanelAPI;
@@ -34,8 +35,7 @@ public class VassPerturbaGetShipSubmarketEvent extends VassPerturbaBaseEvent {
 
     public enum OptionId {
         INIT,
-        CONTINUE_1,
-        CONTINUE_2,
+        CONTINUE,
         CONTINUE_BUY_SERVICE,
         LEAVE_DIALOGUE,
         LEAVE,
@@ -75,7 +75,8 @@ public class VassPerturbaGetShipSubmarketEvent extends VassPerturbaBaseEvent {
         }
 
         //We also have to be registered as the next non-repeatable encounter to trigger
-        if (Global.getSector().getMemoryWithoutUpdate().get(VassPerturbaBaseEvent.CURRENT_EVENT_ALLOWED_KEY) != "get_ship_submarket") {
+        if (!("get_ship_submarket".equals(Global.getSector().getMemoryWithoutUpdate().get(VassPerturbaBaseEvent.CURRENT_EVENT_ALLOWED_KEY)))) {
+            LOGGER.info("Threw away Perturba event due to not having the correct event flag set");
             return false;
         }
 
@@ -142,12 +143,12 @@ public class VassPerturbaGetShipSubmarketEvent extends VassPerturbaBaseEvent {
         switch (option) {
             case INIT:
                 text.addPara("The Perturba agent smiles as you approach them, though the other individual att the table doesn't seem to react.");
-                text.addPara("'"+Global.getSector().getPlayerPerson().getName().getFirst()+"! Have you been well? Ah, them?' Perturba's agent points to the other individual at the table 'They're the reason I'm here today.'");
+                text.addPara("'"+Global.getSector().getPlayerPerson().getName().getFirst()+"! Have you been well? Ah, them?' Perturba's agent points to the other individual at the table. 'They're the reason I'm here today.'");
 
-                options.addOption("Interesting. Grab a drink and tell them to elaborate.", OptionId.CONTINUE_1);
+                options.addOption("Interesting. Grab a drink and tell them to elaborate.", OptionId.CONTINUE);
                 options.addOption("Tell them you're unfortunately busy at the moment.", OptionId.LEAVE);
                 break;
-            case CONTINUE_2:
+            case CONTINUE:
                 text.addPara("'Well, without going too much into detail, this here is our contact from the Vass Shipyards. We've discussed things among us for a bit, and we've concluded that there is a way for us to supply you with Vass ships without causing a breach in their cartel agreement.'");
                 text.addPara("That does sound enticing. But what's the catch?");
                 text.addPara("'Well, due to how the contract is written, we can't really supply you with factory-new models. Instead, we will sell you some of the ships normally deemed as defect or otherwise unfit for use. The plan is to set up a small Perturba reseller on "+market.getName()+" which would manage selling these to you. There won't be that many for sale at a time, but it's better than nothing, no?'");
@@ -170,7 +171,7 @@ public class VassPerturbaGetShipSubmarketEvent extends VassPerturbaBaseEvent {
                 float currentPerturbaRelations = VassFamilyTrackerPlugin.getRelationToFamily(VassUtils.VASS_FAMILY.PERTURBA);
                 if (currentPerturbaRelations < 100f) {
                     float toModify = Math.min(PERTURBA_DEAL_RELATION_BONUS, 100f-currentPerturbaRelations);
-                    VassFamilyTrackerPlugin.modifyRelationToFamily(VassUtils.VASS_FAMILY.PERTURBA, currentPerturbaRelations+toModify);
+                    VassFamilyTrackerPlugin.modifyRelationToFamily(VassUtils.VASS_FAMILY.PERTURBA, toModify);
                     text.addPara("Relations with Perturba improved to "+Math.round(currentPerturbaRelations+toModify), h, "Perturba", ""+Math.round(currentPerturbaRelations+toModify));
                 }
                 //This shouldn't run, but I might as well add it as a fallback
@@ -195,6 +196,7 @@ public class VassPerturbaGetShipSubmarketEvent extends VassPerturbaBaseEvent {
                 options.addOption("Leave", OptionId.LEAVE);
                 break;
             case LEAVE:
+                Global.getSector().addScript(new ResetPerturbaEventFlagWithDelay());
                 noContinue = true;
                 done = true;
                 break;
@@ -206,9 +208,8 @@ public class VassPerturbaGetShipSubmarketEvent extends VassPerturbaBaseEvent {
         WeightedRandomPicker<String> post = new WeightedRandomPicker<String>();
         if (getContact() != null && VassFamilyTrackerPlugin.getRelationToFamily(VassUtils.VASS_FAMILY.PERTURBA) >= 60) {
             post.add(getContact().getName().getFirst() + " is here again, sitting next to someone you don't know. Maybe Perturba has something slightly out of the ordinary on offer?");
-        } else {
-            post.add("The Perturba contact is sitting at one of the tables, but they seem to have brought company. When you enter, they try to catch your attention; Perturba most likely has an offer for you.");
         }
+        post.add("The Perturba contact is sitting at one of the tables, but they seem to have brought company. When you enter, they try to catch your attention; Perturba most likely has an offer for you.");
         return post.pick();
     }
 
@@ -216,9 +217,32 @@ public class VassPerturbaGetShipSubmarketEvent extends VassPerturbaBaseEvent {
         WeightedRandomPicker<String> post = new WeightedRandomPicker<String>();
         if (getContact() != null && VassFamilyTrackerPlugin.getRelationToFamily(VassUtils.VASS_FAMILY.PERTURBA) >= 60) {
             post.add("Huh, " + getContact().getName().getFirst() + " has brought an acquaintance? Can't hurt to hear what they want.");
-        } else {
-            post.add("It's rare for Perturba to send multiple contacts; see what they want with you.");
         }
+        post.add("It's rare for Perturba to send multiple contacts; see what they want with you.");
         return post.pick();
+    }
+
+    private class ResetPerturbaEventFlagWithDelay implements EveryFrameScript {
+        private boolean hasRun = false;
+        private float timer = 0f;
+
+        @Override
+        public void advance(float amount) {
+            timer += Misc.getDays(amount);
+            if (timer > 2f) {
+                VassPerturbaBaseEvent.checkAndSetAllowedEvent();
+                hasRun = true;
+            }
+        }
+
+        @Override
+        public boolean runWhilePaused() {
+            return false;
+        }
+
+        @Override
+        public boolean isDone() {
+            return hasRun;
+        }
     }
 }

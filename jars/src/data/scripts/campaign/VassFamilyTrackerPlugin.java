@@ -224,7 +224,7 @@ public class VassFamilyTrackerPlugin implements EveryFrameScript {
     public static void modifyRelationToFamily(VassUtils.VASS_FAMILY family, float amount) {
         if (currentInstance != null) {
             float newRelation = currentInstance.familyRelationMap.get(family) + amount;
-            currentInstance.familyRelationMap.put(family, newRelation);
+            currentInstance.familyRelationMap.put(family, Math.min(100f, Math.max(-100f, newRelation)));
         }
     }
     public static float getRelationToFamily(VassUtils.VASS_FAMILY family) {

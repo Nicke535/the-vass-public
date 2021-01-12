@@ -8,6 +8,7 @@ import data.scripts.campaign.VassFamilyTrackerPlugin;
 import data.scripts.campaign.VassRandomEncounterPlugin;
 import data.scripts.campaign.VassSafetyOverridesCrewLossPlugin;
 import data.scripts.campaign.VassSectorSetupScript;
+import data.scripts.campaign.barEvents.VassPerturbaGetShipSubmarketEventCreator;
 import data.scripts.campaign.barEvents.VassPerturbaWeaponContractEventCreator;
 import data.scripts.campaign.barEvents.VassPerturbaWeaponTestingEventCreator;
 import org.dark.shaders.light.LightData;
@@ -84,6 +85,9 @@ public class VassModPlugin extends BaseModPlugin {
         }
         if (!bar.hasEventCreator(VassPerturbaWeaponTestingEventCreator.class)) {
             bar.addEventCreator(new VassPerturbaWeaponTestingEventCreator());
+        }
+        if (!bar.hasEventCreator(VassPerturbaGetShipSubmarketEventCreator.class)) {
+            bar.addEventCreator(new VassPerturbaGetShipSubmarketEventCreator());
         }
     }
 }

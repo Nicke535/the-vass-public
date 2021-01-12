@@ -66,12 +66,12 @@ public class VassPerturbaBaseEvent extends BaseBarEventWithPerson {
         SectorAPI sector = Global.getSector();
         if (sector == null) return;
 
-        //Currently, we have a 35% chance of getting the special submarket event after we've hit the reputation threshold
+        //Currently, we have a 50% chance of getting the special submarket event after we've hit the reputation threshold
         //      ...though, it doesn't trigger if the submarket has already been handed out
         if (VassFamilyTrackerPlugin.getRelationToFamily(VassUtils.VASS_FAMILY.PERTURBA) > 30f) {
             if (sector.getFaction("vass").getRelToPlayer().isAtWorst(RepLevel.FRIENDLY)) {
                 Object hasContract = Global.getSector().getMemoryWithoutUpdate().get(VassPerturbaGetShipSubmarketEvent.VASS_PERTURBA_SHIP_SUBMARKET_CONTRACT_KEY);
-                if (Math.random() > 0.35f && hasContract instanceof Boolean && !((boolean)hasContract)) {
+                if (Math.random() < 0.5f && (!(hasContract instanceof Boolean) || !((boolean)hasContract))) {
                     Global.getSector().getMemoryWithoutUpdate().set(VassPerturbaBaseEvent.CURRENT_EVENT_ALLOWED_KEY, "get_ship_submarket");
                     return;
                 }

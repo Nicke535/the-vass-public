@@ -1,6 +1,8 @@
 package data.scripts.campaign.commandConsole;
 
 import com.fs.starfarer.api.Global;
+import com.fs.starfarer.api.campaign.RepLevel;
+import com.fs.starfarer.api.impl.campaign.ids.Factions;
 import data.scripts.campaign.VassFamilyTrackerPlugin;
 import data.scripts.campaign.barEvents.*;
 import org.lazywizard.console.BaseCommand;
@@ -16,6 +18,7 @@ public class VassResetCompletely implements BaseCommand {
         }
 
         //Resets all standings and power levels
+        Global.getSector().getFaction("vass").setRelationship(Factions.PLAYER, RepLevel.HOSTILE);
         VassFamilyTrackerPlugin.reinitializeFamilyPower();
         VassFamilyTrackerPlugin.reinitializeFamilyRelations();
         VassFamilyTrackerPlugin.resetSoldShipsListener();

@@ -7,6 +7,7 @@ import com.fs.starfarer.api.campaign.CargoStackAPI;
 import com.fs.starfarer.api.campaign.FactionAPI;
 import com.fs.starfarer.api.campaign.FactionAPI.ShipPickParams;
 import com.fs.starfarer.api.campaign.RepLevel;
+import com.fs.starfarer.api.campaign.econ.SubmarketAPI;
 import com.fs.starfarer.api.fleet.FleetMemberAPI;
 import com.fs.starfarer.api.fleet.FleetMemberType;
 import com.fs.starfarer.api.fleet.ShipRolePick;
@@ -32,7 +33,6 @@ public class VassPerturbaSubmarket extends BaseSubmarketPlugin {
     /* Configurations */
     private static final int NUMBER_OF_SHIPS = 6;
     private static final int NUMBER_OF_FIGHTERS = 8;
-    private static final RepLevel MIN_STANDING = RepLevel.FRIENDLY;
     private static final int MIN_DMODS = 1;
     private static final int MAX_DMODS = 2;
 
@@ -53,10 +53,15 @@ public class VassPerturbaSubmarket extends BaseSubmarketPlugin {
     //Logger, for... well, logging!
     private static Logger log = Global.getLogger(VassPerturbaSubmarket.class);
 
+    @Override
+    public void init(SubmarketAPI submarket) {
+        super.init(submarket);
+        sinceLastCargoUpdate = 0f;
+    }
 
     @Override
     public void updateCargoPrePlayerInteraction() {
-        if (sinceLastCargoUpdate < 30) return;
+        if (sinceLastCargoUpdate < 1f) return;
         sinceLastCargoUpdate = 0f;
 
         CargoAPI cargo = getCargo();
@@ -114,7 +119,7 @@ public class VassPerturbaSubmarket extends BaseSubmarketPlugin {
 
         int tries = 0;
         FactionAPI faction = Global.getSector().getFaction("vass_perturba");
-        for (int i = 0; i < NUMBER_OF_SHIPS; i = cargo.getMothballedShips().getNumMembers()) {
+        for (int i = 0; i < NUMBER_OF_SHIPS; i++) {
             //Pick a ship role
             List<ShipRolePick> picks = null;
             int tries2 = 0;
@@ -154,7 +159,10 @@ public class VassPerturbaSubmarket extends BaseSubmarketPlugin {
                 }
             }
             tries++;
-            if (tries > 40) break;
+            if (tries > 40) {
+                log.warn("The Vass ship submarket failed to add ships properly due to some unforseen circumstance");
+                break;
+            }
         }
     }
 

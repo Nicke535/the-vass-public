@@ -4,6 +4,7 @@ import com.fs.starfarer.api.Global;
 import com.fs.starfarer.api.campaign.*;
 import com.fs.starfarer.api.campaign.econ.Industry;
 import com.fs.starfarer.api.campaign.econ.MarketAPI;
+import com.fs.starfarer.api.characters.FullName;
 import com.fs.starfarer.api.impl.campaign.intel.bar.events.BarEventManager;
 
 import com.fs.starfarer.api.util.Misc;
@@ -184,16 +185,12 @@ public class VassPerturbaWeaponContractEvent extends VassPerturbaBaseEvent {
             case CONTINUE_KNOWS_PERTURBA:
                 text.addPara("They break a tiny smile. 'Well that makes things easy. See, I'm a... 'contact' of sorts in their employ. I handle external affairs to promising customers. Which is where YOU come in.'");
 
-                Global.getSector().getMemoryWithoutUpdate().set(VASS_PERTURBA_HAS_MET_CONTACT_KEY, true);
-
                 options.addOption("Urge him to go on.", OptionId.CONTINUE_2);
                 options.addOption("You will have nothing to do with this criminal! Call the guards.", OptionId.LEAVE_HOSTILE);
                 break;
             case CONTINUE_DOES_NOT_KNOW_PERTURBA:
                 text.addPara("'Is that so? Well, I suppose we technically are supposed to be fairly secretive. Explaining everything we stand for is frankly a waste of both of our time, so I'll give you the summarized version.'");
                 text.addPara("'Perturba are a weapon manufacturer and procurer, specializing in some more... unique... ordinance solutions. More specifically, weaponry normally restricted by the 312th clause of the Domain temporal weapons ban, though I suppose what it's referred as to varies from group to group nowadays. While we deal in both personnel- and ship-scale weaponry, I'm mostly only affiliated with the ship-scale side of things.'");
-
-                Global.getSector().getMemoryWithoutUpdate().set(VASS_PERTURBA_HAS_MET_CONTACT_KEY, true);
 
                 options.addOption("Ask what the deal they wanted to discuss entails.", OptionId.CONTINUE_2);
                 options.addOption("They have the audacity to represent an illegal arms dealing syndicate in plain view? Call the guards!", OptionId.LEAVE_HOSTILE);
@@ -210,7 +207,7 @@ public class VassPerturbaWeaponContractEvent extends VassPerturbaBaseEvent {
                 options.addOption("You've heard enough from this criminal. Call the guards!", OptionId.LEAVE_HOSTILE);
                 break;
             case CONTINUE_BUY_SERVICE:
-                text.addPara("'Pleasure doing business with you. Here:' The man hands you a tiny tri-chip. 'This should provide you with a one-way encrypted comms channel to our sales department and a program for easily managing your orders. It should pop up under your normal administrative functions; just make an order and the program should requisition credits and other resources as necessary to our collection location. Then, we'll bring the wares to the agreed-upon drop point once they goods are ready.'", h, "normal administrative functions");
+                text.addPara("'Pleasure doing business with you. Here:' The agent hands you a tiny tri-chip. 'This should provide you with a one-way encrypted comms channel to our sales department and a program for easily managing your orders. It should pop up under your normal administrative functions; just make an order and the program should requisition credits and other resources as necessary to our collection location. Then, we'll bring the wares to the agreed-upon drop point once they goods are ready.'", h, "normal administrative functions");
 
                 text.setFontSmallInsignia();
                 text.addPara("Lost " + PURCHASE_COST + " credits", n, h, "" + PURCHASE_COST);
@@ -240,6 +237,7 @@ public class VassPerturbaWeaponContractEvent extends VassPerturbaBaseEvent {
                 break;
             case LEAVE_NONHOSTILE:
                 text.addPara("The Perturba agent looks mildly disappointed. 'Is that so? Well, just inform us if you change your mind; I'll probably come back now and then. This IS a rather nice bar, after all.'");
+                Global.getSector().getMemoryWithoutUpdate().set(VASS_PERTURBA_HAS_MET_CONTACT_KEY, true);
 
                 options.addOption("Leave", OptionId.LEAVE);
                 break;
@@ -249,11 +247,13 @@ public class VassPerturbaWeaponContractEvent extends VassPerturbaBaseEvent {
                 text.addPara("You have a feeling Perturba won't be offering you any new deals any time soon.");
 
                 text.setFontSmallInsignia();
-                text.addPara("Relations with Perturba worsened to "+Math.round(RELATIONS_AFTER_BAD_DEAL), h, "Perturba", ""+Math.round(RELATIONS_AFTER_DEAL));
+                text.addPara("Relations with Perturba worsened to "+Math.round(RELATIONS_AFTER_BAD_DEAL), h, "Perturba", ""+Math.round(RELATIONS_AFTER_BAD_DEAL));
                 text.setFontInsignia();
 
                 VassFamilyTrackerPlugin.modifyRelationToFamily(VassUtils.VASS_FAMILY.PERTURBA,
                         -((-RELATIONS_AFTER_BAD_DEAL) + VassFamilyTrackerPlugin.getRelationToFamily(VassUtils.VASS_FAMILY.PERTURBA)));
+
+                Global.getSector().getMemoryWithoutUpdate().set(VASS_PERTURBA_HAS_MET_CONTACT_KEY, true);
 
                 options.addOption("Leave", OptionId.LEAVE);
                 break;

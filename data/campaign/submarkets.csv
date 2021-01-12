@@ -1,3 +1,4 @@
 id,name,faction,desc,script,icon,order
-vass_perturba_shipseller_submarket,Perturba Ship Seller,vass,"Perturba has set up a small base here, where they are willing to sell you some of their defect or broken-down ships.",data.scripts.campaign.VassPerturbaSubmarket,graphics/vass/factions/the_vass_perturba_crest.png,200
+vass_perturba_shipseller_submarket,"Perturba
+Ship Seller",vass,"Perturba has set up a small base here, where they are willing to sell you some of their defect or broken-down ships.",data.scripts.campaign.VassPerturbaSubmarket,graphics/vass/factions/the_vass_perturba_crest.png,200
 

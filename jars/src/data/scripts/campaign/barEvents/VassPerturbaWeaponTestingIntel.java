@@ -273,6 +273,10 @@ public class VassPerturbaWeaponTestingIntel extends BaseIntelPlugin {
                     if (DEBUG_MODE) {
                         LOGGER.info("Progressed weapon testing quest by " + ((TestingCombatScoreHandler) obj).scoreThisCombat);
                     }
+                } else {
+                    if (DEBUG_MODE) {
+                        LOGGER.info("The Perturba weapon testing quest did not make progress this combat");
+                    }
                 }
             }
         }

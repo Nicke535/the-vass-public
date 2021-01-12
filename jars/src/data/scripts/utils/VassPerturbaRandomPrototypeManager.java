@@ -51,8 +51,8 @@ public class VassPerturbaRandomPrototypeManager {
         String archetype = archetypePicker.pick();
         if (archetype.equals("RANDOM_LASER")) {
             data = new PrototypeWeaponData(
-                    MathUtils.getRandomNumberInRange(0.7f, 2f), //Damage
-                    MathUtils.getRandomNumberInRange(0.1f, 1f), //Firerate
+                    MathUtils.getRandomNumberInRange(0.8f, 2f), //Damage
+                    MathUtils.getRandomNumberInRange(0.1f, 0.45f), //Firerate
                     MathUtils.getRandomNumberInRange(0f, 12f), //Inaccuracy
                     MathUtils.getRandomNumberInRange(0f, 0.15f), //Speed variation
                     medium ? "pulselaser" : "irpulse", //Projectile weapon ID
@@ -60,11 +60,11 @@ public class VassPerturbaRandomPrototypeManager {
                     null, //Guidance
                     null, //Script
                     medium ? "pulse_laser_fire" : "ir_pulse_laser_fire", //Fire sound
-                    Math.random() < 0.2f ? MathUtils.getRandomNumberInRange(3f, 6f) : 1f); //Shotgun Factor
+                    Math.random() < 0.4f ? MathUtils.getRandomNumberInRange(3f, 6f) : 1f); //Shotgun Factor
         } else if (archetype.equals("RANDOM_CANNON")) {
             data = new PrototypeWeaponData(
-                    MathUtils.getRandomNumberInRange(0.7f, 2f), //Damage
-                    MathUtils.getRandomNumberInRange(0.2f, 1f), //Firerate
+                    MathUtils.getRandomNumberInRange(0.8f, 2f), //Damage
+                    MathUtils.getRandomNumberInRange(0.2f, 0.5f), //Firerate
                     MathUtils.getRandomNumberInRange(0f, 10f), //Inaccuracy
                     MathUtils.getRandomNumberInRange(0f, 0.15f), //Speed variation
                     medium ? "heavyac" : "lightac", //Projectile weapon ID
@@ -72,7 +72,7 @@ public class VassPerturbaRandomPrototypeManager {
                     null, //Guidance
                     null, //Script
                     medium ? "autocannon_fire" : "light_autocannon_fire", //Fire sound
-                    Math.random() < 0.2f ? MathUtils.getRandomNumberInRange(4, 7) : 1f); //Shotgun Factor : note the integer shotgunning for the cannon
+                    Math.random() < 0.4f ? MathUtils.getRandomNumberInRange(4, 7) : 1f); //Shotgun Factor : note the integer shotgunning for the cannon
         } else if (archetype.equals("DYRNWYN")) {
             data = new PrototypeWeaponData(
                     medium ? MathUtils.getRandomNumberInRange(0.45f, 0.75f) : MathUtils.getRandomNumberInRange(2f, 4f), //Damage
