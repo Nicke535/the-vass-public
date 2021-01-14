@@ -67,14 +67,18 @@ public class VassIsochronalField extends BaseShipSystemScript {
         }
 
         //Always flag whether we are in offensive or defensive mode
+        //This is also used to manage weapon glow
         if (offensiveMode) {
+            ship.setWeaponGlow(1f, VassUtils.getFamilyColor(VassUtils.VASS_FAMILY.MULTA, 1f), EnumSet.allOf(WeaponAPI.WeaponType.class));
             Global.getCombatEngine().getCustomData().put(OFFENSE_MEM_KEY, true);
         } else {
+            ship.setWeaponGlow(0f, Color.BLACK, EnumSet.noneOf(WeaponAPI.WeaponType.class));
             Global.getCombatEngine().getCustomData().remove(OFFENSE_MEM_KEY);
         }
 
-        //If we are a wreck, we don't run any shipsystem stuff
+        //If we are a wreck, we don't run any shipsystem stuff, except to remove our visuals
         if (ship.isHulk() || ship.isPiece()) {
+            ship.setWeaponGlow(0f, Color.BLACK, EnumSet.noneOf(WeaponAPI.WeaponType.class));
             return;
         }
 
@@ -263,7 +267,7 @@ public class VassIsochronalField extends BaseShipSystemScript {
     }
 
 
-    //Returns false if the projectile is disallowed from cloning was blocked from happening, true otherwise
+    //Returns false if the projectile is disallowed from cloning, true otherwise
     private boolean isAllowedToClone(DamagingProjectileAPI proj) {
         //Asi nonsense: we don't want multiple clonings, or cloning of the fake projectile
         if (proj.getProjectileSpecId().equals("vass_asi_shot")) {
