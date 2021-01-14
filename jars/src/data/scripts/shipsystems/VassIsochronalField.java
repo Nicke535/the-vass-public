@@ -72,7 +72,7 @@ public class VassIsochronalField extends BaseShipSystemScript {
             ship.setWeaponGlow(1f, VassUtils.getFamilyColor(VassUtils.VASS_FAMILY.MULTA, 1f), EnumSet.allOf(WeaponAPI.WeaponType.class));
             Global.getCombatEngine().getCustomData().put(OFFENSE_MEM_KEY, true);
         } else {
-            ship.setWeaponGlow(0f, Color.BLACK, EnumSet.noneOf(WeaponAPI.WeaponType.class));
+            ship.setWeaponGlow(0f, Color.BLACK, EnumSet.allOf(WeaponAPI.WeaponType.class));
             Global.getCombatEngine().getCustomData().remove(OFFENSE_MEM_KEY);
         }
 
@@ -185,8 +185,10 @@ public class VassIsochronalField extends BaseShipSystemScript {
 
             //TODO: Check for missiles, they don't seem to redirect properly
 
-            //Also: each time a projectile is redirected, spawn an afterimage and play a sound
-            renderMultaImage(ship);
+            //Also: each time a projectile is redirected, spawn three afterimages and play a sound
+            for (int i = 0; i < 3; i++) {
+                renderMultaImage(ship);
+            }
             Global.getSoundPlayer().playSound(REDIRECT_SOUND, 1f-(0.3f*(Math.abs(angleIfRedirected)/REDIRECTION_MAX_ANGLE)),
                     0.5f+(0.5f*Math.abs(angleIfRedirected)/REDIRECTION_MAX_ANGLE), closestValidProj.getLocation(), new Vector2f(0f, 0f));
         }
