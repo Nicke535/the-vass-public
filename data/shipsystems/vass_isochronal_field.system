@@ -1,13 +1,14 @@
 {
 	"id":"vass_isochronal_field",
 	"type":"STAT_MOD",
-	"aiType":"TEMPORAL_SHELL",
+	"aiType":"CUSTOM",
+	"aiScript":"data.scripts.ai.VassIsochronalFieldAI",
 	
 	"statsScript":"data.scripts.shipsystems.VassIsochronalField",
 	
 	"runScriptWhileIdle":true,  # this means unapply() never gets called
 
-	"loopSound":"vass_periodic_breaker_loop",
+	"useSound":"vass_isochronal_field_mode_swap",
 	"outOfUsesSound":"gun_out_of_ammo",
 	
 	"aiHints":{

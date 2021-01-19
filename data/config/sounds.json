@@ -29,6 +29,23 @@
 	"vass_chrono_jump_end":[
 		{"file":"sounds/vass/systems/chrono_jump_end.ogg","pitch":1.0,"volume":0.5},
 	],
+	"vass_isochronal_field_mode_swap":[
+		{"file":"sounds/vass/systems/isochronal_field_mode_swap.ogg","pitch":1.0,"volume":0.7},
+	],
+	"vass_isochronal_field_up":[
+		{"file":"sounds/vass/systems/isochronal_field_up.ogg","pitch":0.98,"volume":0.5},
+		{"file":"sounds/vass/systems/isochronal_field_up.ogg","pitch":0.96,"volume":0.5},
+		{"file":"sounds/vass/systems/isochronal_field_up.ogg","pitch":1.0,"volume":0.5},
+		{"file":"sounds/vass/systems/isochronal_field_up.ogg","pitch":1.02,"volume":0.5},
+		{"file":"sounds/vass/systems/isochronal_field_up.ogg","pitch":1.04,"volume":0.5},
+	],
+	"vass_isochronal_field_down":[
+		{"file":"sounds/vass/systems/isochronal_field_down.ogg","pitch":0.98,"volume":0.5},
+		{"file":"sounds/vass/systems/isochronal_field_down.ogg","pitch":0.96,"volume":0.5},
+		{"file":"sounds/vass/systems/isochronal_field_down.ogg","pitch":1.0,"volume":0.5},
+		{"file":"sounds/vass/systems/isochronal_field_down.ogg","pitch":1.02,"volume":0.5},
+		{"file":"sounds/vass/systems/isochronal_field_down.ogg","pitch":1.04,"volume":0.5},
+	],
 	
 	
 	"vass_overload_cancel":[
@@ -55,6 +72,10 @@
 		{"file":"sounds/vass/weapons/yawaratai_te_disable.ogg","pitch":0.9,"volume":0.25},
 		{"file":"sounds/vass/weapons/yawaratai_te_disable.ogg","pitch":0.91,"volume":0.25},
 		{"file":"sounds/vass/weapons/yawaratai_te_disable.ogg","pitch":0.92,"volume":0.25},
+	],
+	
+	"vass_yawaratai_te_loop":[
+		{"file":"sounds/sfx_wpn_energy/laser_loop.ogg","pitch":0.4,"volume":0.15},
 	],
 	
 	"vass_corseque_fire":[

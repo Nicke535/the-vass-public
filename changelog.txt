@@ -1,4 +1,4 @@
-Version 0.3.4 : Time for another sprite rework
+Version 0.4 : Time for another sprite rework
  Additions:
   - Added a second Frigate, the Akrafena, with a new shipsystem
   - Added a new Perturba event allowing you to get legitimate access to their ships once your relations are high enough

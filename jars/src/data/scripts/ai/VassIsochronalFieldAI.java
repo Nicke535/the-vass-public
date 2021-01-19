@@ -63,7 +63,12 @@ public class VassIsochronalFieldAI implements ShipSystemAIScript {
                 desiresOffensive = false;
             }
 
-            //Third, are there any targets nearby? If not, go on the defensive
+            //Third, do we only have beam weapons to use? In that case, offensive mode gives no advantage
+            if (canOnlyUseBeams()) {
+                desiresOffensive = false;
+            }
+
+            //Lastly, are there any targets nearby? If not, go on the defensive
             //      This is the heaviest check, so we don't even bother checking if we know we should be on the defensive
             if (desiresOffensive) {
                 ShipAPI enemy = AIUtils.getNearestEnemy(ship);
@@ -99,5 +104,21 @@ public class VassIsochronalFieldAI implements ShipSystemAIScript {
             }
         }
         return maxRange;
+    }
+
+    //Shorthand for checking if we only have beam weapons left in our hardpoints
+    private boolean canOnlyUseBeams() {
+        for (WeaponAPI wep : ship.getAllWeapons()) {
+            if (!wep.getSlot().isHardpoint()) {
+                continue;
+            }
+
+            if (!wep.isBeam()
+                && !wep.isDisabled()
+                && !wep.isPermanentlyDisabled()) {
+                return false;
+            }
+        }
+        return true;
     }
 }

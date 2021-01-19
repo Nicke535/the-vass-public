@@ -102,7 +102,7 @@ vass_prototype_m2,WEAPON,"CODEX DATA UNAVAILABLE : MODEL UNKNOWN.",Unknown,,
 ,,,,,
 vass_periodic_breaker,SHIP_SYSTEM,"A devastatingly powerful system, the Periodic Breaker accelerates the ship's timeflow to such an extent that time may as well be at a standstill for anything outside the device's sphere of influence.",Utility,Stops time.
 ,,,,,
-vass_temporal_retreat,SHIP_SYSTEM,"Developed by Recipro scientists around cycle 87, the Temporal Retreat system can partially revert the ship's state a couple of seconds back in time. While not all aspects of the ship are completely reverted, things such as overall hull integrity and flux buildup are affected nearly in their entirety. While the system doesn't 'generate' flux, as it reverts the flux state back in time, it still needs an overhead to properly activate",Utility,Reverts the ship a couple of seconds back in time
+vass_temporal_retreat,SHIP_SYSTEM,"Developed by Recipro scientists around cycle 87, the Temporal Retreat system can partially revert the ship's state a couple of seconds back in time. While not all aspects of the ship are completely reverted, things such as overall hull integrity and flux buildup are affected nearly in their entirety. Although the system doesn't 'generate' flux, as it reverts the flux state back in time, it still needs an available overhead to properly activate",Utility,Reverts the ship a couple of seconds back in time
 ,,,,,
 vass_chrono_jump,SHIP_SYSTEM,"A very peculiar device developed by the comparatively recent Multa family, the Chrono Jump device uses poorly-understood timeline properties to effectively make an area of space 'jump' into a future state. While technically it is a lot more complicated, the end results are decently easy to understand. Equipped on the Curtana carrier to provide some much-needed defense against bomb and missile strikes, while also helping against other bursts of firepower.",Utility,Sends nearby projectiles forward in time. Activate to prime; re-activate to trigger
 ,,,,,
@@ -110,7 +110,7 @@ vass_temporal_recall,SHIP_SYSTEM,"Designed to minimize bomber downtime on the Es
 ,,,,,
 vass_chrono_illusion,SHIP_SYSTEM,"Made almost as an advertisement rather than an actual combat system, the Chrono Illusion fulfills a similar role to flare launchers on more conventional fighters. However, its basis of operation is vastly different: by firing out tiny guided drones with installed Multa packets, the illusion of an entire fleet of almost-corporeal ships are created by visually overlapping several neighboring timelines for a couple of seconds. These can fool detectors working in nearly all spectra, though some scanners and targeting solutions might still be able to retain their target.",Defense,Creates visual clones that confuse most ship targeting
 ,,,,,
-vass_isochronal_field,SHIP_SYSTEM,".",Hybrid,Multiplies or deflects projectiles depending on mode
+vass_isochronal_field,SHIP_SYSTEM,"A heavily modified derivative of the internal systems of the Fragarach, the Isochronal Field Emitter manipulates nearby timelines to pull or push projectiles between them. It can be used both for defensive and offensive purposes, depending on exactly how the system is configured. Due to the highly limited area in which a field can be maintained, works on a turret-mounted variant of the system have as of yet been unsuccessful.",Hybrid,Multiplies or deflects projectiles depending on mode
 ,,,,,
 # Campaign Content,,,,,
 ,,,,,

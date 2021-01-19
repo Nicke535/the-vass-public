@@ -43,8 +43,8 @@ public class VassIsochronalField extends BaseShipSystemScript {
     private static final float REDIRECT_COOLDOWN_MAX = 0.8f;
 
     //Clone and redirect SFX
-    private static final String REDIRECT_SOUND = "vass_yawaratai_te_pulse";
-    private static final String CLONE_SOUND = "vass_yawaratai_te_disable";
+    private static final String REDIRECT_SOUND = "vass_isochronal_field_down";
+    private static final String CLONE_SOUND = "vass_isochronal_field_up";
 
     //Internal variables
     private boolean offensiveMode = false;
@@ -189,7 +189,7 @@ public class VassIsochronalField extends BaseShipSystemScript {
             for (int i = 0; i < 3; i++) {
                 renderMultaImage(ship);
             }
-            Global.getSoundPlayer().playSound(REDIRECT_SOUND, 1f-(0.3f*(Math.abs(angleIfRedirected)/REDIRECTION_MAX_ANGLE)),
+            Global.getSoundPlayer().playSound(REDIRECT_SOUND, 1f-(0.1f*(Math.abs(angleIfRedirected)/REDIRECTION_MAX_ANGLE)),
                     0.5f+(0.5f*Math.abs(angleIfRedirected)/REDIRECTION_MAX_ANGLE), closestValidProj.getLocation(), new Vector2f(0f, 0f));
         }
     }

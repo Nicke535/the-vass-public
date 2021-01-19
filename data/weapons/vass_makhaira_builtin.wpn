@@ -22,6 +22,5 @@
 	"textureScrollSpeed":64.0,
 	"pixelsPerTexel":5.0,
 	"pierceSet":[PROJECTILE_FF,PROJECTILE_NO_FF,PROJECTILE_FIGHTER],
-	"fireSoundOne":"laser_intro",
-	"fireSoundTwo":"pd_laser_loop",
+	"fireSoundTwo":"vass_yawaratai_te_loop",
 }
