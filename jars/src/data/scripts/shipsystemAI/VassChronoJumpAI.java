@@ -19,13 +19,13 @@ import java.util.Map;
 
 public class VassChronoJumpAI implements ShipSystemAIScript {
     //How much "damage score" do we need to start using the system?
-    private static final float SCORE_THRESHOLD = 1600f;
+    private static final float SCORE_THRESHOLD = 1800f;
 
     //How much *additional* score is needed when we're above, say, 65% flux?
     private static final float SCORE_MODIFIER_HIGHFLUX = 3600f;
 
     //How much less score do we need on low (<40%) hull?
-    private static final float SCORE_MODIFIER_LOWHULL = -1500f;
+    private static final float SCORE_MODIFIER_LOWHULL = -1000f;
 
     //How fast must a missile be able to turn for us to consider it useless to dodge it?
     private static final float MISSILE_UNDODGEABLE_TURN_RATE = 45f;
@@ -39,10 +39,10 @@ public class VassChronoJumpAI implements ShipSystemAIScript {
 
     //How much of a "margin" to treat projectiles as having when calculating threat. The projectile counts as this much further
     // back than it actually is for danger calculations, to ensure it doesn't blast long projectiles into its own behind each time
-    private static final float SAFETY_MARGIN = 65f;
+    private static final float SAFETY_MARGIN = 85f;
 
     //How far ahead do we check for projectile collisions? Anything higher than 2-3 seconds is pretty pointless
-    private static final float CHECK_AHEAD_TIME = 0.6f;
+    private static final float CHECK_AHEAD_TIME = 1f;
 
     //How often does the script check for an arming opportunity?
     private IntervalUtil armTracker = new IntervalUtil(0.04f, 0.07f);

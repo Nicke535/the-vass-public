@@ -1,0 +1,40 @@
+{
+  "displayName": "Strike",
+  "fluxCapacitors": 0,
+  "fluxVents": 6,
+  "goalVariant": true,
+  "hullId": "vass_akrafena",
+  "hullMods": [
+    "missleracks",
+    "targetingunit"
+  ],
+  "permaMods": [],
+  "quality": 0,
+  "variantId": "vass_akrafena_strike",
+  "weaponGroups": [
+    {
+      "autofire": false,
+      "mode": "ALTERNATING",
+      "weapons": {
+        "WS0006": "vass_asi",
+        "WS0007": "vass_asi"
+      }
+    },
+    {
+      "autofire": false,
+      "mode": "ALTERNATING",
+      "weapons": {
+        "WS0004": "vass_tizona",
+        "WS0005": "vass_tizona"
+      }
+    },
+    {
+      "autofire": true,
+      "mode": "LINKED",
+      "weapons": {
+        "WS0003": "vass_yawarakai_te"
+      }
+    }
+  ],
+  "wings": []
+}

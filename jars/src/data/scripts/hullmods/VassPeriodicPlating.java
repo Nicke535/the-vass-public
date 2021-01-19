@@ -18,8 +18,10 @@ import com.fs.starfarer.api.ui.TooltipMakerAPI;
 import com.fs.starfarer.api.util.Misc;
 import data.scripts.util.MagicRender;
 import data.scripts.utils.VassUtils;
+import data.scripts.weapons.MagicVectorThruster;
 import org.apache.log4j.Logger;
 import org.lazywizard.lazylib.FastTrig;
+import org.lazywizard.lazylib.MathUtils;
 import org.lazywizard.lazylib.combat.CombatUtils;
 import org.lwjgl.util.vector.Vector2f;
 
@@ -30,7 +32,7 @@ import org.lwjgl.util.vector.Vector2f;
 public class VassPeriodicPlating extends BaseHullMod {
 	public static final Logger LOGGER = Global.getLogger(VassPeriodicPlating.class);
 
-	//Stats
+	//Global stats
     public static final float TIME_MULT = 1.2f;
     public static final Color AFTERIMAGE_COLOR_STANDARD = new Color(80, 255, 38, 100);
     public static final float AFTERIMAGE_THRESHHOLD = 0.1f;
@@ -38,11 +40,38 @@ public class VassPeriodicPlating extends BaseHullMod {
     //How much crew percentage is lost from SO, per minute spent in combat. Not actually *applied* in this script, but the data is stored here for use later
 	public static final float CREW_LOST_FRACTION_PER_MINUTE = 0.07f;
 
+
+	//Accel stats
+	public static final float ACCEL_TIME_MULT_HIGH = 1.35f;
+	public static final float ACCEL_TIME_MULT_LOW = 1.1f;
+	public static final int ACCEL_SYSTEM_SPEED_BOOST = 100;
+
+
+	//Multa stats
+	public static final float MULTA_OVERLOAD_TIME_INCREASE_PERCENT = 50f;
+	public static final float MULTA_OVERLOAD_AVOID_CHANCE = 0.75f;
+	public static final float MULTA_LOW_FLUX_AMOUNT = 0.1f;
+	public static final float MULTA_HARDFLUX_DISSIPATION = 25f;
+	public static final float MULTA_DISSIPATION_BONUS = 75f;
+	public static final Map<HullSize, SoundData> MULTA_OVERLOAD_AVOID_SFX = new HashMap<>();
+	static {
+		MULTA_OVERLOAD_AVOID_SFX.put(HullSize.FIGHTER, new SoundData("vass_overload_cancel", 0.4f, 1f));
+		MULTA_OVERLOAD_AVOID_SFX.put(HullSize.FRIGATE, new SoundData("vass_overload_cancel", 0.7f, 1f));
+		MULTA_OVERLOAD_AVOID_SFX.put(HullSize.DESTROYER, new SoundData("vass_overload_cancel", 0.8f, 1f));
+		MULTA_OVERLOAD_AVOID_SFX.put(HullSize.CRUISER, new SoundData("vass_overload_cancel", 0.9f, 1f));
+		MULTA_OVERLOAD_AVOID_SFX.put(HullSize.CAPITAL_SHIP, new SoundData("vass_overload_cancel", 1f, 1f));
+	}
+
+
+
 	//The time spent in combat by the ship, for calculating SO crew losses. Added here, cleared and used in a campaign script
 	public static Map<String, Float> timeInCombatMap = new HashMap<>();
 
 	private WeakHashMap<ShipAPI, VassUtils.VASS_FAMILY> familyMembership = new WeakHashMap<>();
 	private WeakHashMap<ShipAPI, Boolean> eliteStatus = new WeakHashMap<>();
+
+	//ID for most effects the hullmod applies
+	private static final String ID = "VassPeriodicPlatingDebugID";
 	
 	//Changes the ships time mult at every "advanceInCombat", in order to make sure the global time mult is correct in relation to the player ship
 	@Override
@@ -102,11 +131,11 @@ public class VassPeriodicPlating extends BaseHullMod {
 			//Only activate plating if allowed
 			if (platingCanBeActive(ship)) {
 				if (ship == Global.getCombatEngine().getPlayerShip()) {
-					ship.getMutableStats().getTimeMult().modifyMult("VassPeriodicPlatingDebugID", TIME_MULT);
-					Global.getCombatEngine().getTimeMult().modifyMult("VassPeriodicPlatingDebugID", 1f / TIME_MULT);
+					ship.getMutableStats().getTimeMult().modifyMult(ID, TIME_MULT);
+					Global.getCombatEngine().getTimeMult().modifyMult(ID, 1f / TIME_MULT);
 				} else {
-					ship.getMutableStats().getTimeMult().modifyMult("VassPeriodicPlatingDebugID", TIME_MULT);
-					Global.getCombatEngine().getTimeMult().unmodify("VassPeriodicPlatingDebugID");
+					ship.getMutableStats().getTimeMult().modifyMult(ID, TIME_MULT);
+					Global.getCombatEngine().getTimeMult().unmodify(ID);
 				}
 
 				ship.getMutableStats().getDynamic().getStat("VassAfterimageTracker").modifyFlat("VassAfterimageTrackerNullerID",-1);
@@ -116,9 +145,9 @@ public class VassPeriodicPlating extends BaseHullMod {
 					ship.getMutableStats().getDynamic().getStat("VassAfterimageTracker").modifyFlat("VassAfterimageTrackerID",ship.getMutableStats().getDynamic().getStat("VassAfterimageTracker").getModifiedValue()-AFTERIMAGE_THRESHHOLD);
 				}
 			} else {
-				ship.getMutableStats().getTimeMult().unmodify("VassPeriodicPlatingDebugID");
+				ship.getMutableStats().getTimeMult().unmodify(ID);
 				if (ship == Global.getCombatEngine().getPlayerShip()) {
-					Global.getCombatEngine().getTimeMult().unmodify("VassPeriodicPlatingDebugID");
+					Global.getCombatEngine().getTimeMult().unmodify(ID);
 				}
 			}
 		}
@@ -182,13 +211,42 @@ public class VassPeriodicPlating extends BaseHullMod {
 		tooltip.addSectionHeading("Family Membership Bonus", Alignment.MID, pad);
 
 		//If we have family membership, inform the player of its benefits
+		//Accel : Even more time mult, but loses it once CR starts ticking down
+		if (family == VassUtils.VASS_FAMILY.ACCEL) {
+			TooltipMakerAPI text = tooltip.beginImageWithText("graphics/vass/hullmods/torpor_hullmod.png", 36);
+			text.addPara("Accel - Periodic Mastery", 0, VassUtils.getFamilyColor(VassUtils.VASS_FAMILY.ACCEL, 1f), Misc.getHighlightColor(), "Periodic Mastery");
+			text.addPara("Time instead passes "+Math.round((ACCEL_TIME_MULT_HIGH-1f)*100f)+"%% faster for the ship while CR is at maximum. However, if CR falls below maximum time passes only "+Math.round((ACCEL_TIME_MULT_LOW-1f)*100f)+"%% faster instead.", 2, Misc.getHighlightColor(),Math.round((ACCEL_TIME_MULT_HIGH-1f)*100f)+"%", Math.round((ACCEL_TIME_MULT_LOW-1f)*100f)+"%");
+			if (ship.getSystem().getId().equals("vass_periodic_breaker")) {
+				text.addPara("Periodic Breaker: Top speed increased by "+ACCEL_SYSTEM_SPEED_BOOST+" while system is active", 2, Misc.getHighlightColor(), "Periodic Breaker", ""+ACCEL_SYSTEM_SPEED_BOOST);
+			}
+			tooltip.addImageWithText(pad);
+		}
+		//Torpor : Immunity to most effects of negative time mult
+		else if (family == VassUtils.VASS_FAMILY.TORPOR) {
+			TooltipMakerAPI text = tooltip.beginImageWithText("graphics/vass/hullmods/torpor_hullmod.png", 36);
+			text.addPara("Torpor - Advanced Chronostabilizers", 0, VassUtils.getFamilyColor(VassUtils.VASS_FAMILY.TORPOR, 1f), Misc.getHighlightColor(), "Advanced Chronostabilizers");
+			text.addPara("Ignores all penalties to firerate and dissipation from the effects of low time mult.", 2, Misc.getHighlightColor(),"firerate", "dissipation", "low time mult");
+			tooltip.addImageWithText(pad);
+		}
 		//Perturba : Weapon bonuses... This thing isn't gonna fit in the screen, is it?
-		if (family == VassUtils.VASS_FAMILY.PERTURBA) {
+		else if (family == VassUtils.VASS_FAMILY.PERTURBA) {
 			TooltipMakerAPI text = tooltip.beginImageWithText("graphics/vass/hullmods/perturba_hullmod.png", 36);
 			text.addPara("Perturba - Exotic weapon specialists", 0, VassUtils.getFamilyColor(VassUtils.VASS_FAMILY.PERTURBA, 1f), Misc.getHighlightColor(), "Exotic weapon specialists");
 			text.addPara("Yawarakai-Te: +150 SU before damage falloff, +20%% damage", 2, Misc.getHighlightColor(),"Yawarakai-Te", "+150", "+20%");
 			text.addPara("Dyrnwyn/Cyllel Farchog: Firerate bonus applies at half the normal time variation", 2, Misc.getHighlightColor(), "Dyrnwyn", "Cyllel Farchog", "half");
 			text.addPara("Perturba Missile Weapons: Regenerates ammo at 20%% of reload rate", 2, Misc.getHighlightColor(), "Perturba Missile Weapons", "Regenerates", "20%");
+			tooltip.addImageWithText(pad);
+		}
+		//Perturba : Overload avoidance and flux bonuses at low flux. Longer overload
+		else if (family == VassUtils.VASS_FAMILY.MULTA) {
+			TooltipMakerAPI text = tooltip.beginImageWithText("graphics/vass/hullmods/perturba_hullmod.png", 36);
+			text.addPara("Multa - Isochronal Reactor", 0, VassUtils.getFamilyColor(VassUtils.VASS_FAMILY.MULTA, 1f), Misc.getHighlightColor(), "Isochronal Reactor");
+			text.addPara("While below "+(int)(MULTA_LOW_FLUX_AMOUNT*100f)+"%% flux, the ship gets "+(int)(MULTA_DISSIPATION_BONUS)+"%% higher flux dissipation " +
+					"and can dissipate hardflux with shields up at "+(int)(MULTA_HARDFLUX_DISSIPATION)+"%% of normal dissipation. " +
+					"The ship also has a "+(int)(MULTA_OVERLOAD_AVOID_CHANCE*100f)+"%% chance to cancel an overload shortly after it occurs, but " +
+					"overloads last "+(int)MULTA_OVERLOAD_TIME_INCREASE_PERCENT+"%% longer",
+					2, Misc.getHighlightColor(),(int)(MULTA_LOW_FLUX_AMOUNT*100f)+"%", (int)(MULTA_DISSIPATION_BONUS)+"%",
+					(int)(MULTA_HARDFLUX_DISSIPATION)+"%", (int)(MULTA_OVERLOAD_AVOID_CHANCE*100f)+"%", (int)MULTA_OVERLOAD_TIME_INCREASE_PERCENT+"%");
 			tooltip.addImageWithText(pad);
 		}
 	}
@@ -266,16 +324,28 @@ public class VassPeriodicPlating extends BaseHullMod {
 
 
 	// --- FAMILY SPECIAL ADVANCE SCRIPTS! --- //
-	//Accel : TODO
+	//Accel : Periodic Mastery
+	//Gets even higher time mult than normal, but loses some once CR starts ticking. Also better periodic breaker
 	private void advanceAccel(ShipAPI ship, float amount) {
 		//Only activate plating if allowed
 		if (platingCanBeActive(ship)) {
-			if (ship == Global.getCombatEngine().getPlayerShip()) {
-				ship.getMutableStats().getTimeMult().modifyMult("VassPeriodicPlatingDebugID", TIME_MULT);
-				Global.getCombatEngine().getTimeMult().modifyMult("VassPeriodicPlatingDebugID", 1f / TIME_MULT);
+			float currentTimeMult = ACCEL_TIME_MULT_HIGH;
+			//Checks differently if a fleet member is not available
+			if (ship.getFleetMember() != null) {
+				if (ship.getCurrentCR() < ship.getFleetMember().getRepairTracker().getMaxCR()) {
+					currentTimeMult = ACCEL_TIME_MULT_LOW;
+				}
 			} else {
-				ship.getMutableStats().getTimeMult().modifyMult("VassPeriodicPlatingDebugID", TIME_MULT);
-				Global.getCombatEngine().getTimeMult().unmodify("VassPeriodicPlatingDebugID");
+				if (ship.getCurrentCR() < ship.getCRAtDeployment()) {
+					currentTimeMult = ACCEL_TIME_MULT_LOW;
+				}
+			}
+			if (ship == Global.getCombatEngine().getPlayerShip()) {
+				ship.getMutableStats().getTimeMult().modifyMult(ID, currentTimeMult);
+				Global.getCombatEngine().getTimeMult().modifyMult(ID, 1f / currentTimeMult);
+			} else {
+				ship.getMutableStats().getTimeMult().modifyMult(ID, currentTimeMult);
+				Global.getCombatEngine().getTimeMult().unmodify(ID);
 			}
 
 			ship.getMutableStats().getDynamic().getStat("VassAfterimageTracker").modifyFlat("VassAfterimageTrackerNullerID",-1);
@@ -285,23 +355,32 @@ public class VassPeriodicPlating extends BaseHullMod {
 				ship.getMutableStats().getDynamic().getStat("VassAfterimageTracker").modifyFlat("VassAfterimageTrackerID",ship.getMutableStats().getDynamic().getStat("VassAfterimageTracker").getModifiedValue()-AFTERIMAGE_THRESHHOLD);
 			}
 		} else {
-			ship.getMutableStats().getTimeMult().unmodify("VassPeriodicPlatingDebugID");
+			ship.getMutableStats().getTimeMult().unmodify(ID);
 			if (ship == Global.getCombatEngine().getPlayerShip()) {
-				Global.getCombatEngine().getTimeMult().unmodify("VassPeriodicPlatingDebugID");
+				Global.getCombatEngine().getTimeMult().unmodify(ID);
 			}
+		}
+
+		//Addional bonus: periodic breaker gives speed bonus when active
+		if (ship.getSystem().getId().equals("vass_periodic_breaker") && ship.getSystem().getEffectLevel() > 0f) {
+			ship.getMutableStats().getMaxSpeed().modifyFlat(ID, ACCEL_SYSTEM_SPEED_BOOST*ship.getSystem().getEffectLevel());
+		} else {
+			ship.getMutableStats().getMaxSpeed().unmodify(ID);
 		}
 	}
 
-	//Torpor : TODO
+	//Torpor : Advanced Chronostabilizers
+	//Ignores any penalties to firerate and dissipation caused by negative time mult.
+	//TODO: maybe add more here?
 	private void advanceTorpor(ShipAPI ship, float amount) {
 		//Only activate plating if allowed
 		if (platingCanBeActive(ship)) {
 			if (ship == Global.getCombatEngine().getPlayerShip()) {
-				ship.getMutableStats().getTimeMult().modifyMult("VassPeriodicPlatingDebugID", TIME_MULT);
-				Global.getCombatEngine().getTimeMult().modifyMult("VassPeriodicPlatingDebugID", 1f / TIME_MULT);
+				ship.getMutableStats().getTimeMult().modifyMult(ID, TIME_MULT);
+				Global.getCombatEngine().getTimeMult().modifyMult(ID, 1f/TIME_MULT);
 			} else {
-				ship.getMutableStats().getTimeMult().modifyMult("VassPeriodicPlatingDebugID", TIME_MULT);
-				Global.getCombatEngine().getTimeMult().unmodify("VassPeriodicPlatingDebugID");
+				ship.getMutableStats().getTimeMult().modifyMult(ID, TIME_MULT);
+				Global.getCombatEngine().getTimeMult().unmodify(ID);
 			}
 
 			ship.getMutableStats().getDynamic().getStat("VassAfterimageTracker").modifyFlat("VassAfterimageTrackerNullerID",-1);
@@ -311,10 +390,28 @@ public class VassPeriodicPlating extends BaseHullMod {
 				ship.getMutableStats().getDynamic().getStat("VassAfterimageTracker").modifyFlat("VassAfterimageTrackerID",ship.getMutableStats().getDynamic().getStat("VassAfterimageTracker").getModifiedValue()-AFTERIMAGE_THRESHHOLD);
 			}
 		} else {
-			ship.getMutableStats().getTimeMult().unmodify("VassPeriodicPlatingDebugID");
+			ship.getMutableStats().getTimeMult().unmodify(ID);
 			if (ship == Global.getCombatEngine().getPlayerShip()) {
-				Global.getCombatEngine().getTimeMult().unmodify("VassPeriodicPlatingDebugID");
+				Global.getCombatEngine().getTimeMult().unmodify(ID);
 			}
+		}
+
+		//Secondary effect always active
+		//Gets the current time mult affecting the ship, and checks if it's lower than 1. Has no effect on positive time mult
+		float currentTimeMult = ship.getMutableStats().getTimeMult().getModifiedValue();
+		if (currentTimeMult < 1f) {
+			//Calculates and applies the counter-reactive firerate bonus.
+			//	Does not work when time mult is 0, but that should never happen for engine reasons: it'll crash anyhow
+			float counterBonus = 1f/currentTimeMult;
+			ship.getMutableStats().getBallisticRoFMult().modifyMult(ID, counterBonus);
+			ship.getMutableStats().getMissileRoFMult().modifyMult(ID, counterBonus);
+			ship.getMutableStats().getEnergyRoFMult().modifyMult(ID, counterBonus);
+			ship.getMutableStats().getFluxDissipation().modifyMult(ID, counterBonus);
+		} else {
+			ship.getMutableStats().getBallisticRoFMult().unmodify(ID);
+			ship.getMutableStats().getMissileRoFMult().unmodify(ID);
+			ship.getMutableStats().getEnergyRoFMult().unmodify(ID);
+			ship.getMutableStats().getFluxDissipation().unmodify(ID);
 		}
 	}
 
@@ -327,11 +424,11 @@ public class VassPeriodicPlating extends BaseHullMod {
 		//Only activate plating if allowed
 		if (platingCanBeActive(ship)) {
 			if (ship == Global.getCombatEngine().getPlayerShip()) {
-				ship.getMutableStats().getTimeMult().modifyMult("VassPeriodicPlatingDebugID", TIME_MULT);
-				Global.getCombatEngine().getTimeMult().modifyMult("VassPeriodicPlatingDebugID", 1f / TIME_MULT);
+				ship.getMutableStats().getTimeMult().modifyMult(ID, TIME_MULT);
+				Global.getCombatEngine().getTimeMult().modifyMult(ID, 1f / TIME_MULT);
 			} else {
-				ship.getMutableStats().getTimeMult().modifyMult("VassPeriodicPlatingDebugID", TIME_MULT);
-				Global.getCombatEngine().getTimeMult().unmodify("VassPeriodicPlatingDebugID");
+				ship.getMutableStats().getTimeMult().modifyMult(ID, TIME_MULT);
+				Global.getCombatEngine().getTimeMult().unmodify(ID);
 			}
 
 			ship.getMutableStats().getDynamic().getStat("VassAfterimageTracker").modifyFlat("VassAfterimageTrackerNullerID",-1);
@@ -341,9 +438,9 @@ public class VassPeriodicPlating extends BaseHullMod {
 				ship.getMutableStats().getDynamic().getStat("VassAfterimageTracker").modifyFlat("VassAfterimageTrackerID",ship.getMutableStats().getDynamic().getStat("VassAfterimageTracker").getModifiedValue()-AFTERIMAGE_THRESHHOLD);
 			}
 		} else {
-			ship.getMutableStats().getTimeMult().unmodify("VassPeriodicPlatingDebugID");
+			ship.getMutableStats().getTimeMult().unmodify(ID);
 			if (ship == Global.getCombatEngine().getPlayerShip()) {
-				Global.getCombatEngine().getTimeMult().unmodify("VassPeriodicPlatingDebugID");
+				Global.getCombatEngine().getTimeMult().unmodify(ID);
 			}
 		}
 	}
@@ -353,11 +450,11 @@ public class VassPeriodicPlating extends BaseHullMod {
 		//Only activate plating if allowed
 		if (platingCanBeActive(ship)) {
 			if (ship == Global.getCombatEngine().getPlayerShip()) {
-				ship.getMutableStats().getTimeMult().modifyMult("VassPeriodicPlatingDebugID", TIME_MULT);
-				Global.getCombatEngine().getTimeMult().modifyMult("VassPeriodicPlatingDebugID", 1f / TIME_MULT);
+				ship.getMutableStats().getTimeMult().modifyMult(ID, TIME_MULT);
+				Global.getCombatEngine().getTimeMult().modifyMult(ID, 1f / TIME_MULT);
 			} else {
-				ship.getMutableStats().getTimeMult().modifyMult("VassPeriodicPlatingDebugID", TIME_MULT);
-				Global.getCombatEngine().getTimeMult().unmodify("VassPeriodicPlatingDebugID");
+				ship.getMutableStats().getTimeMult().modifyMult(ID, TIME_MULT);
+				Global.getCombatEngine().getTimeMult().unmodify(ID);
 			}
 
 			ship.getMutableStats().getDynamic().getStat("VassAfterimageTracker").modifyFlat("VassAfterimageTrackerNullerID",-1);
@@ -367,23 +464,28 @@ public class VassPeriodicPlating extends BaseHullMod {
 				ship.getMutableStats().getDynamic().getStat("VassAfterimageTracker").modifyFlat("VassAfterimageTrackerID",ship.getMutableStats().getDynamic().getStat("VassAfterimageTracker").getModifiedValue()-AFTERIMAGE_THRESHHOLD);
 			}
 		} else {
-			ship.getMutableStats().getTimeMult().unmodify("VassPeriodicPlatingDebugID");
+			ship.getMutableStats().getTimeMult().unmodify(ID);
 			if (ship == Global.getCombatEngine().getPlayerShip()) {
-				Global.getCombatEngine().getTimeMult().unmodify("VassPeriodicPlatingDebugID");
+				Global.getCombatEngine().getTimeMult().unmodify(ID);
 			}
 		}
 	}
 
-	//Multa : TODO
+	//Multa : Isochronal Reactor
+	//Chance to ignore oveloads, flux bonuses at very low flux. Overloads longer when actually overloaded
+	//TODO: Rework, maybe? Not entirely convinced of this one
 	private void advanceMulta(ShipAPI ship, float amount) {
+		//Overloads longer when overloaded, always applies
+		ship.getMutableStats().getOverloadTimeMod().modifyPercent(ID, MULTA_OVERLOAD_TIME_INCREASE_PERCENT);
+
 		//Only activate plating if allowed
 		if (platingCanBeActive(ship)) {
 			if (ship == Global.getCombatEngine().getPlayerShip()) {
-				ship.getMutableStats().getTimeMult().modifyMult("VassPeriodicPlatingDebugID", TIME_MULT);
-				Global.getCombatEngine().getTimeMult().modifyMult("VassPeriodicPlatingDebugID", 1f / TIME_MULT);
+				ship.getMutableStats().getTimeMult().modifyMult(ID, TIME_MULT);
+				Global.getCombatEngine().getTimeMult().modifyMult(ID, 1f / TIME_MULT);
 			} else {
-				ship.getMutableStats().getTimeMult().modifyMult("VassPeriodicPlatingDebugID", TIME_MULT);
-				Global.getCombatEngine().getTimeMult().unmodify("VassPeriodicPlatingDebugID");
+				ship.getMutableStats().getTimeMult().modifyMult(ID, TIME_MULT);
+				Global.getCombatEngine().getTimeMult().unmodify(ID);
 			}
 
 			ship.getMutableStats().getDynamic().getStat("VassAfterimageTracker").modifyFlat("VassAfterimageTrackerNullerID",-1);
@@ -392,11 +494,117 @@ public class VassPeriodicPlating extends BaseHullMod {
 				renderAfterimage(ship, familyMembership.get(ship));
 				ship.getMutableStats().getDynamic().getStat("VassAfterimageTracker").modifyFlat("VassAfterimageTrackerID",ship.getMutableStats().getDynamic().getStat("VassAfterimageTracker").getModifiedValue()-AFTERIMAGE_THRESHHOLD);
 			}
-		} else {
-			ship.getMutableStats().getTimeMult().unmodify("VassPeriodicPlatingDebugID");
-			if (ship == Global.getCombatEngine().getPlayerShip()) {
-				Global.getCombatEngine().getTimeMult().unmodify("VassPeriodicPlatingDebugID");
+
+			//If we're at low flux, we get other bonuses
+			if (ship.getFluxLevel() < MULTA_LOW_FLUX_AMOUNT) {
+				ship.getMutableStats().getHardFluxDissipationFraction().modifyFlat(ID, MULTA_HARDFLUX_DISSIPATION*0.01f);
+				ship.getMutableStats().getFluxDissipation().modifyPercent(ID, MULTA_DISSIPATION_BONUS);
+			} else {
+				ship.getMutableStats().getHardFluxDissipationFraction().unmodify(ID);
+				ship.getMutableStats().getFluxDissipation().unmodify(ID);
 			}
+		} else {
+			ship.getMutableStats().getTimeMult().unmodify(ID);
+			if (ship == Global.getCombatEngine().getPlayerShip()) {
+				Global.getCombatEngine().getTimeMult().unmodify(ID);
+			}
+			ship.getMutableStats().getHardFluxDissipationFraction().unmodify(ID);
+			ship.getMutableStats().getFluxDissipation().unmodify(ID);
+		}
+
+		//Overload protection, out of necessity, needs to be outside normal plate activation
+		MultaOverloadTracker tracker = null;
+		Object obj = Global.getCombatEngine().getCustomData().get("VassMultaPeriodicPlatingOverloadTracker" + ship.getId());
+		if (!(obj instanceof MultaOverloadTracker)) {
+			tracker = new MultaOverloadTracker();
+			Global.getCombatEngine().getCustomData().put("VassMultaPeriodicPlatingOverloadTracker" + ship.getId(), tracker);
+		} else {
+			tracker = (MultaOverloadTracker)obj;
+		}
+
+		if (ship.getFluxTracker().isOverloaded()) {
+			tracker.overloadTime += amount;
+			if (!tracker.hasTriggered && tracker.overloadTime >= 0.75f) {
+				tracker.hasTriggered = true;
+				//Only have a chance to avoid overload
+				if (Math.random() <= MULTA_OVERLOAD_AVOID_CHANCE) {
+					ship.getFluxTracker().stopOverload();
+					//If we avoid overload, refund the last 5% of flux, so we don't insta-overload again or bug out
+					if (ship.getFluxLevel() > 0.95f) {
+						ship.getFluxTracker().decreaseFlux((ship.getFluxLevel()-0.95f)*ship.getFluxTracker().getMaxFlux());
+					}
+					//Also, play a sound! Sound cues are important. This needs to scale with the hullsize or it'll get nasty
+					MULTA_OVERLOAD_AVOID_SFX.get(ship.getHullSize()).playSound(ship.getLocation(), Misc.ZERO);
+					//ALSO also, render som effects! Visual cues are also important
+					renderMultaMultiverseImages(ship);
+				}
+			}
+		} else {
+			tracker.hasTriggered = false;
+			tracker.overloadTime = 0f;
+		}
+	}
+
+	private static class MultaOverloadTracker {
+		float overloadTime = 0f;
+		boolean hasTriggered = false;
+	}
+
+	//Renders a bunch of "afterimages" due to some Multa nonsense
+	private void renderMultaMultiverseImages(ShipAPI ship) {
+		int amountToSpawn = MathUtils.getRandomNumberInRange(10, 18);
+		for (int i = 0; i < amountToSpawn; i++) {
+			// Sprite offset fuckery - Don't you love trigonometry?
+			SpriteAPI sprite = ship.getSpriteAPI();
+			float offsetX = sprite.getWidth()/2 - sprite.getCenterX();
+			float offsetY = sprite.getHeight()/2 - sprite.getCenterY();
+
+			float trueOffsetX = (float)FastTrig.cos(Math.toRadians(ship.getFacing()-90f))*offsetX - (float)FastTrig.sin(Math.toRadians(ship.getFacing()-90f))*offsetY;
+			float trueOffsetY = (float)FastTrig.sin(Math.toRadians(ship.getFacing()-90f))*offsetX + (float)FastTrig.cos(Math.toRadians(ship.getFacing()-90f))*offsetY;
+
+			Vector2f spotToSpawnOn = MathUtils.getRandomPointInCircle(new Vector2f(ship.getLocation().getX()+trueOffsetX,ship.getLocation().getY()+trueOffsetY), ship.getCollisionRadius()*1.5f);
+
+			//Determines a layer to render on: fighters render above ships but below fighters, while everything else render below ships
+			CombatEngineLayers layer = CombatEngineLayers.BELOW_SHIPS_LAYER;
+			if (ship.getHullSize().equals(HullSize.FIGHTER)) {
+				layer = CombatEngineLayers.CONTRAILS_LAYER;
+			}
+
+			//Gets a color for the afterimage
+			Color colorToUse = VassUtils.getFamilyColor(VassUtils.VASS_FAMILY.MULTA, (float)Math.random()*0.4f);
+
+			MagicRender.battlespace(
+					Global.getSettings().getSprite(ship.getHullSpec().getSpriteName()),
+					spotToSpawnOn,
+					new Vector2f(0, 0),
+					new Vector2f(ship.getSpriteAPI().getWidth(), ship.getSpriteAPI().getHeight()),
+					new Vector2f(0, 0),
+					ship.getFacing()-90f+MathUtils.getRandomNumberInRange(-15f, 15f),
+					0f,
+					colorToUse,
+					true,
+					MathUtils.getRandomNumberInRange(0.01f, 0.25f),
+					0f,
+					MathUtils.getRandomNumberInRange(0.25f, 0.45f),
+					layer);
+		}
+	}
+
+
+	//Class for managing, and playing, a sound data
+	private static class SoundData {
+		float volume;
+		float pitch;
+		String sound;
+
+		SoundData(String sound, float volume, float pitch) {
+			this.sound = sound;
+			this.volume = volume;
+			this.pitch = pitch;
+		}
+
+		void playSound(Vector2f loc, Vector2f vel) {
+			Global.getSoundPlayer().playSound(sound, pitch, volume, loc, vel);
 		}
 	}
 }

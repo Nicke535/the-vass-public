@@ -1,7 +1,7 @@
 {
   "displayName": "Defensive",
   "fluxCapacitors": 0,
-  "fluxVents": 7,
+  "fluxVents": 5,
   "goalVariant": false,
   "hullId": "vass_makhaira",
   "hullMods": [
@@ -15,14 +15,16 @@
       "autofire": false,
       "mode": "LINKED",
       "weapons": {
-        "WS0003": "vass_dyrnwyn"
+        "WS0003": "vass_asi"
       }
     },
     {
       "autofire": true,
       "mode": "LINKED",
       "weapons": {
-        "WS0002": "vass_yawarakai_te"
+        "WS0002": "vass_yawarakai_te",
+        "WS0004": "vass_makhaira_builtin",
+        "WS0005": "vass_makhaira_builtin"
       }
     }
   ],

@@ -10,6 +10,7 @@ import com.fs.starfarer.api.campaign.rules.MemoryAPI;
 import com.fs.starfarer.api.impl.campaign.rulecmd.BaseCommandPlugin;
 import com.fs.starfarer.api.util.Misc;
 import data.scripts.campaign.VassFamilyTrackerPlugin;
+import data.scripts.campaign.barEvents.VassPerturbaBaseEvent;
 import data.scripts.campaign.barEvents.VassPerturbaWeaponTestingEvent;
 import data.scripts.campaign.barEvents.VassPerturbaWeaponTestingIntel;
 import data.scripts.utils.VassUtils;
@@ -51,6 +52,7 @@ public class VassPerturbaWeaponTestingHandinBad extends BaseCommandPlugin {
                     Misc.getPositiveHighlightColor(), h, "Vass Families", ""+VassPerturbaWeaponTestingEvent.RELATIONS_BOOST_VASS);
             Global.getSector().getPlayerFaction().adjustRelationship("vass", VassPerturbaWeaponTestingEvent.RELATIONS_BOOST_VASS);
         }
+        VassFamilyTrackerPlugin.modifyPowerOfFamily(VassUtils.VASS_FAMILY.PERTURBA, VassPerturbaWeaponTestingEvent.FAMILY_POWER_BOOST_PERTURBA);
 
         //Cleanup
         for (IntelInfoPlugin intel : Global.getSector().getIntelManager().getIntel(VassPerturbaWeaponTestingIntel.class)) {
@@ -59,6 +61,12 @@ public class VassPerturbaWeaponTestingHandinBad extends BaseCommandPlugin {
                 intelConverted.endImmediately();
             }
         }
+
+        //Run the random event picker from the base event script, in case a special event should appear
+        VassPerturbaBaseEvent.checkAndSetAllowedEvent();
+
+        //Unlocks so new Perturba events may spawn again
+        Global.getSector().getMemoryWithoutUpdate().set(VassPerturbaBaseEvent.PERTURBA_EVENTS_BLOCKED_KEY, false);
 
         return true;
     }

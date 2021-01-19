@@ -7,13 +7,9 @@ import com.fs.starfarer.api.campaign.econ.MarketAPI;
 import com.fs.starfarer.api.campaign.rules.MemoryAPI;
 import com.fs.starfarer.api.impl.campaign.rulecmd.BaseCommandPlugin;
 import com.fs.starfarer.api.util.Misc;
-import data.scripts.campaign.VassFamilyTrackerPlugin;
 import data.scripts.campaign.barEvents.VassPerturbaWeaponTestingEvent;
 import data.scripts.campaign.barEvents.VassPerturbaWeaponTestingIntel;
-import data.scripts.utils.VassUtils;
-import org.lazywizard.lazylib.MathUtils;
 
-import java.awt.*;
 import java.util.List;
 import java.util.Map;
 
@@ -47,7 +43,7 @@ public class VassPerturbaWeaponTestingCanTriggerFinalDialog extends BaseCommandP
         for (IntelInfoPlugin intel : Global.getSector().getIntelManager().getIntel(VassPerturbaWeaponTestingIntel.class)) {
             if (intel instanceof VassPerturbaWeaponTestingIntel) {
                 VassPerturbaWeaponTestingIntel intelConverted = (VassPerturbaWeaponTestingIntel) intel;
-                return intelConverted.battlesCompleted >= 3 && intelConverted.getMarket() == market;
+                return intelConverted.questFinishProgress >= 3 && intelConverted.getMarket() == market;
             }
         }
 

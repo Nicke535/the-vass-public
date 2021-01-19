@@ -13,6 +13,8 @@ import data.scripts.campaign.VassFamilyTrackerPlugin;
 import data.scripts.utils.VassUtils;
 
 import java.awt.*;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
 
 import static data.scripts.campaign.barEvents.VassPerturbaWeaponContractEvent.VASS_PERTURBA_WEAPON_CONTRACT_KEY;
@@ -23,22 +25,32 @@ public class VassPerturbaWeaponContractIntel extends BaseIntelPlugin {
 
     protected VassPerturbaWeaponContractEvent event;
 
+    private List<String> learnedWeapons = new ArrayList<>();
+
     public VassPerturbaWeaponContractIntel(VassPerturbaWeaponContractEvent event) {
         this.event = event;
     }
+
+    private float timer = 0f;
 
     //We ensure that the player has access to all the weapons they should, even if said weapons have changed since last time we loaded
     @Override
     public void advance(float amount) {
         super.advance(amount);
 
-        //Only do this if we actually have a contract
-        Object hasContract = Global.getSector().getMemoryWithoutUpdate().get(VASS_PERTURBA_WEAPON_CONTRACT_KEY);
-        if (hasContract instanceof Boolean) {
-            if ((Boolean) hasContract) {
-                for (String weapon : VassPerturbaWeaponContractEvent.UNLOCKED_WEAPONS) {
-                    if (!Global.getSector().getPlayerFaction().knowsWeapon(weapon)) {
-                        Global.getSector().getPlayerFaction().addKnownWeapon(weapon, true);
+        //Don't check every frame, that's needlessly often
+        timer += Misc.getDays(amount);
+        if (timer >= 2f) {
+            timer -= 2f;
+            //Only do this if we actually have a contract
+            Object hasContract = Global.getSector().getMemoryWithoutUpdate().get(VASS_PERTURBA_WEAPON_CONTRACT_KEY);
+            if (hasContract instanceof Boolean) {
+                if ((Boolean) hasContract) {
+                    for (String weapon : VassPerturbaWeaponContractEvent.UNLOCKED_WEAPONS) {
+                        if (!Global.getSector().getPlayerFaction().knowsWeapon(weapon)) {
+                            learnedWeapons.add(weapon);
+                            Global.getSector().getPlayerFaction().addKnownWeapon(weapon, true);
+                        }
                     }
                 }
             }

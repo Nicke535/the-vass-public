@@ -10,6 +10,9 @@ import org.lazywizard.lazylib.MathUtils;
 import org.lazywizard.lazylib.VectorUtils;
 import org.lwjgl.util.vector.Vector2f;
 
+/**
+ * @deprecated
+ */
 public class VassChronoDisturber extends BaseShipSystemScript {
     public static final float TIME_MULT_CHANGE = 0.90f;
     public static final float TIME_MULT_MAX = 0.7f;

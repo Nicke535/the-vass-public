@@ -1,0 +1,41 @@
+{
+  "displayName": "Assault",
+  "fluxCapacitors": 0,
+  "fluxVents": 3,
+  "goalVariant": true,
+  "hullId": "vass_akrafena",
+  "hullMods": [
+    "targetingunit",
+    "stabilizedshieldemitter",
+    "hardenedshieldemitter"
+  ],
+  "permaMods": [],
+  "quality": 0,
+  "variantId": "vass_akrafena_assault",
+  "weaponGroups": [
+    {
+      "autofire": false,
+      "mode": "ALTERNATING",
+      "weapons": {
+        "WS0006": "vass_asi",
+        "WS0007": "vass_asi"
+      }
+    },
+    {
+      "autofire": false,
+      "mode": "LINKED",
+      "weapons": {
+        "WS0004": "vass_dyrnwyn",
+        "WS0005": "vass_dyrnwyn"
+      }
+    },
+    {
+      "autofire": true,
+      "mode": "LINKED",
+      "weapons": {
+        "WS0003": "vass_yawarakai_te"
+      }
+    }
+  ],
+  "wings": []
+}

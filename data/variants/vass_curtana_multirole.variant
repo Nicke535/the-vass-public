@@ -1,7 +1,7 @@
 {
   "displayName": "Multirole",
   "fluxCapacitors": 10,
-  "fluxVents": 7,
+  "fluxVents": 11,
   "goalVariant": true,
   "hullId": "vass_curtana",
   "hullMods": [
@@ -34,7 +34,8 @@
       "mode": "LINKED",
       "weapons": {
         "WS0003": "vass_yawarakai_te",
-        "WS0004": "vass_yawarakai_te"
+        "WS0004": "vass_yawarakai_te",
+        "WS0007": "vass_yawarakai_te"
       }
     },
     {

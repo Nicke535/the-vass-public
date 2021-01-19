@@ -4,21 +4,26 @@
 	"combatSmallForSmallFleet":{
 		"vass_makhaira_defensive":3,
 		"vass_makhaira_aggressor":5,
+		"vass_akrafena_hailstorm":3,
 	},
 	"combatSmall":{
 		"vass_makhaira_defensive":3,
 		"vass_makhaira_aggressor":4,
 		"vass_makhaira_support":3,
 		"vass_makhaira_threatener":3,
+		"vass_akrafena_hailstorm":3,
+		"vass_akrafena_assault":3,
+		"vass_akrafena_strike":4,
 	},
 	"combatMedium":{
 		"vass_schiavona_hailstorm":3,
 		"vass_schiavona_multipurpose":5,
 		"vass_schiavona_defensive":5,
 	},
-	"combatLarge":{
-		"vass_curtana_combat":1,
-	},
+	# Messes with stuff unless another big ship is also available
+	#"combatLarge":{
+	#	"vass_curtana_combat":1,
+	#},
 	
 	# carriers
 	"carrierLarge":{
@@ -26,6 +31,7 @@
 		"vass_curtana_support":4,
 		"vass_curtana_multirole":4,
 		"vass_curtana_threatener":3,
+		"vass_curtana_combat":1,
 	},
 	
 }

@@ -35,7 +35,7 @@ public class VassChronoJump extends BaseShipSystemScript {
     public static final float MAX_RANGE = 500f;
 
     //How far into the future will each projectile be launched?
-    public static final float TIME_SKIP_AMOUNT = 1f;
+    public static final float TIME_SKIP_AMOUNT = 1.5f;
 
     //The maximum duration the system can be kept active before it is automatically triggered
     public static final float MAX_ACTIVE_DURATION = 0.5f;

@@ -41,9 +41,10 @@ public class VassPerturbaWeaponTestingEvent extends VassPerturbaBaseEvent {
     public static final float REWARD_PERCENTAGE_MAX = 1.8f;
     public static final float REWARD_PERCENTAGE_MIN = 1.2f;
     private static final float RELATIONS_NEEDED = 20f;
-    public static final float RELATIONS_BOOST_VASS = 0.07f;
-    public static final float RELATIONS_BOOST_PERTURBA = 6f;
+    public static final float RELATIONS_BOOST_VASS = 0.09f;
+    public static final float RELATIONS_BOOST_PERTURBA = 8f;
     public static final float RELATIONS_MAX_PERTURBA = 65f;
+    public static final float FAMILY_POWER_BOOST_PERTURBA = 1f;
 
     public String currentPrototypeWeaponID = "";
 
@@ -75,7 +76,6 @@ public class VassPerturbaWeaponTestingEvent extends VassPerturbaBaseEvent {
         }
 
         //If we have told the sector that there's a non-repeatable event that should happen instead, we can't appear
-        //Unused for now
         if (Global.getSector().getMemoryWithoutUpdate().contains(VassPerturbaBaseEvent.CURRENT_EVENT_ALLOWED_KEY)) {
             return false;
         }
@@ -149,7 +149,7 @@ public class VassPerturbaWeaponTestingEvent extends VassPerturbaBaseEvent {
                 text.addPara("'Straight to the point, eh? Well, frankly, this IS a nice bar, but as you've guessed I'm not here just to enjoy the scenery. Perturba actually has a contract offer for you, if you're interested.'");
 
                 options.addOption("Go on...", OptionId.CONTINUE_1);
-                options.addOption("Tell them that you're unfortunately preoccupied at the moment.", OptionId.LEAVE);
+                options.addOption("Tell them that you're unfortunately preoccupied at the moment.", OptionId.LEAVE_DIALOG);
                 break;
             case CONTINUE_1:
                 text.addPara("'Well you see, we're in need of some fresh combat data for some of our prototype " +
@@ -168,7 +168,7 @@ public class VassPerturbaWeaponTestingEvent extends VassPerturbaBaseEvent {
                     options.setEnabled(OptionId.CONTINUE_2, false);
                     options.setTooltip(OptionId.CONTINUE_2, "You don't have enough credits for the mission collateral.");
                 }
-                options.addOption("Tell them that you're unfortunately preoccupied at the moment.", OptionId.LEAVE);
+                options.addOption("Tell them that you're unfortunately preoccupied at the moment.", OptionId.LEAVE_DIALOG);
                 break;
             case CONTINUE_2:
                 text.addPara("'Great, I'll inform my team to deliver the goods to your fleet as soon as possible.'");
@@ -193,6 +193,9 @@ public class VassPerturbaWeaponTestingEvent extends VassPerturbaBaseEvent {
                 Global.getSector().getPlayerFleet().getCargo().addWeapons(currentPrototypeWeaponID, prototypesHandedOut);
                 text.setFontInsignia();
 
+                //Lock so no other Perturba events show up when we're on the mission
+                Global.getSector().getMemoryWithoutUpdate().set(PERTURBA_EVENTS_BLOCKED_KEY, true);
+
                 text.addPara("'Good luck with the testing.'");
                 BarEventManager.getInstance().notifyWasInteractedWith(this);
                 addIntel();
@@ -211,10 +214,9 @@ public class VassPerturbaWeaponTestingEvent extends VassPerturbaBaseEvent {
         }
     }
 
-    //The description is slightly different if you've already met the Perturba contact before
+    //The description is slightly different if you're at high relations with Perturba
     private String pickDescription() {
         WeightedRandomPicker<String> post = new WeightedRandomPicker<String>();
-        Object hasMetContact = Global.getSector().getMemoryWithoutUpdate().get(VASS_PERTURBA_HAS_MET_CONTACT_KEY);
         post.add("The Perturba contact is hanging around in the back of the room, but looks at you expectantly when you enter; seems like Perturba has an offer for you.");
         post.add("You spot Perturba's contact person having a drink at one of the tables. They give a small wave when they spot you, obviously trying to grab your attention.");
         if (getContact() != null && VassFamilyTrackerPlugin.getRelationToFamily(VassUtils.VASS_FAMILY.PERTURBA) >= 60) {

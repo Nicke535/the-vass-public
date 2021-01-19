@@ -1,10 +1,7 @@
 package data.scripts.campaign.barEvents;
 
 import com.fs.starfarer.api.Global;
-import com.fs.starfarer.api.campaign.InteractionDialogAPI;
-import com.fs.starfarer.api.campaign.OptionPanelAPI;
-import com.fs.starfarer.api.campaign.RepLevel;
-import com.fs.starfarer.api.campaign.TextPanelAPI;
+import com.fs.starfarer.api.campaign.*;
 import com.fs.starfarer.api.campaign.econ.Industry;
 import com.fs.starfarer.api.campaign.econ.MarketAPI;
 import com.fs.starfarer.api.characters.FullName.Gender;
@@ -36,6 +33,7 @@ public class VassPerturbaBaseEvent extends BaseBarEventWithPerson {
 
     public static final String CURRENT_EVENT_ALLOWED_KEY = "$vass_perturba_current_event_allowed";
     public static final String LAST_MARKET_ALLOW_CHECK_KEY = "$vass_perturba_last_market_allow_checked";
+    public static final String PERTURBA_EVENTS_BLOCKED_KEY = "$vass_perturba_events_blocked";
 
     /**
      * Gets perturba's contact
@@ -61,6 +59,30 @@ public class VassPerturbaBaseEvent extends BaseBarEventWithPerson {
     }
 
     /**
+     * Checks and eventually sets a special event to appear, instead of repeatable events.
+     * Currently only used for the "get a submarket" event
+     */
+    public static void checkAndSetAllowedEvent() {
+        SectorAPI sector = Global.getSector();
+        if (sector == null) return;
+
+        //Currently, we have a 50% chance of getting the special submarket event after we've hit the reputation threshold
+        //      ...though, it doesn't trigger if the submarket has already been handed out
+        if (VassFamilyTrackerPlugin.getRelationToFamily(VassUtils.VASS_FAMILY.PERTURBA) > 30f) {
+            if (sector.getFaction("vass").getRelToPlayer().isAtWorst(RepLevel.FRIENDLY)) {
+                Object hasContract = Global.getSector().getMemoryWithoutUpdate().get(VassPerturbaGetShipSubmarketEvent.VASS_PERTURBA_SHIP_SUBMARKET_CONTRACT_KEY);
+                if (Math.random() < 0.5f && (!(hasContract instanceof Boolean) || !((boolean)hasContract))) {
+                    Global.getSector().getMemoryWithoutUpdate().set(VassPerturbaBaseEvent.CURRENT_EVENT_ALLOWED_KEY, "get_ship_submarket");
+                    return;
+                }
+            }
+        }
+
+        //If no event was registered, remove the flag and move on
+        Global.getSector().getMemoryWithoutUpdate().unset(VassPerturbaBaseEvent.CURRENT_EVENT_ALLOWED_KEY);
+    }
+
+    /**
      * Base implementation for checking if an event should appear: just checks for player markets and that Perturba hasn't disappeared
      */
     public boolean shouldShowAtMarket(MarketAPI market) {
@@ -73,6 +95,12 @@ public class VassPerturbaBaseEvent extends BaseBarEventWithPerson {
 
         //Only the player's markets can get the event
         if (!market.getFaction().isPlayerFaction()) {
+            return false;
+        }
+
+        //If we're currently blocked from showing Perturba events, don't show up either
+        Object blocked = Global.getSector().getMemoryWithoutUpdate().get(PERTURBA_EVENTS_BLOCKED_KEY);
+        if (blocked instanceof Boolean && blocked.equals(Boolean.TRUE)) {
             return false;
         }
 

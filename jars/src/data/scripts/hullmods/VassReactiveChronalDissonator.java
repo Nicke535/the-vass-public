@@ -2,20 +2,16 @@ package data.scripts.hullmods;
 
 import com.fs.starfarer.api.Global;
 import com.fs.starfarer.api.combat.BaseHullMod;
-import com.fs.starfarer.api.combat.MutableShipStatsAPI;
-import com.fs.starfarer.api.combat.ShieldAPI;
-import com.fs.starfarer.api.combat.ShieldAPI.ShieldType;
-import com.fs.starfarer.api.combat.ShipAPI;
-import com.fs.starfarer.api.combat.ShipAPI.HullSize;
 import com.fs.starfarer.api.combat.DamagingProjectileAPI;
 import com.fs.starfarer.api.combat.MissileAPI;
+import com.fs.starfarer.api.combat.ShipAPI;
 import org.lazywizard.lazylib.combat.CombatUtils;
 
 public class VassReactiveChronalDissonator extends BaseHullMod {
-  public static final float TIME_MULT = 0.65f;
-  public static final float TIME_MULT_SUPERCLOSE = 0.25f;
-  public static final float EFFECT_RANGE = 200f;
-  public static final float EFFECT_RANGE_CLOSE = 100f;
+    public static final float TIME_MULT = 0.65f;
+    public static final float TIME_MULT_SUPERCLOSE = 0.25f;
+    public static final float EFFECT_RANGE = 200f;
+    public static final float EFFECT_RANGE_CLOSE = 100f;
 
 
     //Changes the ships time mult at every "advanceInCombat", in order to make sure the global time mult is correct in relation to the player ship

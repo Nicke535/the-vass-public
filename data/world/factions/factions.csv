@@ -1,3 +1,6 @@
 faction
 data/world/factions/vass.faction
+data/world/factions/vass_accel.faction
+data/world/factions/vass_torpor.faction
 data/world/factions/vass_perturba.faction
+data/world/factions/vass_multa.faction

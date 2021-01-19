@@ -1,7 +1,7 @@
 {
   "displayName": "Strike",
-  "fluxCapacitors": 8,
-  "fluxVents": 4,
+  "fluxCapacitors": 10,
+  "fluxVents": 6,
   "goalVariant": true,
   "hullId": "vass_curtana",
   "hullMods": [
@@ -27,7 +27,8 @@
         "WS0003": "vass_yawarakai_te",
         "WS0004": "vass_yawarakai_te",
         "WS0005": "vass_yawarakai_te",
-        "WS0006": "vass_yawarakai_te"
+        "WS0006": "vass_yawarakai_te",
+        "WS0007": "vass_yawarakai_te"
       }
     },
     {

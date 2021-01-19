@@ -34,6 +34,7 @@ public class VassRandomEncounterPlugin implements EveryFrameScript {
         BLACKLISTED_FACTIONS.add(Factions.DERELICT);
         BLACKLISTED_FACTIONS.add(Factions.REMNANTS);
         BLACKLISTED_FACTIONS.add(Factions.PLAYER);
+        BLACKLISTED_FACTIONS.add("templars");
     }
 
     //A list of factions that will get a Vass ship when attacked
@@ -41,6 +42,8 @@ public class VassRandomEncounterPlugin implements EveryFrameScript {
     static {
         STEALING_FACTIONS.add(Factions.INDEPENDENT);
         STEALING_FACTIONS.add(Factions.PIRATES);
+        STEALING_FACTIONS.add("tiandong");
+        STEALING_FACTIONS.add("al_ars");
     }
 
     //The minimum and maximum size factor compared to the target that the families will ever send
@@ -94,7 +97,7 @@ public class VassRandomEncounterPlugin implements EveryFrameScript {
                 }
 
                 //Ignore fleets too close to the player fleet
-                if (MathUtils.getDistance(fleet.getLocation(), Global.getSector().getPlayerFleet().getLocation()) < Global.getSector().getPlayerFleet().getBaseSensorRangeToDetect(fleet.getSensorProfile()*1.5f)) {
+                if (MathUtils.getDistance(fleet.getLocation(), Global.getSector().getPlayerFleet().getLocation()) < Global.getSector().getPlayerFleet().getBaseSensorRangeToDetect(fleet.getSensorProfile())*1.5f) {
                     continue;
                 }
 
@@ -188,8 +191,8 @@ public class VassRandomEncounterPlugin implements EveryFrameScript {
                 dmodPicker.add(modSpec.getId());
             }
         }
-        for (int i = MathUtils.getRandomNumberInRange(1, 5); i > 0; i--) {
-            variant.addPermaMod(dmodPicker.pick());
+        for (int i = MathUtils.getRandomNumberInRange(1, 5); i > 0 && !dmodPicker.isEmpty(); i--) {
+            variant.addPermaMod(dmodPicker.pickAndRemove());
         }
 
         //Remove weapons randomly

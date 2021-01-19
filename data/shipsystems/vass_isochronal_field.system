@@ -1,0 +1,23 @@
+{
+	"id":"vass_isochronal_field",
+	"type":"STAT_MOD",
+	"aiType":"CUSTOM",
+	"aiScript":"data.scripts.ai.VassIsochronalFieldAI",
+	
+	"statsScript":"data.scripts.shipsystems.VassIsochronalField",
+	
+	"runScriptWhileIdle":true,  # this means unapply() never gets called
+
+	"useSound":"vass_isochronal_field_mode_swap",
+	"outOfUsesSound":"gun_out_of_ammo",
+	
+	"aiHints":{
+		"activeSpeedIncrease":50,  # not right since it's ship-dependent, but hopefully close enough
+		"burstMovementPotential":100,
+		"averageSpeedMult":1.4,
+	}
+}
+
+
+
+

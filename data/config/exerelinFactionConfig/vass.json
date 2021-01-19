@@ -124,7 +124,7 @@
 		#"diplomatic":0,
 		#"ideological":0,
 	},
-	"diplomacyTraits":["monopolist", "neutralist"],
+	"diplomacyTraits":["monopolist", "neutralist", "lowprofile"],
 
 	# Used for dispositions, also affects rep penalty from slave trade
 	"morality":"neutral",

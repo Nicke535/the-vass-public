@@ -7,8 +7,8 @@
 	"displayNameWithArticle":"The Perturba",
 	"displayNameLong":"Perturba",
 	"displayNameLongWithArticle":"The Perturba",
-	"logo":"graphics/vass/factions/the_vass.png",
-	"crest":"graphics/vass/factions/the_vass_crest.png",
+	"logo":"graphics/vass/factions/the_vass_perturba.png",
+	"crest":"graphics/vass/factions/the_vass_perturba_crest.png",
 	"showInIntelTab":false,
 	"shipNamePrefix":"",
 	"shipNameSources":{

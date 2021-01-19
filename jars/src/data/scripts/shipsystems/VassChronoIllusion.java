@@ -36,7 +36,7 @@ public class VassChronoIllusion extends BaseShipSystemScript {
 
     ShipAPI ship = null;
 
-    private IntervalUtil fireInterval = new IntervalUtil(1.15f, 1.35f);
+    private IntervalUtil fireInterval = new IntervalUtil(0.85f, 1.05f);
     private float timer = 0f;
     private boolean firstRun = true;
 

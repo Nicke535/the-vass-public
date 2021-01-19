@@ -1,3 +1,75 @@
+Version 0.4 : Time for another sprite rework
+ Additions:
+  - Added a second Frigate, the Akrafena, with a new shipsystem
+  - Added a new Perturba event allowing you to get legitimate access to their ships once your relations are high enough
+  - Started implementing the as-of-yet hidden Family Power mechanic with som of the player's actions
+     > Currently does nothing notable and can't be seen in-game: that will change later
+  - Started implementing the four other families' Elite bonuses
+     > Still not available in the campaign, but there are some test missions allowing you to get a preview of what to expect
+
+ Graphics:
+  - Updated all ship sprites, courtesy of Gwyvern
+    > For, what, the third time? Though these ones are definitely the best yet!
+
+ Changes:
+  - The Perturba Weapon Testing quest now tracks an arbitrary "progress" value rather than number of battles.
+     > Experimental change. The end result of this change is that the quest is slower (around 5-6 battles needed) when just deploying the ship and not using it in combat, but shorter when actually allowing it to fight (down to 2 missions needed if you use it actively a lot and/or use it in stressing situations)
+  - The Perturba Weapon Testing quest now increases relations (both Vass and Perturba) slightly more
+  - Minor visual changes in refit screens for Vass ships
+  - Multa elites now have adjusted passive colors, which are slightly less spaztic
+     > They still don't spawn anywhere but through cheats, though
+  - The Tiandong and Anarakis Reparations Society (if enabled) can now steal Vass ships in their random encounters, like the Independent and Pirates
+  - If the Templars are enabled, Vass fleets will no longer suicidally spawn to engage them
+
+ Balance:
+  - Curtana:
+     -- Gained a new Small mount
+     -- OP up from 135 to 145
+     -- Rearranged mount types slightly
+     -- Dissipation up from 380 to 500
+         > Oversight originally, it was never meant to have this low dissipation. Might be an overbuff now, but will have to see
+     -- System recieved slightly tweaked AI and now "punts" projectiles slightly further into the future
+     -- Swiftlaunch Bays now refill up to 95% of the refit time of a returning fighter, instead of up to 80%   
+         > Used to be 65% flat, 15% based on hull level. Now 70% flat, 25% based on hulllevel
+     -- Swiftlaunch Bays are now slightly more aggressive with recalling its fighters when they are damaged
+     -- Fleet point cost down from 24 FP to 19 FP
+     -- Supplies/month down from 29 to 24
+    > I also minorly reworked all Curtana variants due to the abovementioned changes
+  - Schiavona:
+     -- Now has a frontal small turret instead of a rear small turret.
+     -- Fleet point cost down from 21 FP to 16 FP
+     -- Supplies/month down from 22 to 19
+  - Makhaira:
+     -- Recieved a pair of built-in Yawarakai-Te variants, the Juuchi Yosamu
+     -- Maximum crew capacity up from 12 to 16
+     -- Fleet point cost down from 7 FP to 6 FP
+     -- Supplies/month down from 8 to 7
+  - Katzbalger:
+     -- The Chrono Illusion system now spawns more illusions, and the illusions have more health
+     -- Armor increased from 60 to 80
+  - All Perturba missile weapons (Tizona, Colada, Excalibur) damage and EMP increased by ~30%
+     > These were underperforming across the board, so it was about time they got a bit of love
+
+ Bugfixes:
+  - The Perturba Weapon Contract event is no longer bugged, and will properly show the dialogue it is meant to
+     > It had issues showing around half of the intended dialogue; *whoops*
+  - The Perturba Weapon Testing event now displays the proper exit dialogue
+  - The Perturba Weapon Testing quest can now only raise your relations to Friendly, not Cooperative
+  - The Perturba Weapon Testing quest now properly displays its relations-increase (it was 7, not 0.07 as shown)
+  - You may now only ever have a single Perturba quest active at a time (including future quests): to get a new quest, either finish or quit your current one
+  - Temporal Retreat no longer sneakily forgets to revert the top- and bottom-most armor grid rows
+  - Fixed potential campaign bug allowing Vass fleets to spawn too close to the player if they had extreme sensor profiles
+  - Fixed bug where ending Perturba's weapon contract would remove blueprint knowledge of their weapons even if gotten from other sources than the event (should rarely happen, but was possible)
+     > Should rarely have happened, but was possible
+  - Fixed a bug where Perturba's weapon contract event did not properly give access to the Tizona
+     > How did I miss this for this long?
+
+ Other:
+  - Some minor performance improvements here and there
+  - Typo fixes
+     > Frankly, more than I like to admit
+
+
 Version 0.3.3 : Time for some shaders
  General:
   - Added GraphicsLib support for normal maps on ships and [most] weapons
