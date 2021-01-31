@@ -1,6 +1,7 @@
 Version 0.4a
  Changes:
   - Made the "A Profitable Partnership" intel get pinned as important by default
+  - Added a sound effect to a... certain event... in the event where you meet the Perturba contact.
 
  Bugfixes:
   - Fixed a bug where "A profitable Partnership" would sometimes not properly register memory flags and soft-locked the mod's progression
