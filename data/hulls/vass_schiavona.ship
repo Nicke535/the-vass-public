@@ -92,12 +92,12 @@
   "collisionRadius": 122.5,
   "engineSlots": [
     {
-      "angle": 180,
+      "angle": -180,
       "contrailSize": 7,
       "length": 30,
       "location": [
         -57,
-        -28
+        28
       ],
       "style": "VASS_ENGINE_NEAR",
       "width": 7
@@ -123,17 +123,6 @@
       ],
       "style": "VASS_ENGINE_FAR",
       "width": 4
-    },
-    {
-      "angle": -180,
-      "contrailSize": 7,
-      "length": 30,
-      "location": [
-        -57,
-        28
-      ],
-      "style": "VASS_ENGINE_NEAR",
-      "width": 7
     },
     {
       "angle": 177,
@@ -310,6 +299,17 @@
       ],
       "style": "VASS_ENGINE_NEAR",
       "width": 2
+    },
+    {
+      "angle": 180,
+      "contrailSize": 7,
+      "length": 30,
+      "location": [
+        -57,
+        -28
+      ],
+      "style": "VASS_ENGINE_NEAR",
+      "width": 7
     }
   ],
   "height": 212,

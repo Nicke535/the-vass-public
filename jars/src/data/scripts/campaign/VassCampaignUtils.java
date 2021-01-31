@@ -126,8 +126,8 @@ public class VassCampaignUtils {
                     if (!aggressor.isCurrentAssignment(FleetAssignment.GO_TO_LOCATION_AND_DESPAWN)) {
                         aggressor.clearAssignments();
                         aggressor.addAssignment(FleetAssignment.GO_TO_LOCATION_AND_DESPAWN, Misc.findNearestJumpPointTo(aggressor), 999f);
-                        return;
                     }
+                    return;
                 }
 
                 //No other orders or scenarios: re-engage the target!

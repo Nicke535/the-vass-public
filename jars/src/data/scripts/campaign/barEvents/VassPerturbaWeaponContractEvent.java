@@ -109,6 +109,7 @@ public class VassPerturbaWeaponContractEvent extends VassPerturbaBaseEvent {
     private void addIntel() {
         TextPanelAPI text = dialog.getTextPanel();
         VassPerturbaWeaponContractIntel intel = new VassPerturbaWeaponContractIntel(this);
+        intel.setImportant(true);
         Global.getSector().getIntelManager().addIntel(intel, false, text);
     }
 
@@ -168,7 +169,6 @@ public class VassPerturbaWeaponContractEvent extends VassPerturbaBaseEvent {
     private void optionSelectedHandleFirstTime(TextPanelAPI text, OptionId option, OptionPanelAPI options, Color t, Color h, Color n) {
         switch (option) {
             case INIT:
-
                 text.addPara("The suspicious-looking individual nods at you as you approach them.");
                 text.addPara("'Why hello there captain. Or... maybe you go by some other name here? Commander? Overlord? Either way; I think I may have a business opportunity that might interest you...'");
 
@@ -231,6 +231,7 @@ public class VassPerturbaWeaponContractEvent extends VassPerturbaBaseEvent {
                 }
                 BarEventManager.getInstance().notifyWasInteractedWith(this);
                 Global.getSector().getMemoryWithoutUpdate().set(VASS_PERTURBA_WEAPON_CONTRACT_KEY, true);
+                Global.getSector().getMemoryWithoutUpdate().set(VASS_PERTURBA_HAS_MET_CONTACT_KEY, true);
 
                 addIntel();
                 options.addOption("Leave", OptionId.LEAVE);
@@ -242,6 +243,7 @@ public class VassPerturbaWeaponContractEvent extends VassPerturbaBaseEvent {
                 options.addOption("Leave", OptionId.LEAVE);
                 break;
             case LEAVE_HOSTILE:
+                Global.getSoundPlayer().playUISound("vass_perturba_flashbang", 1f, 1f); // Flashbang SFX: he *did* just flashbang you!
                 text.addPara("'Your loss.' The agent quickly pulls out something from their pocket and throws it in your direction. Before you can react a massive bang and a bright flash of light throws you to the ground.");
                 text.addPara("By the time you've regained your senses, they are nowhere to be seen. Luckily it seems like the bar made it relatively unscathed, even if the guards and bar visitors are visibly shaken; the agent must have thrown some kind of riot suppression weapon.");
                 text.addPara("You have a feeling Perturba won't be offering you any new deals any time soon.");
