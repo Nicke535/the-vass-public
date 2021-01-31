@@ -1,3 +1,15 @@
+Version 0.4a
+ Changes:
+  - Made the "A Profitable Partnership" intel get pinned as important by default
+  - Added a sound effect to a... certain event... in the event where you meet the Perturba contact.
+
+ Bugfixes:
+  - Fixed a bug where "A profitable Partnership" would sometimes not properly register memory flags and soft-locked the mod's progression
+     > To fix a soft-locked savegame, if you have "A profitable Partnership", run the console command "VassMeetPerturbaContact". If you don't have that intel, this should not affect you
+  - Hopefully fixed a bug where Vass fleets would continue chasing you while they were trying to leave you alone
+  - Fixed a bug where campaign-side engines displayed incorrectly on the Schiavona
+
+
 Version 0.4 : Time for another sprite rework
  Additions:
   - Added a second Frigate, the Akrafena, with a new shipsystem

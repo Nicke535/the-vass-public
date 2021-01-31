@@ -3,6 +3,13 @@
 	"vass_silence":[
 		{"file":"sounds/vass/systems/periodic_breaker.ogg","pitch":1.0,"volume":0.0},
 	],
+	
+	
+	"vass_perturba_flashbang":[
+		{"file":"sounds/vass/other/perturba_flashbang.ogg","pitch":1.0,"volume":1.0},
+	],
+	
+	
 	"vass_periodic_breaker_loop":[
 		{"file":"sounds/vass/systems/periodic_breaker.ogg","pitch":1.0,"volume":0.45},
 	],
