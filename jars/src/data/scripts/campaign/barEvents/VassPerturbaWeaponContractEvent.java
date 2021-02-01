@@ -325,6 +325,7 @@ public class VassPerturbaWeaponContractEvent extends VassPerturbaBaseEvent {
                 options.addOption("Leave", OptionId.LEAVE);
                 break;
             case LEAVE_HOSTILE:
+                Global.getSoundPlayer().playUISound("vass_perturba_flashbang", 1f, 1f); // Flashbang SFX: he *did* just flashbang you!
                 text.addPara("'Your loss.' The agent quickly pulls out something from their pocket and throws it in your direction. Before you can react a massive bang and a bright flash of light throws you to the ground.");
                 text.addPara("By the time you've regained your senses, they are nowhere to be seen. Luckily it seems like the bar made it relatively unscathed, even if the guards and bar visitors are visibly shaken; the agent must have thrown some kind of riot suppression weapon.");
                 text.addPara("You have a feeling Perturba won't be offering you any new deals any time soon.");

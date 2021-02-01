@@ -15,6 +15,8 @@ import org.dark.shaders.light.LightData;
 import org.dark.shaders.util.ShaderLib;
 import org.dark.shaders.util.TextureData;
 
+import static data.scripts.campaign.barEvents.VassPerturbaWeaponTestingIntel.MEM_KEY_PROTOTYPE_IN_COMBAT_SCORE_HANDLER;
+
 
 public class VassModPlugin extends BaseModPlugin {
 
@@ -78,6 +80,15 @@ public class VassModPlugin extends BaseModPlugin {
 
         addBarEvents();
     }
+
+    //This is just a safety precaution: this data shouldn't be saved, but I've already made one oversight
+    // in that regard so now I'm covering all my bases instead of relying on my coding to work
+    @Override
+    public void beforeGameSave() {
+        super.beforeGameSave();
+        Global.getSector().getMemoryWithoutUpdate().unset(MEM_KEY_PROTOTYPE_IN_COMBAT_SCORE_HANDLER);
+    }
+
     private void addBarEvents() {
         BarEventManager bar = BarEventManager.getInstance();
         if (!bar.hasEventCreator(VassPerturbaWeaponContractEventCreator.class)) {
