@@ -9,9 +9,7 @@ import org.lazywizard.lazylib.combat.CombatUtils;
 
 import java.awt.*;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 import static data.scripts.campaign.barEvents.VassPerturbaWeaponTestingIntel.MEM_KEY_PROTOTYPE_IN_COMBAT_SCORE_HANDLER;
 
@@ -32,10 +30,12 @@ public class VassRandomPrototypeScript implements EveryFrameWeaponEffectPlugin {
         }
 
         //Instantly disable in simulation or missions
-        if ((engine.isSimulation() || !engine.isInCampaign()) && !weapon.isDisabled()) {
-            weapon.disable(true);
-            engine.addFloatingText(weapon.getLocation(), "No simulation data available!", 20f, Color.RED,
-                    weapon.getShip(), 0.5f, 5f);
+        if ((engine.isSimulation() || !engine.isInCampaign())) {
+            if (!weapon.isDisabled()) {
+                weapon.disable(true);
+                engine.addFloatingText(weapon.getLocation(), "No simulation data available!", 20f, Color.RED,
+                        weapon.getShip(), 0.5f, 5f);
+            }
             return;
         }
 

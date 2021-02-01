@@ -1,3 +1,10 @@
+Version 0.4b
+ Bugfixes:
+  - Fixed a bug that could permanently brick a save under specific circumstances
+     > *WHOOPS*.
+  - Minor fix for the event-based sound effect added last version
+
+
 Version 0.4a
  Changes:
   - Made the "A Profitable Partnership" intel get pinned as important by default
