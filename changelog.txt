@@ -1,3 +1,8 @@
+Version 0.4c
+ Bugfixes:
+  - The Perturba weapon testing event now needs 100% progress to be completed, instead of 3%
+
+
 Version 0.4b
  Bugfixes:
   - Fixed a bug that could permanently brick a save under specific circumstances
