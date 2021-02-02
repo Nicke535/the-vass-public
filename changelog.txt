@@ -1,4 +1,8 @@
 Version 0.4c
+ Changes:
+  - Made a small adjustment to Perturba Weapon Testing's intel text clarifying that a ship which is destroyed usually doesn't help further the quest progress
+     > "It's a feature."
+
  Bugfixes:
   - The Perturba weapon testing event now needs 100% progress to be completed, instead of 3%
 
