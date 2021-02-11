@@ -1,10 +1,20 @@
 Version 0.4c
+ Additions:
+  - Added cross-mod compatibility configurations to the Isochronal Field system: see the file data/config/modSettings.json
+     > Contains a blacklist and a "whitelist"[see the file]: mod makers should take a look there and add their projectiles if necessary
+
  Changes:
   - Made a small adjustment to Perturba Weapon Testing's intel text clarifying that a ship which is destroyed usually doesn't help further the quest progress
      > "It's a feature."
 
  Bugfixes:
   - The Perturba weapon testing event now needs 100% progress to be completed, instead of 3%
+  - Fixed perturba ship purchase event having a 9000% too high chance of spawning in a bar
+     > Note that this only affects how likely the event was to push out other events in a bar: it is still just as likely to push out another Vass event, so you should be encountering it about as often as long as you pick it up as soon as it came available. This was mostly just an issue where if you ignored the event it would haunt you quite a bit...
+  - Fixed issue with visuals de-syncing if more than one ship with the Isochronal Field system were deployed at once...
+     > HOW did I not catch this earlier?
+  - Implemented fixes for the Isochronal Field system, disallowing most projectile-splitting weapons to work unless whitelisted
+     > This is necessary to prevent infinite loop possibilities
 
 
 Version 0.4b

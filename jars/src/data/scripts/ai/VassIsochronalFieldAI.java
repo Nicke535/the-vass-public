@@ -40,7 +40,7 @@ public class VassIsochronalFieldAI implements ShipSystemAIScript {
         //Once the interval has elapsed...
         if (tracker.intervalElapsed() && system.getEffectLevel() <= 0f) {
             //First, check if we're in defensive or offensive mode. This will affect our decisionmaking down the line
-            boolean offensiveMode = Global.getCombatEngine().getCustomData().containsKey(VassIsochronalField.OFFENSE_MEM_KEY);
+            boolean offensiveMode = Global.getCombatEngine().getCustomData().containsKey(VassIsochronalField.OFFENSE_MEM_KEY+ship.getId());
 
             boolean desiresOffensive = true;
 

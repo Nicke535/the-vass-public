@@ -11,6 +11,8 @@ import data.scripts.campaign.VassSectorSetupScript;
 import data.scripts.campaign.barEvents.VassPerturbaGetShipSubmarketEventCreator;
 import data.scripts.campaign.barEvents.VassPerturbaWeaponContractEventCreator;
 import data.scripts.campaign.barEvents.VassPerturbaWeaponTestingEventCreator;
+import data.scripts.shipsystems.VassIsochronalField;
+import data.scripts.util.MagicSettings;
 import org.dark.shaders.light.LightData;
 import org.dark.shaders.util.ShaderLib;
 import org.dark.shaders.util.TextureData;
@@ -53,6 +55,10 @@ public class VassModPlugin extends BaseModPlugin {
             //LightData.readLightDataCSV("data/lights/vass_light_data.csv");
             TextureData.readTextureDataCSV("data/lights/vass_texture_data.csv");
         }
+
+        //ModSettings reading
+        VassIsochronalField.CLONING_WEAPON_ID_BLACKLIST.addAll(MagicSettings.getList("vass", "do_not_clone_projs"));
+        VassIsochronalField.SPECIAL_PROJ_WEAPON_IDS.putAll(MagicSettings.getStringMap("vass", "clone_despite_nonoriginal_projs"));
     }
 
     //Adds all our campaign plugins on new game start

@@ -23,8 +23,7 @@ public class VassPerturbaGetShipSubmarketEventCreator extends BaseBarEventCreato
         if (VassPerturbaGetShipSubmarketEvent.DEBUG_MODE) {
             return 99999999999f;
         } else {
-            return super.getBarEventFrequencyWeight() * 99999f;
-            //return super.getBarEventFrequencyWeight() * 4f;
+            return super.getBarEventFrequencyWeight() * 4f;
         }
     }
 }

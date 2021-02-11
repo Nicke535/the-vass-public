@@ -41,16 +41,22 @@ public class VassAsiScript implements EveryFrameWeaponEffectPlugin {
 
             //If the projectile is our own, we can do something with it
             if (proj.getWeapon() == weapon && !proj.didDamage() && engine.isEntityInPlay(proj)) {
-                DamagingProjectileAPI newProj = (DamagingProjectileAPI) Global.getCombatEngine().spawnProjectile(proj.getSource(), proj.getWeapon(),
-                        "vass_asi_fake1", proj.getLocation(), proj.getFacing(), weapon.getShip().getVelocity());
-                Global.getCombatEngine().removeEntity(proj);
+                //If the projectile is a "slow" projectile (probably has been cloned) we don't need to switch out the projectile, only add the plugin
+                if (proj.getProjectileSpecId().equals("vass_asi_shot_slow")) {
+                    alreadyTriggeredProjectiles.add(proj);
+                    engine.addPlugin(new AsiTrailAccelPlugin(proj));
+                } else {
+                    DamagingProjectileAPI newProj = (DamagingProjectileAPI) Global.getCombatEngine().spawnProjectile(proj.getSource(), proj.getWeapon(),
+                            "vass_asi_fake1", proj.getLocation(), proj.getFacing(), weapon.getShip().getVelocity());
+                    Global.getCombatEngine().removeEntity(proj);
 
-                //Register that we've triggered on the projectile
-                alreadyTriggeredProjectiles.add(proj);
-                alreadyTriggeredProjectiles.add(newProj);
+                    //Register that we've triggered on the projectile
+                    alreadyTriggeredProjectiles.add(proj);
+                    alreadyTriggeredProjectiles.add(newProj);
 
-                //Add a new plugin that keeps track of the projectile
-                engine.addPlugin(new AsiTrailAccelPlugin(newProj));
+                    //Add a new plugin that keeps track of the projectile
+                    engine.addPlugin(new AsiTrailAccelPlugin(newProj));
+                }
             }
         }
 
@@ -97,7 +103,6 @@ public class VassAsiScript implements EveryFrameWeaponEffectPlugin {
             if (timer > estimatedAccelPoint && !hasAccelerated) {
                 DamagingProjectileAPI newProj = (DamagingProjectileAPI) Global.getCombatEngine().spawnProjectile(proj.getSource(), proj.getWeapon(),
                         "vass_asi_fake2", proj.getLocation(), proj.getFacing(), offsetVelocity);
-                alreadyTriggeredProjectiles.remove(proj);
                 Global.getCombatEngine().removeEntity(proj);
                 proj = newProj;
                 alreadyTriggeredProjectiles.add(proj);
