@@ -1,6 +1,6 @@
 {   
     #VASS SETTINGS FILE
-    "vass":{
+    "the_vass":{
 		"do_not_clone_projs":[
 			# A list of projectiles which will not be cloned by the Isochronal Field under any circumstances
 			# Can be practical for some very-heavily scripted weapons, but do check if it works without this 
