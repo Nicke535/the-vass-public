@@ -199,8 +199,8 @@ public class VassChronoJump extends BaseShipSystemScript {
                             0f, 200f, VectorUtils.getAngle(pointsToSpawnAt.get(i), pointsToSpawnAt.get(i+1)),
                             0f, MathUtils.getRandomNumberInRange(-400f, 400f), sizeMod, sizeMod/3f,
                             colorToUse, colorToUse,0.5f, 0f, 0.3f * i/pointsToSpawnAt.size(), 0.3f,
-                            GL_SRC_ALPHA, GL_ONE, 128f, 0f, new Vector2f(0f, 0f), null,
-                            underShips ? CombatEngineLayers.BELOW_SHIPS_LAYER : CombatEngineLayers.BELOW_INDICATORS_LAYER);
+                            GL_SRC_ALPHA, GL_ONE, 128f, 0f, -1f, new Vector2f(0f, 0f), null,
+                            underShips ? CombatEngineLayers.BELOW_SHIPS_LAYER : CombatEngineLayers.BELOW_INDICATORS_LAYER, 1f); //TODO: Check if the texture offset messes with something
                 }
 
                 //Finally, apply special effects for modded weapons that need it

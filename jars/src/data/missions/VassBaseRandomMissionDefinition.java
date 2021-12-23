@@ -446,7 +446,7 @@ public class VassBaseRandomMissionDefinition implements MissionDefinitionPlugin
         boolean randomize = random.nextFloat() < faction.getDoctrine().getAutofitRandomizeProbability();
         auto.setChecked(CoreAutofitPlugin.RANDOMIZE, randomize);
 
-        auto.doFit(currVariant, target, inflater);
+        auto.doFit(currVariant, target, 0, inflater);
         currVariant.setSource(VariantSource.REFIT);
         member.setVariant(currVariant, false, false);
     }

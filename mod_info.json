@@ -2,9 +2,21 @@
   "id":"the_vass", # internal id
 	"name":"The Vass", # displayed to the player
 	"author":"Nicke535, using Gwyvern's masterful sprites",	
-	"version":"0.4b",
+	"version":"0.4.1",
 	"description":"Psst, hey kid. Want some time?",
-	"gameVersion":"0.9a",
+	"gameVersion":"0.95.1a-RC6",
 	"modPlugin":"data.scripts.VassModPlugin",
-	"jars": ["jars/TheVass.jar"]
+	"jars": ["jars/TheVass.jar"],
+	"dependencies": [
+        {
+            "id": "lw_lazylib",
+            "name": "LazyLib",
+            #"version": "2.6" # If a specific version is required, include this line
+        },
+        {
+            "id": "MagicLib",
+            "name": "MagicLib",
+            #"version": "0.32rc2" # If a specific version is NOT required, comment out this line
+        }
+    ],
 }

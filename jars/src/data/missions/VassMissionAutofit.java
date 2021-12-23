@@ -132,4 +132,7 @@ public class VassMissionAutofit implements AutofitPlugin.AutofitPluginDelegate
     {
         return true;
     }
+
+    @Override
+    public boolean isAllowSlightRandomization() { return false; }
 }

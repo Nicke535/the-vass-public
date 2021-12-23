@@ -148,8 +148,8 @@ public class VassCaladbolgScript implements EveryFrameWeaponEffectPlugin {
                         18f, 10f, new Color(255f/255f, 150f/255f, 70f/255f, 1f),
                         new Color(120f/255f, 120f/255f, 120f/255f, 0f), opacity,
                         0f, 0f, 0.3f, GL_SRC_ALPHA, GL_ONE,
-                        256f, 0f, offsetVelocity, null,
-                        CombatEngineLayers.ABOVE_SHIPS_AND_MISSILES_LAYER);
+                        256f, 0f, -1f, offsetVelocity, null,
+                        CombatEngineLayers.ABOVE_SHIPS_AND_MISSILES_LAYER, 1f); //TODO: Check if the texture offset messes with something
             }
         }
     }

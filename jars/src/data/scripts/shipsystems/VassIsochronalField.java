@@ -332,10 +332,15 @@ public class VassIsochronalField extends BaseShipSystemScript {
                 0f,
                 colorToUse,
                 true,
+                0f,
+                0f,
+                0f,
+                0f,
+                0f,
                 MathUtils.getRandomNumberInRange(0.01f, 0.15f),
                 0f,
                 MathUtils.getRandomNumberInRange(0.15f, 0.25f),
-                layer);
+                layer); //TODO : Confirm that this does not mess up things (specifically, flicker and jitter)
     }
 
     //Utility function: checks if a projectile will collide with a ship within a certain time, with a certain angle offset

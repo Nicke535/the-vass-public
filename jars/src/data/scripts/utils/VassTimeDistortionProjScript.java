@@ -192,7 +192,8 @@ public class VassTimeDistortionProjScript extends BaseEveryFrameCombatPlugin {
                         angle, startAngularVelocity * ((float) i2 / 12f), 0f, startSize, 0f,
                         VassUtils.getFamilyColor(VassUtils.VASS_FAMILY.PERTURBA, 1f), VassUtils.getFamilyColor(VassUtils.VASS_FAMILY.PERTURBA, 1f),
                         0.45f, 0f, 0.3f * ((float) i2 / 12f) * lifetime, 0.7f * ((float) i2 / 12f) * lifetime, GL_SRC_ALPHA, GL_ONE,
-                        500f, 0f, new Vector2f(0f, 0f), null);
+                        500f, 0f, 0f, new Vector2f(0f, 0f), null,
+                        CombatEngineLayers.ABOVE_SHIPS_AND_MISSILES_LAYER, 1f);
             }
         }
 

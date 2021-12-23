@@ -218,7 +218,7 @@ public class VassYawarakaiTeScript implements EveryFrameWeaponEffectPlugin {
 
             MagicTrailPlugin.AddTrailMemberSimple(target, idForTrail, spriteToUse, currPoint, 0f, angleToNextPoint,
                     TRAIL_START_WIDTH*effectivePower*extraWidthMult, TRAIL_END_WIDTH*effectivePower*extraWidthMult, VassUtils.getFamilyColor(VassUtils.VASS_FAMILY.PERTURBA, 1f),
-                    opacity, effectDuration, true, actualOffsetVelocity, CombatEngineLayers.BELOW_INDICATORS_LAYER);
+                    opacity, effectDuration, true, actualOffsetVelocity, CombatEngineLayers.BELOW_INDICATORS_LAYER); //TODO: Alter to the Advanced version, since the simple version no longer supports engine layers
         }
     }
 

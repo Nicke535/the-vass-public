@@ -6,6 +6,7 @@ import com.fs.starfarer.api.campaign.OptionPanelAPI;
 import com.fs.starfarer.api.campaign.RepLevel;
 import com.fs.starfarer.api.campaign.TextPanelAPI;
 import com.fs.starfarer.api.campaign.econ.MarketAPI;
+import com.fs.starfarer.api.campaign.rules.MemoryAPI;
 import com.fs.starfarer.api.impl.campaign.intel.bar.events.BarEventManager;
 import com.fs.starfarer.api.impl.combat.EntropyAmplifierStats;
 import com.fs.starfarer.api.util.Misc;
@@ -17,6 +18,7 @@ import org.apache.log4j.Logger;
 import org.lazywizard.lazylib.MathUtils;
 
 import java.awt.*;
+import java.util.Map;
 
 /**
  * Creates repeatable event where Perturba asks the player to test some weapon prototypes for them
@@ -93,8 +95,8 @@ public class VassPerturbaWeaponTestingEvent extends VassPerturbaBaseEvent {
 
     // Creates the actual prompt and description when entering the bar. Picks randomly from a list, with some variations based on circumstance
     @Override
-    public void addPromptAndOption(InteractionDialogAPI dialog) {
-        super.addPromptAndOption(dialog);
+    public void addPromptAndOption(InteractionDialogAPI dialog, Map<String, MemoryAPI> memoryMap) {
+        super.addPromptAndOption(dialog, memoryMap);
 
         regen(dialog.getInteractionTarget().getMarket());
 
@@ -109,8 +111,8 @@ public class VassPerturbaWeaponTestingEvent extends VassPerturbaBaseEvent {
     }
 
     @Override
-    public void init(InteractionDialogAPI dialog) {
-        super.init(dialog);
+    public void init(InteractionDialogAPI dialog, Map<String, MemoryAPI> memoryMap) {
+        super.init(dialog, memoryMap);
 
         done = false;
 

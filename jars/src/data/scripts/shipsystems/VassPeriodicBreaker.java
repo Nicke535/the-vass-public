@@ -309,8 +309,13 @@ public class VassPeriodicBreaker extends BaseShipSystemScript {
                     true,
                     0f,
                     0f,
+                    0f,
+                    0f,
+                    0f,
+                    0f,
+                    0f,
                     0.75f * Global.getCombatEngine().getTimeMult().getModifiedValue(),
-                    CombatEngineLayers.BELOW_SHIPS_LAYER);
+                    CombatEngineLayers.BELOW_SHIPS_LAYER); //TODO : Confirm that this does not mess up things (specifically, flicker and jitter)
         }
     }
 

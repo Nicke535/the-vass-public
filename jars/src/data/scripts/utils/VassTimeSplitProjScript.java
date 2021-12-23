@@ -104,7 +104,8 @@ public class VassTimeSplitProjScript extends BaseEveryFrameCombatPlugin {
                     MagicTrailPlugin.AddTrailMemberAdvanced(null, id, spriteToUse, spawnPoint, startSpeed * (((float) i * 0.3f / 8f) + 0.7f), 0f,
                             proj.getFacing(), 0f, 0f, startSize * (((float) i * 0.4f / 8f) + 0.6f), startSize * 0.3f * (((float) i * 0.4f / 8f) + 0.6f),
                             color, color, 0.85f, 0f, 0.25f, 0.3f, GL_SRC_ALPHA, GL_ONE,
-                            500f, 0f, offsetVel, null);
+                            500f, 0f, -1f, offsetVel, null,
+                            CombatEngineLayers.ABOVE_SHIPS_AND_MISSILES_LAYER, 1f); //TODO: Check if the texture offset messes with something
                 }
 
                 //New: GraphicsLib support for point lights on the effects
@@ -256,7 +257,8 @@ public class VassTimeSplitProjScript extends BaseEveryFrameCombatPlugin {
             MagicTrailPlugin.AddTrailMemberAdvanced(null, id, spriteToUse, spawnPoint, startSpeed * (((float) i * 0.8f / 8f) + 0.2f), 0f,
                     angle, 0f, 0f, startSize * (((float) i * 0.4f / 8f) + 0.6f), startSize * 0.3f * (((float) i * 0.4f / 8f) + 0.6f),
                     color, color, 0.85f, 0f, 0.35f, 0.4f, GL_SRC_ALPHA, GL_ONE,
-                    500f, 0f, new Vector2f(0f, 0f), null);
+                    500f, 0f, -1f, new Vector2f(0f, 0f), null,
+                    CombatEngineLayers.ABOVE_SHIPS_AND_MISSILES_LAYER, 1f); //TODO: Check if the texture offset messes with something
         }
 
         //New: GraphicsLib support for point lights on the effects

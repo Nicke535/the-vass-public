@@ -73,7 +73,7 @@ public class VassPeriodicPlating extends BaseHullMod {
 	//ID for most effects the hullmod applies
 	private static final String ID = "VassPeriodicPlatingDebugID";
 	
-	//Changes the ships time mult at every "advanceInCombat", in order to make sure the global time mult is correct in relation to the player ship
+	//Changes the ship's time mult at every "advanceInCombat", in order to make sure the global time mult is correct in relation to the player ship
 	@Override
 	public void advanceInCombat(ShipAPI ship, float amount) {
 		//Ensures we can properly get our family and elite-ness before running other code
@@ -316,10 +316,15 @@ public class VassPeriodicPlating extends BaseHullMod {
 				0f,
 				colorToUse,
 				true,
+				0f,
+				0f,
+				0f,
+				0f,
+				0f,
 				0.01f,
 				0f,
 				0.35f,
-				layer);
+				layer); //TODO : Confirm that this does not mess up things (specifically, flicker and jitter)
 	}
 
 
@@ -583,6 +588,11 @@ public class VassPeriodicPlating extends BaseHullMod {
 					0f,
 					colorToUse,
 					true,
+					0f,
+					0f,
+					0f,
+					0f,
+					0f,
 					MathUtils.getRandomNumberInRange(0.01f, 0.25f),
 					0f,
 					MathUtils.getRandomNumberInRange(0.25f, 0.45f),

@@ -54,3 +54,4 @@ public class VassFragarachScript implements EveryFrameWeaponEffectPlugin {
         toRemove.clear();
     }
 }
+

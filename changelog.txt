@@ -1,3 +1,11 @@
+Version 0.4.1: Time for another version
+ Bugfixes:
+  - Fixed compatibility with newest (at the time) version of Starsector (0.95.1a-RC6) and MagicLib
+  - Made certain campaign-unique items not show up in mission refit
+     > They never *functioned* outside the campaign anyhow
+
+
+
 Version 0.4c
  Additions:
   - Added cross-mod compatibility configurations to the Isochronal Field system: see the file data/config/modSettings.json
