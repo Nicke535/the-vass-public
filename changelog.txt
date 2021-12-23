@@ -1,4 +1,14 @@
 Version 0.4.1: Time for another version
+ Balance:
+  - Tizona/Colada Emitter:
+     -- Flux/Shot down from 75 to 45
+     -- Damage up from 400 to 450
+     -- EMP up from 300 to 450
+     > The Tizona and Colada always felt a bit enemic, especially when compared to weapons such as the Annihilator. A bigger rework may be needed, but this works a bit as a stop-gap
+  - Estoc:
+     -- Weapon EMP up from 675 to 900
+         > Mostly to bring it in-line with the Tizona and Colada Damage/EMP distribution
+
  Bugfixes:
   - Fixed compatibility with newest (at the time) version of Starsector (0.95.1a-RC6) and MagicLib
   - Made certain campaign-unique items not show up in mission refit
