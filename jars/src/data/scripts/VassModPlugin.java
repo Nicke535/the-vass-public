@@ -57,8 +57,8 @@ public class VassModPlugin extends BaseModPlugin {
         }
 
         //ModSettings reading
-        VassIsochronalField.CLONING_WEAPON_ID_BLACKLIST.addAll(MagicSettings.getList("vass", "do_not_clone_projs"));
-        VassIsochronalField.SPECIAL_PROJ_WEAPON_IDS.putAll(MagicSettings.getStringMap("vass", "clone_despite_nonoriginal_projs"));
+        VassIsochronalField.CLONING_WEAPON_ID_BLACKLIST.addAll(MagicSettings.getList("the_vass", "do_not_clone_projs"));
+        VassIsochronalField.SPECIAL_PROJ_WEAPON_IDS.putAll(MagicSettings.getStringMap("the_vass", "clone_despite_nonoriginal_projs"));
     }
 
     //Adds all our campaign plugins on new game start
