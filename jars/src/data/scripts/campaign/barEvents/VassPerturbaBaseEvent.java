@@ -36,7 +36,7 @@ public class VassPerturbaBaseEvent extends BaseBarEventWithPerson {
     public static final String PERTURBA_EVENTS_BLOCKED_KEY = "$vass_perturba_events_blocked";
 
     /**
-     * Gets perturba's contact
+     * Gets Perturba's contact
      */
     public static PersonAPI getContact () {
         if (!(Global.getSector().getMemoryWithoutUpdate().get(VASS_PERTURBA_CONTACT_KEY) instanceof PersonAPI)) {

@@ -75,6 +75,7 @@ public class VassPlayerSoldVassShipsListener extends BaseCampaignEventListener i
         } else {
             hasSoldMinor = true;
             minorSellingsDone++;
+            minorSellingTimer = 0f;
             if (minorSellingsDone > MINOR_SELLS_PER_MAJOR) {
                 hasSoldMajor = true;
             }

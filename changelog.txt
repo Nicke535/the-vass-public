@@ -13,6 +13,8 @@ Version 0.4.1: Time for another version
   - Fixed compatibility with newest (at the time) version of Starsector (0.95.1a-RC6) and MagicLib
   - Made certain campaign-unique items not show up in mission refit
      > They never *functioned* outside the campaign anyhow
+  - Fixed an exploit where the Vass families sometimes did not detect massive sales of fighters, as long as no ships were sold
+     > You can still avoid scrutiny the intended way: by selling them piecemeal over prolonged time
 
 
 
