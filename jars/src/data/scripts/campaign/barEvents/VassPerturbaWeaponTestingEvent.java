@@ -8,7 +8,6 @@ import com.fs.starfarer.api.campaign.TextPanelAPI;
 import com.fs.starfarer.api.campaign.econ.MarketAPI;
 import com.fs.starfarer.api.campaign.rules.MemoryAPI;
 import com.fs.starfarer.api.impl.campaign.intel.bar.events.BarEventManager;
-import com.fs.starfarer.api.impl.combat.EntropyAmplifierStats;
 import com.fs.starfarer.api.util.Misc;
 import com.fs.starfarer.api.util.WeightedRandomPicker;
 import data.scripts.campaign.VassFamilyTrackerPlugin;
@@ -158,7 +157,7 @@ public class VassPerturbaWeaponTestingEvent extends VassPerturbaBaseEvent {
                 text.addPara("'Well you see, we're in need of some fresh combat data for some of our prototype " +
                         "weapons. We'd do it ourselves but we thought we'd get more reliable data from someone unaffiliated " +
                         "with the labs themselves. So here's the deal: we hand you the prototypes and you participate in " +
-                        "3 battles with them equipped on a ship. Once you're done, just bring them back here.'", h, "3 battles");
+                        "a couple of battles with them equipped on a ship. Once you're done, just bring them back here.'", h, "a couple of battles");
                 text.addPara("'We're going to have to take some collateral from you during the mission, though. " +
                         "A fair sum should be... well, around "+collateral+" credits.'", h, ""+collateral);
                 text.addPara("'Don't worry, once you've completed the mission we'll return it in full, together with " +
@@ -179,7 +178,7 @@ public class VassPerturbaWeaponTestingEvent extends VassPerturbaBaseEvent {
                         "important than the prototypes: once you terminate the contract either by fulfilling it or by " +
                         "cancelling it, we'll trigger a self-destruct mechanism on any prototypes we didn't get back. " +
                         "I'd recommend staying at least a good couple of meters away from them.'");
-                text.addPara("'Though if you come back with none of the prototypes, we can't really pay you: those " +
+                text.addPara("'That said, if you come back with none of the prototypes we can't really pay you: those " +
                         "things are quite costly. We'll give back the collateral though, since you did provide the " +
                         "data you were asked for.'");
 
