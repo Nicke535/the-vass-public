@@ -23,7 +23,7 @@ import java.util.ArrayList;
  * @author Nicke535
  */
 public class VassUtils {
-    //The families's energy colors (basic is used )
+    //The families' energy colors (basic is used )
     private static final float[] COLORS_RECIPRO = { 1f, 1f, 1f};
     private static final float[] COLORS_ACCEL = { 1f, 0f, 0f};
     private static final float[] COLORS_TORPOR = { 0.1f, 0.4f, 1f};
@@ -233,7 +233,7 @@ public class VassUtils {
                     }
                 }
 
-                //We're not in an elite fleet: thus, we are only elite if we're the flagship
+                //We're not in an elite fleet: thus, we are only elite if we're the flagship TODO check if this should be extended to officers!
                 if (ship.getFleetMember().equals(ship.getFleetMember().getFleetData().getFleet().getFlagship())) {
                     return true;
                 } else {

@@ -4,7 +4,7 @@ import java.awt.Color;
 
 import com.fs.starfarer.api.graphics.SpriteAPI;
 import data.scripts.VassModPlugin;
-import data.scripts.util.MagicRender;
+import org.magiclib.util.MagicRender;
 import org.dark.shaders.distortion.DistortionShader;
 import org.dark.shaders.distortion.RippleDistortion;
 import com.fs.starfarer.api.Global;

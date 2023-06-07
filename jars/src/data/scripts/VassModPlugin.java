@@ -3,6 +3,7 @@ package data.scripts;
 import com.fs.starfarer.api.BaseModPlugin;
 import com.fs.starfarer.api.Global;
 import com.fs.starfarer.api.campaign.SectorAPI;
+import com.fs.starfarer.api.campaign.StarSystemAPI;
 import com.fs.starfarer.api.impl.campaign.intel.bar.events.BarEventManager;
 import data.scripts.campaign.VassFamilyTrackerPlugin;
 import data.scripts.campaign.VassRandomEncounterPlugin;
@@ -12,7 +13,7 @@ import data.scripts.campaign.barEvents.VassPerturbaGetShipSubmarketEventCreator;
 import data.scripts.campaign.barEvents.VassPerturbaWeaponContractEventCreator;
 import data.scripts.campaign.barEvents.VassPerturbaWeaponTestingEventCreator;
 import data.scripts.shipsystems.VassIsochronalField;
-import data.scripts.util.MagicSettings;
+import org.magiclib.util.MagicSettings;
 import org.dark.shaders.light.LightData;
 import org.dark.shaders.util.ShaderLib;
 import org.dark.shaders.util.TextureData;
@@ -31,7 +32,7 @@ public class VassModPlugin extends BaseModPlugin {
             Global.getSettings().getScriptClassLoader().loadClass("org.lazywizard.lazylib.ModUtils");
         } catch (ClassNotFoundException ex) {
             String message = System.lineSeparator()
-                    + System.lineSeparator() + "LazyLib is required to run at least one of the mods you have installed."
+                    + System.lineSeparator() + "LazyLib is required to run at least one of the mods you have installed (The Vass)."
                     + System.lineSeparator() + System.lineSeparator()
                     + "You can download LazyLib at http://fractalsoftworks.com/forum/index.php?topic=5444"
                     + System.lineSeparator();
@@ -41,7 +42,7 @@ public class VassModPlugin extends BaseModPlugin {
             Global.getSettings().getScriptClassLoader().loadClass("data.scripts.Magic_modPlugin");
         } catch (ClassNotFoundException ex) {
             String message = System.lineSeparator()
-                    + System.lineSeparator() + "MagicLib is required to run at least one of the mods you have installed."
+                    + System.lineSeparator() + "MagicLib is required to run at least one of the mods you have installed (The Vass)."
                     + System.lineSeparator() + System.lineSeparator()
                     + "You can download MagicLib at http://fractalsoftworks.com/forum/index.php?topic=13718.0"
                     + System.lineSeparator();
@@ -52,7 +53,7 @@ public class VassModPlugin extends BaseModPlugin {
         hasShaderLib = Global.getSettings().getModManager().isModEnabled("shaderLib");
         if (hasShaderLib) {
             ShaderLib.init();
-            //LightData.readLightDataCSV("data/lights/vass_light_data.csv");
+            LightData.readLightDataCSV("data/lights/vass_light_data.csv");
             TextureData.readTextureDataCSV("data/lights/vass_texture_data.csv");
         }
 

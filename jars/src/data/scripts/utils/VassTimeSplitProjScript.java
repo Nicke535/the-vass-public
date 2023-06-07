@@ -7,7 +7,7 @@ import com.fs.starfarer.api.input.InputEventAPI;
 import com.fs.starfarer.api.util.IntervalUtil;
 import com.fs.starfarer.api.util.Misc;
 import data.scripts.VassModPlugin;
-import data.scripts.plugins.MagicTrailPlugin;
+import org.magiclib.plugins.MagicTrailPlugin;
 import org.dark.shaders.light.LightShader;
 import org.dark.shaders.light.StandardLight;
 import org.lazywizard.lazylib.CollisionUtils;
@@ -101,7 +101,7 @@ public class VassTimeSplitProjScript extends BaseEveryFrameCombatPlugin {
                 Color color = VassUtils.getFamilyColor(VassUtils.VASS_FAMILY.MULTA, 1f);
                 for (int i = 0; i < 8; i++) {
                     Vector2f spawnPoint = MathUtils.getPoint(originPoint, (i / 8f - 0.5f) * 65f * damageAdjustment, proj.getFacing());
-                    MagicTrailPlugin.AddTrailMemberAdvanced(null, id, spriteToUse, spawnPoint, startSpeed * (((float) i * 0.3f / 8f) + 0.7f), 0f,
+                    MagicTrailPlugin.addTrailMemberAdvanced(null, id, spriteToUse, spawnPoint, startSpeed * (((float) i * 0.3f / 8f) + 0.7f), 0f,
                             proj.getFacing(), 0f, 0f, startSize * (((float) i * 0.4f / 8f) + 0.6f), startSize * 0.3f * (((float) i * 0.4f / 8f) + 0.6f),
                             color, color, 0.85f, 0f, 0.25f, 0.3f, GL_SRC_ALPHA, GL_ONE,
                             500f, 0f, -1f, offsetVel, null,
@@ -254,7 +254,7 @@ public class VassTimeSplitProjScript extends BaseEveryFrameCombatPlugin {
         Color color = VassUtils.getFamilyColor(VassUtils.VASS_FAMILY.MULTA, 1f);
         for (int i = 0; i < 8; i++) {
             Vector2f spawnPoint = MathUtils.getPoint(collisionPoint, (i / 8f - 0.5f) * 65f * damageMult * damageAdjustment, proj.getFacing());
-            MagicTrailPlugin.AddTrailMemberAdvanced(null, id, spriteToUse, spawnPoint, startSpeed * (((float) i * 0.8f / 8f) + 0.2f), 0f,
+            MagicTrailPlugin.addTrailMemberAdvanced(null, id, spriteToUse, spawnPoint, startSpeed * (((float) i * 0.8f / 8f) + 0.2f), 0f,
                     angle, 0f, 0f, startSize * (((float) i * 0.4f / 8f) + 0.6f), startSize * 0.3f * (((float) i * 0.4f / 8f) + 0.6f),
                     color, color, 0.85f, 0f, 0.35f, 0.4f, GL_SRC_ALPHA, GL_ONE,
                     500f, 0f, -1f, new Vector2f(0f, 0f), null,

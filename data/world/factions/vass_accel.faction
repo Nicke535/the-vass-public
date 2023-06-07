@@ -118,7 +118,6 @@
 		"commanderSkillsShuffleProbability":0,
 		"commanderSkills":[
 			"electronic_warfare",
-			"fighter_doctrine",
 			"officer_management",
 			"coordinated_maneuvers",
 		],
@@ -143,6 +142,7 @@
 			"graphics/portraits/portrait34.png",
 			"graphics/portraits/portrait_mercenary06.png",
 			"graphics/portraits/portrait_mercenary01.png",
+			"graphics/portraits/portrait29.png",
 		],
 		"standard_female":[
 			"graphics/portraits/portrait_hegemony02.png",

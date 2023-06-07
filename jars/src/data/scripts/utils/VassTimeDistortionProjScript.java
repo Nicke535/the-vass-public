@@ -7,7 +7,7 @@ import com.fs.starfarer.api.graphics.SpriteAPI;
 import com.fs.starfarer.api.input.InputEventAPI;
 import com.fs.starfarer.api.util.Misc;
 import data.scripts.VassModPlugin;
-import data.scripts.plugins.MagicTrailPlugin;
+import org.magiclib.plugins.MagicTrailPlugin;
 import org.dark.shaders.distortion.DistortionShader;
 import org.dark.shaders.distortion.WaveDistortion;
 import org.dark.shaders.light.LightShader;
@@ -64,6 +64,9 @@ public class VassTimeDistortionProjScript extends BaseEveryFrameCombatPlugin {
     //Multiplier for our AoE
     private float aoeMult = 1f;
 
+    //List of extra "detonation listeners", in case i want to tie extra mechanics to a detonation
+    private List<DetonationListener> detonationListeners = new ArrayList<>();
+
     //Initializers
     public VassTimeDistortionProjScript(DamagingProjectileAPI proj, float maxTimeDistortMult, @Nullable String soundClipOnDetonation) {
         this.proj = proj;
@@ -76,6 +79,11 @@ public class VassTimeDistortionProjScript extends BaseEveryFrameCombatPlugin {
     public VassTimeDistortionProjScript(DamagingProjectileAPI proj, float maxTimeDistortMult, @Nullable String soundClipOnDetonation, float aoeMult) {
         this(proj, maxTimeDistortMult, soundClipOnDetonation);
         this.aoeMult = aoeMult;
+    }
+    public VassTimeDistortionProjScript(DamagingProjectileAPI proj, float maxTimeDistortMult, @Nullable String soundClipOnDetonation, float aoeMult, List<DetonationListener> detonationListeners) {
+        this(proj, maxTimeDistortMult, soundClipOnDetonation);
+        this.aoeMult = aoeMult;
+        this.detonationListeners.addAll(detonationListeners);
     }
 
     @Override
@@ -188,7 +196,7 @@ public class VassTimeDistortionProjScript extends BaseEveryFrameCombatPlugin {
             float startSize = MathUtils.getRandomNumberInRange(1.4f, 3.7f) * damageMult;
             float lifetime = MathUtils.getRandomNumberInRange(0.8f, 1.4f) * VISUAL_DISTORTION_DURATION;
             for (int i2 = 0; i2 < 12; i2++) {
-                MagicTrailPlugin.AddTrailMemberAdvanced(null, id, spriteToUse, new Vector2f(effectLocation), startSpeed * ((float) i2 / 12f), 0f,
+                MagicTrailPlugin.addTrailMemberAdvanced(null, id, spriteToUse, new Vector2f(effectLocation), startSpeed * ((float) i2 / 12f), 0f,
                         angle, startAngularVelocity * ((float) i2 / 12f), 0f, startSize, 0f,
                         VassUtils.getFamilyColor(VassUtils.VASS_FAMILY.PERTURBA, 1f), VassUtils.getFamilyColor(VassUtils.VASS_FAMILY.PERTURBA, 1f),
                         0.45f, 0f, 0.3f * ((float) i2 / 12f) * lifetime, 0.7f * ((float) i2 / 12f) * lifetime, GL_SRC_ALPHA, GL_ONE,
@@ -220,6 +228,11 @@ public class VassTimeDistortionProjScript extends BaseEveryFrameCombatPlugin {
 
         //Addition: Then, apply EMP damage to fighters nearby, and randomly flame-out low-health missiles depending on EMP
         //This doesn't effect allies, solely due to balance concerns
+        // - Note that if the projectile has no EMP, it is assumed to recieve half its damage as EMP
+        float projEMP = proj.getEmpAmount();
+        if (projEMP <= 0) {
+            projEMP = proj.getDamageAmount()*0.5f;
+        }
         for (ShipAPI fighter : CombatUtils.getShipsWithinRange(effectLocation, BASE_AOE_SIZE * aoeMult * damageMult)) {
             //Only affects fighters
             if (fighter.getHullSize() != ShipAPI.HullSize.FIGHTER) {
@@ -233,12 +246,12 @@ public class VassTimeDistortionProjScript extends BaseEveryFrameCombatPlugin {
 
             //Simply hits the fighter dead-center with EMP, albeit with very random damage
             Global.getCombatEngine().applyDamage(fighter, fighter.getLocation(), 0f, DamageType.ENERGY,
-                    (float) Math.random() * proj.getEmpAmount() * (BASE_AOE_SIZE * aoeMult * damageMult - MathUtils.getDistance(effectLocation, fighter.getLocation())) / (BASE_AOE_SIZE * aoeMult * damageMult),
+                    (float) Math.random() * projEMP * (BASE_AOE_SIZE * aoeMult * damageMult - MathUtils.getDistance(effectLocation, fighter.getLocation())) / (BASE_AOE_SIZE * aoeMult * damageMult),
                     true, true, proj.getSource(), false);
         }
         for (MissileAPI msl : CombatUtils.getMissilesWithinRange(effectLocation, BASE_AOE_SIZE * aoeMult * damageMult)) {
             if (msl.getOwner() != proj.getOwner()) {
-                if (msl.getHitpoints() < Math.random() * proj.getEmpAmount() * (BASE_AOE_SIZE * aoeMult * damageMult - MathUtils.getDistance(effectLocation, msl.getLocation())) / (BASE_AOE_SIZE * aoeMult * damageMult)) {
+                if (msl.getHitpoints() < Math.random() * projEMP * (BASE_AOE_SIZE * aoeMult * damageMult - MathUtils.getDistance(effectLocation, msl.getLocation())) / (BASE_AOE_SIZE * aoeMult * damageMult)) {
                     if (msl.getEmpResistance() > 0) {
                         msl.decrEMPResistance();
                     } else {
@@ -248,7 +261,16 @@ public class VassTimeDistortionProjScript extends BaseEveryFrameCombatPlugin {
             }
         }
 
+        //Trigger our detonation listeners, if we have any
+        for (DetonationListener listener : detonationListeners) {
+            listener.detonate(effectLocation, damageMult, BASE_AOE_SIZE*aoeMult*damageMult);
+        }
+
         //Finally, register that we've detonated
         hasProjectileDetonated = true;
+    }
+
+    public interface DetonationListener {
+        void detonate(Vector2f loc, float damageMult, float basicAoESize);
     }
 }

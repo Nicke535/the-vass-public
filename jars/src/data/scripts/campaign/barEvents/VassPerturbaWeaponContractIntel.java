@@ -50,6 +50,7 @@ public class VassPerturbaWeaponContractIntel extends BaseIntelPlugin {
                         if (!Global.getSector().getPlayerFaction().knowsWeapon(weapon)) {
                             learnedWeapons.add(weapon);
                             Global.getSector().getPlayerFaction().addKnownWeapon(weapon, true);
+                            
                         }
                     }
                 }

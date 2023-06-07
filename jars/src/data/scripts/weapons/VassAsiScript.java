@@ -4,7 +4,7 @@ import com.fs.starfarer.api.Global;
 import com.fs.starfarer.api.combat.*;
 import com.fs.starfarer.api.input.InputEventAPI;
 import com.fs.starfarer.api.util.Misc;
-import data.scripts.plugins.MagicTrailPlugin;
+import org.magiclib.plugins.MagicTrailPlugin;
 import data.scripts.utils.VassUtils;
 import org.lazywizard.lazylib.combat.CombatUtils;
 import org.lwjgl.util.vector.Vector2f;
@@ -28,6 +28,7 @@ public class VassAsiScript implements EveryFrameWeaponEffectPlugin {
 
     @Override
     public void advance(float amount, CombatEngineAPI engine, WeaponAPI weapon) {
+
         for (CombatEntityAPI entity : CombatUtils.getEntitiesWithinRange(weapon.getLocation(), 400f)) {
             if (!(entity instanceof DamagingProjectileAPI)) {
                 continue;
@@ -125,9 +126,12 @@ public class VassAsiScript implements EveryFrameWeaponEffectPlugin {
                 //When accelerated: adds a new trail piece to the projectile. Do this semi-randomly at low global time mult
                 if (Math.random() < Math.sqrt(Global.getCombatEngine().getTimeMult().getModifiedValue())) {
                     Color colorToUse = VassUtils.getFamilyColor(VassUtils.VASS_FAMILY.ACCEL, 1f);
-                    MagicTrailPlugin.AddTrailMemberSimple(proj, currentTrailID, Global.getSettings().getSprite("vass_fx", "projectile_trail_zappy"),
-                            proj.getLocation(), 0f, proj.getFacing(), 15f, 8f, colorToUse, 0.3f,
-                            0.6f,true, offsetVelocity, CombatEngineLayers.ABOVE_SHIPS_AND_MISSILES_LAYER); //TODO: Alter to the Advanced version, since the simple version no longer supports engine layers
+                    MagicTrailPlugin.addTrailMemberAdvanced(proj, currentTrailID, Global.getSettings().getSprite("vass_fx", "projectile_trail_zappy"),
+                            proj.getLocation(), 0f, 0f, proj.getFacing(), 0f, 0f,
+                            15f, 8f, colorToUse, colorToUse, 0.3f,
+                            0f, 0f, 0.6f,true, -1f,
+                            0f, 0,
+                            offsetVelocity, null, CombatEngineLayers.ABOVE_SHIPS_AND_MISSILES_LAYER, 1f);
                 }
             }
         }

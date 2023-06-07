@@ -6,8 +6,8 @@ import com.fs.starfarer.api.graphics.SpriteAPI;
 import com.fs.starfarer.api.impl.combat.BaseShipSystemScript;
 import com.fs.starfarer.api.loading.ProjectileSpawnType;
 import com.fs.starfarer.api.util.Misc;
-import data.scripts.plugins.MagicTrailPlugin;
-import data.scripts.util.MagicRender;
+import org.magiclib.plugins.MagicTrailPlugin;
+import org.magiclib.util.MagicRender;
 import data.scripts.utils.VassTimeSplitProjScript;
 import data.scripts.utils.VassUtils;
 import data.scripts.weapons.VassFragarachScript;
@@ -195,7 +195,7 @@ public class VassChronoJump extends BaseShipSystemScript {
                 float sizeMod = (float)Math.sqrt(proj.getDamageAmount()*2f);
                 for (int i = 0; i < pointsToSpawnAt.size()-1; i++) {
                     boolean underShips = Math.random() < 0.5f;
-                    MagicTrailPlugin.AddTrailMemberAdvanced(null, trailID, trailSprite, pointsToSpawnAt.get(i),
+                    MagicTrailPlugin.addTrailMemberAdvanced(null, trailID, trailSprite, pointsToSpawnAt.get(i),
                             0f, 200f, VectorUtils.getAngle(pointsToSpawnAt.get(i), pointsToSpawnAt.get(i+1)),
                             0f, MathUtils.getRandomNumberInRange(-400f, 400f), sizeMod, sizeMod/3f,
                             colorToUse, colorToUse,0.5f, 0f, 0.3f * i/pointsToSpawnAt.size(), 0.3f,
