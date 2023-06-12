@@ -1,4 +1,4 @@
-Version 0.4.1: It's been some Time
+Version 0.4.1: It's about time
  Additions:
   - Added normal maps (for GraphicsLib) for all weapons that were lacking them (such as the Caladbolg and Perturba prototypes)
   - Added GraphicsLib light sources for all applicable weapons and effects
