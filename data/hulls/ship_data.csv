@@ -4,7 +4,7 @@ Makhaira,vass_makhaira,Frigate,Vass Shipyards,vass_temporal_retreat,6,1900,450,3
 Akrafena,vass_akrafena,Frigate,Vass Shipyards,vass_isochronal_field,8,1800,370,4800,,400,50,,115,120,85,70,170,240,OMNI,,100,0.25,0.9,,,20,21,10,26,1.5,,10,82000,5,10,360,0.75,9,9,,"vass_general_blueprint",0.7,0.6,2,3,
 ,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
 #destroyers,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
-Schiavona,vass_schiavona,Chaser Destroyer,Vass Shipyards,vass_periodic_breaker,16,5000,650,7500,,570,90,,95,75,50,40,60,620,OMNI,,90,0.25,0.9,,,40,50,60,70,1.5,,10,130000,5,13,540,0.75,19,19,,"vass_general_blueprint",0.7,0.6,2,4,
+Schiavona,vass_schiavona,Chaser Destroyer,Vass Shipyards,vass_periodic_breaker,16,5000,650,7500,,570,90,,95,75,50,40,60,620,OMNI,,90,0.25,0.9,,,40,50,60,70,1.5,,9,130000,5,13,540,0.75,19,19,,"vass_general_blueprint",0.7,0.6,2,4,
 ,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
 #cruisers,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,,
 Curtana,vass_curtana,Carrier,Vass Shipyards,vass_chrono_jump,19,7000,800,11500,,500,145,2,65,60,40,20,30,950,OMNI,,270,0.25,0.9,,,140,180,110,110,2,,8,240000,4,14,600,0.75,24,24,"CARRIER, COMBAT","vass_general_blueprint",0.7,0.6,3,4,

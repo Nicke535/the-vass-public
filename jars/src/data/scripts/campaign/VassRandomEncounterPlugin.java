@@ -92,7 +92,9 @@ public class VassRandomEncounterPlugin implements EveryFrameScript {
                 }
 
                 //Ignore fleets that are mission-critical for some reason
-                if (fleet.getMemoryWithoutUpdate().get(MemFlags.ENTITY_MISSION_IMPORTANT) != null) {
+                //Also ignore all fleets that are ignored by other fleets for whatever reason
+                if (fleet.getMemoryWithoutUpdate().get(MemFlags.ENTITY_MISSION_IMPORTANT) != null
+                    || fleet.getMemoryWithoutUpdate().get(MemFlags.FLEET_IGNORED_BY_OTHER_FLEETS) != null) {
                     continue;
                 }
 
@@ -106,7 +108,7 @@ public class VassRandomEncounterPlugin implements EveryFrameScript {
                     continue;
                 }
 
-                //Ignore fleets that have *stations*, because that's silly and buggable
+                //Ignore fleets that have *stations*, because that's silly and buggy
                 if (fleet.isStationMode() || fleetHasStation(fleet)) {
                     continue;
                 }

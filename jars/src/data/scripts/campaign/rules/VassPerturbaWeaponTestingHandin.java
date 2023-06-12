@@ -9,6 +9,7 @@ import com.fs.starfarer.api.campaign.comm.IntelInfoPlugin;
 import com.fs.starfarer.api.campaign.rules.MemoryAPI;
 import com.fs.starfarer.api.impl.campaign.rulecmd.BaseCommandPlugin;
 import com.fs.starfarer.api.util.Misc;
+import data.scripts.campaign.VassCampaignUtils;
 import data.scripts.campaign.VassFamilyTrackerPlugin;
 import data.scripts.campaign.barEvents.VassPerturbaBaseEvent;
 import data.scripts.campaign.barEvents.VassPerturbaWeaponTestingEvent;
@@ -58,6 +59,9 @@ public class VassPerturbaWeaponTestingHandin extends BaseCommandPlugin {
             Global.getSector().getPlayerFaction().adjustRelationship("vass", VassPerturbaWeaponTestingEvent.RELATIONS_BOOST_VASS);
         }
         VassFamilyTrackerPlugin.modifyPowerOfFamily(VassUtils.VASS_FAMILY.PERTURBA, VassPerturbaWeaponTestingEvent.FAMILY_POWER_BOOST_PERTURBA);
+
+        //XP Gain
+        Global.getSector().getPlayerStats().addXP(VassCampaignUtils.getVassMissionXP(VassCampaignUtils.MissionImportance.STANDARD, VassUtils.VASS_FAMILY.PERTURBA, false), text, true);
 
         //Prototype removal and cleanup
         for (IntelInfoPlugin intel : Global.getSector().getIntelManager().getIntel(VassPerturbaWeaponTestingIntel.class)) {

@@ -5,6 +5,8 @@ import com.fs.starfarer.api.campaign.*;
 import com.fs.starfarer.api.campaign.rules.MemoryAPI;
 import com.fs.starfarer.api.impl.campaign.rulecmd.BaseCommandPlugin;
 import com.fs.starfarer.api.util.Misc;
+import data.scripts.campaign.VassCampaignUtils;
+import data.scripts.utils.VassUtils;
 
 import java.util.List;
 import java.util.Map;
@@ -25,6 +27,7 @@ public class VassReportPeacefulFirstEncounter extends BaseCommandPlugin {
             return false;
         }
 
+        Global.getSector().getPlayerStats().addXP(VassCampaignUtils.getVassMissionXP(VassCampaignUtils.MissionImportance.STANDARD, VassUtils.VASS_FAMILY.PERTURBA, false), dialog.getTextPanel(), true);
         Global.getSector().getPlayerFaction().setRelationship("vass", RepLevel.INHOSPITABLE);
         vassFleet.getMemory().set("$vass_fleet_should_escape", true);
 

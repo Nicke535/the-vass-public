@@ -2,8 +2,14 @@ Version 0.4.1: It's been some Time
  Additions:
   - Added normal maps (for GraphicsLib) for all weapons that were lacking them (such as the Caladbolg and Perturba prototypes)
   - Added GraphicsLib light sources for all applicable weapons and effects
+  - Added XP gain to certain campaign events, as appropriate
+     > I don't know what reasonable XP gains is. Feedback on if these are excessively high or low is always appreciated!
 
  Balance:
+  - Schiavona
+     -- Base burn down from 10 to 9
+     -- Now comes with built-in Augmented Drive Field
+     > This puts the "maximum" performance of the Schiavona's speed in-line with many other destroyers while still firmly establishing it as a pursuit ship
   - Tizona/Colada Emitter:
      -- Flux/Shot down from 75 to 45
      -- Damage up from 400 to 450
@@ -15,6 +21,7 @@ Version 0.4.1: It's been some Time
 
  Bugfixes:
   - Fixed compatibility with newest version of Starsector (0.96a-RC7) and MagicLib
+  - Fixed several bugs related to the early-game Perturba campaign content
   - Fixed certain campaign-unique items showing up in mission refit
      > They never *functioned* outside the campaign anyhow
   - Fixed an exploit where the Vass families sometimes did not detect massive sales of fighters, as long as no ships were sold
