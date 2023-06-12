@@ -6,7 +6,7 @@ import com.fs.starfarer.api.graphics.SpriteAPI;
 import com.fs.starfarer.api.impl.combat.BaseShipSystemScript;
 import com.fs.starfarer.api.util.IntervalUtil;
 import com.fs.starfarer.api.util.Misc;
-import data.scripts.util.MagicRender;
+import org.magiclib.util.MagicRender;
 import data.scripts.utils.VassUtils;
 import org.lazywizard.lazylib.CollisionUtils;
 import org.lazywizard.lazylib.FastTrig;
@@ -21,9 +21,13 @@ import java.util.List;
 
 /**
  * A shipsystem that swaps between making enemy projectiles miss us and making our projectiles multiply randomly
+ *
  * @author Nicke535
  */
 public class VassIsochronalField extends BaseShipSystemScript {
+    //Set via config file, preferably
+    public static final Map<String, String> SPECIAL_PROJ_WEAPON_IDS = new HashMap<>();
+    public static final Set<String> CLONING_WEAPON_ID_BLACKLIST = new HashSet<>();
 
     //Memory key to store the ship's "offensive/defensive" mode, to be read by other scripts
     public static final String OFFENSE_MEM_KEY = "vass_isochronal_field_mode_memory_key";
@@ -32,7 +36,7 @@ public class VassIsochronalField extends BaseShipSystemScript {
     private static final float MULTIPLY_CHANCE = 0.4f;
 
     //Timestep to check "forward in time" to determine collisions and redirections
-    private static final float TIMESTEP_LENGTH_COLLISION = 0.1f;
+    private static final float TIMESTEP_LENGTH_COLLISION = 0.12f;
     private static final float TIMESTEP_LENGTH_REDIRECTION = 2f;
 
     //Maximum angle to redirect a projectile
@@ -52,8 +56,6 @@ public class VassIsochronalField extends BaseShipSystemScript {
     private boolean runOnce = false;
     private float defensiveCooldownLeft = 0f;
     private Set<DamagingProjectileAPI> alreadyManagedProjectiles = new HashSet<>();
-    private int generalGracePeriod = 0; //Used for some scripted weapons
-    private int asiGracePeriod = 0; //Used for the Asi
 
     public void apply(MutableShipStatsAPI stats, String id, State state, float effectLevel) {
         ShipAPI ship = null;
@@ -70,10 +72,10 @@ public class VassIsochronalField extends BaseShipSystemScript {
         //This is also used to manage weapon glow
         if (offensiveMode) {
             ship.setWeaponGlow(1f, VassUtils.getFamilyColor(VassUtils.VASS_FAMILY.MULTA, 1f), EnumSet.allOf(WeaponAPI.WeaponType.class));
-            Global.getCombatEngine().getCustomData().put(OFFENSE_MEM_KEY, true);
+            Global.getCombatEngine().getCustomData().put(OFFENSE_MEM_KEY+ship.getId(), true);
         } else {
             ship.setWeaponGlow(0f, Color.BLACK, EnumSet.allOf(WeaponAPI.WeaponType.class));
-            Global.getCombatEngine().getCustomData().remove(OFFENSE_MEM_KEY);
+            Global.getCombatEngine().getCustomData().remove(OFFENSE_MEM_KEY+ship.getId());
         }
 
         //If we are a wreck, we don't run any shipsystem stuff, except to remove our visuals
@@ -198,9 +200,6 @@ public class VassIsochronalField extends BaseShipSystemScript {
     private void runOffensiveMode (float amount, ShipAPI ship, boolean player) {
         //Determine if we're gonna clone projectiles this frame
         boolean cloneThisFrame = Math.random() < MULTIPLY_CHANCE;
-        if (generalGracePeriod > 0) {
-            cloneThisFrame = false;
-        }
         boolean hasActuallyClonedThisFrame = false;
 
         //Get all projectiles close to the ship, that belongs to our ship (and haven't already been managed)
@@ -223,10 +222,12 @@ public class VassIsochronalField extends BaseShipSystemScript {
             }
 
             //Now, check if the projectile should be duplicated, and if so, duplicate
-            if (cloneThisFrame && isAllowedToClone(proj)) {
+            String clonedWeaponID = getCloningWeaponID(proj);
+            if (cloneThisFrame && clonedWeaponID != null) {
                 DamagingProjectileAPI newProj = (DamagingProjectileAPI)Global.getCombatEngine().spawnProjectile(ship, proj.getWeapon(),
-                        proj.getWeapon().getId(), MathUtils.getRandomPointInCircle(proj.getLocation(), 10f),
+                        clonedWeaponID, MathUtils.getRandomPointInCircle(proj.getLocation(), 10f),
                         proj.getFacing()+MathUtils.getRandomNumberInRange(-3f, 3f), ship.getVelocity());
+                newProj.setDamageAmount(proj.getDamageAmount());
                 runCustomEffectsPostClone(newProj, proj);
                 hasActuallyClonedThisFrame = true;
                 alreadyManagedProjectiles.add(newProj);
@@ -238,9 +239,6 @@ public class VassIsochronalField extends BaseShipSystemScript {
         //Play a sound if we cloned something, and register for next frame
         if (hasActuallyClonedThisFrame) {
             Global.getSoundPlayer().playSound(CLONE_SOUND, 1f, 1f, ship.getLocation(), new Vector2f(0f, 0f));
-        } else {
-            generalGracePeriod--;
-            asiGracePeriod--;
         }
     }
 
@@ -269,17 +267,26 @@ public class VassIsochronalField extends BaseShipSystemScript {
     }
 
 
-    //Returns false if the projectile is disallowed from cloning, true otherwise
-    private boolean isAllowedToClone(DamagingProjectileAPI proj) {
-        //Asi nonsense: we don't want multiple clonings, or cloning of the fake projectile
-        if (proj.getProjectileSpecId().equals("vass_asi_shot")) {
-            return false;
-        } else if (asiGracePeriod > 0 && proj.getProjectileSpecId().contains("vass_asi_shot")) {
-            return false;
+    //Returns null if the projectile is disallowed from cloning, otherwise it returns the weapon ID that the projectile should spawn from
+    private String getCloningWeaponID(DamagingProjectileAPI proj) {
+        //Blacklisted projectiles never clone
+        if (CLONING_WEAPON_ID_BLACKLIST.contains(proj.getProjectileSpecId())) {
+            return null;
         }
 
-        //Other projectiles: nothing needed yet, might need a blacklist later on
-        return true;
+        //Special projectiles
+        String specialID = SPECIAL_PROJ_WEAPON_IDS.get(proj.getProjectileSpecId());
+        if (specialID != null) {
+            return specialID;
+        }
+
+        //A gun's "non-original" projectile is allowed to be cloned only if it is in our special configuration file, which we have now already failed the check for
+        if (!getProjectileSpecID(proj.getWeapon()).equals(proj.getProjectileSpecId())) {
+            return null;
+        }
+
+        //Other projectiles: simply return the ID of the weapon we came from
+        return proj.getWeapon().getId();
     }
 
     //Custom effects for special projectiles that needs it, post-cloning
@@ -291,11 +298,7 @@ public class VassIsochronalField extends BaseShipSystemScript {
             }
         }
 
-        if (oldProj.getProjectileSpecId().equals("vass_asi_shot_slow")) {
-            asiGracePeriod = 4;
-        }
-
-        //Other effects: nothing needed yet, might need a blacklist later on
+        //Other effects: Nothing, right now
     }
 
     //Renders an "afterimage" with random color
@@ -329,10 +332,15 @@ public class VassIsochronalField extends BaseShipSystemScript {
                 0f,
                 colorToUse,
                 true,
+                0f,
+                0f,
+                0f,
+                0f,
+                0f,
                 MathUtils.getRandomNumberInRange(0.01f, 0.15f),
                 0f,
                 MathUtils.getRandomNumberInRange(0.15f, 0.25f),
-                layer);
+                layer); //TODO : Confirm that this does not mess up things (specifically, flicker and jitter)
     }
 
     //Utility function: checks if a projectile will collide with a ship within a certain time, with a certain angle offset
@@ -374,5 +382,23 @@ public class VassIsochronalField extends BaseShipSystemScript {
         }
 
         return false;
+    }
+
+    //Function for getting the projectile API of a given weapon ID...
+    //      Works through accursed arts I dare not speak of
+    private static HashMap<String, String> storedSpecIDs = new HashMap<>();
+    private String getProjectileSpecID(WeaponAPI wep) {
+        if (storedSpecIDs.containsKey(wep.getId())) {
+            return storedSpecIDs.get(wep.getId());
+        } else {
+            //And here comes the cursed content...
+            Vector2f spawnLoc = new Vector2f(Float.MAX_VALUE, Float.MAX_VALUE);
+            DamagingProjectileAPI proj = (DamagingProjectileAPI) Global.getCombatEngine().spawnProjectile(wep.getShip(),
+                    wep, wep.getId(), spawnLoc, 0f, new Vector2f(0f, 0f));
+            String id = proj.getProjectileSpecId();
+            storedSpecIDs.put(wep.getId(), id);
+            Global.getCombatEngine().removeEntity(proj);
+            return id;
+        }
     }
 }

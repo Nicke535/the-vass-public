@@ -104,7 +104,7 @@ public class VassPerturbaWeaponTestingIntel extends BaseIntelPlugin {
         float opad = 10f;
 
         info.addPara("Any battles you participate in with a ship equipped with a Perturba Prototype counts towards mission completion.", opad);
-        info.addPara("Data collected varies, but is significantly improved by using the weapon in live combat situations and stressing conditions.", opad);
+        info.addPara("Data collected varies, but is significantly improved by using the weapon in live combat situations and stressing conditions. Note that since the data collection units are mounted near the weapons themselves, a destroyed ship usually does not provide useful data", opad, Misc.getHighlightColor(), "usually does not provide useful data");
 
         addBulletPoints(info, ListInfoMode.IN_DESC);
 

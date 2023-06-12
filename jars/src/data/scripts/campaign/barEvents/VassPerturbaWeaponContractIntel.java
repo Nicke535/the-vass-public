@@ -50,6 +50,7 @@ public class VassPerturbaWeaponContractIntel extends BaseIntelPlugin {
                         if (!Global.getSector().getPlayerFaction().knowsWeapon(weapon)) {
                             learnedWeapons.add(weapon);
                             Global.getSector().getPlayerFaction().addKnownWeapon(weapon, true);
+                            
                         }
                     }
                 }
@@ -181,7 +182,7 @@ public class VassPerturbaWeaponContractIntel extends BaseIntelPlugin {
     public void createConfirmationPrompt(Object buttonId, TooltipMakerAPI prompt) {
         FactionAPI faction = getFactionForUIColors();
         if (buttonId == BUTTON_END_DEAL) {
-            prompt.addPara("Breaking the deal with Perturba might be useful if you need to keep your hands clean, " +
+            prompt.addPara("Breaking the deal with "+faction.getDisplayNameWithArticleWithoutArticle()+" might be useful if you need to keep your hands clean, " +
                             "but they are sure to dislike ending such a profitable affair.", 0f,
                     Misc.getTextColor(), faction.getBaseUIColor(), faction.getDisplayNameWithArticleWithoutArticle());
         }

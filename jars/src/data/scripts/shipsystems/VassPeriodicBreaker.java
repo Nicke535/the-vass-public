@@ -4,7 +4,7 @@ import java.awt.Color;
 
 import com.fs.starfarer.api.graphics.SpriteAPI;
 import data.scripts.VassModPlugin;
-import data.scripts.util.MagicRender;
+import org.magiclib.util.MagicRender;
 import org.dark.shaders.distortion.DistortionShader;
 import org.dark.shaders.distortion.RippleDistortion;
 import com.fs.starfarer.api.Global;
@@ -309,8 +309,13 @@ public class VassPeriodicBreaker extends BaseShipSystemScript {
                     true,
                     0f,
                     0f,
+                    0f,
+                    0f,
+                    0f,
+                    0f,
+                    0f,
                     0.75f * Global.getCombatEngine().getTimeMult().getModifiedValue(),
-                    CombatEngineLayers.BELOW_SHIPS_LAYER);
+                    CombatEngineLayers.BELOW_SHIPS_LAYER); //TODO : Confirm that this does not mess up things (specifically, flicker and jitter)
         }
     }
 

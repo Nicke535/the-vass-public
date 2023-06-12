@@ -15,6 +15,9 @@ import org.lazywizard.lazylib.combat.CombatUtils;
 import org.lwjgl.util.vector.Vector2f;
 import com.fs.starfarer.api.util.IntervalUtil;
 
+/**
+ * @deprecated
+ */
 public class VassFalseFutureAI implements ShipSystemAIScript {
 
     private ShipSystemAPI system;

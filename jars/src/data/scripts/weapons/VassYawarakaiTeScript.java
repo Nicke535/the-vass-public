@@ -5,7 +5,7 @@ import com.fs.starfarer.api.combat.*;
 import com.fs.starfarer.api.graphics.SpriteAPI;
 import com.fs.starfarer.api.impl.campaign.ids.Stats;
 import com.fs.starfarer.api.util.Misc;
-import data.scripts.plugins.MagicTrailPlugin;
+import org.magiclib.plugins.MagicTrailPlugin;
 import data.scripts.utils.VassUtils;
 import org.lazywizard.lazylib.MathUtils;
 import org.lazywizard.lazylib.VectorUtils;
@@ -216,9 +216,21 @@ public class VassYawarakaiTeScript implements EveryFrameWeaponEffectPlugin {
             //Calculates an offset velocity based on distance from target and source
             Vector2f actualOffsetVelocity = Misc.interpolateVector(new Vector2f(weapon.getShip().getVelocity()), new Vector2f(target.getVelocity()), (float)i/pointsForArc.size());
 
-            MagicTrailPlugin.AddTrailMemberSimple(target, idForTrail, spriteToUse, currPoint, 0f, angleToNextPoint,
-                    TRAIL_START_WIDTH*effectivePower*extraWidthMult, TRAIL_END_WIDTH*effectivePower*extraWidthMult, VassUtils.getFamilyColor(VassUtils.VASS_FAMILY.PERTURBA, 1f),
-                    opacity, effectDuration, true, actualOffsetVelocity, CombatEngineLayers.BELOW_INDICATORS_LAYER);
+            MagicTrailPlugin.addTrailMemberAdvanced(
+                    target,
+                    idForTrail,
+                    spriteToUse,
+                    currPoint,
+                    0f, 0f,
+                    angleToNextPoint,
+                    0f, 0f,
+                    TRAIL_START_WIDTH*effectivePower*extraWidthMult, TRAIL_END_WIDTH*effectivePower*extraWidthMult,
+                    VassUtils.getFamilyColor(VassUtils.VASS_FAMILY.PERTURBA, 1f), VassUtils.getFamilyColor(VassUtils.VASS_FAMILY.PERTURBA, 1f),
+                    opacity, 0f, 0f, effectDuration,
+                    true, -1f, 0f, 0,
+                    actualOffsetVelocity,
+                    null, CombatEngineLayers.BELOW_INDICATORS_LAYER,
+                    1f);
         }
     }
 

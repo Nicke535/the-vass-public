@@ -4,6 +4,7 @@ import com.fs.starfarer.api.Global;
 import com.fs.starfarer.api.campaign.*;
 import com.fs.starfarer.api.campaign.econ.Industry;
 import com.fs.starfarer.api.campaign.econ.MarketAPI;
+import com.fs.starfarer.api.campaign.rules.MemoryAPI;
 import com.fs.starfarer.api.characters.FullName;
 import com.fs.starfarer.api.impl.campaign.intel.bar.events.BarEventManager;
 
@@ -15,6 +16,7 @@ import org.apache.log4j.Logger;
 
 import java.awt.*;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 
 /**
@@ -115,8 +117,8 @@ public class VassPerturbaWeaponContractEvent extends VassPerturbaBaseEvent {
 
     // Creates the actual prompt and description when entering the bar. Picks randomly from a list, with some variations based on circumstance
     @Override
-    public void addPromptAndOption(InteractionDialogAPI dialog) {
-        super.addPromptAndOption(dialog);
+    public void addPromptAndOption(InteractionDialogAPI dialog, Map<String, MemoryAPI> memoryMap) {
+        super.addPromptAndOption(dialog, memoryMap);
 
         regen(dialog.getInteractionTarget().getMarket());
 
@@ -131,8 +133,8 @@ public class VassPerturbaWeaponContractEvent extends VassPerturbaBaseEvent {
     }
 
     @Override
-    public void init(InteractionDialogAPI dialog) {
-        super.init(dialog);
+    public void init(InteractionDialogAPI dialog, Map<String, MemoryAPI> memoryMap) {
+        super.init(dialog, memoryMap);
 
         done = false;
 
@@ -190,7 +192,7 @@ public class VassPerturbaWeaponContractEvent extends VassPerturbaBaseEvent {
                 break;
             case CONTINUE_DOES_NOT_KNOW_PERTURBA:
                 text.addPara("'Is that so? Well, I suppose we technically are supposed to be fairly secretive. Explaining everything we stand for is frankly a waste of both of our time, so I'll give you the summarized version.'");
-                text.addPara("'Perturba are a weapon manufacturer and procurer, specializing in some more... unique... ordinance solutions. More specifically, weaponry normally restricted by the 312th clause of the Domain temporal weapons ban, though I suppose what it's referred as to varies from group to group nowadays. While we deal in both personnel- and ship-scale weaponry, I'm mostly only affiliated with the ship-scale side of things.'");
+                text.addPara("'Perturba are a weapon manufacturer and procurer, specializing in some more... unique... ordnance solutions. More specifically, weaponry normally restricted by the 312th clause of the Domain temporal weapons ban, though I suppose what it's referred as to varies from group to group nowadays. While we deal in both personnel- and ship-scale weaponry, I'm mostly only affiliated with the ship-scale side of things.'");
 
                 options.addOption("Ask what the deal they wanted to discuss entails.", OptionId.CONTINUE_2);
                 options.addOption("They have the audacity to represent an illegal arms dealing syndicate in plain view? Call the guards!", OptionId.LEAVE_HOSTILE);

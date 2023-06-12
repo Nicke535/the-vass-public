@@ -74,7 +74,8 @@
     -9
   ],
   "builtInMods": [
-    "vass_periodic_plating"
+    "vass_periodic_plating",
+	"augmentedengines"
   ],
   "builtInWeapons": {
     "WS0001": "vass_deco_schiavona_lights",

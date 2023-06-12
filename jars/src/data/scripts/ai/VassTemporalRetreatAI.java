@@ -1,5 +1,3 @@
-//By Nicke535
-//AI for the Temporal Retreat system; attempts to figure out when it's beneficial to reverse time a couple of seconds
 package data.scripts.ai;
 
 import com.fs.starfarer.api.Global;
@@ -11,6 +9,11 @@ import org.lwjgl.util.vector.Vector2f;
 
 import java.util.List;
 
+/**
+ * AI for the Temporal Retreat system; attempts to figure out when it's beneficial to reverse time a couple of seconds
+ *
+ * @author Nicke535
+ */
 public class VassTemporalRetreatAI implements ShipSystemAIScript {
     //Handles the "weight" of each stat, IE how much each stat weighs when considering a jump-location
     //Note that "lowhull" weights apply once hull reached 50% of max

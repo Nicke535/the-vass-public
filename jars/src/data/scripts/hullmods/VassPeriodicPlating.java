@@ -16,9 +16,9 @@ import com.fs.starfarer.api.mission.FleetSide;
 import com.fs.starfarer.api.ui.Alignment;
 import com.fs.starfarer.api.ui.TooltipMakerAPI;
 import com.fs.starfarer.api.util.Misc;
-import data.scripts.util.MagicRender;
+import org.magiclib.util.MagicRender;
 import data.scripts.utils.VassUtils;
-import data.scripts.weapons.MagicVectorThruster;
+import org.magiclib.weapons.MagicVectorThruster;
 import org.apache.log4j.Logger;
 import org.lazywizard.lazylib.FastTrig;
 import org.lazywizard.lazylib.MathUtils;
@@ -73,7 +73,7 @@ public class VassPeriodicPlating extends BaseHullMod {
 	//ID for most effects the hullmod applies
 	private static final String ID = "VassPeriodicPlatingDebugID";
 	
-	//Changes the ships time mult at every "advanceInCombat", in order to make sure the global time mult is correct in relation to the player ship
+	//Changes the ship's time mult at every "advanceInCombat", in order to make sure the global time mult is correct in relation to the player ship
 	@Override
 	public void advanceInCombat(ShipAPI ship, float amount) {
 		//Ensures we can properly get our family and elite-ness before running other code
@@ -197,7 +197,7 @@ public class VassPeriodicPlating extends BaseHullMod {
 		}
 	}
 
-	//For bonuses gotten from being a member of a Vass family; not really used now except for debugging
+	//For bonuses gotten from being a member of a Vass family
 	private void addPostDescriptionContractBonus (TooltipMakerAPI tooltip, ShipAPI.HullSize hullSize, ShipAPI ship, float width, boolean isForModSpec) {
 		//This does nothing if we're not a member of a family
 		VassUtils.VASS_FAMILY family = null;
@@ -222,6 +222,7 @@ public class VassPeriodicPlating extends BaseHullMod {
 			tooltip.addImageWithText(pad);
 		}
 		//Torpor : Immunity to most effects of negative time mult
+		// TODO rework
 		else if (family == VassUtils.VASS_FAMILY.TORPOR) {
 			TooltipMakerAPI text = tooltip.beginImageWithText("graphics/vass/hullmods/torpor_hullmod.png", 36);
 			text.addPara("Torpor - Advanced Chronostabilizers", 0, VassUtils.getFamilyColor(VassUtils.VASS_FAMILY.TORPOR, 1f), Misc.getHighlightColor(), "Advanced Chronostabilizers");
@@ -237,7 +238,7 @@ public class VassPeriodicPlating extends BaseHullMod {
 			text.addPara("Perturba Missile Weapons: Regenerates ammo at 20%% of reload rate", 2, Misc.getHighlightColor(), "Perturba Missile Weapons", "Regenerates", "20%");
 			tooltip.addImageWithText(pad);
 		}
-		//Perturba : Overload avoidance and flux bonuses at low flux. Longer overload
+		//Multa : Overload avoidance and flux bonuses at low flux. Longer overload
 		else if (family == VassUtils.VASS_FAMILY.MULTA) {
 			TooltipMakerAPI text = tooltip.beginImageWithText("graphics/vass/hullmods/perturba_hullmod.png", 36);
 			text.addPara("Multa - Isochronal Reactor", 0, VassUtils.getFamilyColor(VassUtils.VASS_FAMILY.MULTA, 1f), Misc.getHighlightColor(), "Isochronal Reactor");
@@ -316,10 +317,15 @@ public class VassPeriodicPlating extends BaseHullMod {
 				0f,
 				colorToUse,
 				true,
+				0f,
+				0f,
+				0f,
+				0f,
+				0f,
 				0.01f,
 				0f,
 				0.35f,
-				layer);
+				layer); //TODO : Confirm that this does not mess up things (specifically, flicker and jitter)
 	}
 
 
@@ -371,7 +377,7 @@ public class VassPeriodicPlating extends BaseHullMod {
 
 	//Torpor : Advanced Chronostabilizers
 	//Ignores any penalties to firerate and dissipation caused by negative time mult.
-	//TODO: maybe add more here?
+	//TODO: rework, this is a very boring effect
 	private void advanceTorpor(ShipAPI ship, float amount) {
 		//Only activate plating if allowed
 		if (platingCanBeActive(ship)) {
@@ -583,6 +589,11 @@ public class VassPeriodicPlating extends BaseHullMod {
 					0f,
 					colorToUse,
 					true,
+					0f,
+					0f,
+					0f,
+					0f,
+					0f,
 					MathUtils.getRandomNumberInRange(0.01f, 0.25f),
 					0f,
 					MathUtils.getRandomNumberInRange(0.25f, 0.45f),

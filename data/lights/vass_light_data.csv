@@ -1,0 +1,10 @@
+id,type,size,intensity,fadeout,color,offset,hit size,hit intensity,hit fadeout,hit color,flash size,flash intensity,flash fadeout,flash color,flash offset,chance,fighter dim
+,,,,,,,,,,,,,,,,,
+vass_dyrnwyn_shot,projectile,105,0.2,0.25,"[200,255,30]",,115,0.25,0.5,"[200,255,30]",75,0.1,0.35,"[200,255,30]",,1,TRUE
+vass_asi_shot,projectile,100,0.25,0.3,"[222,57,20]",,100,0.2,0.6,"[200,190,255]",,,,,,1,TRUE
+vass_asi_shot_slow,projectile,100,0.25,0.3,"[200,200,255]",,100,0.2,0.6,"[200,190,255]",,,,,,1,TRUE
+vass_caladbolg_shot,projectile,175,0.4,0.5,"[255,150,70]",,250,0.7,1,"[255,165,30]",125,0.45,0.65,"[255,120,50]",,1,TRUE
+vass_excalibur_bomb,projectile,185,0.4,0.4,"[60,255,18]",,,,,,,,,,,,1,TRUE
+vass_tizona_rocket,projectile,125,0.25,0.4,"[60,255,18]",,,,,,,125,0.35,0.65,"[60,255,18]",,1,TRUE
+,,,,,,,,,,,,,,,,,
+vass_yawarakai_te,beam,,,,,,,,,,50,0.2,,"[204,255,0,100]",,1,TRUE

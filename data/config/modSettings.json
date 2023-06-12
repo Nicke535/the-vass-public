@@ -1,0 +1,27 @@
+{   
+    #VASS SETTINGS FILE
+    "the_vass":{
+		"do_not_clone_projs":[
+			# A list of projectiles which will not be cloned by the Isochronal Field under any circumstances
+			# Can be practical for some very-heavily scripted weapons, but do check if it works without this 
+			# setting first; the code has some built-in attempts to be compatible with many scripted projectiles
+			"vass_illusion_flare",
+			"vass_asi_shot",
+		],
+		"clone_despite_nonoriginal_projs": {
+			# A map of projectiles which will be cloned despite being the non-original projectile of a weapon (this
+			# could for example be shrapnel from a shotgun). To work, the projectile needs to list the "fake" weapon
+			# that spawns the projectile to be cloned. Be careful about adding stuff here, your script needs to make 
+			# sure no infinite looping happens (such as only ever splitting the original projectile, for a shotgun)
+			"vass_asi_shot_slow":"vass_asi_fake1",
+		},
+    },
+	
+    #MODS INTEGRATION
+    "diableavionics":{
+        "missile_immune_derecho": [
+               # This thing isn't even meant to be a missile!
+            "vass_illusion_flare",
+        ],
+    },
+}

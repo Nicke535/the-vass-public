@@ -1,3 +1,54 @@
+Version 0.4.1: It's about time
+ Additions:
+  - Added normal maps (for GraphicsLib) for all weapons that were lacking them (such as the Caladbolg and Perturba prototypes)
+  - Added GraphicsLib light sources for all applicable weapons and effects
+  - Added XP gain to certain campaign events, as appropriate
+     > I don't know what reasonable XP gains is. Feedback on if these are excessively high or low is always appreciated!
+
+ Balance:
+  - Schiavona
+     -- Base burn down from 10 to 9
+     -- Now comes with built-in Augmented Drive Field
+     > This puts the "maximum" performance of the Schiavona's speed in-line with many other destroyers while still firmly establishing it as a pursuit ship
+  - Tizona/Colada Emitter:
+     -- Flux/Shot down from 75 to 45
+     -- Damage up from 400 to 450
+     -- EMP up from 300 to 450
+     > The Tizona and Colada always felt a bit enemic, especially when compared to weapons such as the Annihilator. A bigger rework may be needed, but this should work as a stop-gap
+  - Estoc:
+     -- Weapon EMP up from 675 to 900
+         > Mostly to bring it in-line with the Tizona and Colada Damage/EMP distribution
+
+ Bugfixes:
+  - Fixed compatibility with newest version of Starsector (0.96a-RC7) and MagicLib
+  - Fixed several bugs related to the early-game Perturba campaign content
+  - Fixed certain campaign-unique items showing up in mission refit
+     > They never *functioned* outside the campaign anyhow
+  - Fixed an exploit where the Vass families sometimes did not detect massive sales of fighters, as long as no ships were sold
+     > You can still avoid scrutiny the intended way: by selling them piecemeal over prolonged time
+  - Fixed some typos
+
+
+
+Version 0.4c
+ Additions:
+  - Added cross-mod compatibility configurations to the Isochronal Field system: see the file data/config/modSettings.json
+     > Contains a blacklist and a "whitelist"[see the file]: mod makers should take a look there and add their projectiles if necessary
+
+ Changes:
+  - Made a small adjustment to Perturba Weapon Testing's intel text clarifying that a ship which is destroyed usually doesn't help further the quest progress
+     > "It's a feature."
+
+ Bugfixes:
+  - The Perturba weapon testing event now needs 100% progress to be completed, instead of 3%
+  - Fixed perturba ship purchase event having a 9000% too high chance of spawning in a bar
+     > Note that this only affects how likely the event was to push out other events in a bar: it is still just as likely to push out another Vass event, so you should be encountering it about as often as long as you pick it up as soon as it came available. This was mostly just an issue where if you ignored the event it would haunt you quite a bit...
+  - Fixed issue with visuals de-syncing if more than one ship with the Isochronal Field system were deployed at once...
+     > HOW did I not catch this earlier?
+  - Implemented fixes for the Isochronal Field system, disallowing most projectile-splitting weapons to work unless whitelisted
+     > This is necessary to prevent infinite loop possibilities
+
+
 Version 0.4b
  Bugfixes:
   - Fixed a bug that could permanently brick a save under specific circumstances

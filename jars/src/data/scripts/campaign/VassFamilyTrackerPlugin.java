@@ -7,6 +7,7 @@ import com.fs.starfarer.api.campaign.*;
 import com.fs.starfarer.api.fleet.FleetMemberAPI;
 import com.fs.starfarer.api.impl.campaign.fleets.FleetFactoryV3;
 import com.fs.starfarer.api.impl.campaign.fleets.FleetParamsV3;
+import com.fs.starfarer.api.impl.campaign.ids.MemFlags;
 import com.fs.starfarer.api.util.Misc;
 import data.scripts.utils.VassUtils;
 import org.jetbrains.annotations.Nullable;
@@ -202,7 +203,7 @@ public class VassFamilyTrackerPlugin implements EveryFrameScript {
         return false;
     }
 
-    //Static functions for modifying and accessing the power of a Vass family. -1 means that you cannot access the power at the moment. A family at 0 power is eliminated
+    //Static functions for modifying and accessing the power of a Vass family. -1 means that you cannot access the power at the moment. A family at 0 power is eliminated. 100 is considered maximum
     public static void modifyPowerOfFamily(VassUtils.VASS_FAMILY family, float amount) {
         if (currentInstance != null) {
             currentInstance.familyPowerMap.put(family, currentInstance.familyPowerMap.get(family)+amount);
@@ -313,13 +314,13 @@ public class VassFamilyTrackerPlugin implements EveryFrameScript {
         newFleet.addAbility("sustained_burn");
         newFleet.addAbility("sensor_burst");
 
-        //Emergency burn after you!
-        newFleet.getAbilities().get("emergency_burn").activate();
-
         //Finally, makes the fleet hostile against the player's fleet, and register that this is indeed a special "loot punish" fleet, since that needs to be accessed in rules.csv
-        newFleet.getMemoryWithoutUpdate().set("$vass_loot_punish_fleet", true);
-        VassCampaignUtils.makeFleetInterceptOtherFleet(newFleet, Global.getSector().getPlayerFleet(), true, 30f, "vassExtortion");
         loc.addEntity(newFleet);
+        newFleet.getMemoryWithoutUpdate().set("$vass_loot_punish_fleet", true);
+        newFleet.getMemoryWithoutUpdate().set(MemFlags.FLEET_DO_NOT_IGNORE_PLAYER, true);
+        newFleet.getMemoryWithoutUpdate().set(MemFlags.FLEET_IGNORED_BY_OTHER_FLEETS, true);
+        newFleet.getMemoryWithoutUpdate().set(MemFlags.FLEET_IGNORES_OTHER_FLEETS, true);
+        VassCampaignUtils.makeFleetInterceptOtherFleet(newFleet, Global.getSector().getPlayerFleet(), true, 30f, "vassExtortion");
     }
 
     /**

@@ -43,7 +43,7 @@ public class VassPerturbaWeaponTestingCanTriggerFinalDialog extends BaseCommandP
         for (IntelInfoPlugin intel : Global.getSector().getIntelManager().getIntel(VassPerturbaWeaponTestingIntel.class)) {
             if (intel instanceof VassPerturbaWeaponTestingIntel) {
                 VassPerturbaWeaponTestingIntel intelConverted = (VassPerturbaWeaponTestingIntel) intel;
-                return intelConverted.questFinishProgress >= 3 && intelConverted.getMarket() == market;
+                return intelConverted.questFinishProgress >= 100f && intelConverted.getMarket() == market;
             }
         }
 

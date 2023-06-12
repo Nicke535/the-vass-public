@@ -5,11 +5,11 @@ import com.fs.starfarer.api.combat.*;
 import com.fs.starfarer.api.graphics.SpriteAPI;
 import com.fs.starfarer.api.input.InputEventAPI;
 import com.fs.starfarer.api.util.Misc;
-import data.scripts.plugins.MagicAutoTrails;
-import data.scripts.plugins.MagicTrailPlugin;
-import data.scripts.util.MagicAnim;
-import data.scripts.util.MagicRender;
-import data.scripts.util.MagicTrailTracker;
+import data.scripts.VassModPlugin;
+import org.dark.shaders.light.LightShader;
+import org.dark.shaders.light.StandardLight;
+import org.magiclib.plugins.MagicTrailPlugin;
+import org.magiclib.util.MagicRender;
 import data.scripts.utils.VassUtils;
 import org.lazywizard.lazylib.MathUtils;
 import org.lazywizard.lazylib.VectorUtils;
@@ -73,6 +73,16 @@ public class VassCaladbolgScript implements EveryFrameWeaponEffectPlugin {
             if (reloadProgressLeft > 0f) {
                 int frameThisFrame = (int)Math.floor((1f - reloadProgressLeft) * NUMBER_FRAMES) + 2; //Offset by 2, first two frames are special resting frames
                 weapon.getAnimation().setFrame(frameThisFrame);
+                // Additionally, we have a glow for the first half, to represent the recall effect. Only applicable with GraphicsLib
+                if (reloadProgressLeft > 0.5f && VassModPlugin.hasShaderLib) {
+                    Color lightColor = VassUtils.getFamilyColor(VassUtils.VASS_FAMILY.RECIPRO, 1f);
+                    StandardLight light = new StandardLight(weapon.getLocation(), new Vector2f(0f, 0f),
+                            new Vector2f(0f, 0f), weapon.getShip(), (reloadProgressLeft-0.5f) / 5f, (reloadProgressLeft-0.5f) * 80f);
+                    light.setColor(lightColor);
+                    light.setLifetime(0f);
+                    light.setAutoFadeOutTime(0.1f);
+                    LightShader.addLight(light);
+                }
             } else {
                 weapon.getAnimation().setFrame(0);
             }
@@ -143,13 +153,13 @@ public class VassCaladbolgScript implements EveryFrameWeaponEffectPlugin {
                 Vector2f offsetPoint = new Vector2f((float)Math.cos(Math.toRadians(proj.getFacing())) * 8f, (float)Math.sin(Math.toRadians(proj.getFacing())) * 8f);
                 Vector2f spawnLocation = Vector2f.add(offsetPoint, proj.getLocation(), new Vector2f(0f, 0f));
 
-                MagicTrailPlugin.AddTrailMemberAdvanced(proj, trailID, Global.getSettings().getSprite("fx", "base_trail_smooth"),
+                MagicTrailPlugin.addTrailMemberAdvanced(proj, trailID, Global.getSettings().getSprite("fx", "base_trail_smooth"),
                         spawnLocation,0f, MathUtils.getRandomNumberInRange(50f, 250f), proj.getFacing(), 0f, MathUtils.getRandomNumberInRange(-250f, 250f),
                         18f, 10f, new Color(255f/255f, 150f/255f, 70f/255f, 1f),
                         new Color(120f/255f, 120f/255f, 120f/255f, 0f), opacity,
                         0f, 0f, 0.3f, GL_SRC_ALPHA, GL_ONE,
-                        256f, 0f, offsetVelocity, null,
-                        CombatEngineLayers.ABOVE_SHIPS_AND_MISSILES_LAYER);
+                        256f, 0f, -1f, offsetVelocity, null,
+                        CombatEngineLayers.ABOVE_SHIPS_AND_MISSILES_LAYER, 1f); //TODO: Check if the texture offset messes with something
             }
         }
     }

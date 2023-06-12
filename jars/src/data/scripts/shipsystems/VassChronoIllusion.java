@@ -7,7 +7,7 @@ import com.fs.starfarer.api.impl.combat.BaseShipSystemScript;
 import com.fs.starfarer.api.input.InputEventAPI;
 import com.fs.starfarer.api.util.IntervalUtil;
 import com.fs.starfarer.api.util.Misc;
-import data.scripts.util.MagicRender;
+import org.magiclib.util.MagicRender;
 import data.scripts.utils.VassUtils;
 import org.lazywizard.lazylib.MathUtils;
 import org.lazywizard.lazylib.VectorUtils;
@@ -86,8 +86,9 @@ public class VassChronoIllusion extends BaseShipSystemScript {
             MagicRender.battlespace(spriteToRender, new Vector2f(ship.getLocation()), Misc.ZERO,
                     new Vector2f(50f, 49f), Misc.ZERO, ship.getFacing() - 90f, 0f,
                     Misc.interpolateColor(VassUtils.getFamilyColor(VassUtils.VASS_FAMILY.MULTA, 0.25f), new Color(1f, 1f, 1f, 0.25f), 0.3f),
-                    true,ILLUSION_CLONE_DURATION*0.1f, ILLUSION_CLONE_DURATION*0.1f, ILLUSION_CLONE_DURATION*0.8f,
-                    CombatEngineLayers.BELOW_INDICATORS_LAYER);
+                    true,0f, 0f, 0f, 0f, 0f,
+                    ILLUSION_CLONE_DURATION*0.1f, ILLUSION_CLONE_DURATION*0.1f, ILLUSION_CLONE_DURATION*0.8f,
+                    CombatEngineLayers.BELOW_INDICATORS_LAYER); //TODO : Confirm that this does not mess up things (specifically, flicker and jitter)
         }
 
         //And cheat a bit: make its shield invulnerable
@@ -198,8 +199,9 @@ public class VassChronoIllusion extends BaseShipSystemScript {
                 MagicRender.battlespace(spriteToRender, new Vector2f(proj.getLocation()), Misc.ZERO,
                         new Vector2f(50f, 49f), Misc.ZERO, targetAngle - 90f, 0f,
                         Misc.interpolateColor(VassUtils.getFamilyColor(VassUtils.VASS_FAMILY.MULTA, 0.15f), new Color(1f, 1f, 1f, 0.15f), 0.3f),
-                        true,ILLUSION_CLONE_DURATION*0.1f, ILLUSION_CLONE_DURATION*0.1f, ILLUSION_CLONE_DURATION*0.8f,
-                        CombatEngineLayers.BELOW_INDICATORS_LAYER);
+                        true, 0f, 0f, 0f, 0f, 0f,
+                        ILLUSION_CLONE_DURATION*0.1f, ILLUSION_CLONE_DURATION*0.1f, ILLUSION_CLONE_DURATION*0.8f,
+                        CombatEngineLayers.BELOW_INDICATORS_LAYER); //TODO : Confirm that this does not mess up things (specifically, flicker and jitter)
             }
         }
     }

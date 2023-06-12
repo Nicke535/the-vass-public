@@ -4,6 +4,7 @@ import com.fs.starfarer.api.EveryFrameScript;
 import com.fs.starfarer.api.Global;
 import com.fs.starfarer.api.campaign.*;
 import com.fs.starfarer.api.campaign.ai.FleetAIFlags;
+import com.fs.starfarer.api.campaign.ai.FleetAssignmentDataAPI;
 import com.fs.starfarer.api.campaign.ai.ModularFleetAIAPI;
 import com.fs.starfarer.api.impl.campaign.DerelictShipEntityPlugin;
 import com.fs.starfarer.api.impl.campaign.ids.Entities;
@@ -15,11 +16,51 @@ import com.fs.starfarer.api.impl.campaign.procgen.themes.SalvageSpecialAssigner;
 import com.fs.starfarer.api.impl.campaign.rulecmd.salvage.special.ShipRecoverySpecial;
 import com.fs.starfarer.api.util.IntervalUtil;
 import com.fs.starfarer.api.util.Misc;
+import data.scripts.utils.VassUtils;
 import org.jetbrains.annotations.Nullable;
 import org.lazywizard.lazylib.MathUtils;
 import org.lwjgl.util.vector.Vector2f;
 
 public class VassCampaignUtils {
+    public enum MissionImportance {
+        TRIVIAL,
+        STANDARD,
+        CRUCIAL,
+        CRITICAL
+    }
+    /** Utility function for getting the XP reward of a mission (of specific difficulty/importance) from a specific family
+     * @param family The family which was involved in the mission
+     * @param antiVass If true, the mission was against the family in question, otherwise it was in favor of it
+     * @return The amount of experience that should be handed out
+     */
+    public static long getVassMissionXP(MissionImportance importance, VassUtils.VASS_FAMILY family, boolean antiVass) {
+        // Base XP value depends on the mission importance
+        long xp = 200;
+        if (importance == MissionImportance.TRIVIAL) {
+            xp = 100;
+        } else if (importance == MissionImportance.CRUCIAL) {
+            xp = 350;
+        } else if (importance == MissionImportance.CRITICAL) {
+            xp = 750;
+        }
+
+        // When fighting for the vass, you receive bonus XP if you took a particularly important mission for a small Family
+        if (!antiVass && (importance == MissionImportance.CRUCIAL || importance == MissionImportance.CRITICAL)) {
+            if (VassFamilyTrackerPlugin.getPowerOfFamily(family) < 10) {
+                xp *= 2;
+            }
+        }
+
+        // When fighting the vass, these modifiers are instead inverted: bonus XP is handed out for fighting the high-power families
+        if (antiVass && (importance == MissionImportance.CRUCIAL || importance == MissionImportance.CRITICAL)) {
+            if (VassFamilyTrackerPlugin.getPowerOfFamily(family) > 90) {
+                xp *= 2;
+            }
+        }
+
+        return xp;
+    }
+
     /** Utility function for spawning a derelict in a system and setting varius attributes for it
      * @return The entity token of the derelict just created
      * */
@@ -64,17 +105,9 @@ public class VassCampaignUtils {
             //Misc.setFlagWithReason(aggressor.getMemoryWithoutUpdate(), MemFlags.MEMORY_KEY_MAKE_HOSTILE, reason, true, interceptDays);
         }
 
-        aggressor.getMemoryWithoutUpdate().unset(MemFlags.MEMORY_KEY_MAKE_ALLOW_DISENGAGE);
         aggressor.getMemoryWithoutUpdate().set(FleetAIFlags.LAST_SEEN_TARGET_LOC, new Vector2f(defendant.getLocation()), interceptDays);
 
-        if (aggressor.getAI() instanceof ModularFleetAIAPI) {
-            ((ModularFleetAIAPI)aggressor.getAI()).getTacticalModule().setTarget(defendant);
-        }
-
-        //DELIVER_CREW can't be interrupted by other fleets, unlike INTERCEPT or similar
-        String textToDisplay = "Engaging " + defendant.getNameWithFaction();
-        if (defendant.isPlayerFleet()) { textToDisplay = "Engaging player fleet"; }
-        aggressor.addAssignment(FleetAssignment.DELIVER_CREW, defendant, interceptDays, textToDisplay,null);
+        //Order the fleet to stick to its target until the get beaten up or beat them
         Global.getSector().addScript(new RenewAggressionPlugin(Global.getSector(), aggressor, defendant, interceptDays));
     }
 
@@ -99,49 +132,60 @@ public class VassCampaignUtils {
 
         @Override
         public void advance(float amount) {
-            ///Very quick check: should we already be ON the enemy? Then, engage them more aggressively
-            if (MathUtils.getDistance(aggressor.getLocation(), defendant.getLocation()) < aggressor.getRadius()+defendant.getRadius()) {
-                aggressor.clearAssignments();
-                String textToDisplay = "Engaging " + defendant.getNameWithFaction();
-                if (defendant.isPlayerFleet()) { textToDisplay = "Engaging player fleet"; }
-                aggressor.addAssignment(FleetAssignment.INTERCEPT, defendant, 0.5f, textToDisplay);
-            }
-
             //Check every half second or so
             interceptDaysRemaining -= Misc.getDays(amount);
             timer.advance(amount);
             if (timer.intervalElapsed()) {
-                //Heavily damaged or timed out: retreat to nearest jump point
-                if (aggressor.getFleetPoints() < startingFP*0.5f || interceptDaysRemaining <= 0f) {
-                    if (!aggressor.isCurrentAssignment(FleetAssignment.GO_TO_LOCATION_AND_DESPAWN)) {
-                        aggressor.clearAssignments();
-                        aggressor.addAssignment(FleetAssignment.GO_TO_LOCATION_AND_DESPAWN, Misc.findNearestJumpPointTo(aggressor), 999f);
-                        return;
-                    }
-                }
-
-                //Ordered to flee
-                Object shouldEscape = aggressor.getMemoryWithoutUpdate().get("$vass_fleet_should_escape");
-                if (shouldEscape instanceof Boolean && (Boolean)shouldEscape) {
-                    if (!aggressor.isCurrentAssignment(FleetAssignment.GO_TO_LOCATION_AND_DESPAWN)) {
-                        aggressor.clearAssignments();
-                        aggressor.addAssignment(FleetAssignment.GO_TO_LOCATION_AND_DESPAWN, Misc.findNearestJumpPointTo(aggressor), 999f);
-                    }
+                // If we have despawned, we can just remove the script now
+                if (aggressor.isDespawning() || sector.getPlayerFleet().getContainingLocation().getEntityById(aggressor.getId()) == null) {
+                    sector.removeScript(this);
                     return;
                 }
 
-                //No other orders or scenarios: re-engage the target!
-                aggressor.getMemoryWithoutUpdate().unset(MemFlags.MEMORY_KEY_MAKE_ALLOW_DISENGAGE);
-                aggressor.getMemoryWithoutUpdate().set(FleetAIFlags.LAST_SEEN_TARGET_LOC, new Vector2f(defendant.getLocation()), interceptDaysRemaining);
+                // Checks AI validity
+                if (!(aggressor.getAI() instanceof ModularFleetAIAPI)) {
+                    //Invalid AI: cancel the script outright
+                    sector.removeScript(this);
+                    return;
+                }
+                ModularFleetAIAPI ai = (ModularFleetAIAPI)aggressor.getAI();
+                if (ai.getAssignmentModule() == null) {
+                    // No assignment module: we can't do anything so return
+                    return;
+                }
+                FleetAssignmentDataAPI curr = ai.getAssignmentModule().getCurrentAssignment();
 
-                if (aggressor.getAI() instanceof ModularFleetAIAPI) {
-                    ((ModularFleetAIAPI)aggressor.getAI()).getTacticalModule().setTarget(defendant);
+
+                //Are we heavily damaged, or have run out of time for the intercept? If so, retreat back to the nearest jumppoint. This script has served its purpose.
+                // - This also applies if we've manually been ordered to retreat by another script
+                Object orderedToEscape = aggressor.getMemoryWithoutUpdate().get("$vass_fleet_should_escape");
+                if (aggressor.getFleetPoints() < startingFP*0.5f || interceptDaysRemaining <= 0f
+                        || (orderedToEscape instanceof Boolean && (Boolean)orderedToEscape)) {
+                    ai.getAssignmentModule().clearAssignments();
+                    ai.getAssignmentModule().addAssignment(FleetAssignment.GO_TO_LOCATION_AND_DESPAWN, Misc.findNearestJumpPointTo(aggressor), 999f, null);
+                    sector.removeScript(this);
+                    return;
                 }
 
-                //DELIVER_CREW can't be interrupted by other fleets, unlike INTERCEPT or similar
-                String textToDisplay = "Engaging " + defendant.getNameWithFaction();
-                if (defendant.isPlayerFleet()) { textToDisplay = "Engaging player fleet"; }
-                aggressor.addAssignment(FleetAssignment.DELIVER_CREW, defendant, interceptDaysRemaining, textToDisplay,null);
+                //Are we already intercepting or following the target? If so, no further order needed
+                if (curr != null && curr.getTarget() == defendant &&
+                        (curr.getAssignment() == FleetAssignment.INTERCEPT ||
+                                curr.getAssignment() == FleetAssignment.FOLLOW)) {
+                    return;
+                }
+
+                // Are we in the same area, within a reasonable distance, and haven't been lost on sensors?
+                // If so, go on the offensive
+                if (aggressor.getContainingLocation() == defendant.getContainingLocation() &&
+                        defendant.getVisibilityLevelTo(aggressor) != SectorEntityToken.VisibilityLevel.NONE &&
+                        aggressor.getVisibilityLevelTo(defendant) != SectorEntityToken.VisibilityLevel.NONE) {
+                    ai.getAssignmentModule().addAssignmentAtStart(FleetAssignment.INTERCEPT, defendant, 3f, null);
+                }
+
+                // Fall-through: we've lost our target, and they've lost us. Head back and despawn, the script is no longer needed
+                ai.getAssignmentModule().clearAssignments();
+                ai.getAssignmentModule().addAssignment(FleetAssignment.GO_TO_LOCATION_AND_DESPAWN, Misc.findNearestJumpPointTo(aggressor), 999f, null);
+                sector.removeScript(this);
             }
         }
 
@@ -152,7 +196,7 @@ public class VassCampaignUtils {
 
         @Override
         public boolean isDone() {
-            return aggressor.isDespawning();
+            return false;
         }
     }
 }

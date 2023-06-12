@@ -8,6 +8,7 @@ import com.fs.starfarer.api.campaign.RepLevel;
 import com.fs.starfarer.api.campaign.TextPanelAPI;
 import com.fs.starfarer.api.campaign.econ.Industry;
 import com.fs.starfarer.api.campaign.econ.MarketAPI;
+import com.fs.starfarer.api.campaign.rules.MemoryAPI;
 import com.fs.starfarer.api.impl.campaign.intel.bar.events.BarEventManager;
 import com.fs.starfarer.api.util.Misc;
 import com.fs.starfarer.api.util.WeightedRandomPicker;
@@ -17,6 +18,7 @@ import org.apache.log4j.Logger;
 
 import java.awt.*;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 
 /**
@@ -92,8 +94,8 @@ public class VassPerturbaGetShipSubmarketEvent extends VassPerturbaBaseEvent {
 
     // Creates the actual prompt and description when entering the bar. Picks randomly from a list, with some variations based on circumstance
     @Override
-    public void addPromptAndOption(InteractionDialogAPI dialog) {
-        super.addPromptAndOption(dialog);
+    public void addPromptAndOption(InteractionDialogAPI dialog, Map<String, MemoryAPI> memoryMap) {
+        super.addPromptAndOption(dialog, memoryMap);
 
         regen(dialog.getInteractionTarget().getMarket());
 
@@ -108,8 +110,8 @@ public class VassPerturbaGetShipSubmarketEvent extends VassPerturbaBaseEvent {
     }
 
     @Override
-    public void init(InteractionDialogAPI dialog) {
-        super.init(dialog);
+    public void init(InteractionDialogAPI dialog, Map<String, MemoryAPI> memoryMap) {
+        super.init(dialog, memoryMap);
 
         done = false;
 
@@ -152,7 +154,7 @@ public class VassPerturbaGetShipSubmarketEvent extends VassPerturbaBaseEvent {
                 text.addPara("'Well, without going too much into detail, this here is our contact from the Vass Shipyards. We've discussed things among us for a bit, and we've concluded that there is a way for us to supply you with Vass ships without causing a breach in their cartel agreement.'");
                 text.addPara("That does sound enticing. But what's the catch?");
                 text.addPara("'Well, due to how the contract is written, we can't really supply you with factory-new models. Instead, we will sell you some of the ships normally deemed as defect or otherwise unfit for use. The plan is to set up a small Perturba reseller on "+market.getName()+" which would manage selling these to you. There won't be that many for sale at a time, but it's better than nothing, no?'");
-                text.addPara("'Of course, we would need some financial compensation for setting up the base: military-grade ship storage and stealth facilities don't exactly grow on trees. After discounting our own investments, it should take approximately "+PURCHASE_COST+" credits.'", h, "normal administrative functions");
+                text.addPara("'Of course, we would need some financial compensation for setting up the base: military-grade ship storage and stealth facilities don't exactly grow on trees. After discounting our own investments, it should take approximately "+PURCHASE_COST+" credits.'", h, ""+PURCHASE_COST);
                 options.addOption("You have yourself a deal.", OptionId.CONTINUE_BUY_SERVICE);
                 if (Global.getSector().getPlayerFleet().getCargo().getCredits().get() < PURCHASE_COST) {
                     options.setEnabled(OptionId.CONTINUE_BUY_SERVICE, false);

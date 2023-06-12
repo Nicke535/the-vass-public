@@ -9,7 +9,7 @@ import com.fs.starfarer.api.combat.MutableShipStatsAPI;
 import com.fs.starfarer.api.combat.ShipAPI;
 import com.fs.starfarer.api.impl.combat.BaseShipSystemScript;
 import com.fs.starfarer.api.util.Misc;
-import data.scripts.util.MagicRender;
+import org.magiclib.util.MagicRender;
 import data.scripts.utils.VassUtils;
 import org.lazywizard.lazylib.VectorUtils;
 import org.lazywizard.lazylib.combat.entities.SimpleEntity;
@@ -129,10 +129,15 @@ public class VassTemporalRecall extends BaseShipSystemScript {
                     0f,
                     Misc.interpolateColor(AFTERIMAGE_COLOR, new Color(0f, 0f, 0f, 0f), progress),
                     true,
+                    0f,
+                    0f,
+                    0f,
+                    0f,
+                    0f,
                     0.02f,
                     0.05f,
                     0.2f * progress,
-                    CombatEngineLayers.ABOVE_SHIPS_LAYER);
+                    CombatEngineLayers.ABOVE_SHIPS_LAYER); //TODO : Confirm that this does not mess up things (specifically, flicker and jitter)
 
             //Renders a point near the end of the arc
             float fakeVelocityAngle2 = VectorUtils.getAngleStrict(points.get((points.size()-1)-i), points.get((points.size()-1)-i-1));
@@ -146,10 +151,15 @@ public class VassTemporalRecall extends BaseShipSystemScript {
                     0f,
                     Misc.interpolateColor(AFTERIMAGE_COLOR, new Color(0f, 0f, 0f, 0f), progress),
                     true,
+                    0f,
+                    0f,
+                    0f,
+                    0f,
+                    0f,
                     0.02f,
                     0.25f,
                     0.2f * (1f - progress),
-                    CombatEngineLayers.ABOVE_SHIPS_LAYER);
+                    CombatEngineLayers.ABOVE_SHIPS_LAYER); //TODO : Confirm that this does not mess up things (specifically, flicker and jitter)
         }
     }
 }
