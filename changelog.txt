@@ -1,3 +1,8 @@
+Version 0.4.1a
+ Bugfixes:
+  - Fixed Tizona typo (thanks TameFroggy!)
+
+
 Version 0.4.1: It's about time
  Additions:
   - Added normal maps (for GraphicsLib) for all weapons that were lacking them (such as the Caladbolg and Perturba prototypes)
