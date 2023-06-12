@@ -26,6 +26,7 @@ Version 0.4.1: It's about time
      > They never *functioned* outside the campaign anyhow
   - Fixed an exploit where the Vass families sometimes did not detect massive sales of fighters, as long as no ships were sold
      > You can still avoid scrutiny the intended way: by selling them piecemeal over prolonged time
+  - Fixed some typos
 
 
 

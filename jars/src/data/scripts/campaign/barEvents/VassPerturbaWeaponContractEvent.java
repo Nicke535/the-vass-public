@@ -192,7 +192,7 @@ public class VassPerturbaWeaponContractEvent extends VassPerturbaBaseEvent {
                 break;
             case CONTINUE_DOES_NOT_KNOW_PERTURBA:
                 text.addPara("'Is that so? Well, I suppose we technically are supposed to be fairly secretive. Explaining everything we stand for is frankly a waste of both of our time, so I'll give you the summarized version.'");
-                text.addPara("'Perturba are a weapon manufacturer and procurer, specializing in some more... unique... ordinance solutions. More specifically, weaponry normally restricted by the 312th clause of the Domain temporal weapons ban, though I suppose what it's referred as to varies from group to group nowadays. While we deal in both personnel- and ship-scale weaponry, I'm mostly only affiliated with the ship-scale side of things.'");
+                text.addPara("'Perturba are a weapon manufacturer and procurer, specializing in some more... unique... ordnance solutions. More specifically, weaponry normally restricted by the 312th clause of the Domain temporal weapons ban, though I suppose what it's referred as to varies from group to group nowadays. While we deal in both personnel- and ship-scale weaponry, I'm mostly only affiliated with the ship-scale side of things.'");
 
                 options.addOption("Ask what the deal they wanted to discuss entails.", OptionId.CONTINUE_2);
                 options.addOption("They have the audacity to represent an illegal arms dealing syndicate in plain view? Call the guards!", OptionId.LEAVE_HOSTILE);
