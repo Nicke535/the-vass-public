@@ -94,7 +94,12 @@ public class VassYawarakaiTeScript implements EveryFrameWeaponEffectPlugin {
                     effectiveRange += 150f;
                     minDamageRange += 150f;
                 }
-                List<DamageDealtModifier> listeners = weapon.getShip().getListenerManager().getListeners(DamageDealtModifier.class);
+                List<DamageDealtModifier> listeners = new ArrayList<>();
+                if (weapon.getShip() != null) {
+                    if (weapon.getShip().getListeners(DamageDealtModifier.class) != null) {
+                        listeners.addAll(weapon.getShip().getListeners(DamageDealtModifier.class));
+                    }
+                }
 
                 //Then, we do the real part of the script: find nearby missiles so we can do stuff
                 float missileCount = 0f;
