@@ -2,7 +2,7 @@
   "displayName": "Support",
   "fluxCapacitors": 0,
   "fluxVents": 5,
-  "goalVariant": false,
+  "goalVariant": true,
   "hullId": "vass_makhaira",
   "hullMods": [
     "targetingunit"

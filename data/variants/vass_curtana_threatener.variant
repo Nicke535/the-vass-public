@@ -2,7 +2,7 @@
   "displayName": "Threatener",
   "fluxCapacitors": 25,
   "fluxVents": 13,
-  "goalVariant": false,
+  "goalVariant": true,
   "hullId": "vass_curtana",
   "hullMods": [
     "missleracks"

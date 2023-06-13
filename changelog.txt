@@ -1,6 +1,14 @@
 Version 0.4.1a
+ Changes:
+  - Slightly altered Curtana codex text
+     > The previous description referenced no-longer-existant ship design features
+
  Bugfixes:
+  - Fixed major bug causing initial Vass mission fleet to regularly miss the player and despawn, often without being noticed
   - Fixed Tizona typo (thanks TameFroggy!)
+  - Fixed Schiavona typo
+  - Fixed the Yawarakai Te and Juuchi Yosamu not correctly applying certain damage increases
+  - Fixed Vass ship variants not being tagged as Goal variants
 
 
 Version 0.4.1: It's about time

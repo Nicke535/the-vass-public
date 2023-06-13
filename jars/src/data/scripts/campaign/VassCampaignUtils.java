@@ -17,11 +17,14 @@ import com.fs.starfarer.api.impl.campaign.rulecmd.salvage.special.ShipRecoverySp
 import com.fs.starfarer.api.util.IntervalUtil;
 import com.fs.starfarer.api.util.Misc;
 import data.scripts.utils.VassUtils;
+import org.apache.log4j.Logger;
 import org.jetbrains.annotations.Nullable;
-import org.lazywizard.lazylib.MathUtils;
 import org.lwjgl.util.vector.Vector2f;
 
 public class VassCampaignUtils {
+
+    public static final Logger LOGGER = Global.getLogger(VassCampaignUtils.class);
+
     public enum MissionImportance {
         TRIVIAL,
         STANDARD,
@@ -138,6 +141,7 @@ public class VassCampaignUtils {
             if (timer.intervalElapsed()) {
                 // If we have despawned, we can just remove the script now
                 if (aggressor.isDespawning() || sector.getPlayerFleet().getContainingLocation().getEntityById(aggressor.getId()) == null) {
+                    LOGGER.info(this.getClass().getName()+": Punitive fleet despawned, removing script");
                     sector.removeScript(this);
                     return;
                 }
@@ -145,12 +149,14 @@ public class VassCampaignUtils {
                 // Checks AI validity
                 if (!(aggressor.getAI() instanceof ModularFleetAIAPI)) {
                     //Invalid AI: cancel the script outright
+                    LOGGER.warn(this.getClass().getName()+": Punitive fleet AI invalid, removing script");
                     sector.removeScript(this);
                     return;
                 }
                 ModularFleetAIAPI ai = (ModularFleetAIAPI)aggressor.getAI();
                 if (ai.getAssignmentModule() == null) {
                     // No assignment module: we can't do anything so return
+                    LOGGER.warn(this.getClass().getName()+": Punitive fleet AI assignment module NULL");
                     return;
                 }
                 FleetAssignmentDataAPI curr = ai.getAssignmentModule().getCurrentAssignment();
@@ -163,6 +169,7 @@ public class VassCampaignUtils {
                         || (orderedToEscape instanceof Boolean && (Boolean)orderedToEscape)) {
                     ai.getAssignmentModule().clearAssignments();
                     ai.getAssignmentModule().addAssignment(FleetAssignment.GO_TO_LOCATION_AND_DESPAWN, Misc.findNearestJumpPointTo(aggressor), 999f, null);
+                    LOGGER.info(this.getClass().getName()+": Punitive fleet ordered to escape or damaged, leaving and despawning");
                     sector.removeScript(this);
                     return;
                 }
@@ -180,11 +187,14 @@ public class VassCampaignUtils {
                         defendant.getVisibilityLevelTo(aggressor) != SectorEntityToken.VisibilityLevel.NONE &&
                         aggressor.getVisibilityLevelTo(defendant) != SectorEntityToken.VisibilityLevel.NONE) {
                     ai.getAssignmentModule().addAssignmentAtStart(FleetAssignment.INTERCEPT, defendant, 3f, null);
+                    LOGGER.info(this.getClass().getName()+": Punitive fleet intercepting player");
+                    return;
                 }
 
                 // Fall-through: we've lost our target, and they've lost us. Head back and despawn, the script is no longer needed
                 ai.getAssignmentModule().clearAssignments();
                 ai.getAssignmentModule().addAssignment(FleetAssignment.GO_TO_LOCATION_AND_DESPAWN, Misc.findNearestJumpPointTo(aggressor), 999f, null);
+                LOGGER.info(this.getClass().getName()+": Lost target for punitive fleet, leaving and despawning");
                 sector.removeScript(this);
             }
         }

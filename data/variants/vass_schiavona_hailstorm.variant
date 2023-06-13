@@ -2,7 +2,7 @@
   "displayName": "Hailstorm",
   "fluxCapacitors": 16,
   "fluxVents": 20,
-  "goalVariant": false,
+  "goalVariant": true,
   "hullId": "vass_schiavona",
   "hullMods": [
     "targetingunit",
