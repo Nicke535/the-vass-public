@@ -1,11 +1,10 @@
 {
   "displayName": "Support",
-  "fluxCapacitors": 2,
-  "fluxVents": 6,
+  "fluxCapacitors": 3,
+  "fluxVents": 20,
   "goalVariant": true,
   "hullId": "vass_curtana",
   "hullMods": [
-    "turretgyros",
     "pointdefenseai",
     "nav_relay",
     "ecm"
@@ -18,7 +17,7 @@
       "autofire": false,
       "mode": "LINKED",
       "weapons": {
-        "WS0002": "vass_cyllel_farchog"
+        "WS0002": "vass_fragarach"
       }
     },
     {
@@ -28,8 +27,7 @@
         "WS0003": "vass_yawarakai_te",
         "WS0004": "vass_yawarakai_te",
         "WS0005": "vass_yawarakai_te",
-        "WS0006": "vass_yawarakai_te",
-        "WS0007": "vass_yawarakai_te"
+        "WS0006": "vass_yawarakai_te"
       }
     },
     {

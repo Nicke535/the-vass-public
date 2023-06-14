@@ -2,7 +2,7 @@
   "displayName": "Aggressor",
   "fluxCapacitors": 0,
   "fluxVents": 8,
-  "goalVariant": false,
+  "goalVariant": true,
   "hullId": "vass_makhaira",
   "hullMods": [
     "unstable_injector"

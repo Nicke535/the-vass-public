@@ -2,6 +2,7 @@ package data.scripts.weapons;
 
 import com.fs.starfarer.api.Global;
 import com.fs.starfarer.api.combat.*;
+import com.fs.starfarer.api.combat.listeners.DamageDealtModifier;
 import com.fs.starfarer.api.graphics.SpriteAPI;
 import com.fs.starfarer.api.impl.campaign.ids.Stats;
 import com.fs.starfarer.api.util.Misc;
@@ -93,6 +94,12 @@ public class VassYawarakaiTeScript implements EveryFrameWeaponEffectPlugin {
                     effectiveRange += 150f;
                     minDamageRange += 150f;
                 }
+                List<DamageDealtModifier> listeners = new ArrayList<>();
+                if (weapon.getShip() != null) {
+                    if (weapon.getShip().getListeners(DamageDealtModifier.class) != null) {
+                        listeners.addAll(weapon.getShip().getListeners(DamageDealtModifier.class));
+                    }
+                }
 
                 //Then, we do the real part of the script: find nearby missiles so we can do stuff
                 float missileCount = 0f;
@@ -147,7 +154,13 @@ public class VassYawarakaiTeScript implements EveryFrameWeaponEffectPlugin {
                     float distanceToMissile = MathUtils.getDistance(msl, weapon.getLocation());
                     float extraPenaltyForRange = Math.min(1f, Math.max(MINIMUM_DAMAGE_MULT, 1f - ((distanceToMissile-effectiveRange) / (minDamageRange-effectiveRange))));
 
-                    float addedDamage = weapon.getDamage().computeDamageDealt(PULSE_TIME) * extraPenaltyForRange * damageMultToMissiles / missileCount;
+                    //Use all the damage-dealt listeners we have, in case we need to to modify our damage
+                    DamageAPI dmg = weapon.getDamage().clone();
+                    for (DamageDealtModifier lstnr : listeners) {
+                        lstnr.modifyDamageDealt(null, msl, dmg, msl.getLocation(), false);
+                    }
+                    float addedDamage = dmg.computeDamageDealt(PULSE_TIME) * extraPenaltyForRange * damageMultToMissiles / missileCount;
+
                     float newDamage = missileStatusMap.get(msl)+addedDamage;
                     if (msl.getHitpoints() <= newDamage) {
                         //The final flame-out-pulse has distinctly more power, to be more noticeable. Also play a sound and spawn minor SFX
