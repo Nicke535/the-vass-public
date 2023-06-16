@@ -161,8 +161,18 @@ public class VassChronoJump extends BaseShipSystemScript {
                         //Spawn, while reducing origin ship's range temporarily
                         proj.getSource().getMutableStats().getEnergyWeaponRangeBonus().modifyFlat("VASS_SUPERTEMP_E_BONUS", -spawnRangeReduction);
                         proj.getSource().getMutableStats().getBallisticWeaponRangeBonus().modifyFlat("VASS_SUPERTEMP_B_BONUS", -spawnRangeReduction);
-                        DamagingProjectileAPI newProj = (DamagingProjectileAPI) engine.spawnProjectile(proj.getSource(), proj.getWeapon(), spawnID, destPos,
+                        CombatEntityAPI newObj = engine.spawnProjectile(proj.getSource(), proj.getWeapon(), spawnID, destPos,
                                 proj.getFacing(), proj.getSource().getVelocity());
+                        if (!(newObj instanceof DamagingProjectileAPI)) {
+                            // Very unexpected projectile detected! Just delete it outright, it's not worth the hassle to teleport non-projectile-projectiles around
+                            engine.removeEntity(proj);
+                            engine.removeEntity(newObj);
+                            proj.getSource().getMutableStats().getEnergyWeaponRangeBonus().unmodify("VASS_SUPERTEMP_E_BONUS");
+                            proj.getSource().getMutableStats().getBallisticWeaponRangeBonus().unmodify("VASS_SUPERTEMP_B_BONUS");
+                            continue;
+                        }
+
+                        DamagingProjectileAPI newProj = (DamagingProjectileAPI)newObj;
                         proj.getSource().getMutableStats().getEnergyWeaponRangeBonus().unmodify("VASS_SUPERTEMP_E_BONUS");
                         proj.getSource().getMutableStats().getBallisticWeaponRangeBonus().unmodify("VASS_SUPERTEMP_B_BONUS");
 
