@@ -163,7 +163,7 @@ public class VassPerturbaGetShipSubmarketEvent extends VassPerturbaBaseEvent {
                 options.addOption("Inform the agent you're not interested in procuring Vass ships at the moment.", OptionId.LEAVE_DIALOGUE);
                 break;
             case CONTINUE_BUY_SERVICE:
-                text.addPara(getContact()+" looks overjoyed, though the Vass representative seems to keep the same, disinterested look.");
+                text.addPara(getContact().getName().getFirst()+" looks overjoyed, though the Vass representative seems to keep the same, disinterested look.");
                 text.addPara("'Ah, perfect! I'll start with the preparations immediately: truth be told, we already set up most of the necessary infrastructure beforehand, but it might still take a month or two to get everything running smoothly.'");
 
                 text.setFontSmallInsignia();

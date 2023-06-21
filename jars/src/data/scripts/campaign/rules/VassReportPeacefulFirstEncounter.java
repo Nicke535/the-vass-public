@@ -28,7 +28,12 @@ public class VassReportPeacefulFirstEncounter extends BaseCommandPlugin {
         }
 
         Global.getSector().getPlayerStats().addXP(VassCampaignUtils.getVassMissionXP(VassCampaignUtils.MissionImportance.STANDARD, VassUtils.VASS_FAMILY.PERTURBA, false), dialog.getTextPanel(), true);
-        Global.getSector().getPlayerFaction().setRelationship("vass", RepLevel.INHOSPITABLE);
+        if (Global.getSector().getPlayerFaction().isAtBest("vass", RepLevel.HOSTILE)) {
+            dialog.getTextPanel().setFontSmallInsignia();
+            dialog.getTextPanel().addPara("Relations with the Vass improved to Inhospitable", Misc.getRelColor(-RepLevel.INHOSPITABLE.getMin()), "Inhospitable");
+            Global.getSector().getPlayerFaction().setRelationship("vass", RepLevel.INHOSPITABLE);
+            dialog.getTextPanel().setFontInsignia();
+        }
         vassFleet.getMemory().set("$vass_fleet_should_escape", true);
 
         return true;

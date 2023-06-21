@@ -1,11 +1,16 @@
 package data.scripts.campaign;
 
 import com.fs.starfarer.api.Global;
+import com.fs.starfarer.api.campaign.BaseCustomProductionPickerDelegateImpl;
 import com.fs.starfarer.api.campaign.PlanetAPI;
 import com.fs.starfarer.api.campaign.SectorAPI;
 import com.fs.starfarer.api.campaign.StarSystemAPI;
+import com.fs.starfarer.api.campaign.comm.IntelInfoPlugin;
+import com.fs.starfarer.api.impl.campaign.intel.contacts.ContactIntel;
 import com.fs.starfarer.api.impl.campaign.rulecmd.salvage.special.ShipRecoverySpecial;
 import org.apache.log4j.Logger;
+
+import java.util.List;
 
 public class VassSectorSetupScript {
     private final static Logger LOGGER = Global.getLogger(VassSectorSetupScript.class);

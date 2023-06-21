@@ -18,7 +18,45 @@ VassPerturbaWeaponTestingHasPrototypes score:10","
 
 ""Ah, so you're finished with the testing, I'd presume? Perfect. And from the readings I'm getting, you still have some prototypes intact! I'm coming aboard and defusing them: don't want the buggers exploding in our faces now do we?""","vassPerturbaWeaponTestContinueGood:Continue",
 "#END Perturba Weapon Testing",,,,,,
+
 "#END Quests",,,,,,
+,,,,,,
+# Missions,,,,,,
+,,,,,,
+# Vass Custom Production Contract (arms dealer),,,,,,
+vass_cpcBlurb,vass_cpc_blurb,$vass_cpc_armsDealer,,"""Me and some, ah, friends have gotten a hold of some real nice pieces of rare mil-grade tech. You interested?""",,
+vass_cpcOfferOption,vass_cpc_option,$vass_cpc_armsDealer,,,vass_cpc_start:Check out what kind of rare tech they have gotten their hands on.,
+vass_cpcBlurbBar,vass_cpc_blurbBar,$vass_cpc_armsDealer,,"You see a very suspicious $vass_cpc_manOrWoman sitting in the far back flanked by three massive bodyguards. Your intuition tells you they're probably an arms dealer, and one with a fairly large price on their head at that.",,
+vass_cpcOfferOptionBar,vass_cpc_optionBar,$vass_cpc_armsDealer,,,vass_cpc_startBar:Check if the suspicious arms dealer has any acquisitions worth talking about.,
+vass_cpcOfferTextContact,DialogOptionSelected,"$option == vass_cpc_start
+$cpc_armsDealer score:20","$missionId = vass_cpc
+SetTextHighlights $vass_cpc_maxCapacity $vass_cpc_costPercent $vass_cpc_days
+DoCanAffordCheck 0 vass_cpc_pickPlayerBP false","""Now, we should be able to provide access to custom production of roundabout $vass_cpc_maxCapacity credits worth of rare ships and weapons of great interest to a collector such as yourself. Discretion doesn't come cheap of course, but I think it's a bargain frankly."" $heOrShe winces slightly ""You don't wanna know the kind of things some people would be willing to do to keep these things out of the wrong hands. $vass_cpc_costPercent of base cost, not one credit less.""
+
+""Considering the factors, I'd say I can guarantee delivery within..."" $heOrShe seems to do some quick calculations on a TriPad ""...$vass_cpc_days days. Just say the word and I can get you a look at what kinda stuff you can get your hands on.""","vass_cpc_pickContactBP:Make a selection
+contact_decline:Decline",
+vass_cpcOfferTextBar,DialogOptionSelected,"$option == vass_cpc_startBar
+$vass_cpc_armsDealer score:20","$missionId = vass_cpc
+SetTextHighlights $vass_cpc_maxCapacity $vass_cpc_costPercent $vass_cpc_days
+DoCanAffordCheck 0 vass_cpc_pickPlayerBP false","As you approach, the bodyguards' attention focuses like the sweep of a capship targeting array- the arms dealer stands them down with a flick of $hisOrHer hand.
+
+""You probably know who I am, and I'm pretty certain I know why you're here, "" $heOrShe says. ""Let's talk business."" The arms dealer leans in, and a privacy field blurs around the booth, muffling outside sound. They clearly value discretion quite a bit.
+ 
+""I can supply custom construction of up to $vass_cpc_maxCapacity credits worth of rare ships and weapons, at a very reasonable $vass_cpc_costPercent of base cost. I guarantee delivery of product within $vass_cpc_days days, and absolute discretion.""
+
+$HeOrShe slides a TriPad over the table, ""Trust me, some of this stuff you would not want to lose out on."" ","vass_cpc_pickContactBP:Examine the TriPad
+contact_declineBarNoContinue:Decline",
+vass_cpcPickContactBP,DialogOptionSelected,$option == vass_cpc_pickContactBP,Call $vass_cpc_ref pickContactBP,,,
+vass_cpcBPPicked,VassCPCBlueprintsPicked,,"$option = contact_accept 0
+FireBest DialogOptionSelected
+Call $vass_cpc_ref repSuccess
+Call $vass_cpc_ref addContacts",,,
+vass_cpcBPPickedBar,VassCPCBlueprintsPicked,$vass_cpc_barEvent,"$option = contact_acceptBar 0
+FireBest DialogOptionSelected
+Call $vass_cpc_ref repSuccess
+Call $vass_cpc_ref addContacts",,,
+,,,,,,
+"#END Missions",,,,,,
 ,,,,,,
 # FleetEncounters,,,,,,
 ,,,,,,
@@ -52,11 +90,80 @@ OR
 ""Well look who's been naughty. You should've stopped when you had the chance, kid.""
 
 Comms are cut off from the other side.","vassEndCommLink:Continue",
+vass_perturba_shipLootEncounterCanSellout,OpenCommLink,"$faction.id == vass score:1000
+VassFleetIsLootPunishFleet
+VassPlayerCanSelloutContacts",,"""You just couldn't hold yourself back, huh? You know, if I didn't know better I'd think you were TRYING to get Perturba angry with ya.""
+
+""Honestly wish we didn't let you off the hook the first time. Would have saved me a bunch of trouble.""
+OR
+""Well look who's been naughty. Did your parents never teach you not to play with fire?""","vassOfferSelloutContacts:""I happen to have a little list here of unsanctioned Vass smugglers...""
+vassApoligizeAfterShipLoot:""...sorry?""",
+vass_perturba_apoligizeAfterShipLoot,DialogOptionSelected,"$option == vassApoligizeAfterShipLoot","VassReportLootingContact
+$entity.ignorePlayerCommRequests = true 1
+EndConversation","They look at you in disbelief for a few seconds before cutting the comms.
+OR
+""Did you really... ah, don't even bother answering. I don't care about the words of dead men.""
+
+The comms cut off.
+OR
+""Well now I almost feel bad for you.""
+
+""Almost.""
+
+The comms are cut off on the other end.","vassEndCommLink:Continue",
+vass_perturba_shipLootEncounterTrySelloutAngry,DialogOptionSelected,"$option == vassOfferSelloutContacts score:1000
+VassPlayerHasSoldVassShips score:1000","VassReportLootingContact
+$entity.ignorePlayerCommRequests = true 1
+EndConversation","""Oh wow, what a coincidence! So do I. And you wouldn't BELIEVE who's on the first page!""
+
+A quite unflattering mugshot of you appears on screen together with an eye-wateringly high bounty notice.
+
+""Next time you try to sell out your pals, make sure you don't sit in the same boat when you do it.""
+
+The comm link cuts off.","vassEndCommLink:Continue",
+vass_perturba_shipLootEncounterTrySelloutAngry,DialogOptionSelected,"$option == vassPerturbaRefuseSellout","VassReportLootingContact
+$entity.ignorePlayerCommRequests = true 1
+EndConversation","""You know, maybe I wasn't clear enough. Now, how did it go in those holo-flicks... 'that was an offer you could not refuse'?""
+
+The comm link cuts off.
+OR
+$heOrShe sighs.
+
+""And here I was almost impressed by your survival instincts. Guess I misjudged you.""
+
+The comms are cut","vassEndCommLink:Continue",
+vass_perturba_shipLootEncounterTrySellout,DialogOptionSelected,"$option == vassOfferSelloutContacts",,"They appear pleasantly surprised at your remark.
+
+""See, NOW you're talking my language. Tell you what. You hand that list over, as well as any Vass ships you have on hand, and I'll just report our informant was wrong about the whole driving-around-unsanctioned-for-a-second-time thing. That sound good enough for ya?""","vassPerturbaSelloutContacts:""Sounds like we have a deal.""
+vassPerturbaRefuseSellout:The ships as well? Surely the information is enough?",
+vass_perturba_shipLootEncounterSucceedSellout,DialogOptionSelected,"$option == vassPerturbaSelloutContacts","AddText ""Lost all Vass ships and fighters"" textEnemyColor
+VassRemoveVassShips
+MakeOtherFleetPreventDisengage vassExtortion false
+MakeOtherFleetAggressive vassExtortion false
+VassReportSelloutContacts
+EndConversation","As you hand over the list of arms dealers and begin transferring all your Vass vessels, the other captain appears to change their face into a frown
+
+""That bast... ahem. Thank you, captain. Now if you'll excuse me, I just earned myself a bit of... overtime, shall we say.""
+
+The comms cut off from the other side.","vassEndCommLink:Continue",
+vass_perturba_shipLootEncounterSucceedSelloutPoor,DialogOptionSelected,"$option == vassPerturbaSelloutContacts
+VassPlayerHasOnlyVassShips","AddText ""Gained 1x Mercury-class Shuttle"" textPlayerColor
+AddText ""Lost all Vass ships and fighters"" textEnemyColor
+VassRemoveVassShipsGiveCompensation
+MakeOtherFleetPreventDisengage vassExtortion false
+MakeOtherFleetAggressive vassExtortion false
+VassReportSelloutContacts
+EndConversation","As you hand over the list of arms dealers and begin transferring all your vessels, you gently remind the Vass captain that while you're fairly confident in your lung capacity, he might want to give you something against explosive decompression.
+
+""OH, right, of course. Right, that makes sense. Um, wait a second, I think we have... ah, right, we do. Here you go: not the fanciest frigate around, but it should hopefully get you back to civilization. Just be careful with the coffee machine, it seems to be on the fritz.""
+
+""Now if you'll excuse me, I have places to be and people to... meet.""
+
+The comms cut off from the other side.","vassEndCommLink:Continue",
 ,,,,,,
 # First-Time Loot Encounter,,,,,,
 vass_perturba_handoverBroke,DialogOptionSelected,"$option == vassPerturbaHandover
 VassPlayerHasOnlyVassShips","AddText ""Gained 1x Mercury-class Shuttle"" textPlayerColor
-AddText ""Relations with the Vass families improved to Inhospitable"" textPlayerColor
 VassReportPeacefulFirstEncounter
 AddText ""Lost all Vass ships and fighters"" textEnemyColor
 VassRemoveVassShipsGiveCompensation
@@ -64,10 +171,9 @@ MakeOtherFleetPreventDisengage vassExtortion false
 MakeOtherFleetAggressive vassExtortion false
 EndConversation","""Good decision. Of course, we can't just leave you drifting here without a ship, now can we? That'd frankly just send the wrong message now that you've gone ahead and actually cooperated. Luckily for you, we happened to just get our hands on a decent enough little frigate; should be enough for you to get back to civilization, I hope. ""
 
-After getting all your crew and resources abord the frigate, you are transferred command of the vessel and the Perturba fleet assumes a neutral posture, convinced you're no longer a threat","vassEndCommLink:Continue
+After getting all your crew and resources aboard the frigate, you are transferred command of the vessel and the Perturba fleet assumes a neutral posture, convinced you're no longer a threat","vassEndCommLink:Continue
 ",
-vass_perturba_handover,DialogOptionSelected,"$option == vassPerturbaHandover","AddText ""Relations with the Vass families improved to Inhospitable"" textPlayerColor
-VassReportPeacefulFirstEncounter
+vass_perturba_handover,DialogOptionSelected,"$option == vassPerturbaHandover","VassReportPeacefulFirstEncounter
 AddText ""Lost all Vass ships and fighters"" textEnemyColor
 VassRemoveVassShips
 MakeOtherFleetPreventDisengage vassExtortion false

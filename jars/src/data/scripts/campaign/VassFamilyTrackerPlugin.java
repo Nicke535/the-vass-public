@@ -2,12 +2,16 @@
 package data.scripts.campaign;
 
 import com.fs.starfarer.api.EveryFrameScript;
+import com.fs.starfarer.api.GameState;
 import com.fs.starfarer.api.Global;
 import com.fs.starfarer.api.campaign.*;
+import com.fs.starfarer.api.campaign.comm.IntelInfoPlugin;
+import com.fs.starfarer.api.characters.PersonAPI;
 import com.fs.starfarer.api.fleet.FleetMemberAPI;
 import com.fs.starfarer.api.impl.campaign.fleets.FleetFactoryV3;
 import com.fs.starfarer.api.impl.campaign.fleets.FleetParamsV3;
 import com.fs.starfarer.api.impl.campaign.ids.MemFlags;
+import com.fs.starfarer.api.impl.campaign.intel.contacts.ContactIntel;
 import com.fs.starfarer.api.util.Misc;
 import data.scripts.utils.VassUtils;
 import org.jetbrains.annotations.Nullable;
@@ -15,8 +19,7 @@ import org.lazywizard.lazylib.MathUtils;
 import org.lazywizard.lazylib.campaign.CampaignUtils;
 import org.lwjgl.util.vector.Vector2f;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 public class VassFamilyTrackerPlugin implements EveryFrameScript {
 
@@ -37,6 +40,9 @@ public class VassFamilyTrackerPlugin implements EveryFrameScript {
 
     //Keeps track of our own plugin instance
     private static VassFamilyTrackerPlugin currentInstance = null;
+
+    //A set of PersonAPI's that we can "sell out" to the Vass, for arbitrary reasons.
+    private Set<PersonAPI> personsPlayerCanSellOut;
 
     //--Loot revenge fleet stats--
     //How long of a cooldown is left until a new looting-punisher fleet can pop out and hunt the player, and the 
@@ -78,6 +84,7 @@ public class VassFamilyTrackerPlugin implements EveryFrameScript {
         initializeFamilyRelations();
         currentInstance = this;
         playerSoldShipsListener = new VassPlayerSoldVassShipsListener(true);
+        personsPlayerCanSellOut = new HashSet<>();
     }
 
     //Main advance() loop
@@ -97,7 +104,7 @@ public class VassFamilyTrackerPlugin implements EveryFrameScript {
             if ((playerHasVassShips() && !playerAllowedToOwnVassShips()) ||
                     (playerSoldShipsListener.hasSoldMinor && !playerAllowedToSellMinor()) ||
                     (playerSoldShipsListener.hasSoldMajor && !playerAllowedToSellMajor())) {
-                //We need several consecutive checks ot succeed for a fleet to be sent, to give a player some leeway
+                //We need several consecutive checks to succeed for a fleet to be sent, to give a player some leeway
                 if (lootRevengeDaysInSequence < DAYS_NEEDED_TO_SEND_REVENGE_FLEET) {
                     lootRevengeDaysInSequence += CONTINOUS_CHECK_REVENGE_COOLDOWN;
                     currentLootRevengeCooldown = CONTINOUS_CHECK_REVENGE_COOLDOWN;
@@ -380,5 +387,77 @@ public class VassFamilyTrackerPlugin implements EveryFrameScript {
      */
     public static boolean playerAllowedToSellMajor() {
         return Global.getSector().getPlayerFaction().isAtWorst("vass", RepLevel.COOPERATIVE);
+    }
+
+    /**
+     * Marks a PersonAPI as someone we can "sell out" to the Vass if needed
+     */
+    public static void markAsSelloutablePerson(PersonAPI person) {
+        if (currentInstance != null) {
+            currentInstance.personsPlayerCanSellOut.add(person);
+        }
+    }
+
+    /**
+     * Gets a list of all the PersonAPI instances we're allowed to sell out
+     */
+    public static List<PersonAPI> getSelloutablePersons() {
+        if (currentInstance != null) {
+            return new ArrayList<>(currentInstance.personsPlayerCanSellOut);
+        }
+        return null;
+    }
+
+    /**
+     * Sells out a PersonAPI to the Vass... usually with destructive consequences
+     */
+    public static void sellOutPerson(PersonAPI person) {
+        if (currentInstance != null) {
+            Global.getSector().addScript(new DelayedPersonSelloutTracker(person));
+            currentInstance.personsPlayerCanSellOut.remove(person); // Can't sell them out twice!
+        }
+    }
+
+    // Internal class for managing the "selling out" of a contact to the families. Technically you can sell out people who
+    // aren't contacts but that won't have much of an effect.
+    private static class DelayedPersonSelloutTracker implements EveryFrameScript {
+        PersonAPI person;
+        float daysRemaining;
+        boolean done = false;
+
+        DelayedPersonSelloutTracker(PersonAPI person) {
+            this.person = person;
+            daysRemaining = MathUtils.getRandomNumberInRange(1.3f, 1.7f);
+        }
+
+        @Override
+        public void advance(float amount) {
+            if (!Global.getSector().isPaused()) {
+                daysRemaining -= Misc.getDays(amount);
+                if (daysRemaining < 0f) {
+                    done = true;
+                    List<IntelInfoPlugin> allContacts = Global.getSector().getIntelManager().getIntel(ContactIntel.class);
+                    for (IntelInfoPlugin intl : allContacts) {
+                        if (intl instanceof ContactIntel) {
+                            ContactIntel contactIntel = (ContactIntel)intl;
+                            if (person == contactIntel.getPerson()) {
+                                contactIntel.loseContact(null);
+                            }
+                        }
+                    }
+                    Global.getSector().removeScript(this);
+                }
+            }
+        }
+
+        @Override
+        public boolean runWhilePaused() {
+            return false;
+        }
+
+        @Override
+        public boolean isDone() {
+            return done;
+        }
     }
 }
