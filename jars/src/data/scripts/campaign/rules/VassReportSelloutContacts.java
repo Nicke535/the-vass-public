@@ -5,19 +5,22 @@ import com.fs.starfarer.api.campaign.CampaignFleetAPI;
 import com.fs.starfarer.api.campaign.InteractionDialogAPI;
 import com.fs.starfarer.api.campaign.RepLevel;
 import com.fs.starfarer.api.campaign.rules.MemoryAPI;
+import com.fs.starfarer.api.characters.PersonAPI;
 import com.fs.starfarer.api.impl.campaign.rulecmd.BaseCommandPlugin;
 import com.fs.starfarer.api.util.Misc;
+import data.scripts.campaign.VassCampaignUtils;
 import data.scripts.campaign.VassFamilyTrackerPlugin;
+import data.scripts.utils.VassUtils;
 
 import java.util.List;
 import java.util.Map;
 
 /**
- * Makes the Vass Hostile to the player, as they've had a relapse
- * Also reset the counter of the "player has sold ships" thingy, as that now gets its 'payback'
+ * Triggered when the player sells out their weapons dealer instead of taking the rep hit for owning Vass ships.
+ * As such, this doesn't do the normal resetting of sold ships listener: that's a separate problem!
  * @author Nicke535
  */
-public class VassReportLootingContact extends BaseCommandPlugin {
+public class VassReportSelloutContacts extends BaseCommandPlugin {
 
     public boolean execute(String ruleId, InteractionDialogAPI dialog, List<Misc.Token> params, Map<String, MemoryAPI> memoryMap) {
         if (dialog == null) return false;
@@ -29,14 +32,14 @@ public class VassReportLootingContact extends BaseCommandPlugin {
             return false;
         }
 
-        if (Global.getSector().getPlayerFaction().isAtWorst("vass", RepLevel.INHOSPITABLE)) {
-            dialog.getTextPanel().setFontSmallInsignia();
-            dialog.getTextPanel().addPara("Relations with the Vass worsened to Hostile", Misc.getRelColor(-RepLevel.HOSTILE.getMin()), "Hostile");
-            Global.getSector().getPlayerFaction().setRelationship("vass", RepLevel.HOSTILE);
-            dialog.getTextPanel().setFontInsignia();
+        if (VassFamilyTrackerPlugin.getSelloutablePersons() != null) {
+            for (PersonAPI target : VassFamilyTrackerPlugin.getSelloutablePersons()) {
+                VassFamilyTrackerPlugin.sellOutPerson(target);
+            }
         }
-        VassFamilyTrackerPlugin.resetSoldShipsListener();
 
+        Global.getSector().getPlayerStats().addXP(VassCampaignUtils.getVassMissionXP(VassCampaignUtils.MissionImportance.TRIVIAL, VassUtils.VASS_FAMILY.PERTURBA, false), dialog.getTextPanel(), true);
+        vassFleet.getMemory().set("$vass_fleet_should_escape", true);
         vassFleet.getMemory().set("$vass_loot_punish_fleet", false);
         return true;
     }

@@ -123,7 +123,7 @@ public class VassCampaignUtils {
         private CampaignFleetAPI aggressor;
         private CampaignFleetAPI defendant;
         private float startingFP;
-        private IntervalUtil timer = new IntervalUtil(0.4f, 0.6f);
+        private IntervalUtil timer = new IntervalUtil(0.9f, 1.1f);
         private float interceptDaysRemaining;
         RenewAggressionPlugin(SectorAPI sector, CampaignFleetAPI aggressor, CampaignFleetAPI defendant, float interceptDays) {
             this.sector = sector;
@@ -131,11 +131,20 @@ public class VassCampaignUtils {
             this.defendant = defendant;
             this.startingFP = aggressor.getFleetPoints();
             this.interceptDaysRemaining = interceptDays;
+
+            // Initial instruction, before the
+            ModularFleetAIAPI ai = (ModularFleetAIAPI)aggressor.getAI();
+            if (ai.getAssignmentModule() != null) {
+                ai.getAssignmentModule().addAssignmentAtStart(FleetAssignment.INTERCEPT, defendant, 1f, null);
+            } else {
+                // No assignment module: we can't do anything so return
+                LOGGER.warn("Punitive fleet AI assignment module NULL");
+            }
         }
 
         @Override
         public void advance(float amount) {
-            //Check every half second or so
+            //Check every second or so
             interceptDaysRemaining -= Misc.getDays(amount);
             timer.advance(amount);
             if (timer.intervalElapsed()) {

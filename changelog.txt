@@ -1,3 +1,21 @@
+Version 0.4.1b
+ Additions:
+  - Added a new variation on the Arms Dealer event, which favors expensive equipment and allows you to procure otherwise-restricted Vass equipment
+ 
+ Changes:
+  - Vass ships and fighters can no longer be purchased from normal Arms Dealer events
+     > See the event above for the new mechanic
+  - Minor adjustments to Vass fleet interception, should be somewhat more reliable now
+  - Vass relations are no longer synced to commission if playing with Nexerelin
+  - Various minor improvements have been made to some campaign interactions, mainly in the text-styling department
+
+ Bugfixes:
+  - Fixed unknown bug caused by the Chrono Jump system moving a BALLISTIC_AS_BEAM projectile entity which is not a DamagingProjectileAPI entity
+     > Yes, that should be an oxymoron. No, I haven't been able to find what weapon causes this.
+  - Minor typo fixes in fleet events
+
+
+
 Version 0.4.1a
  Changes:
   - Slightly altered Curtana codex text

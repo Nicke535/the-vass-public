@@ -12,6 +12,7 @@
 
 	# Please do the trick
 	"disableDiplomacy":true,
+	"noSyncRelations":true,
 	
 	"noHomeworld":true,					# Will not get a 'homeworld' (has headquarters condition, size fixed at 7) in random Sector
 	"showIntelEvenIfDead":true,			# Keep this faction in the intel tab even if it is not alive

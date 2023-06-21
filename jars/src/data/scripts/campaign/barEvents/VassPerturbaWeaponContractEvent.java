@@ -10,7 +10,9 @@ import com.fs.starfarer.api.impl.campaign.intel.bar.events.BarEventManager;
 
 import com.fs.starfarer.api.util.Misc;
 import com.fs.starfarer.api.util.WeightedRandomPicker;
+import data.scripts.campaign.VassFamilyInformationEventIntel;
 import data.scripts.campaign.VassFamilyTrackerPlugin;
+import data.scripts.campaign.familyInformationFactors.VassFirstPerturbaContactMeetingFactor;
 import data.scripts.utils.VassUtils;
 import org.apache.log4j.Logger;
 
@@ -187,7 +189,7 @@ public class VassPerturbaWeaponContractEvent extends VassPerturbaBaseEvent {
             case CONTINUE_KNOWS_PERTURBA:
                 text.addPara("They break a tiny smile. 'Well that makes things easy. See, I'm a... 'contact' of sorts in their employ. I handle external affairs to promising customers. Which is where YOU come in.'");
 
-                options.addOption("Urge him to go on.", OptionId.CONTINUE_2);
+                options.addOption("Urge them to go on.", OptionId.CONTINUE_2);
                 options.addOption("You will have nothing to do with this criminal! Call the guards.", OptionId.LEAVE_HOSTILE);
                 break;
             case CONTINUE_DOES_NOT_KNOW_PERTURBA:
@@ -234,6 +236,7 @@ public class VassPerturbaWeaponContractEvent extends VassPerturbaBaseEvent {
                 BarEventManager.getInstance().notifyWasInteractedWith(this);
                 Global.getSector().getMemoryWithoutUpdate().set(VASS_PERTURBA_WEAPON_CONTRACT_KEY, true);
                 Global.getSector().getMemoryWithoutUpdate().set(VASS_PERTURBA_HAS_MET_CONTACT_KEY, true);
+                VassFamilyInformationEventIntel.addFactorCreateIfNecessary(new VassFirstPerturbaContactMeetingFactor(50), dialog);
 
                 addIntel();
                 options.addOption("Leave", OptionId.LEAVE);
@@ -241,6 +244,7 @@ public class VassPerturbaWeaponContractEvent extends VassPerturbaBaseEvent {
             case LEAVE_NONHOSTILE:
                 text.addPara("The Perturba agent looks mildly disappointed. 'Is that so? Well, just inform us if you change your mind; I'll probably come back now and then. This IS a rather nice bar, after all.'");
                 Global.getSector().getMemoryWithoutUpdate().set(VASS_PERTURBA_HAS_MET_CONTACT_KEY, true);
+                VassFamilyInformationEventIntel.addFactorCreateIfNecessary(new VassFirstPerturbaContactMeetingFactor(50), dialog);
 
                 options.addOption("Leave", OptionId.LEAVE);
                 break;
@@ -258,6 +262,7 @@ public class VassPerturbaWeaponContractEvent extends VassPerturbaBaseEvent {
                         -((-RELATIONS_AFTER_BAD_DEAL) + VassFamilyTrackerPlugin.getRelationToFamily(VassUtils.VASS_FAMILY.PERTURBA)));
 
                 Global.getSector().getMemoryWithoutUpdate().set(VASS_PERTURBA_HAS_MET_CONTACT_KEY, true);
+                VassFamilyInformationEventIntel.addFactorCreateIfNecessary(new VassFirstPerturbaContactMeetingFactor(50), dialog);
 
                 options.addOption("Leave", OptionId.LEAVE);
                 break;

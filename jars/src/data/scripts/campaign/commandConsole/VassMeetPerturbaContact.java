@@ -1,6 +1,8 @@
 package data.scripts.campaign.commandConsole;
 
 import com.fs.starfarer.api.Global;
+import data.scripts.campaign.VassFamilyInformationEventIntel;
+import data.scripts.campaign.familyInformationFactors.VassFirstPerturbaContactMeetingFactor;
 import org.lazywizard.console.BaseCommand;
 import org.lazywizard.console.CommonStrings;
 import org.lazywizard.console.Console;
@@ -16,6 +18,7 @@ public class VassMeetPerturbaContact implements BaseCommand {
         }
 
         Global.getSector().getMemoryWithoutUpdate().set(VASS_PERTURBA_HAS_MET_CONTACT_KEY, true);
+        VassFamilyInformationEventIntel.addFactorCreateIfNecessary(new VassFirstPerturbaContactMeetingFactor(50), null);
 
         Console.showMessage("Memory flag for Perturba contact set succesfully.");
         return CommandResult.SUCCESS;
