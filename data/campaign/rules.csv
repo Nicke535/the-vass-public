@@ -121,7 +121,7 @@ A quite unflattering mugshot of you appears on screen together with an eye-water
 ""Next time you try to sell out your pals, make sure you don't sit in the same boat when you do it.""
 
 The comm link cuts off.","vassEndCommLink:Continue",
-vass_perturba_shipLootEncounterTrySelloutAngry,DialogOptionSelected,"$option == vassPerturbaRefuseSellout","VassReportLootingContact
+vass_perturba_shipLootEncounterRefuseSellout,DialogOptionSelected,"$option == vassPerturbaRefuseSellout","VassReportLootingContact
 $entity.ignorePlayerCommRequests = true 1
 EndConversation","""You know, maybe I wasn't clear enough. Now, how did it go in those holo-flicks... 'that was an offer you could not refuse'?""
 
