@@ -4,6 +4,7 @@ Version 0.4.1c
   - Fixed bug causing hard-crash when accessing the new Arms Dealer variation on an old savefile
 
 
+
 Version 0.4.1b
  Additions:
   - Added a new variation on the Arms Dealer event, which favors expensive equipment and allows you to procure otherwise-restricted Vass equipment
