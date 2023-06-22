@@ -98,6 +98,12 @@ public class VassFamilyTrackerPlugin implements EveryFrameScript {
         if (personsPlayerCanSellOut == null) {
             personsPlayerCanSellOut = new HashSet<>();
         }
+        if (familyPowerMap == null) {
+            initializeFamilyPower();
+        }
+        if (familyRelationMap == null) {
+            initializeFamilyRelations();
+        }
     }
 
     //Main advance() loop
