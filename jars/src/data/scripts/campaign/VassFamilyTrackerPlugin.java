@@ -87,6 +87,25 @@ public class VassFamilyTrackerPlugin implements EveryFrameScript {
         personsPlayerCanSellOut = new HashSet<>();
     }
 
+    //Used to ensure integrity of the plugin on game load, in case a new field was added mid-save that needs initializing
+    public void ensurePluginIntegrity() {
+        if (currentInstance != this) {
+            currentInstance = this;
+        }
+        if (playerSoldShipsListener == null) {
+            playerSoldShipsListener = new VassPlayerSoldVassShipsListener(true);
+        }
+        if (personsPlayerCanSellOut == null) {
+            personsPlayerCanSellOut = new HashSet<>();
+        }
+        if (familyPowerMap == null) {
+            initializeFamilyPower();
+        }
+        if (familyRelationMap == null) {
+            initializeFamilyRelations();
+        }
+    }
+
     //Main advance() loop
     @Override
     public void advance( float amount ) {
