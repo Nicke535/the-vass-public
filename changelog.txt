@@ -1,3 +1,11 @@
+Version 0.4.1d
+ Bugfixes:
+  - Fixed incorrect rules.csv setup (again...) causing issues when performing the new Arms Dealer event with an existing contact
+  - Fixed Prism Freeport (if enabled by other mods) occassionally selling the Akrafena, Baselard and Tuck
+     > The Baselard and Tuck are not fully implemented and should thus not be obtainable at all
+
+
+
 Version 0.4.1c
  Bugfixes:
   - Fixed bug causing hard-crash due to incorrect rules.csv fields
