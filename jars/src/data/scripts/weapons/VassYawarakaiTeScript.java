@@ -13,6 +13,7 @@ import org.lazywizard.lazylib.VectorUtils;
 import org.lazywizard.lazylib.combat.CombatUtils;
 import org.lwjgl.util.vector.Vector2f;
 
+import java.awt.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -40,14 +41,14 @@ public class VassYawarakaiTeScript implements EveryFrameWeaponEffectPlugin {
     private static final float PULSE_TIME = 0.23f;
 
     //Our hashmap to keep track of damage dealt to each missile
-    private MissileStatusHashMap missileStatusMap = null;
+    public MissileStatusHashMap missileStatusMap = null;
 
     //Counter to run periodically
     private float counter = 0f;
 
     //Unique ID counter for all script instances, and the ID for this instance
     private static int uidCounter = 0;
-    private static Integer ourUID = null;
+    private Integer ourUID = null;
 
     @Override
     public void advance(float amount, CombatEngineAPI engine, WeaponAPI weapon) {
@@ -61,7 +62,6 @@ public class VassYawarakaiTeScript implements EveryFrameWeaponEffectPlugin {
         //engine's customData and load it in for each script
         if (missileStatusMap == null) {
             if (engine.getCustomData().get("VassYawarakaiTeEffectID") instanceof MissileStatusHashMap) {
-                //Unchecked conversion, but we know what we're doing in this rare instance
                 missileStatusMap = (MissileStatusHashMap) engine.getCustomData().get("VassYawarakaiTeEffectID");
             } else {
                 missileStatusMap = new MissileStatusHashMap();
@@ -85,7 +85,7 @@ public class VassYawarakaiTeScript implements EveryFrameWeaponEffectPlugin {
                 float damageMultToMissiles = weapon.getShip().getMutableStats().getDamageToMissiles().getModifiedValue();
                 boolean ignoresFlares = false;
                 if (weapon.getShip().getMutableStats().getDynamic().getMod(Stats.PD_IGNORES_FLARES) != null &&
-                        weapon.getShip().getMutableStats().getDynamic().getMod(Stats.PD_IGNORES_FLARES).flatBonus >= 1f) {
+                        weapon.getShip().getMutableStats().getDynamic().getMod(Stats.PD_IGNORES_FLARES).computeEffective(0f) >= 1f) {
                     ignoresFlares = true;
                 }
                 Object hasPerturbaBonus = Global.getCombatEngine().getCustomData().get("VassPerturbaPeriodicPlatingBonus" + weapon.getShip().getId());

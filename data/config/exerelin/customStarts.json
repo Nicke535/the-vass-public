@@ -1,0 +1,24 @@
+{
+	"starts":[
+		{
+			"id":"vassSchiavonaAccelStart",
+			"name":"Lain's Bloodhound",
+			"difficulty":"Medium",
+			"desc":"Acting on orders from Lain herself, you set out with your elite Schiavona destroyer, ready to further the goals of the Vass families throughout the sector however you can.",
+			"className":"data.scripts.campaign.customstart.VassSchiavonaAccelStart",
+			"factionId":"player",
+			"requiredModId":"the_vass",
+			"randomSector":0,
+		},
+		{
+			"id":"vassSmallFleetStart",
+			"name":"Gang-star Ambition",
+			"difficulty":"Easy",
+			"desc":"Your contacts within the five families have put in a good word for you, giving you access to their hidden second-hand market on Asharu as well as permission to use Vass vessels unimpeded. Now equipped with a small fleet of salvaged Vass ships, you set your sights on grander goals.",
+			"className":"data.scripts.campaign.customstart.VassSmallFleetStart",
+			"factionId":"player",
+			"requiredModId":"the_vass",
+			"randomSector":-1,
+		},
+	],
+}

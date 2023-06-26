@@ -1,8 +1,46 @@
-Version 0.4.1d
+Version 0.4.2 : Time for new beginnings
+ Additions:
+  - When playing Nexerelin, there are now 2 Vass-themed starting options: one with you already being Family member and an elite ship, while the other one starts you with a small Vass fleet and means to get more
+  - Added a console command (if using the Console Commands mod) for spawning a Vass ship submarket on Asharu and getting permission to own Vass ships
+     > This is meant as a "quick start cheat" in non-nexerelin for those people who want to use Vass ships but don't want to handle the current campaign questline
+  - The Yawarakai Te now has custom autofire AI taking the weapon's arc into consideration, reducing the amount of unnecessary firing
+
+ Changes:
+  - Perturba Submarket now requires you to have at least Welcoming relations
+     > This is mostly to facilitate the new starting options in Nex and the console command, but it also avoids a rare case where you are allowed to purchase from the submarket, BUT not actually allowed to own the ships afterwards...
+  - Perturba Submarket now has a wider spread of D-mod count (though ships will always have at least 1 D-mod)
+  - Altered some variants to not have left-over OP
+
+ Balance:
+  - Makhaira
+     -- Cargo space from 24 -> 65
+     -- Fuel storage from 18 -> 40
+     -- Min crew from 12 -> 10
+     -- Max crew from 16 -> 24
+     > Not sure how this was missed for so long, but the Makhaira had *awful* supply stats, given that it is supposedly a smuggling vessel and the main support ship of the Vass fleets. While still inferior point-for-point to the Hound, this brings it closer in line with what could be expected of a smuggling vessel.
+
+  - Curtana
+     -- Min crew from 140 -> 120
+     -- Max crew from 180 -> 210
+     > Not as blatant as the Makhaira, but the Custana still had tighter-than-intended logistics profile, with very tight crew space overhead and surprisingly high crew usage for being designed as a low-crew carrier.
+
+  - Akrafena
+     -- Fuel/ly from 1.5 -> 1
+     -- Min crew from 20 -> 13
+     -- Max crew from 21 -> 20
+     > I'm convinced some of these were just incorrectly copied fields, frankly.
+
+  - Schiavona
+     -- Fuel storage from 70 -> 80
+
  Bugfixes:
+  - Fixed a truly *ancient* bug which occassionally caused issues with order-of-executions occassionally rendering the percieved time mult incorrect for multiple Vass ships in a combat
+     > This may have impacts on how the ships feel in handling/gameplay (since time mult was percieved incorrectly in many situations), so feedback on this is much appreciated
   - Fixed incorrect rules.csv setup (again...) causing issues when performing the new Arms Dealer event with an existing contact
   - Fixed Prism Freeport (if enabled by other mods) occassionally selling the Akrafena, Baselard and Tuck
      > The Baselard and Tuck are not fully implemented and should thus not be obtainable at all
+  - Hopefully fixed a bug where the Yawarakai Te and its derivatives gave the wrong flux cost when no missiles were in range
+  - Yawarakai Te and its derivatives now correctly identify and ignores flares when using IPDAI
 
 
 
