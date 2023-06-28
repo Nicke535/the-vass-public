@@ -129,8 +129,8 @@ public class VassModPlugin extends BaseModPlugin {
 
     @Override
     public PluginPick<AutofireAIPlugin> pickWeaponAutofireAI(WeaponAPI weapon) {
-        if ("vass_yawarakai_te".equals(weapon.getSpec().getWeaponId())
-            || "vass_makhaira_builtin".equals(weapon.getSpec().getWeaponId())) {
+        if ("vass_yawarakai_te".contentEquals(weapon.getId())
+            || "vass_makhaira_builtin".contentEquals(weapon.getId())) {
             return new PluginPick<AutofireAIPlugin>((new VassYawarakaiTeAutofireAI(weapon)), CampaignPlugin.PickPriority.MOD_SET);
         } else {
             return super.pickWeaponAutofireAI(weapon);
