@@ -1,3 +1,9 @@
+Version 0.4.2a
+ Bugfixes:
+  - Fixed fatal error when the autofire AI picker runs for weapons with null-valued weapon specifications
+
+
+
 Version 0.4.2 : Time for new beginnings
  Additions:
   - When playing Nexerelin, there are now 2 Vass-themed starting options: one with you already being Family member and an elite ship, while the other one starts you with a small Vass fleet and means to get more
