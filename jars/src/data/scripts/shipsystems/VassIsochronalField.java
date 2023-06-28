@@ -115,6 +115,9 @@ public class VassIsochronalField extends BaseShipSystemScript {
     //Runs passive effects for the "defensive" mode of the system
     private void runDefensiveMode (float amount, ShipAPI ship, boolean player) {
         defensiveCooldownLeft -= amount;
+        if (defensiveCooldownLeft < 0f) {
+            defensiveCooldownLeft = -1f;
+        }
 
         //If we're on cooldown, don't do any effects
         if (defensiveCooldownLeft > 0f) {
@@ -179,7 +182,7 @@ public class VassIsochronalField extends BaseShipSystemScript {
         //If we found a projectile to redirect, we redirect it and register that we can't redirect it again
         //We also go on cooldown, depending on how big the redirection was
         if (closestValidProj != null) {
-            defensiveCooldownLeft = (Math.abs(angleIfRedirected)/REDIRECTION_MAX_ANGLE) * REDIRECT_COOLDOWN_MAX;
+            defensiveCooldownLeft = ship.getMutableStats().getSystemCooldownBonus().computeEffective(((Math.abs(angleIfRedirected)/REDIRECTION_MAX_ANGLE) * REDIRECT_COOLDOWN_MAX));
             float trueRedirectionAngle = angleIfRedirected + Math.signum(angleIfRedirected)*REDIRECTION_MAX_ANGLE/5f; //Minor lie, but it's for better consistency
             closestValidProj.setFacing(closestValidProj.getFacing()+trueRedirectionAngle);
             closestValidProj.getVelocity().set(VectorUtils.rotate(new Vector2f(closestValidProj.getVelocity()), trueRedirectionAngle));

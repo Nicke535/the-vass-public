@@ -1,3 +1,5 @@
 id
 # anything in the ship or weapon blacklists is also automatically blacklisted here
 vass_general_blueprint
+vass_torpor_blueprint
+vass_accel_blueprint

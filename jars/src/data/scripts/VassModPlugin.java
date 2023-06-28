@@ -3,9 +3,17 @@ package data.scripts;
 import com.fs.starfarer.api.BaseModPlugin;
 import com.fs.starfarer.api.EveryFrameScript;
 import com.fs.starfarer.api.Global;
+import com.fs.starfarer.api.PluginPick;
+import com.fs.starfarer.api.campaign.AICoreOfficerPlugin;
+import com.fs.starfarer.api.campaign.CampaignPlugin;
 import com.fs.starfarer.api.campaign.SectorAPI;
 import com.fs.starfarer.api.campaign.StarSystemAPI;
+import com.fs.starfarer.api.characters.OfficerDataAPI;
+import com.fs.starfarer.api.characters.PersonAPI;
+import com.fs.starfarer.api.combat.AutofireAIPlugin;
+import com.fs.starfarer.api.combat.WeaponAPI;
 import com.fs.starfarer.api.impl.campaign.intel.bar.events.BarEventManager;
+import com.fs.starfarer.api.plugins.OfficerLevelupPlugin;
 import data.scripts.campaign.VassFamilyTrackerPlugin;
 import data.scripts.campaign.VassRandomEncounterPlugin;
 import data.scripts.campaign.VassSafetyOverridesCrewLossPlugin;
@@ -14,6 +22,8 @@ import data.scripts.campaign.barEvents.VassPerturbaGetShipSubmarketEventCreator;
 import data.scripts.campaign.barEvents.VassPerturbaWeaponContractEventCreator;
 import data.scripts.campaign.barEvents.VassPerturbaWeaponTestingEventCreator;
 import data.scripts.shipsystems.VassIsochronalField;
+import data.scripts.weapons.VassYawarakaiTeScript;
+import data.scripts.weapons.autofireAI.VassYawarakaiTeAutofireAI;
 import org.magiclib.util.MagicSettings;
 import org.dark.shaders.light.LightData;
 import org.dark.shaders.util.ShaderLib;
@@ -114,6 +124,16 @@ public class VassModPlugin extends BaseModPlugin {
         }
         if (!bar.hasEventCreator(VassPerturbaGetShipSubmarketEventCreator.class)) {
             bar.addEventCreator(new VassPerturbaGetShipSubmarketEventCreator());
+        }
+    }
+
+    @Override
+    public PluginPick<AutofireAIPlugin> pickWeaponAutofireAI(WeaponAPI weapon) {
+        if ("vass_yawarakai_te".equals(weapon.getSpec().getWeaponId())
+            || "vass_makhaira_builtin".equals(weapon.getSpec().getWeaponId())) {
+            return new PluginPick<AutofireAIPlugin>((new VassYawarakaiTeAutofireAI(weapon)), CampaignPlugin.PickPriority.MOD_SET);
+        } else {
+            return super.pickWeaponAutofireAI(weapon);
         }
     }
 }

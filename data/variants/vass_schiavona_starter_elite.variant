@@ -1,0 +1,40 @@
+{
+    "displayName": "Elite",
+    "fluxCapacitors": 14,
+    "fluxVents": 16,
+    "goalVariant": false,
+    "hullId": "vass_schiavona",
+    "hullMods": [
+        "unstable_injector",
+        "auxiliarythrusters",
+        "fluxbreakers"
+    ],
+    "permaMods": ["vass_dummymod_accel_membership"],
+    "sMods": ["hardenedshieldemitter"],
+    "variantId": "vass_schiavona_starter_elite",
+    "weaponGroups": [
+        {
+            "autofire": false,
+            "mode": "LINKED",
+            "weapons": {"WS0004": "vass_caladbolg"}
+        },
+        {
+            "autofire": false,
+            "mode": "ALTERNATING",
+            "weapons": {
+                "WS0005": "vass_colada",
+                "WS0006": "vass_colada"
+            }
+        },
+        {
+            "autofire": true,
+            "mode": "LINKED",
+            "weapons": {"WS0002": "vass_fragarach"}
+        },
+        {
+            "autofire": true,
+            "mode": "LINKED",
+            "weapons": {"WS0003": "vass_yawarakai_te"}
+        }
+    ]
+}

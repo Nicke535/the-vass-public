@@ -1,15 +1,14 @@
 package data.scripts.campaign;
 
 import com.fs.starfarer.api.Global;
-import com.fs.starfarer.api.campaign.CargoAPI;
+import com.fs.starfarer.api.campaign.*;
 import com.fs.starfarer.api.campaign.CargoAPI.CargoItemQuantity;
-import com.fs.starfarer.api.campaign.CargoStackAPI;
-import com.fs.starfarer.api.campaign.FactionAPI;
 import com.fs.starfarer.api.campaign.FactionAPI.ShipPickParams;
 import com.fs.starfarer.api.fleet.FleetMemberAPI;
 import com.fs.starfarer.api.fleet.FleetMemberType;
 import com.fs.starfarer.api.fleet.ShipRolePick;
 import com.fs.starfarer.api.impl.campaign.DModManager;
+import com.fs.starfarer.api.impl.campaign.ids.Factions;
 import com.fs.starfarer.api.impl.campaign.ids.ShipRoles;
 import com.fs.starfarer.api.impl.campaign.submarkets.BaseSubmarketPlugin;
 import com.fs.starfarer.api.loading.FighterWingSpecAPI;
@@ -32,7 +31,8 @@ public class VassPerturbaSubmarket extends BaseSubmarketPlugin {
     private static final int NUMBER_OF_SHIPS = 6;
     private static final int NUMBER_OF_FIGHTERS = 8;
     private static final int MIN_DMODS = 1;
-    private static final int MAX_DMODS = 2;
+    private static final int MAX_DMODS = 4;
+    private static final RepLevel MINIMUM_STANDING = RepLevel.WELCOMING;
 
     private static final List<String> SHIPS_SOLD = new ArrayList<>();
     static {
@@ -199,5 +199,22 @@ public class VassPerturbaSubmarket extends BaseSubmarketPlugin {
     @Override
     public boolean isBlackMarket() {
         return false;
+    }
+
+
+    public boolean isEnabled(CoreUIAPI ui) {
+        RepLevel level = submarket.getFaction().getRelationshipLevel(Global.getSector().getFaction(Factions.PLAYER));
+        return level.isAtWorst(MINIMUM_STANDING);
+    }
+
+    public OnClickAction getOnClickAction(CoreUIAPI ui) {
+        return OnClickAction.OPEN_SUBMARKET;
+    }
+
+    public String getTooltipAppendix(CoreUIAPI ui) {
+        if (!isEnabled(ui)) {
+            return "Requires: " + submarket.getFaction().getDisplayName() + " - " + MINIMUM_STANDING.getDisplayName().toLowerCase();
+        }
+        return null;
     }
 }

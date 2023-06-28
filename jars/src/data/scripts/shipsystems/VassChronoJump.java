@@ -81,7 +81,11 @@ public class VassChronoJump extends BaseShipSystemScript {
         //after our trigger (only the player experience this)
         if (!state.equals(State.OUT) && effectLevel > 0f) {
             triggeredOnce = false;
-            currentActiveDuration += engine.getElapsedInLastFrame() * ship.getMutableStats().getTimeMult().getModifiedValue();
+            float elapsed = engine.getElapsedInLastFrame() * ship.getMutableStats().getTimeMult().getModifiedValue();
+            if (engine.isPaused()) {
+                elapsed = 0f;
+            }
+            currentActiveDuration += elapsed;
 
             if (player) {
                 engine.getTimeMult().modifyMult(id, 1f - (1f - TIME_MULT_PERCIEVED) * effectLevel);

@@ -29,7 +29,7 @@ vass_cpcOfferOption,vass_cpc_option,$vass_cpc_armsDealer,,,vass_cpc_start:Check 
 vass_cpcBlurbBar,vass_cpc_blurbBar,$vass_cpc_armsDealer,,"You see a very suspicious $vass_cpc_manOrWoman sitting in the far back flanked by three massive bodyguards. Your intuition tells you they're probably an arms dealer, and one with a fairly large price on their head at that.",,
 vass_cpcOfferOptionBar,vass_cpc_optionBar,$vass_cpc_armsDealer,,,vass_cpc_startBar:Check if the suspicious arms dealer has any acquisitions worth talking about.,
 vass_cpcOfferTextContact,DialogOptionSelected,"$option == vass_cpc_start
-$cpc_armsDealer score:20","$missionId = vass_cpc
+$vass_cpc_armsDealer score:20","$missionId = vass_cpc
 SetTextHighlights $vass_cpc_maxCapacity $vass_cpc_costPercent $vass_cpc_days
 DoCanAffordCheck 0 vass_cpc_pickPlayerBP false","""Now, we should be able to provide access to custom production of roundabout $vass_cpc_maxCapacity credits worth of rare ships and weapons of great interest to a collector such as yourself. Discretion doesn't come cheap of course, but I think it's a bargain frankly."" $heOrShe winces slightly ""You don't wanna know the kind of things some people would be willing to do to keep these things out of the wrong hands. $vass_cpc_costPercent of base cost, not one credit less.""
 

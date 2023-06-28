@@ -1,7 +1,7 @@
 {
   "displayName": "Multirole",
-  "fluxCapacitors": 10,
-  "fluxVents": 11,
+  "fluxCapacitors": 8,
+  "fluxVents": 16,
   "goalVariant": true,
   "hullId": "vass_curtana",
   "hullMods": [
