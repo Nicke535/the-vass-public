@@ -41,6 +41,7 @@ Version 0.4.2 : Time for new beginnings
      > The Baselard and Tuck are not fully implemented and should thus not be obtainable at all
   - Hopefully fixed a bug where the Yawarakai Te and its derivatives gave the wrong flux cost when no missiles were in range
   - Yawarakai Te and its derivatives now correctly identify and ignores flares when using IPDAI
+  - The Isochronal Field (Akrafena) system redirection cooldown is now affected by the System Experise skill (and any other shipsystem cooldown modifiers)
 
 
 
