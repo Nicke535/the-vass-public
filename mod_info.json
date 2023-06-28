@@ -2,7 +2,7 @@
   "id":"the_vass", # internal id
 	"name":"The Vass", # displayed to the player
 	"author":"Nicke535, using Gwyvern's masterful sprites",	
-	"version":"0.4.1d",
+	"version":"0.4.2",
 	"description":"Psst, hey kid. Want some time?",
 	"gameVersion":"0.96a-RC10",
 	"modPlugin":"data.scripts.VassModPlugin",
