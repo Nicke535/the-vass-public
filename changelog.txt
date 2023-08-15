@@ -5,6 +5,7 @@ Version 0.4.2b
   - Vass fleets no longer spawn in certain systems where it makes no sense (such as systems cut off from hyperspace)
 
 
+
 Version 0.4.2a
  Bugfixes:
   - Fixed fatal error when the autofire AI picker runs for weapons with null-valued weapon specifications
