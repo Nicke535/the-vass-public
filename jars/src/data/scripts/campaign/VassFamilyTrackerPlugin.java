@@ -11,7 +11,9 @@ import com.fs.starfarer.api.fleet.FleetMemberAPI;
 import com.fs.starfarer.api.impl.campaign.fleets.FleetFactoryV3;
 import com.fs.starfarer.api.impl.campaign.fleets.FleetParamsV3;
 import com.fs.starfarer.api.impl.campaign.ids.MemFlags;
+import com.fs.starfarer.api.impl.campaign.ids.Tags;
 import com.fs.starfarer.api.impl.campaign.intel.contacts.ContactIntel;
+import com.fs.starfarer.api.loading.CampaignPingSpec;
 import com.fs.starfarer.api.util.Misc;
 import data.scripts.utils.VassUtils;
 import org.jetbrains.annotations.Nullable;
@@ -128,6 +130,8 @@ public class VassFamilyTrackerPlugin implements EveryFrameScript {
                     lootRevengeDaysInSequence += CONTINOUS_CHECK_REVENGE_COOLDOWN;
                     currentLootRevengeCooldown = CONTINOUS_CHECK_REVENGE_COOLDOWN;
                 } else {
+
+
                     VassUtils.VASS_FAMILY familyToSpawnVia = VassUtils.VASS_FAMILY.values()[MathUtils.getRandomNumberInRange(0, VassUtils.VASS_FAMILY.values().length-1)];
                     int tests = 0;
                     while (tests < 50) {
@@ -138,7 +142,7 @@ public class VassFamilyTrackerPlugin implements EveryFrameScript {
                             tests++;
                         }
                     }
-                    if (tests < 50) {
+                    if (tests < 50 && canVassSpawnInCampaignLocation(Global.getSector().getPlayerFleet().getContainingLocation())) {
                         if (Global.getSector().getMemoryWithoutUpdate().get("$vass_firstTimeVassShipLooted") instanceof Boolean && !(Boolean)Global.getSector().getMemoryWithoutUpdate().get("$vass_firstTimeVassShipLooted")) {
                             //Not the first time this happens... no extra memory flag needed, and elite can appear
                             if (Math.random() < LOOT_FLEET_ELITE_CHANCE) {
@@ -152,6 +156,8 @@ public class VassFamilyTrackerPlugin implements EveryFrameScript {
                             spawnPlayerLootingPunishFleet(familyToSpawnVia);
                         }
                         currentLootRevengeCooldown = ((100f - getPowerOfFamily(familyToSpawnVia))/100f)*MAX_LOOT_REVENGE_COOLDOWN + ((getPowerOfFamily(familyToSpawnVia))/100f)*MIN_LOOT_REVENGE_COOLDOWN;
+                    } else {
+                        currentLootRevengeCooldown = CONTINOUS_CHECK_REVENGE_COOLDOWN;
                     }
                 }
             } else {
@@ -356,6 +362,32 @@ public class VassFamilyTrackerPlugin implements EveryFrameScript {
         if (currentInstance != null) {
             currentInstance.currentLootRevengeCooldown = valueToSetTo;
         }
+    }
+
+
+    /**
+     * Returns whether a given system is a system Vass fleets are allowed to spawn in
+     */
+    public static boolean canVassSpawnInCampaignLocation(LocationAPI location) {
+        // If it's ever added, allow spawning in the Vass Shipyard home system, regardless of other limitations
+        if (location.hasTag("vass_shipyard_home_system")) {
+            return true;
+        }
+
+        // Bans all HIDDEN systems, and systems cut off from hyperspace
+        if (location.hasTag(Tags.SYSTEM_CUT_OFF_FROM_HYPER) ||
+            location.hasTag(Tags.THEME_HIDDEN)) {
+            return false;
+        }
+
+        // Omega and PK systems are excluded
+        if (location.hasTag(Tags.OMEGA) ||
+                location.hasTag(Tags.PK_SYSTEM)) {
+            return false;
+        }
+
+        // No other bans at the moment
+        return true;
     }
 
     /**

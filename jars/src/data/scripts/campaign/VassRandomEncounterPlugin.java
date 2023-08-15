@@ -62,6 +62,12 @@ public class VassRandomEncounterPlugin implements EveryFrameScript {
     @Override
     public void advance(float amount) {
         if (Global.getSector().isPaused()) { amount = 0f; }
+
+        //Pause our encounter tracking if we're in a system where we are not allowed to spawn encounters
+        if (!VassFamilyTrackerPlugin.canVassSpawnInCampaignLocation(Global.getSector().getPlayerFleet().getContainingLocation())) {
+            return;
+        }
+
         interval.advance(Misc.getDays(amount));
         if (interval.intervalElapsed()) {
             //Choose one family to trigger with: stronger families are more likely

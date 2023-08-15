@@ -6,6 +6,7 @@ import com.fs.starfarer.api.campaign.BaseCampaignEventListener;
 import com.fs.starfarer.api.campaign.CargoAPI;
 import com.fs.starfarer.api.campaign.PlayerMarketTransaction;
 import com.fs.starfarer.api.campaign.PlayerMarketTransaction.ShipSaleInfo;
+import com.fs.starfarer.api.campaign.econ.MarketAPI;
 import com.fs.starfarer.api.impl.campaign.ids.Submarkets;
 import com.fs.starfarer.api.loading.FighterWingSpecAPI;
 import com.fs.starfarer.api.util.Misc;
@@ -30,8 +31,8 @@ public class VassPlayerSoldVassShipsListener extends BaseCampaignEventListener i
 
     @Override
     public void reportPlayerMarketTransaction(PlayerMarketTransaction transaction) {
-        //Ignore transactions to storage
-        if (transaction.getSubmarket().getSpec().getId().equals(Submarkets.SUBMARKET_STORAGE)) {
+        //Ignore transactions to storage or other free-transfer markets
+        if (transaction.getSubmarket().getPlugin().isFreeTransfer()) {
             return;
         }
 
