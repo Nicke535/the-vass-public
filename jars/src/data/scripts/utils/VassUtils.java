@@ -2,11 +2,12 @@ package data.scripts.utils;
 
 import com.fs.starfarer.api.GameState;
 import com.fs.starfarer.api.Global;
-import com.fs.starfarer.api.combat.CombatEntityAPI;
-import com.fs.starfarer.api.combat.ShipAPI;
+import com.fs.starfarer.api.combat.*;
+import com.fs.starfarer.api.impl.combat.DisintegratorEffect;
 import com.fs.starfarer.api.mission.FleetSide;
 import com.fs.starfarer.api.util.Misc;
 import data.scripts.campaign.VassFamilyTrackerPlugin;
+import org.apache.log4j.Logger;
 import org.jetbrains.annotations.NotNull;
 import org.lazywizard.lazylib.CollisionUtils;
 import org.lazywizard.lazylib.FastTrig;
@@ -23,6 +24,8 @@ import java.util.ArrayList;
  * @author Nicke535
  */
 public class VassUtils {
+    public static final Logger LOGGER = Global.getLogger(VassUtils.class);
+
     //The families' energy colors (basic is used )
     private static final float[] COLORS_RECIPRO = { 1f, 1f, 1f};
     private static final float[] COLORS_ACCEL = { 1f, 0f, 0f};
@@ -168,10 +171,11 @@ public class VassUtils {
 
             if (ship.getFleetMember() == null || ship.getFleetMember().getFleetData() == null || ship.getFleetMember().getFleetData().getFleet() == null) {
                 //No fleet data: we can't tell which fleet we're from, so throw an exception
+                LOGGER.warn("Tried to check family membership status of a ship that has no fleet data!");
                 throw new IllegalStateException("Tried to check family membership status of a ship that has no fleet data!");
             }
 
-            if (ship.getFleetMember().getFleetData().equals(Global.getSector().getPlayerFleet().getFleetData())) {
+            if (Global.getSector().getPlayerFleet().getFleetData().getMembersListCopy().contains(ship.getFleetMember())) {
                 //Player-fleet ship; just check our current membership
                 return VassFamilyTrackerPlugin.getFamilyMembership();
             }
@@ -216,10 +220,11 @@ public class VassUtils {
 
             if (ship.getFleetMember() == null || ship.getFleetMember().getFleetData() == null || ship.getFleetMember().getFleetData().getFleet() == null) {
                 //No fleet data: we can't tell which fleet we're from, so throw an exception
+                LOGGER.warn("Tried to check elite status of a ship that has no fleet data!");
                 throw new IllegalStateException("Tried to check elite status of a ship that has no fleet data!");
             }
 
-            if (ship.getFleetMember().getFleetData().equals(Global.getSector().getPlayerFleet().getFleetData())) {
+            if (Global.getSector().getPlayerFleet().getFleetData().getMembersListCopy().contains(ship.getFleetMember())) {
                 //Player-fleet ship; we're elite
                 return true;
             }
@@ -262,5 +267,53 @@ public class VassUtils {
 
         //Finally, returns our list
         return returnList;
+    }
+
+    //Variation on the Breach missile mechanic, but with some practical inclusions
+    public static float dealArmorDamage(ShipAPI source, ShipAPI target, Vector2f point, float armorDamage, boolean showDamageNumber) {
+        CombatEngineAPI engine = Global.getCombatEngine();
+
+        ArmorGridAPI grid = target.getArmorGrid();
+        int[] cell = grid.getCellAtLocation(point);
+        if (cell == null) {
+            return 0f;
+        }
+
+        int gridWidth = grid.getGrid().length;
+        int gridHeight = grid.getGrid()[0].length;
+
+        float damageDealt = 0f;
+        for (int i = -2; i <= 2; i++) {
+            for (int j = -2; j <= 2; j++) {
+                if ((i == 2 || i == -2) && (j == 2 || j == -2)) continue; // skip corners
+
+                int cx = cell[0] + i;
+                int cy = cell[1] + j;
+
+                if (cx < 0 || cx >= gridWidth || cy < 0 || cy >= gridHeight) continue;
+
+                float damMult = 1/30f;
+                if (i <= 1 && i >= -1 && j <= 1 && j >= -1) {
+                    damMult = 1/15f; // Central hits deal 1/15th damage instead of 1/30th
+                }
+
+                float armorInCell = grid.getArmorValue(cx, cy);
+                float damage = armorDamage * damMult;
+                damage = Math.min(damage, armorInCell);
+                if (damage <= 0) continue;
+
+                target.getArmorGrid().setArmorValue(cx, cy, Math.max(0, armorInCell - damage));
+                damageDealt += damage;
+            }
+        }
+
+        if (damageDealt > 0) {
+            if (Misc.shouldShowDamageFloaty(source, target) && showDamageNumber) {
+                engine.addFloatingDamageText(point, damageDealt, Misc.FLOATY_ARMOR_DAMAGE_COLOR, target, source);
+            }
+            target.syncWithArmorGridState();
+        }
+
+        return damageDealt;
     }
 }

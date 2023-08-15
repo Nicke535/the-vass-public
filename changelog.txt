@@ -1,3 +1,10 @@
+Version 0.4.2b
+ Bugfixes:
+  - Fixed bug where family membership did not properly function for the player fleet in the campaign
+  - Fixed cross-mod compatibility bug where transferring ships to some modded storages causes the Vass to become aggressive
+  - Vass fleets no longer spawn in certain systems where it makes no sense (such as systems cut off from hyperspace)
+
+
 Version 0.4.2a
  Bugfixes:
   - Fixed fatal error when the autofire AI picker runs for weapons with null-valued weapon specifications
