@@ -1,8 +1,15 @@
+Version 0.4.2c
+ Bugfixes:
+  - Fixed the Yawarakai Te occasionally crashing due to an uninitialized combat engine
+  - Nexerelin: fixed the Gang Star Ambition start occassionally spawning a fleet with less starting crew than the required skeleton crew
+
+
 Version 0.4.2b
  Bugfixes:
   - Fixed bug where family membership did not properly function for the player fleet in the campaign
   - Fixed cross-mod compatibility bug where transferring ships to some modded storages causes the Vass to become aggressive
   - Vass fleets no longer spawn in certain systems where it makes no sense (such as systems cut off from hyperspace)
+
 
 
 Version 0.4.2a

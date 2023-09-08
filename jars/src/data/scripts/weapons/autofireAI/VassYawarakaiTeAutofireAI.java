@@ -29,6 +29,9 @@ public class VassYawarakaiTeAutofireAI implements AutofireAIPlugin {
 
     @Override
     public void advance(float amount) {
+        if (Global.getCombatEngine() == null) {
+            return;
+        }
         if (Global.getCombatEngine().isPaused()) {
             amount = 0f;
         }

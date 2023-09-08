@@ -3,6 +3,7 @@ package data.scripts.campaign.customstart;
 import com.fs.starfarer.api.EveryFrameScript;
 import com.fs.starfarer.api.Global;
 import com.fs.starfarer.api.Script;
+import com.fs.starfarer.api.campaign.CampaignFleetAPI;
 import com.fs.starfarer.api.campaign.InteractionDialogAPI;
 import com.fs.starfarer.api.campaign.RepLevel;
 import com.fs.starfarer.api.campaign.econ.MarketAPI;
@@ -63,12 +64,14 @@ public class VassSmallFleetStart extends CustomStart {
 
         @Override
         public void advance(float amount) {
+            CampaignFleetAPI playerFleet = Global.getSector().getPlayerFleet();
+
             // Step 1: make sure we're starting with Friendly Vass relations, since otherwise things will quickly turn sour...
             Global.getSector().getPlayerFaction().setRelationship("vass", RepLevel.WELCOMING);
 
             // Step 2: Rename our starting ships
             int correctNames = 0;
-            for (FleetMemberAPI member : Global.getSector().getPlayerFleet().getFleetData().getMembersListCopy()) {
+            for (FleetMemberAPI member : playerFleet.getFleetData().getMembersListCopy()) {
                 if (member.getShipName().contentEquals(getStartingShipname(member.getVariant().getDisplayName()))) {
                     correctNames++;
                 } else {
@@ -89,10 +92,17 @@ public class VassSmallFleetStart extends CustomStart {
                 }
             }
 
-            // Step 4: verify that the correct settings have been set, and if so, we are done
+            // Step 4: ensure we have at least enough crew to run skeleton crew on all ships
+            if (playerFleet.getFleetData().getMinCrew() > playerFleet.getCargo().getCrew()) {
+                int diff = (int)(playerFleet.getFleetData().getMinCrew() - playerFleet.getCargo().getCrew());
+                playerFleet.getCargo().addCrew(diff);
+            }
+
+            // Step 5: verify that the correct settings have been set, and if so, we are done
             if (correctNames >= ships.size()
                     && hasSubmarket
-                    && Global.getSector().getPlayerFaction().getRelationshipLevel("vass").isAtWorst(RepLevel.WELCOMING)) {
+                    && Global.getSector().getPlayerFaction().getRelationshipLevel("vass").isAtWorst(RepLevel.WELCOMING)
+                    && playerFleet.getFleetData().getMinCrew() <= playerFleet.getCargo().getCrew()) {
                 //Also add family information once we're done, once that gets implemented.
                 VassFamilyInformationEventIntel.addFactorCreateIfNecessary(new VassPriorKnowledgeFactor(VassFamilyInformationEventIntel.PROGRESS_1), null);
                 done = true;
